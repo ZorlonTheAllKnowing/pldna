@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "field_player_avatar.h": "c",
+        "field_effects.h": "c",
+        "battle_pyramid.h": "c",
+        "game_stat.h": "c",
+        "layouts.h": "c",
+        "abilities.h": "c",
+        "fieldmap.h": "c",
+        "event_data.h": "c"
+    }
+}

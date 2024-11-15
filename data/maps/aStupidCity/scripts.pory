@@ -1,0 +1,28 @@
+raw `aStupidCity_MapScripts::
+	.byte 0
+`
+
+script RainTrigger {
+    setweather(WEATHER_RAIN)
+    doweather
+}
+
+script SunTrigger {
+    setweather(WEATHER_SUNNY)
+    doweather
+}
+
+script giveBulbasaur {
+    lockall
+    msgbox("Take a Bulbsaur, Leave a Bulbasaur")
+    givemon(SPECIES_BULBASAUR, 10, ITEM_POKE_BALL)
+    givemon(SPECIES_EEVEE, 10, ITEM_POKE_BALL)
+    givemon(SPECIES_PECHARUNT, 10, ITEM_POKE_BALL)
+    setflag(FLAG_SYS_POKEDEX_GET)
+    setflag(FLAG_ADVENTURE_STARTED)
+    special(SetUnlockedPokedexFlags)
+    setflag(FLAG_SYS_NATIONAL_DEX)
+    special(EnableNationalPokedex)
+    setflag(FLAG_SYS_POKEMON_GET)
+    releaseall
+}
