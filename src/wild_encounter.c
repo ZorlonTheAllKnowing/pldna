@@ -26,6 +26,8 @@
 #include "constants/field_effects.h"
 #include "field_weather.h"
 #include "pokedex.h"
+#include "constants/metatile_labels.h"
+#include "field_effect_helpers.h"
 
 extern const u8 EventScript_SprayWoreOff[];
 extern const u8 SpawnShakingGrass[];
@@ -573,7 +575,13 @@ static bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, u8 ar
 }
 
 void tryTriggerShakingGrassEncounter(){
-    ScriptContext_SetupScript(SpawnShakingGrass);
+    u8 x, y;
+    for(x=1; x<12; x++) {
+        for(y=1; y<9; y++) {
+            StartAshFieldEffect(x, y, METATILE_Lavaridge_NormalGrass, 4);
+            //ScriptContext_SetupScript(SpawnShakingGrass);
+        }
+    }
 }
 
 static u16 GenerateFishingWildMon(const struct WildPokemonInfo *wildMonInfo, u8 rod)
