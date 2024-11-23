@@ -28,6 +28,7 @@
 #include "pokedex.h"
 #include "constants/metatile_labels.h"
 #include "field_effect_helpers.h"
+#include "field_effect.h"
 
 extern const u8 EventScript_SprayWoreOff[];
 extern const u8 SpawnShakingGrass[];
@@ -78,6 +79,31 @@ EWRAM_DATA u8 gChainFishingDexNavStreak = 0;
 #include "data/wild_encounters.h"
 
 static const struct WildPokemon sWildFeebas = {20, 25, SPECIES_FEEBAS};
+
+// The struct that holds the data for a ShakingGrass type encounter
+// Used to create overworld encounters for pokemon that have a higher research level.
+struct staticEncounter {
+    u16 species;
+    u16 move[MAX_MON_MOVES];
+    u16 heldItem;
+    u8 abilityNum;
+    u8 monLevel;
+    u8 environment;
+    s16 tilex;
+    s16 tiley;
+    u8 fldEffSpriteId;
+    u8 fldEffId;
+};
+
+// Creates a list of three static encounters.
+// This list should take the pokemon that would generate randomly, and instead save them here
+// to be accessed in a ShakingGrass or overworld encounter.
+struct staticEncounter staticEncounters[3];
+
+u32 currentShakingGrassSpriteID;
+s32 currentShakingGrassX;
+s32 currentShakingGrassY;
+u16 currentShakingGrassSpecies;
 
 static const u16 sRoute119WaterTileData[] =
 {
@@ -192,6 +218,8 @@ static void FeebasSeedRng(u16 seed)
 }
 
 // LAND_WILD_COUNT
+// Takes the encounter table (check it out in PoryMap) and picks which Pokemon from that table
+// will be encountered. Odds based on that table.
 static u8 ChooseWildMonIndex_Land(void)
 {
     u8 wildMonIndex = 0;
@@ -344,6 +372,8 @@ static u8 ChooseWildMonIndex_Fishing(u8 rod)
     return wildMonIndex;
 }
 
+// Takes the pokemon, the wildMonIndex (from ChooseWildMonIndex_Land), and the area
+// and picks what level the encountered pokemon will be. 
 static u8 ChooseWildMonLevel(const struct WildPokemon *wildPokemon, u8 wildMonIndex, u8 area)
 {
     u8 min;
@@ -352,7 +382,6 @@ static u8 ChooseWildMonLevel(const struct WildPokemon *wildPokemon, u8 wildMonIn
     u8 rand;
 
     //Always make wild pokemon level 100
-
     return 100;
 
     //the following is the old code
@@ -565,8 +594,10 @@ static bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, u8 ar
     //This method will only create a wild pokemon encounter if the pokemon has not been seen.
     //Once a pokemon has been registered as Seen in the pokedex, it will stop being in wild encounters. -Zorlon
     if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(wildMonInfo->wildPokemon[wildMonIndex].species), FLAG_GET_SEEN)){
-        gSpecialVar_0x8004 = wildMonInfo->wildPokemon[wildMonIndex].species;  //save species to VAR_0x8004
-        tryTriggerShakingGrassEncounter();
+        //gSpecialVar_0x8004 = wildMonInfo->wildPokemon[wildMonIndex].species;  //save species to VAR_0x8004
+        CreateWildMon(wildMonInfo->wildPokemon[wildMonIndex].species, level);
+        currentShakingGrassSpecies = wildMonInfo->wildPokemon[wildMonIndex].species;
+        tryCreateShakingGrassEncounter();
         return FALSE;
     }
     else
@@ -574,13 +605,26 @@ static bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, u8 ar
     return TRUE;
 }
 
-void tryTriggerShakingGrassEncounter(){
-    u8 x, y;
-    for(x=1; x<12; x++) {
-        for(y=1; y<9; y++) {
-            StartAshFieldEffect(x, y, METATILE_Lavaridge_NormalGrass, 4);
-            //ScriptContext_SetupScript(SpawnShakingGrass);
+// Called by TryGenerateWildMon() when the pokemon to be generated is already in the pokedex
+// Picks a random tile near the player (within 3 in X and Y)
+// If that tile is a grass tile, has no object, and no field effect in it, then
+// shaking grass is generated there.
+void tryCreateShakingGrassEncounter(){
+    if(FieldEffectActiveListContains(FLDEFF_SHAKING_GRASS)) {
+        FieldEffectStop(&gSprites[currentShakingGrassSpriteID],FLDEFF_SHAKING_GRASS);
         }
+    //generates to random values for X and Y, from [-3,3]
+    s8 xDelta = (Random() % 7) - 3;
+    s8 yDelta = (Random() % 7) - 3;
+    gFieldEffectArguments[0] = gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.x + xDelta;
+    gFieldEffectArguments[1] = gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y + yDelta;
+    u8 metatileBehaviour = MapGridGetMetatileBehaviorAt(gFieldEffectArguments[0], gFieldEffectArguments[1]);
+    if( MetatileBehavior_IsTallGrass(metatileBehaviour) ) {
+        gFieldEffectArguments[2] = 0xFF;
+        gFieldEffectArguments[3] = 2;
+        currentShakingGrassX = gFieldEffectArguments[0];
+        currentShakingGrassY = gFieldEffectArguments[1];
+        currentShakingGrassSpriteID = FieldEffectStart(FLDEFF_SHAKING_GRASS);
     }
 }
 
@@ -688,6 +732,19 @@ static bool8 AreLegendariesInSootopolisPreventingEncounters(void)
     }
 
     return FlagGet(FLAG_LEGENDARIES_IN_SOOTOPOLIS);
+}
+
+//Function to check if player is standing Shaking Grass. Returns True/False
+//Called in field_control_avatar.c -Z
+bool8 ShakingGrassEncounter(void)
+{
+    if (FieldEffectActiveListContains(FLDEFF_SHAKING_GRASS)
+        && gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.x == currentShakingGrassX 
+        && gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y == currentShakingGrassY){
+            BattleSetup_StartWildBattle();
+            return TRUE;
+        }
+    return FALSE;
 }
 
 bool8 StandardWildEncounter(u16 curMetatileBehavior, u16 prevMetatileBehavior)

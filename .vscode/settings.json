@@ -8,6 +8,7 @@
         "abilities.h": "c",
         "fieldmap.h": "c",
         "event_data.h": "c",
-        "item.h": "c"
+        "item.h": "c",
+        "metatile_behavior.h": "c"
     }
 }

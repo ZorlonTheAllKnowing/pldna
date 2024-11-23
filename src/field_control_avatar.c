@@ -716,6 +716,12 @@ static bool8 CheckStandardWildEncounter(u16 metatileBehavior)
         return FALSE;
     }
 
+    //perhaps a check here to trigger static/shaking/overworld encounters?
+    if (ShakingGrassEncounter())
+    {
+        return TRUE;
+    }
+
     if (StandardWildEncounter(metatileBehavior, sPrevMetatileBehavior) == TRUE)
     {
         sWildEncounterImmunitySteps = 0;
