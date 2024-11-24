@@ -101,6 +101,16 @@ enum {
     WIN_VU_METER,
 };
 
+enum {
+    UNSEEN,
+    SEEN,
+    NOTED,
+    OBSERVED,
+    STUDIED,
+    UNDERSTOOD,
+    MASTERED,
+};
+
 // For scrolling search parameter
 #define MAX_SEARCH_PARAM_ON_SCREEN   6
 #define MAX_SEARCH_PARAM_CURSOR_POS  (MAX_SEARCH_PARAM_ON_SCREEN - 1)
