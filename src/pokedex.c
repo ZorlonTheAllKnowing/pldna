@@ -30,6 +30,9 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 
+//I THINK this is almost entirely unused with the HGSS flag turned on.
+//For now, I'll try to ignore it.
+
 enum
 {
     PAGE_MAIN,
@@ -57,7 +60,7 @@ enum
     SEARCH_COLOR,
     SEARCH_TYPE_LEFT,
     SEARCH_TYPE_RIGHT,
-    SEARCH_ORDER,
+    SEARCH_ORDER,s
     SEARCH_MODE,
     SEARCH_OK,
     SEARCH_COUNT
