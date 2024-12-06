@@ -9,6 +9,12 @@
         "fieldmap.h": "c",
         "event_data.h": "c",
         "item.h": "c",
-        "metatile_behavior.h": "c"
+        "metatile_behavior.h": "c",
+        "rgb.h": "c",
+        "text_window.h": "c",
+        "songs.h": "c",
+        "international_string_util.h": "c",
+        "decompress.h": "c",
+        "main.h": "c"
     }
 }
