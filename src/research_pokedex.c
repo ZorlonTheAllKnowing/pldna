@@ -68,12 +68,12 @@ struct PokedexView
     u8 unkArr3[8]; // Cleared, never read
 };
 
-static const u16 sResearchPokedexBackgroundPalette[] = INCBIN_U16("graphics/pokedex/researchdex/researchdex_background.gbapal");
-static const u16 sResearchPokedexListPalette[] = INCBIN_U16("graphics/pokedex/researchdex/researchdex_list_magnifier.gbapal");
-static const u32 sResearchPokedexBackgroundTilemap[] = INCBIN_U32("graphics/pokedex/researchdex/researchdex_background_tiles.bin.lz");
-static const u32 sResearchPokedexListTilemap[] = INCBIN_U32("graphics/pokedex/researchdex/researchdex_list_pages_magnifier_tiles.bin.lz");
-static const u32 sResearchPokedexBackgroundTiles[] = INCBIN_U32("graphics/pokedex/researchdex/researchdex_background_tiles.4bpp.lz");
-static const u32 sResearchPokedexListTiles[] = INCBIN_U32("graphics/pokedex/researchdex/researchdex_list_pages_magnifier_tiles.4bpp.lz");
+static const u16 sResearchPokedexBackgroundPalette[] = INCBIN_U16("graphics/pokedex/researchdex/list_background.gbapal");
+static const u16 sResearchPokedexListPalette[] = INCBIN_U16("graphics/pokedex/researchdex/list_pages.gbapal");
+static const u32 sResearchPokedexBackgroundTilemap[] = INCBIN_U32("graphics/pokedex/researchdex/list_background_tiles.bin.lz");
+static const u32 sResearchPokedexListTilemap[] = INCBIN_U32("graphics/pokedex/researchdex/list_pages_tiles.bin.lz");
+static const u32 sResearchPokedexBackgroundTiles[] = INCBIN_U32("graphics/pokedex/researchdex/list_background_tiles.4bpp.lz");
+static const u32 sResearchPokedexListTiles[] = INCBIN_U32("graphics/pokedex/researchdex/list_pages_tiles.4bpp.lz");
 
 extern const u8 gText_DexNational[];
 extern const u8 gText_DexHoenn[];
@@ -90,14 +90,15 @@ enum{
 static EWRAM_DATA struct PokedexView *sPokedexView = NULL;
 
 static void MainCB2(void);
+
 static void Task_ResearchPokedexFadeIn(u8);
-static void Task_ResearchPokedexMainInput(u8);
-static void Task_DiplomaFadeOut(u8);
-static void DisplayListText(void);
-static void DisplayCurrentPokemonCategoryTypeText(void);
 static void InitResearchPokedexBg(void);
 static void InitResearchPokedexWindow(void);
+static void Task_ResearchPokedexMainInput(u8);
+static void DisplayListText(void);
+static void DisplayCurrentPokemonCategoryTypeText(void);
 static void DisplayCurrentPokemonPicture(void);
+static void Task_ResearchPokedexFadeOut(u8);
 
 EWRAM_DATA static u8 *sResearchPokedexBackgroundTilemapPtr = NULL;
 EWRAM_DATA static u8 *sResearchPokedexListTilemapPtr = NULL;
@@ -178,10 +179,10 @@ static void Task_ResearchPokedexFadeIn(u8 taskId)
 
 static void Task_ResearchPokedexMainInput(u8 taskId)
 {
-    if (JOY_NEW(A_BUTTON | B_BUTTON))
+    if (JOY_NEW(B_BUTTON))
     {
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
-        gTasks[taskId].func = Task_DiplomaFadeOut;
+        gTasks[taskId].func = Task_ResearchPokedexFadeOut;
     }
     if (JOY_HELD(DPAD_UP))
     {
@@ -226,7 +227,7 @@ static void Task_ResearchPokedexMainInput(u8 taskId)
     DisplayCurrentPokemonCategoryTypeText();
 }
 
-static void Task_DiplomaFadeOut(u8 taskId)
+static void Task_ResearchPokedexFadeOut(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
@@ -240,74 +241,62 @@ static void Task_DiplomaFadeOut(u8 taskId)
 static void DisplayListText(void)
 {
     u8 xOffset = 3;
-    u8 yOffset = 63;
+    u8 yOffset = 39;
     u8 color[3] = {0, 10, 3};
     u16 currentMon = sPokedexView->selectedPokemon;
     u8 i;
 
-    for(i = 1; i < 10; i++){
+    for(i = 1; i < 8; i++){
         switch (i)
         {
         case 1:
-            ConvertIntToDecimalStringN(gStringVar1, (currentMon-4+i), STR_CONV_MODE_LEADING_ZEROS, 4);
-            StringExpandPlaceholders(gStringVar2, GetSpeciesName(currentMon-4+i));
-            StringExpandPlaceholders(gStringVar4, sText_PokedexListItem);
-            AddTextPrinterParameterized4(0, FONT_SMALL_NARROWER, xOffset+6, yOffset - 42, 0, 0, color, TEXT_SKIP_DRAW, gStringVar4);
-            break;
-        case 2:
-            ConvertIntToDecimalStringN(gStringVar1, (currentMon-4+i), STR_CONV_MODE_LEADING_ZEROS, 4);
-            StringExpandPlaceholders(gStringVar2, GetSpeciesName(currentMon-4+i));
+            ConvertIntToDecimalStringN(gStringVar1, (currentMon-3+i), STR_CONV_MODE_LEADING_ZEROS, 4);
+            StringExpandPlaceholders(gStringVar2, GetSpeciesName(currentMon-3+i));
             StringExpandPlaceholders(gStringVar4, sText_PokedexListItem);
             AddTextPrinterParameterized4(0, FONT_SMALL_NARROWER, xOffset+6, yOffset - 32, 0, 0, color, TEXT_SKIP_DRAW, gStringVar4);
             break;
-        case 3:
-            ConvertIntToDecimalStringN(gStringVar1, (currentMon-4+i), STR_CONV_MODE_LEADING_ZEROS, 4);
-            StringExpandPlaceholders(gStringVar2, GetSpeciesName(currentMon-4+i));
+        case 2:
+            ConvertIntToDecimalStringN(gStringVar1, (currentMon-3+i), STR_CONV_MODE_LEADING_ZEROS, 4);
+            StringExpandPlaceholders(gStringVar2, GetSpeciesName(currentMon-3+i));
             StringExpandPlaceholders(gStringVar4, sText_PokedexListItem);
             AddTextPrinterParameterized4(0, FONT_SMALL_NARROWER, xOffset+6, yOffset - 22, 0, 0, color, TEXT_SKIP_DRAW, gStringVar4);
             break;
-        case 4:
-            ConvertIntToDecimalStringN(gStringVar1, (currentMon-4+i), STR_CONV_MODE_LEADING_ZEROS, 4);
-            StringExpandPlaceholders(gStringVar2, GetSpeciesName(currentMon-4+i));
+        case 3:
+            ConvertIntToDecimalStringN(gStringVar1, (currentMon-3+i), STR_CONV_MODE_LEADING_ZEROS, 4);
+            StringExpandPlaceholders(gStringVar2, GetSpeciesName(currentMon-3+i));
             StringExpandPlaceholders(gStringVar4, sText_PokedexListItem);
             AddTextPrinterParameterized4(0, FONT_SMALL_NARROW, xOffset, yOffset - 12, 0, 0, color, TEXT_SKIP_DRAW, gStringVar4);
             break;
-        case 5:
-            ConvertIntToDecimalStringN(gStringVar1, (currentMon-4+i), STR_CONV_MODE_LEADING_ZEROS, 4);
-            StringExpandPlaceholders(gStringVar2, GetSpeciesName(currentMon-4+i));
+        case 4:
+            ConvertIntToDecimalStringN(gStringVar1, (currentMon-3+i), STR_CONV_MODE_LEADING_ZEROS, 4);
+            StringExpandPlaceholders(gStringVar2, GetSpeciesName(currentMon-3+i));
             StringExpandPlaceholders(gStringVar4, sText_PokedexListItem);
             AddTextPrinterParameterized4(0, FONT_NARROW, xOffset, yOffset, 0, 0, color, TEXT_SKIP_DRAW, gStringVar4);
             break;
-        case 6:
-            ConvertIntToDecimalStringN(gStringVar1, (currentMon-4+i), STR_CONV_MODE_LEADING_ZEROS, 4);
-            StringExpandPlaceholders(gStringVar2, GetSpeciesName(currentMon-4+i));
+        case 5:
+            ConvertIntToDecimalStringN(gStringVar1, (currentMon-3+i), STR_CONV_MODE_LEADING_ZEROS, 4);
+            StringExpandPlaceholders(gStringVar2, GetSpeciesName(currentMon-3+i));
             StringExpandPlaceholders(gStringVar4, sText_PokedexListItem);
             AddTextPrinterParameterized4(0, FONT_SMALL_NARROW, xOffset, yOffset + 12, 0, 0, color, TEXT_SKIP_DRAW, gStringVar4);
             break;
-        case 7:
-            ConvertIntToDecimalStringN(gStringVar1, (currentMon-4+i), STR_CONV_MODE_LEADING_ZEROS, 4);
-            StringExpandPlaceholders(gStringVar2, GetSpeciesName(currentMon-4+i));
+        case 6:
+            ConvertIntToDecimalStringN(gStringVar1, (currentMon-3+i), STR_CONV_MODE_LEADING_ZEROS, 4);
+            StringExpandPlaceholders(gStringVar2, GetSpeciesName(currentMon-3+i));
             StringExpandPlaceholders(gStringVar4, sText_PokedexListItem);
             AddTextPrinterParameterized4(0, FONT_SMALL_NARROWER, xOffset+6, yOffset + 22, 0, 0, color, TEXT_SKIP_DRAW, gStringVar4);
             break;
-        case 8:
-            ConvertIntToDecimalStringN(gStringVar1, (currentMon-4+i), STR_CONV_MODE_LEADING_ZEROS, 4);
-            StringExpandPlaceholders(gStringVar2, GetSpeciesName(currentMon-4+i));
+        case 7:
+            ConvertIntToDecimalStringN(gStringVar1, (currentMon-3+i), STR_CONV_MODE_LEADING_ZEROS, 4);
+            StringExpandPlaceholders(gStringVar2, GetSpeciesName(currentMon-3+i));
             StringExpandPlaceholders(gStringVar4, sText_PokedexListItem);
             AddTextPrinterParameterized4(0, FONT_SMALL_NARROWER, xOffset+6, yOffset + 32, 0, 0, color, TEXT_SKIP_DRAW, gStringVar4);
-            break;
-        case 9:
-            ConvertIntToDecimalStringN(gStringVar1, (currentMon-4+i), STR_CONV_MODE_LEADING_ZEROS, 4);
-            StringExpandPlaceholders(gStringVar2, GetSpeciesName(currentMon-4+i));
-            StringExpandPlaceholders(gStringVar4, sText_PokedexListItem);
-            AddTextPrinterParameterized4(0, FONT_SMALL_NARROWER, xOffset+6, yOffset + 42, 0, 0, color, TEXT_SKIP_DRAW, gStringVar4);
             break;
         default:
             break;
         }
-        PutWindowTilemap(0);
-        CopyWindowToVram(0, COPYWIN_FULL);
     }
+    PutWindowTilemap(0);
+    CopyWindowToVram(0, COPYWIN_FULL);
 }
 
 static void DisplayCurrentPokemonPicture(void)
@@ -315,8 +304,7 @@ static void DisplayCurrentPokemonPicture(void)
     u8 xPos = 160;
     u8 yPos = 65;
     u16 currentMon = sPokedexView->selectedPokemon + 1;
-
-    //sPokedexView->monSpriteIds[0] = CreateMonIcon(currentMon + 1, SpriteCB_MonIcon, xPos, yPos, 4, 0);
+    
     FreeAndDestroyMonPicSprite(sPokedexView->monSpriteIds[0]);
     sPokedexView->monSpriteIds[0] = CreateMonSpriteFromNationalDexNumber(currentMon, xPos, yPos, 0);
     gSprites[sPokedexView->monSpriteIds[0]].oam.priority = 3;
@@ -329,13 +317,12 @@ static void DisplayCurrentPokemonCategoryTypeText(void){
     u16 currentMon = sPokedexView->selectedPokemon + 1;
 
     StringCopy(gStringVar3, GetSpeciesCategory(currentMon));
-    //StringExpandPlaceholders(gStringVar3, GetSpeciesName(currentMon));
     AddTextPrinterParameterized4(1, FONT_NORMAL, xOffset, yOffset, 0, 0, color, TEXT_SKIP_DRAW, gStringVar3);
     PutWindowTilemap(1);
     CopyWindowToVram(1, COPYWIN_FULL);
 }
 
-static const struct BgTemplate sDiplomaBgTemplates[4] =
+static const struct BgTemplate sResearchPokedexBgTemplates[4] =
 {
     {
         .bg = BG_PAGE_CONTENT,
@@ -378,7 +365,7 @@ static const struct BgTemplate sDiplomaBgTemplates[4] =
 static void InitResearchPokedexBg(void)
 {
     ResetBgsAndClearDma3BusyFlags(0);
-    InitBgsFromTemplates(0, sDiplomaBgTemplates, ARRAY_COUNT(sDiplomaBgTemplates));
+    InitBgsFromTemplates(0, sResearchPokedexBgTemplates, ARRAY_COUNT(sResearchPokedexBgTemplates));
     SetBgTilemapBuffer(BG_BOOK_PAGES, sResearchPokedexListTilemapPtr);
     SetBgTilemapBuffer(BG_BOOK_COVER, sResearchPokedexBackgroundTilemapPtr);
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
@@ -391,12 +378,12 @@ static void InitResearchPokedexBg(void)
     SetGpuReg(REG_OFFSET_BLDY, 0);
 }
 
-static const struct WindowTemplate sDiplomaWinTemplates[3] =
+static const struct WindowTemplate sResearchPokedexWinTemplates[3] =
 {
     {
         .bg = BG_SCROLLING_LIST,
         .tilemapLeft = 2,
-        .tilemapTop = 3,
+        .tilemapTop = 6,
         .width = 14,
         .height = 18,
         .paletteNum = 15,
@@ -416,7 +403,7 @@ static const struct WindowTemplate sDiplomaWinTemplates[3] =
 
 static void InitResearchPokedexWindow(void)
 {
-    InitWindows(sDiplomaWinTemplates);
+    InitWindows(sResearchPokedexWinTemplates);
     DeactivateAllTextPrinters();
     LoadPalette(gStandardMenuPalette, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
     FillWindowPixelBuffer(0, PIXEL_FILL(0));
