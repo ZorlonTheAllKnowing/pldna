@@ -116,6 +116,16 @@ enum
     NAME_YZ,
 };
 
+enum {
+    UNSEEN,
+    SEEN,
+    NOTED,
+    OBSERVED,
+    STUDIED,
+    UNDERSTOOD,
+    MASTERED,
+};
+
 extern const u16 gPokedexOrder_Alphabetical[];
 extern const u16 gPokedexOrder_Height[];
 extern const u16 gPokedexOrder_Weight[];

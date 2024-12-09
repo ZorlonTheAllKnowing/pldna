@@ -30,6 +30,9 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 
+//I THINK this is almost entirely unused with the HGSS flag turned on.
+//For now, I'll try to ignore it.
+
 enum
 {
     PAGE_MAIN,
@@ -99,6 +102,16 @@ enum {
     WIN_FOOTPRINT,
     WIN_CRY_WAVE,
     WIN_VU_METER,
+};
+
+enum {
+    UNSEEN,
+    SEEN,
+    NOTED,
+    OBSERVED,
+    STUDIED,
+    UNDERSTOOD,
+    MASTERED,
 };
 
 // For scrolling search parameter

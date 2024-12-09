@@ -27,9 +27,9 @@ giveBulbasaur::
 # 18 "data/maps/aStupidCity/scripts.pory"
 	givemon SPECIES_BULBASAUR, 10, ITEM_POKE_BALL
 # 19 "data/maps/aStupidCity/scripts.pory"
-	givemon SPECIES_SQUIRTLE, 10, ITEM_POKE_BALL
+	givemon SPECIES_IVYSAUR, 10, ITEM_POKE_BALL
 # 20 "data/maps/aStupidCity/scripts.pory"
-	givemon SPECIES_PECHARUNT, 10, ITEM_POKE_BALL
+	givemon SPECIES_VENUSAUR, 10, ITEM_POKE_BALL
 # 21 "data/maps/aStupidCity/scripts.pory"
 	setflag FLAG_SYS_POKEDEX_GET
 # 22 "data/maps/aStupidCity/scripts.pory"

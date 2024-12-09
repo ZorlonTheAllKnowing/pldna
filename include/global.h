@@ -978,14 +978,14 @@ struct ExternalEventFlags
 
 struct SaveBlock1
 {
-    /*0x00*/ struct Coords16 pos;
-    /*0x04*/ struct WarpData location;
+    /*0x00*/ struct Coords16 pos; //Current X,Y position on unnamed map
+    /*0x04*/ struct WarpData location; //Current map
     /*0x0C*/ struct WarpData continueGameWarp;
     /*0x14*/ struct WarpData dynamicWarp;
     /*0x1C*/ struct WarpData lastHealLocation; // used by white-out and teleport
     /*0x24*/ struct WarpData escapeWarp; // used by Dig and Escape Rope
-    /*0x2C*/ u16 savedMusic;
-    /*0x2E*/ u8 weather;
+    /*0x2C*/ u16 savedMusic; //current track playing
+    /*0x2E*/ u8 weather; //current weather
     /*0x2F*/ u8 weatherCycleStage;
     /*0x30*/ u8 flashLevel;
     /*0x31*/ //u8 padding1;
@@ -993,17 +993,17 @@ struct SaveBlock1
     /*0x34*/ u16 mapView[0x100];
     /*0x234*/ u8 playerPartyCount;
     /*0x235*/ //u8 padding2[3];
-    /*0x238*/ struct Pokemon playerParty[PARTY_SIZE];
-    /*0x490*/ u32 money;
-    /*0x494*/ u16 coins;
+    /*0x238*/ struct Pokemon playerParty[PARTY_SIZE]; //Current 6 pokemon in party
+    /*0x490*/ u32 money; //Current amount of money
+    /*0x494*/ u16 coins; //Current amount of Coins
     /*0x496*/ u16 registeredItem; // registered for use with SELECT button
-    /*0x498*/ struct ItemSlot pcItems[PC_ITEMS_COUNT];
-    /*0x560*/ struct ItemSlot bagPocket_Items[BAG_ITEMS_COUNT];
-    /*0x5D8*/ struct ItemSlot bagPocket_KeyItems[BAG_KEYITEMS_COUNT];
-    /*0x650*/ struct ItemSlot bagPocket_PokeBalls[BAG_POKEBALLS_COUNT];
-    /*0x690*/ struct ItemSlot bagPocket_TMHM[BAG_TMHM_COUNT];
-    /*0x790*/ struct ItemSlot bagPocket_Berries[BAG_BERRIES_COUNT];
-    /*0x848*/ struct Pokeblock pokeblocks[POKEBLOCKS_COUNT];
+    /*0x498*/ struct ItemSlot pcItems[PC_ITEMS_COUNT]; //All the items in the PC
+    /*0x560*/ struct ItemSlot bagPocket_Items[BAG_ITEMS_COUNT]; //All the items in the main bag pocket
+    /*0x5D8*/ struct ItemSlot bagPocket_KeyItems[BAG_KEYITEMS_COUNT]; //All the key items in main bag pocket
+    /*0x650*/ struct ItemSlot bagPocket_PokeBalls[BAG_POKEBALLS_COUNT]; //All the balls in ball pocket
+    /*0x690*/ struct ItemSlot bagPocket_TMHM[BAG_TMHM_COUNT]; //All the TMs/HMs in TM/HM pocket
+    /*0x790*/ struct ItemSlot bagPocket_Berries[BAG_BERRIES_COUNT]; //All berries in berry pocket
+    /*0x848*/ struct Pokeblock pokeblocks[POKEBLOCKS_COUNT]; //All pokeblocks in pokeblock storage thing
 #if FREE_EXTRA_SEEN_FLAGS_SAVEBLOCK1 == FALSE
     /*0x988*/ u8 filler1[0x34]; // Previously Dex Flags, feel free to remove.
 #endif //FREE_EXTRA_SEEN_FLAGS_SAVEBLOCK1
