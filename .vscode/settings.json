@@ -17,6 +17,8 @@
         "decompress.h": "c",
         "main.h": "c",
         "global.h": "c",
-        "contest_painting.h": "c"
+        "contest_painting.h": "c",
+        "image_processing_effects.h": "c",
+        "macro.h": "c"
     }
 }

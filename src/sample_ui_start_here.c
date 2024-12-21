@@ -127,7 +127,7 @@
  * Various state for the UI -- we'll allocate this on the heap since none of it needs to be preserved after we exit the
  * menu.
  */
-struct SampleUiState
+struct ResearchPokedexState
 {
     // Save the callback to run when we exit: i.e. where do we want to go after closing the menu
     MainCallback savedCallback;
@@ -154,7 +154,7 @@ enum WindowIds
  * worth noting that every time the game re-loads into the overworld, the heap gets nuked from orbit. However, it is
  * still good practice to clean up after oneself, so we will be sure to free everything before exiting.
  */
-static EWRAM_DATA struct SampleUiState *sSampleUiState = NULL;
+static EWRAM_DATA struct ResearchPokedexState *sSampleUiState = NULL;
 static EWRAM_DATA u8 *sBg1TilemapBuffer = NULL;
 
 /*
@@ -412,7 +412,7 @@ void Task_OpenSampleUi_StartHere(u8 taskId)
 
 void SampleUi_Init(MainCallback callback)
 {
-    sSampleUiState = AllocZeroed(sizeof(struct SampleUiState));
+    sSampleUiState = AllocZeroed(sizeof(struct ResearchPokedexState));
     if (sSampleUiState == NULL)
     {
         /*
