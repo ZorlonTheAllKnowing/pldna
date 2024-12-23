@@ -1497,7 +1497,7 @@ void AppendToList(u8 *list, u8 *pos, u8 newEntry)
 static bool8 StartMenuSampleUiCallback(void)
 {
     // Change which version of the UI is launched by changing which task is called from here
-    CreateTask(Task_StartResearchPokedexFromOverworld, 0);
+    CreateTask(Task_StartResearchPokedex_FromOverworldMenu, 0);
     //SetMainCallback2(CB2_OpenPokedex);
     return TRUE;
 }
