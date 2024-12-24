@@ -10,13 +10,18 @@ enum PokedexPages
 {
     LIST_PAGE,
     INFO_PAGE,
+    STAT_PAGE,
+    AREA_PAGE,
+    TASK_PAGE,
+    FORM_PAGE,
+    MOVE_PAGE,
 };
 
 enum{
-    BG_PAGE_CONTENT,
-    BG_BOOK_PAGES,
-    BG_SCROLLING_LIST,
-    BG_BOOK_COVER,
+    LIST_PAGE_BG0,
+    LIST_PAGE_BG1,
+    LIST_PAGE_BG2,
+    LIST_PAGE_BG3,
 };
 
 #endif // GUARD_DIPLOMA_H
