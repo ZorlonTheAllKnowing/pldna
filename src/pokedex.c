@@ -875,7 +875,7 @@ static const struct WindowTemplate sPokemonList_WindowTemplate[] =
 static const u8 sText_No0000[] = _("{NO}0000");
 static const u8 sText_No000[] = _("{NO}000");
 static const u8 sCaughtBall_Gfx[] = INCBIN_U8("graphics/pokedex/caught_ball.4bpp");
-static const u8 sText_TenDashes[] = _("----------");
+static const u8 sText_SingleSpace[] = _("----------");
 
 ALIGNED(4) static const u8 sExpandedPlaceholder_PokedexDescription[] = _("");
 
@@ -2488,7 +2488,7 @@ static u8 CreateMonName(u16 num, u8 left, u8 top)
     if (num)
         str = GetSpeciesName(num);
     else
-        str = sText_TenDashes;
+        str = sText_SingleSpace;
     PrintMonName(0, FONT_NARROW, str, left, top);
     return StringLength(str);
 }

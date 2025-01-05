@@ -20,6 +20,8 @@
 #include "international_string_util.h"
 #include "image_processing_effects.h"
 #include "menu_helpers.h"
+#include "graphics.h"
+#include "pokemon_summary_screen.h"
 
 // General functions
 void Task_StartResearchPokedex_FromOverworldMenu(u8);
@@ -41,7 +43,13 @@ static void Task_ListPageWaitFadeIn(u8);
 static void DisplayMagnifierListText(void);
 static void DisplayMagnifierLineItemText(u16, u8, u8, u8);
 static void DisplayCurrentPokemonPicture(void);
+static void GetCurrentPokemonBackground(void);
 static void DisplayCurrentPokemonCategoryTypeText(void);
+static void DisplayCaughtMasteredPokemonCount(void);
+static void DisplayListPageResearchLevel(void);
+static void DisplayCurrentPokemonType(void);
+u16 getTypePalette(u8 type);
+static void UpdateListDisplay(void);
 static void Task_ListPageInput(u8);
 
 // Info Pages
@@ -52,6 +60,7 @@ static bool8 InfoPage_InitBgs(void);
 static bool8 InfoPage_LoadGraphics(void);
 static void InfoPage_InitWindows(void);
 static void Task_InfoPageWaitFadeIn(u8);
+static void DisplayCurrentPokemonWeight(void);
 static void Task_InfoPageInput(u8);
 
 // Stat Pages
@@ -104,6 +113,10 @@ static void MovePage_InitWindows(void);
 static void Task_MovePageWaitFadeIn(u8);
 static void Task_MovePageInput(u8);
 
+// Getters and Setters
+u16 GetResearchDexSeenCount(void);
+u16 GetResearchDexMasteredCount(void);
+
 static EWRAM_DATA struct ResearchPokedexState *sResearchPokedexState = NULL;
 static EWRAM_DATA u8 *sBg0TilemapBuffer = NULL;
 static EWRAM_DATA u8 *sBg1TilemapBuffer = NULL;
@@ -111,13 +124,15 @@ static EWRAM_DATA u8 *sBg2TilemapBuffer = NULL;
 static EWRAM_DATA u8 *sBg3TilemapBuffer = NULL;
 
 static const u8 sText_PokedexListItem[] = _("Pg {STR_VAR_1}-{STR_VAR_2}");
+static const u8 sText_SingleSpace[] = _(" ");
 static const u8 sText_TenDashes[] = _("----------");
+static const u8 sText_ResearchLevelText[] = _("Research Level: {STR_VAR_1}");
 
 struct PokedexListItem
 {
     u16 dexNum;
     u16 seen:1;
-    u8 reserchLevel;
+    u8 researchLevel;
 };
 
 // This is the object that is keeping track of whatever state the pokedex is in.
@@ -125,13 +140,16 @@ struct PokedexListItem
 // what callback to use in case of an error.
 struct ResearchPokedexState
 {
-    struct PokedexListItem pokedexList[1000];
+    struct PokedexListItem pokedexList[HIGHEST_MON_NUMBER];
     MainCallback savedCallback;
     u8 loadState;
     u8 mode;
     u8 monSpriteId;
     u16 selectedPokemon;
+    u16 caughtCount;
     u8 currentPage;
+    u8 typeIcon1;
+    u8 typeIcon2;
 };
 
 //MARK:GENERAL FUNCTIONS
@@ -149,9 +167,25 @@ void Task_StartResearchPokedex_FromOverworldMenu(u8 taskId)
     sResearchPokedexState->pokedexList[2].seen = TRUE;
     sResearchPokedexState->pokedexList[3].seen = TRUE;
     sResearchPokedexState->pokedexList[4].seen = TRUE;
+    sResearchPokedexState->pokedexList[5].seen = TRUE;
+    sResearchPokedexState->pokedexList[6].seen = TRUE;
     sResearchPokedexState->pokedexList[7].seen = TRUE;
+    sResearchPokedexState->pokedexList[8].seen = TRUE;
+    sResearchPokedexState->pokedexList[9].seen = TRUE;
+
+    sResearchPokedexState->pokedexList[1].researchLevel = 1;
+    sResearchPokedexState->pokedexList[2].researchLevel = 2;
+    sResearchPokedexState->pokedexList[3].researchLevel = 3;
+    sResearchPokedexState->pokedexList[4].researchLevel = 4;
+    sResearchPokedexState->pokedexList[5].researchLevel = 5;
+    sResearchPokedexState->pokedexList[6].researchLevel = 6;
+    sResearchPokedexState->pokedexList[7].researchLevel = 7;
+    sResearchPokedexState->pokedexList[8].researchLevel = 8;
+    sResearchPokedexState->pokedexList[9].researchLevel = 9;
     //End debugging
     sResearchPokedexState->selectedPokemon = 0;
+    sResearchPokedexState->typeIcon1 = 0xFF;
+    sResearchPokedexState->typeIcon2 = 0xFF;
     gTasks[taskId].func = Task_StartListPage;
 }
 
@@ -213,18 +247,980 @@ static void Task_ResearchPokedexFadeOut(u8 taskId)
     }
 }
 
-//MARK:GRAPHICS STUFF
+//MARK:General Use Graphics
 
+// Palette Slots
+// 0-2: Type Icons
+// 14: Pokemon Sprites
+// 15: General Text
+//
+//
+//
+//
+//
+//
+//
 
-// Graphics data for List Pages
-static const u16 sListBackgroundPalette[] = INCBIN_U16("graphics/pokedex/researchdex/list_background.gbapal");
-static const u16 sListPagesPalette[] = INCBIN_U16("graphics/pokedex/researchdex/list_pages.gbapal");
-static const u32 sListBackgroundTilemap[] = INCBIN_U32("graphics/pokedex/researchdex/list_background_tiles.bin.lz");
-static const u32 sListPagesTilemap[] = INCBIN_U32("graphics/pokedex/researchdex/list_pages_tiles.bin.lz");
-static const u32 sListBackgroundTiles[] = INCBIN_U32("graphics/pokedex/researchdex/list_background_tiles.4bpp.lz");
-static const u32 sListPagesTiles[] = INCBIN_U32("graphics/pokedex/researchdex/list_pages_tiles.4bpp.lz");
+//MARK:Type Icons
 
-// List Page Background Template
+static const u32 gNormalTypeIcon0[]     = INCBIN_U32("graphics/types/type_icons/normal_research_icon_full.4bpp");
+static const u32 gNormalTypeIcon1[]     = INCBIN_U32("graphics/types/type_icons/normal_research_icon1.4bpp");
+static const u32 gNormalTypeIcon2[]     = INCBIN_U32("graphics/types/type_icons/normal_research_icon2.4bpp");
+
+static const u32 gFightTypeIcon0[]      = INCBIN_U32("graphics/types/type_icons/fight_research_icon_full.4bpp");
+static const u32 gFightTypeIcon1[]      = INCBIN_U32("graphics/types/type_icons/fight_research_icon1.4bpp");
+static const u32 gFightTypeIcon2[]      = INCBIN_U32("graphics/types/type_icons/fight_research_icon2.4bpp");
+
+static const u32 gFlyingTypeIcon0[]     = INCBIN_U32("graphics/types/type_icons/flying_research_icon_full.4bpp");
+static const u32 gFlyingTypeIcon1[]     = INCBIN_U32("graphics/types/type_icons/flying_research_icon1.4bpp");
+static const u32 gFlyingTypeIcon2[]     = INCBIN_U32("graphics/types/type_icons/flying_research_icon2.4bpp");
+
+static const u32 gPoisonTypeIcon0[]     = INCBIN_U32("graphics/types/type_icons/poison_research_icon_full.4bpp");
+static const u32 gPoisonTypeIcon1[]     = INCBIN_U32("graphics/types/type_icons/poison_research_icon1.4bpp");
+static const u32 gPoisonTypeIcon2[]     = INCBIN_U32("graphics/types/type_icons/poison_research_icon2.4bpp");
+
+static const u32 gGroundTypeIcon0[]     = INCBIN_U32("graphics/types/type_icons/ground_research_icon_full.4bpp");
+static const u32 gGroundTypeIcon1[]     = INCBIN_U32("graphics/types/type_icons/ground_research_icon1.4bpp");
+static const u32 gGroundTypeIcon2[]     = INCBIN_U32("graphics/types/type_icons/ground_research_icon2.4bpp");
+
+static const u32 gRockTypeIcon0[]       = INCBIN_U32("graphics/types/type_icons/rock_research_icon_full.4bpp");
+static const u32 gRockTypeIcon1[]       = INCBIN_U32("graphics/types/type_icons/rock_research_icon1.4bpp");
+static const u32 gRockTypeIcon2[]       = INCBIN_U32("graphics/types/type_icons/rock_research_icon2.4bpp");
+
+static const u32 gBugTypeIcon0[]   = INCBIN_U32("graphics/types/type_icons/bug_research_icon_full.4bpp");
+static const u32 gBugTypeIcon1[]   = INCBIN_U32("graphics/types/type_icons/bug_research_icon1.4bpp");
+static const u32 gBugTypeIcon2[]   = INCBIN_U32("graphics/types/type_icons/bug_research_icon2.4bpp");
+
+static const u32 gGhostTypeIcon0[]      = INCBIN_U32("graphics/types/type_icons/ghost_research_icon_full.4bpp");
+static const u32 gGhostTypeIcon1[]      = INCBIN_U32("graphics/types/type_icons/ghost_research_icon1.4bpp");
+static const u32 gGhostTypeIcon2[]      = INCBIN_U32("graphics/types/type_icons/ghost_research_icon2.4bpp");
+
+static const u32 gSteelTypeIcon0[]      = INCBIN_U32("graphics/types/type_icons/steel_research_icon_full.4bpp");
+static const u32 gSteelTypeIcon1[]      = INCBIN_U32("graphics/types/type_icons/steel_research_icon1.4bpp");
+static const u32 gSteelTypeIcon2[]      = INCBIN_U32("graphics/types/type_icons/steel_research_icon2.4bpp");
+
+static const u32 gUnknownTypeIcon0[]     = INCBIN_U32("graphics/types/type_icons/unknown_research_icon_full.4bpp");
+
+static const u32 gFireTypeIcon0[]       = INCBIN_U32("graphics/types/type_icons/fire_research_icon_full.4bpp");
+static const u32 gFireTypeIcon1[]       = INCBIN_U32("graphics/types/type_icons/fire_research_icon1.4bpp");
+static const u32 gFireTypeIcon2[]       = INCBIN_U32("graphics/types/type_icons/fire_research_icon2.4bpp");
+
+static const u32 gWaterTypeIcon0[]      = INCBIN_U32("graphics/types/type_icons/water_research_icon_full.4bpp");
+static const u32 gWaterTypeIcon1[]      = INCBIN_U32("graphics/types/type_icons/water_research_icon1.4bpp");
+static const u32 gWaterTypeIcon2[]      = INCBIN_U32("graphics/types/type_icons/water_research_icon2.4bpp");
+
+static const u32 gGrassTypeIcon0[]      = INCBIN_U32("graphics/types/type_icons/grass_research_icon_full.4bpp");
+static const u32 gGrassTypeIcon1[]      = INCBIN_U32("graphics/types/type_icons/grass_research_icon1.4bpp");
+static const u32 gGrassTypeIcon2[]      = INCBIN_U32("graphics/types/type_icons/grass_research_icon2.4bpp");
+
+static const u32 gElectricTypeIcon0[]   = INCBIN_U32("graphics/types/type_icons/electric_research_icon_full.4bpp");
+static const u32 gElectricTypeIcon1[]   = INCBIN_U32("graphics/types/type_icons/electric_research_icon1.4bpp");
+static const u32 gElectricTypeIcon2[]   = INCBIN_U32("graphics/types/type_icons/electric_research_icon2.4bpp");
+
+static const u32 gPsychicTypeIcon0[]    = INCBIN_U32("graphics/types/type_icons/psychic_research_icon_full.4bpp");
+static const u32 gPsychicTypeIcon1[]    = INCBIN_U32("graphics/types/type_icons/psychic_research_icon1.4bpp");
+static const u32 gPsychicTypeIcon2[]    = INCBIN_U32("graphics/types/type_icons/psychic_research_icon2.4bpp");
+
+static const u32 gIceTypeIcon0[]        = INCBIN_U32("graphics/types/type_icons/ice_research_icon_full.4bpp");
+static const u32 gIceTypeIcon1[]        = INCBIN_U32("graphics/types/type_icons/ice_research_icon1.4bpp");
+static const u32 gIceTypeIcon2[]        = INCBIN_U32("graphics/types/type_icons/ice_research_icon2.4bpp");
+
+static const u32 gDragonTypeIcon0[]     = INCBIN_U32("graphics/types/type_icons/dragon_research_icon_full.4bpp");
+static const u32 gDragonTypeIcon1[]     = INCBIN_U32("graphics/types/type_icons/dragon_research_icon1.4bpp");
+static const u32 gDragonTypeIcon2[]     = INCBIN_U32("graphics/types/type_icons/dragon_research_icon2.4bpp");
+
+static const u32 gDarkTypeIcon0[]       = INCBIN_U32("graphics/types/type_icons/dark_research_icon_full.4bpp");
+static const u32 gDarkTypeIcon1[]       = INCBIN_U32("graphics/types/type_icons/dark_research_icon1.4bpp");
+static const u32 gDarkTypeIcon2[]       = INCBIN_U32("graphics/types/type_icons/dark_research_icon2.4bpp");
+
+static const u32 gFairyTypeIcon0[]      = INCBIN_U32("graphics/types/type_icons/fairy_research_icon_full.4bpp");
+static const u32 gFairyTypeIcon1[]      = INCBIN_U32("graphics/types/type_icons/fairy_research_icon1.4bpp");
+static const u32 gFairyTypeIcon2[]      = INCBIN_U32("graphics/types/type_icons/fairy_research_icon2.4bpp");
+
+//Palettes
+#define PALETTE_TAG_TYPES0 0x1000   // This should make it so the palettes used for the type icons
+#define PALETTE_TAG_TYPES1 0x1001   // Are in palette slots 0, 1, and 2
+#define PALETTE_TAG_TYPES2 0x1002   
+
+static const u16 gTypePalette0[]        = INCBIN_U16("graphics/types/type_icons/typesPalette0.gbapal");
+static const u16 gTypePalette1[]        = INCBIN_U16("graphics/types/type_icons/typesPalette1.gbapal");
+static const u16 gTypePalette2[]        = INCBIN_U16("graphics/types/type_icons/typesPalette2.gbapal");
+
+//Palette for these types: Normal, Fighting, Ground, Rock, Steel, Fire, Electric, Dark,   
+static const struct SpritePalette gTypes0SpritePalette =
+{
+    .data = gTypePalette0,
+    .tag = PALETTE_TAG_TYPES0
+};
+//Palette for these types: Flying, Poison, Ghost, Water, Psychic, Ice, Fairy,
+static const struct SpritePalette gTypes1SpritePalette =
+{
+    .data = gTypePalette1,
+    .tag = PALETTE_TAG_TYPES1
+};
+//Palette for these types: Unknown, Bug, Mystery, Grass, Dragon, 
+static const struct SpritePalette gTypes2SpritePalette =
+{
+    .data = gTypePalette2,
+    .tag = PALETTE_TAG_TYPES2
+};
+
+//Anims
+#define DEFAULT_ANIM  0
+#define SELECTED_ANIM 0
+
+static const union AnimCmd gTypeIconDefaultAnim[] =
+{
+    ANIMCMD_FRAME(0, 30),
+    ANIMCMD_END
+};
+static const union AnimCmd *const gTypeIconAnims[] =
+{
+    [DEFAULT_ANIM] = gTypeIconDefaultAnim
+};
+
+//Sprite templates
+//Unknown
+static const struct OamData gTypeIcon0Oam =
+{
+    .y = 0,
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
+    .mosaic = FALSE,
+    .bpp = ST_OAM_4BPP,
+    .shape = SPRITE_SHAPE(32x16),
+    .x = 0,
+    .matrixNum = 0,
+    .size = SPRITE_SIZE(32x16),
+    .tileNum = 0,
+    .priority = 0,
+    .paletteNum = 0,
+    .affineParam = 0,
+};
+static const struct SpriteFrameImage gUnknownTypeIcon0Table[] =
+{
+    obj_frame_tiles(gUnknownTypeIcon0)
+};
+static const struct SpriteTemplate gUnknownTypeIcon0SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES2,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gUnknownTypeIcon0Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+//Normal
+static const struct SpriteFrameImage gNormalTypeIcon0Table[] =
+{
+    obj_frame_tiles(gNormalTypeIcon0)
+};
+static const struct SpriteTemplate gNormalTypeIcon0SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES0,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gNormalTypeIcon0Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gNormalTypeIcon1Table[] =
+{
+    obj_frame_tiles(gNormalTypeIcon1)
+};
+static const struct SpriteTemplate gNormalTypeIcon1SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES0,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gNormalTypeIcon1Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gNormalTypeIcon2Table[] =
+{
+    obj_frame_tiles(gNormalTypeIcon2)
+};
+static const struct SpriteTemplate gNormalTypeIcon2SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES0,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gNormalTypeIcon2Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+//Fighting
+static const struct SpriteFrameImage gFightTypeIcon0Table[] =
+{
+    obj_frame_tiles(gFightTypeIcon0)
+};
+static const struct SpriteTemplate gFightTypeIcon0SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES0,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gFightTypeIcon0Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gFightTypeIcon1Table[] =
+{
+    obj_frame_tiles(gFightTypeIcon1)
+};
+static const struct SpriteTemplate gFightTypeIcon1SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES0,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gFightTypeIcon1Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gFightTypeIcon2Table[] =
+{
+    obj_frame_tiles(gFightTypeIcon2)
+};
+static const struct SpriteTemplate gFightTypeIcon2SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES0,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gFightTypeIcon2Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+//Flying
+static const struct SpriteFrameImage gFlyingTypeIcon0Table[] =
+{
+    obj_frame_tiles(gFlyingTypeIcon0)
+};
+static const struct SpriteTemplate gFlyingTypeIcon0SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES1,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gFlyingTypeIcon0Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gFlyingTypeIcon1Table[] =
+{
+    obj_frame_tiles(gFlyingTypeIcon1)
+};
+static const struct SpriteTemplate gFlyingTypeIcon1SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES1,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gFlyingTypeIcon1Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gFlyingTypeIcon2Table[] =
+{
+    obj_frame_tiles(gFlyingTypeIcon2)
+};
+static const struct SpriteTemplate gFlyingTypeIcon2SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES1,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gFlyingTypeIcon2Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+//Poison
+static const struct SpriteFrameImage gPoisonTypeIcon0Table[] =
+{
+    obj_frame_tiles(gPoisonTypeIcon0)
+};
+static const struct SpriteTemplate gPoisonTypeIcon0SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES1,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gPoisonTypeIcon0Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gPoisonTypeIcon1Table[] =
+{
+    obj_frame_tiles(gPoisonTypeIcon1)
+};
+static const struct SpriteTemplate gPoisonTypeIcon1SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES1,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gPoisonTypeIcon1Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gPoisonTypeIcon2Table[] =
+{
+    obj_frame_tiles(gPoisonTypeIcon2)
+};
+static const struct SpriteTemplate gPoisonTypeIcon2SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES1,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gPoisonTypeIcon2Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+//Ground
+static const struct SpriteFrameImage gGroundTypeIcon0Table[] =
+{
+    obj_frame_tiles(gGroundTypeIcon0)
+};
+static const struct SpriteTemplate gGroundTypeIcon0SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES0,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gGroundTypeIcon0Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gGroundTypeIcon1Table[] =
+{
+    obj_frame_tiles(gGroundTypeIcon1)
+};
+static const struct SpriteTemplate gGroundTypeIcon1SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES0,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gGroundTypeIcon1Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gGroundTypeIcon2Table[] =
+{
+    obj_frame_tiles(gGroundTypeIcon2)
+};
+static const struct SpriteTemplate gGroundTypeIcon2SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES0,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gGroundTypeIcon2Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+//Rock
+static const struct SpriteFrameImage gRockTypeIcon0Table[] =
+{
+    obj_frame_tiles(gRockTypeIcon0)
+};
+static const struct SpriteTemplate gRockTypeIcon0SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES0,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gRockTypeIcon0Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gRockTypeIcon1Table[] =
+{
+    obj_frame_tiles(gRockTypeIcon1)
+};
+static const struct SpriteTemplate gRockTypeIcon1SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES0,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gRockTypeIcon1Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gRockTypeIcon2Table[] =
+{
+    obj_frame_tiles(gRockTypeIcon2)
+};
+static const struct SpriteTemplate gRockTypeIcon2SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES0,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gRockTypeIcon2Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+//Bug
+static const struct SpriteFrameImage gBugTypeIcon0Table[] =
+{
+    obj_frame_tiles(gBugTypeIcon0)
+};
+static const struct SpriteTemplate gBugTypeIcon0SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES2,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gBugTypeIcon0Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gBugTypeIcon1Table[] =
+{
+    obj_frame_tiles(gBugTypeIcon1)
+};
+static const struct SpriteTemplate gBugTypeIcon1SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES2,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gBugTypeIcon1Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gBugTypeIcon2Table[] =
+{
+    obj_frame_tiles(gBugTypeIcon2)
+};
+static const struct SpriteTemplate gBugTypeIcon2SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES2,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gBugTypeIcon2Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+//
+static const struct SpriteFrameImage gGhostTypeIcon0Table[] =
+{
+    obj_frame_tiles(gGhostTypeIcon0)
+};
+static const struct SpriteTemplate gGhostTypeIcon0SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES1,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gGhostTypeIcon0Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gGhostTypeIcon1Table[] =
+{
+    obj_frame_tiles(gGhostTypeIcon1)
+};
+static const struct SpriteTemplate gGhostTypeIcon1SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES1,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gGhostTypeIcon1Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gGhostTypeIcon2Table[] =
+{
+    obj_frame_tiles(gGhostTypeIcon2)
+};
+static const struct SpriteTemplate gGhostTypeIcon2SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES1,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gGhostTypeIcon2Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+//Steel
+static const struct SpriteFrameImage gSteelTypeIcon0Table[] =
+{
+    obj_frame_tiles(gSteelTypeIcon0)
+};
+static const struct SpriteTemplate gSteelTypeIcon0SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES0,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gSteelTypeIcon0Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gSteelTypeIcon1Table[] =
+{
+    obj_frame_tiles(gSteelTypeIcon1)
+};
+static const struct SpriteTemplate gSteelTypeIcon1SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES0,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gSteelTypeIcon1Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gSteelTypeIcon2Table[] =
+{
+    obj_frame_tiles(gSteelTypeIcon2)
+};
+static const struct SpriteTemplate gSteelTypeIcon2SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES0,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gSteelTypeIcon2Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+//Fire
+static const struct SpriteFrameImage gFireTypeIcon0Table[] =
+{
+    obj_frame_tiles(gFireTypeIcon0)
+};
+static const struct SpriteTemplate gFireTypeIcon0SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES0,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gFireTypeIcon0Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gFireTypeIcon1Table[] =
+{
+    obj_frame_tiles(gFireTypeIcon1)
+};
+static const struct SpriteTemplate gFireTypeIcon1SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES0,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gFireTypeIcon1Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gFireTypeIcon2Table[] =
+{
+    obj_frame_tiles(gFireTypeIcon2)
+};
+static const struct SpriteTemplate gFireTypeIcon2SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES0,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gFireTypeIcon2Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+//Water
+static const struct SpriteFrameImage gWaterTypeIcon0Table[] =
+{
+    obj_frame_tiles(gWaterTypeIcon0)
+};
+static const struct SpriteTemplate gWaterTypeIcon0SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES1,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gWaterTypeIcon0Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gWaterTypeIcon1Table[] =
+{
+    obj_frame_tiles(gWaterTypeIcon1)
+};
+static const struct SpriteTemplate gWaterTypeIcon1SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES1,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gWaterTypeIcon1Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gWaterTypeIcon2Table[] =
+{
+    obj_frame_tiles(gWaterTypeIcon2)
+};
+static const struct SpriteTemplate gWaterTypeIcon2SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES1,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gWaterTypeIcon2Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+//Grass
+static const struct SpriteFrameImage gGrassTypeIcon0Table[] =
+{
+    obj_frame_tiles(gGrassTypeIcon0)
+};
+static const struct SpriteTemplate gGrassTypeIcon0SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES2,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gGrassTypeIcon0Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gGrassTypeIcon1Table[] =
+{
+    obj_frame_tiles(gGrassTypeIcon1)
+};
+static const struct SpriteTemplate gGrassTypeIcon1SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES2,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gGrassTypeIcon1Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gGrassTypeIcon2Table[] =
+{
+    obj_frame_tiles(gGrassTypeIcon2)
+};
+static const struct SpriteTemplate gGrassTypeIcon2SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES2,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gGrassTypeIcon2Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+//Electric
+static const struct SpriteFrameImage gElectricTypeIcon0Table[] =
+{
+    obj_frame_tiles(gElectricTypeIcon0)
+};
+static const struct SpriteTemplate gElectricTypeIcon0SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES0,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gElectricTypeIcon0Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gElectricTypeIcon1Table[] =
+{
+    obj_frame_tiles(gElectricTypeIcon1)
+};
+static const struct SpriteTemplate gElectricTypeIcon1SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES0,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gElectricTypeIcon1Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gElectricTypeIcon2Table[] =
+{
+    obj_frame_tiles(gElectricTypeIcon2)
+};
+static const struct SpriteTemplate gElectricTypeIcon2SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES0,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gElectricTypeIcon2Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+//Psychic
+static const struct SpriteFrameImage gPsychicTypeIcon0Table[] =
+{
+    obj_frame_tiles(gPsychicTypeIcon0)
+};
+static const struct SpriteTemplate gPsychicTypeIcon0SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES1,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gPsychicTypeIcon0Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gPsychicTypeIcon1Table[] =
+{
+    obj_frame_tiles(gPsychicTypeIcon1)
+};
+static const struct SpriteTemplate gPsychicTypeIcon1SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES1,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gPsychicTypeIcon1Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gPsychicTypeIcon2Table[] =
+{
+    obj_frame_tiles(gPsychicTypeIcon2)
+};
+static const struct SpriteTemplate gPsychicTypeIcon2SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES1,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gPsychicTypeIcon2Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+//Ice
+static const struct SpriteFrameImage gIceTypeIcon0Table[] =
+{
+    obj_frame_tiles(gIceTypeIcon0)
+};
+static const struct SpriteTemplate gIceTypeIcon0SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES1,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gIceTypeIcon0Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gIceTypeIcon1Table[] =
+{
+    obj_frame_tiles(gIceTypeIcon1)
+};
+static const struct SpriteTemplate gIceTypeIcon1SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES1,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gIceTypeIcon1Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gIceTypeIcon2Table[] =
+{
+    obj_frame_tiles(gIceTypeIcon2)
+};
+static const struct SpriteTemplate gIceTypeIcon2SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES1,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gIceTypeIcon2Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+//Dragon
+static const struct SpriteFrameImage gDragonTypeIcon0Table[] =
+{
+    obj_frame_tiles(gDragonTypeIcon0)
+};
+static const struct SpriteTemplate gDragonTypeIcon0SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES2,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gDragonTypeIcon0Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gDragonTypeIcon1Table[] =
+{
+    obj_frame_tiles(gDragonTypeIcon1)
+};
+static const struct SpriteTemplate gDragonTypeIcon1SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES2,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gDragonTypeIcon1Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gDragonTypeIcon2Table[] =
+{
+    obj_frame_tiles(gDragonTypeIcon2)
+};
+static const struct SpriteTemplate gDragonTypeIcon2SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES2,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gDragonTypeIcon2Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+//Dark
+static const struct SpriteFrameImage gDarkTypeIcon0Table[] =
+{
+    obj_frame_tiles(gDarkTypeIcon0)
+};
+static const struct SpriteTemplate gDarkTypeIcon0SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES0,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gDarkTypeIcon0Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gDarkTypeIcon1Table[] =
+{
+    obj_frame_tiles(gDarkTypeIcon1)
+};
+static const struct SpriteTemplate gDarkTypeIcon1SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES0,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gDarkTypeIcon1Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gDarkTypeIcon2Table[] =
+{
+    obj_frame_tiles(gDarkTypeIcon2)
+};
+static const struct SpriteTemplate gDarkTypeIcon2SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES0,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gDarkTypeIcon2Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+//Fairy
+static const struct SpriteFrameImage gFairyTypeIcon0Table[] =
+{
+    obj_frame_tiles(gFairyTypeIcon0)
+};
+static const struct SpriteTemplate gFairyTypeIcon0SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES1,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gFairyTypeIcon0Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gFairyTypeIcon1Table[] =
+{
+    obj_frame_tiles(gFairyTypeIcon1)
+};
+static const struct SpriteTemplate gFairyTypeIcon1SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES1,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gFairyTypeIcon1Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+static const struct SpriteFrameImage gFairyTypeIcon2Table[] =
+{
+    obj_frame_tiles(gFairyTypeIcon2)
+};
+static const struct SpriteTemplate gFairyTypeIcon2SpriteTemplate =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = PALETTE_TAG_TYPES1,
+    .oam = &gTypeIcon0Oam,
+    .anims = gTypeIconAnims,
+    .images = gFairyTypeIcon2Table,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy,
+};
+
+// Declare the array of pointers to arrays, with 20 types and 3 icons per type
+static const struct SpriteTemplate gTypeIconSpriteTemplates[][3] = {
+    { gUnknownTypeIcon0SpriteTemplate, gUnknownTypeIcon0SpriteTemplate, gUnknownTypeIcon0SpriteTemplate }, //None
+    { gNormalTypeIcon0SpriteTemplate, gNormalTypeIcon1SpriteTemplate, gNormalTypeIcon2SpriteTemplate },
+    { gFightTypeIcon0SpriteTemplate, gFightTypeIcon1SpriteTemplate, gFightTypeIcon2SpriteTemplate },
+    { gFlyingTypeIcon0SpriteTemplate, gFlyingTypeIcon1SpriteTemplate, gFlyingTypeIcon2SpriteTemplate },
+    { gPoisonTypeIcon0SpriteTemplate, gPoisonTypeIcon1SpriteTemplate, gPoisonTypeIcon2SpriteTemplate },
+    { gGroundTypeIcon0SpriteTemplate, gGroundTypeIcon1SpriteTemplate, gGroundTypeIcon2SpriteTemplate },
+    { gRockTypeIcon0SpriteTemplate, gRockTypeIcon1SpriteTemplate, gRockTypeIcon2SpriteTemplate },
+    { gBugTypeIcon0SpriteTemplate, gBugTypeIcon1SpriteTemplate, gBugTypeIcon2SpriteTemplate },
+    { gGhostTypeIcon0SpriteTemplate, gGhostTypeIcon1SpriteTemplate, gGhostTypeIcon2SpriteTemplate },
+    { gSteelTypeIcon0SpriteTemplate, gSteelTypeIcon1SpriteTemplate, gSteelTypeIcon2SpriteTemplate },
+    { gUnknownTypeIcon0SpriteTemplate, gUnknownTypeIcon0SpriteTemplate, gUnknownTypeIcon0SpriteTemplate }, //Mystery
+    { gFireTypeIcon0SpriteTemplate, gFireTypeIcon1SpriteTemplate, gFireTypeIcon2SpriteTemplate },
+    { gWaterTypeIcon0SpriteTemplate, gWaterTypeIcon1SpriteTemplate, gWaterTypeIcon2SpriteTemplate },
+    { gGrassTypeIcon0SpriteTemplate, gGrassTypeIcon1SpriteTemplate, gGrassTypeIcon2SpriteTemplate },
+    { gElectricTypeIcon0SpriteTemplate, gElectricTypeIcon1SpriteTemplate, gElectricTypeIcon2SpriteTemplate },
+    { gPsychicTypeIcon0SpriteTemplate, gPsychicTypeIcon1SpriteTemplate, gPsychicTypeIcon2SpriteTemplate },
+    { gIceTypeIcon0SpriteTemplate, gIceTypeIcon1SpriteTemplate, gIceTypeIcon2SpriteTemplate },
+    { gDragonTypeIcon0SpriteTemplate, gDragonTypeIcon1SpriteTemplate, gDragonTypeIcon2SpriteTemplate },
+    { gDarkTypeIcon0SpriteTemplate, gDarkTypeIcon1SpriteTemplate, gDarkTypeIcon2SpriteTemplate },
+    { gFairyTypeIcon0SpriteTemplate, gFairyTypeIcon1SpriteTemplate, gFairyTypeIcon2SpriteTemplate },
+    { gFlyingTypeIcon0SpriteTemplate, gFlyingTypeIcon1SpriteTemplate, gFlyingTypeIcon2SpriteTemplate },
+    { gUnknownTypeIcon0SpriteTemplate, gUnknownTypeIcon0SpriteTemplate, gUnknownTypeIcon0SpriteTemplate } //Stellar
+};
+
+//MARK:List Page Graphics
+static const u16 sListBackgroundPalette[]   = INCBIN_U16("graphics/pokedex/researchdex/list_background.gbapal");
+static const u16 sListPagesPalette[]        = INCBIN_U16("graphics/pokedex/researchdex/list_pages.gbapal");
+static const u32 sListBackgroundTilemap[]   = INCBIN_U32("graphics/pokedex/researchdex/list_background_tiles.bin.lz");
+static const u32 sListPagesTilemap[]        = INCBIN_U32("graphics/pokedex/researchdex/list_pages_tiles.bin.lz");
+static const u32 sListBackgroundTiles[]     = INCBIN_U32("graphics/pokedex/researchdex/list_background_tiles.4bpp.lz");
+static const u32 sListPagesTiles[]          = INCBIN_U32("graphics/pokedex/researchdex/list_pages_tiles.4bpp.lz");
+
+//MARK:List Page Backgrounds
 static const struct BgTemplate sListPageBgTemplates[4] =
 {
     {
@@ -265,9 +1261,16 @@ static const struct BgTemplate sListPageBgTemplates[4] =
     },
 };
 
-//List Page Window Template
-static const struct WindowTemplate sListPageWinTemplates[3] =
+//MARK:List Page Windows
+
+#define LISTPAGE_SCROLLING_TEXT 0
+#define LISTPAGE_CATEGORY_TYPE  1
+#define LISTPAGE_CAUGHT_COUNT  2
+#define LISTPAGE_RESEARCH_LEVEL 3
+
+static const struct WindowTemplate sListPageWinTemplates[] =
 {
+    [LISTPAGE_SCROLLING_TEXT] =
     {
         .bg = BG_SCROLLING_LIST,
         .tilemapLeft = 2,
@@ -277,6 +1280,7 @@ static const struct WindowTemplate sListPageWinTemplates[3] =
         .paletteNum = 15,
         .baseBlock = 1,
     },
+    [LISTPAGE_CATEGORY_TYPE] =
     {
         .bg = BG_PAGE_CONTENT,
         .tilemapLeft = 18,
@@ -284,12 +1288,32 @@ static const struct WindowTemplate sListPageWinTemplates[3] =
         .width = 12,
         .height = 3,
         .paletteNum = 15,
-        .baseBlock = 253,
+        .baseBlock = 253,  // 1 + (14*18)
+    },
+    [LISTPAGE_CAUGHT_COUNT] =
+    {
+        .bg = BG_PAGE_CONTENT,
+        .tilemapLeft = 9,
+        .tilemapTop = 3,
+        .width = 4,
+        .height = 4,
+        .paletteNum = 15,
+        .baseBlock = 290,  // 1 + (14*18) + (12*3)
+    },
+    [LISTPAGE_RESEARCH_LEVEL] =
+    {
+        .bg = BG_PAGE_CONTENT,
+        .tilemapLeft = 16,
+        .tilemapTop = 15,
+        .width = 12,
+        .height = 3,
+        .paletteNum = 15,
+        .baseBlock = 306,  // 1 + (14*18) + (12*3) + (4*4)
     },
     DUMMY_WIN_TEMPLATE,
 };
 
-// Graphics data for Info Pages
+//MARK:Info Page Graphics
 static const u16 sInfoBackgroundPalette[] = INCBIN_U16("graphics/pokedex/researchdex/info_background.gbapal");
 static const u16 sInfoPagesPalette[] = INCBIN_U16("graphics/pokedex/researchdex/info_pages.gbapal");
 static const u32 sInfoBackgroundTilemap[] = INCBIN_U32("graphics/pokedex/researchdex/info_background_tiles.bin.lz");
@@ -297,7 +1321,7 @@ static const u32 sInfoPagesTilemap[] = INCBIN_U32("graphics/pokedex/researchdex/
 static const u32 sInfoBackgroundTiles[] = INCBIN_U32("graphics/pokedex/researchdex/info_background_tiles.4bpp.lz");
 static const u32 sInfoPagesTiles[] = INCBIN_U32("graphics/pokedex/researchdex/info_pages_tiles.4bpp.lz");
 
-// Info Page Background Template
+//MARK:Info Page Backgrounds
 static const struct BgTemplate sInfoPageBgTemplates[4] =
 {
     {
@@ -338,31 +1362,36 @@ static const struct BgTemplate sInfoPageBgTemplates[4] =
     },
 };
 
-//Info Page Window Template
-static const struct WindowTemplate sInfoPageWinTemplates[3] =
+#define INFOPAGE_CATEGORY_TYPE  4
+#define INFOPAGE_WEIGHT         5
+
+//MARK:Info Page Windows
+static const struct WindowTemplate sInfoPageWinTemplates[] =
 {
-    {
-        .bg = 2,
-        .tilemapLeft = 2,
-        .tilemapTop = 6,
-        .width = 14,
-        .height = 18,
-        .paletteNum = 15,
-        .baseBlock = 1,
-    },
+    [INFOPAGE_CATEGORY_TYPE] =
     {
         .bg = 0,
-        .tilemapLeft = 18,
-        .tilemapTop = 11,
-        .width = 12,
+        .tilemapLeft = 12,
+        .tilemapTop = 2,
+        .width = 3,
         .height = 3,
         .paletteNum = 15,
-        .baseBlock = 253,
+        .baseBlock = 290,
+    },
+    [INFOPAGE_WEIGHT] =
+    {
+        .bg = 0,
+        .tilemapLeft = 1,
+        .tilemapTop = 14,
+        .width = 7,
+        .height = 3,
+        .paletteNum = 15,
+        .baseBlock = 300,
     },
     DUMMY_WIN_TEMPLATE,
 };
 
-// Graphics data for Stat Pages
+//MARK:Stat Page Graphics
 static const u16 sStatBackgroundPalette[] = INCBIN_U16("graphics/pokedex/researchdex/stat_background.gbapal");
 static const u16 sStatPagesPalette[] = INCBIN_U16("graphics/pokedex/researchdex/stat_pages.gbapal");
 static const u32 sStatBackgroundTilemap[] = INCBIN_U32("graphics/pokedex/researchdex/stat_background_tiles.bin.lz");
@@ -370,7 +1399,7 @@ static const u32 sStatPagesTilemap[] = INCBIN_U32("graphics/pokedex/researchdex/
 static const u32 sStatBackgroundTiles[] = INCBIN_U32("graphics/pokedex/researchdex/stat_background_tiles.4bpp.lz");
 static const u32 sStatPagesTiles[] = INCBIN_U32("graphics/pokedex/researchdex/stat_pages_tiles.4bpp.lz");
 
-// Stat Page Background Template
+//MARK:Stat Page Backgrounds
 static const struct BgTemplate sStatPageBgTemplates[4] =
 {
     {
@@ -411,12 +1440,12 @@ static const struct BgTemplate sStatPageBgTemplates[4] =
     },
 };
 
-//Stat Page Window Template
+//MARK:Stat Page Windows
 static const struct WindowTemplate sStatPageWinTemplates[3] =
 {
     {
         .bg = 2,
-        .tilemapLeft = 2,
+        .tilemapLeft = 6,
         .tilemapTop = 6,
         .width = 14,
         .height = 18,
@@ -425,8 +1454,8 @@ static const struct WindowTemplate sStatPageWinTemplates[3] =
     },
     {
         .bg = 0,
-        .tilemapLeft = 8,
-        .tilemapTop = 11,
+        .tilemapLeft = 6,
+        .tilemapTop = 6,
         .width = 12,
         .height = 3,
         .paletteNum = 15,
@@ -435,7 +1464,7 @@ static const struct WindowTemplate sStatPageWinTemplates[3] =
     DUMMY_WIN_TEMPLATE,
 };
 
-// Graphics data for Area Pages
+//MARK:Area Page Graphics
 static const u16 sAreaBackgroundPalette[] = INCBIN_U16("graphics/pokedex/researchdex/area_background.gbapal");
 static const u16 sAreaPagesPalette[] = INCBIN_U16("graphics/pokedex/researchdex/area_pages.gbapal");
 static const u32 sAreaBackgroundTilemap[] = INCBIN_U32("graphics/pokedex/researchdex/area_background_tiles.bin.lz");
@@ -443,7 +1472,7 @@ static const u32 sAreaPagesTilemap[] = INCBIN_U32("graphics/pokedex/researchdex/
 static const u32 sAreaBackgroundTiles[] = INCBIN_U32("graphics/pokedex/researchdex/area_background_tiles.4bpp.lz");
 static const u32 sAreaPagesTiles[] = INCBIN_U32("graphics/pokedex/researchdex/area_pages_tiles.4bpp.lz");
 
-// Area Page Background Template
+//MARK:Area Page Backgrounds
 static const struct BgTemplate sAreaPageBgTemplates[4] =
 {
     {
@@ -484,13 +1513,13 @@ static const struct BgTemplate sAreaPageBgTemplates[4] =
     },
 };
 
-//Area Page Window Template
+//MARK:Area Page Windows
 static const struct WindowTemplate sAreaPageWinTemplates[3] =
 {
     {
         .bg = 2,
-        .tilemapLeft = 2,
-        .tilemapTop = 6,
+        .tilemapLeft = 8,
+        .tilemapTop = 8,
         .width = 14,
         .height = 18,
         .paletteNum = 15,
@@ -499,7 +1528,7 @@ static const struct WindowTemplate sAreaPageWinTemplates[3] =
     {
         .bg = 0,
         .tilemapLeft = 8,
-        .tilemapTop = 3,
+        .tilemapTop = 8,
         .width = 12,
         .height = 3,
         .paletteNum = 15,
@@ -508,7 +1537,7 @@ static const struct WindowTemplate sAreaPageWinTemplates[3] =
     DUMMY_WIN_TEMPLATE,
 };
 
-// Graphics data for Task Pages
+//MARK:Task Page Graphics
 static const u16 sTaskBackgroundPalette[] = INCBIN_U16("graphics/pokedex/researchdex/task_background.gbapal");
 static const u16 sTaskPagesPalette[] = INCBIN_U16("graphics/pokedex/researchdex/task_pages.gbapal");
 static const u32 sTaskBackgroundTilemap[] = INCBIN_U32("graphics/pokedex/researchdex/task_background_tiles.bin.lz");
@@ -516,7 +1545,7 @@ static const u32 sTaskPagesTilemap[] = INCBIN_U32("graphics/pokedex/researchdex/
 static const u32 sTaskBackgroundTiles[] = INCBIN_U32("graphics/pokedex/researchdex/task_background_tiles.4bpp.lz");
 static const u32 sTaskPagesTiles[] = INCBIN_U32("graphics/pokedex/researchdex/task_pages_tiles.4bpp.lz");
 
-// Task Page Background Template
+//MARK:Task Page Backgrounds
 static const struct BgTemplate sTaskPageBgTemplates[4] =
 {
     {
@@ -557,13 +1586,13 @@ static const struct BgTemplate sTaskPageBgTemplates[4] =
     },
 };
 
-//Task Page Window Template
+//MARK:Task Page Windows
 static const struct WindowTemplate sTaskPageWinTemplates[3] =
 {
     {
         .bg = 2,
-        .tilemapLeft = 2,
-        .tilemapTop = 6,
+        .tilemapLeft = 10,
+        .tilemapTop = 10,
         .width = 14,
         .height = 18,
         .paletteNum = 15,
@@ -571,8 +1600,8 @@ static const struct WindowTemplate sTaskPageWinTemplates[3] =
     },
     {
         .bg = 0,
-        .tilemapLeft = 3,
-        .tilemapTop = 3,
+        .tilemapLeft = 10,
+        .tilemapTop = 10,
         .width = 12,
         .height = 3,
         .paletteNum = 15,
@@ -581,7 +1610,7 @@ static const struct WindowTemplate sTaskPageWinTemplates[3] =
     DUMMY_WIN_TEMPLATE,
 };
 
-// Graphics data for Form Pages
+//MARK:Form Page Graphics
 static const u16 sFormBackgroundPalette[] = INCBIN_U16("graphics/pokedex/researchdex/form_background.gbapal");
 static const u16 sFormPagesPalette[] = INCBIN_U16("graphics/pokedex/researchdex/form_pages.gbapal");
 static const u32 sFormBackgroundTilemap[] = INCBIN_U32("graphics/pokedex/researchdex/form_background_tiles.bin.lz");
@@ -589,7 +1618,7 @@ static const u32 sFormPagesTilemap[] = INCBIN_U32("graphics/pokedex/researchdex/
 static const u32 sFormBackgroundTiles[] = INCBIN_U32("graphics/pokedex/researchdex/form_background_tiles.4bpp.lz");
 static const u32 sFormPagesTiles[] = INCBIN_U32("graphics/pokedex/researchdex/form_pages_tiles.4bpp.lz");
 
-// Form Page Background Template
+//MARK:Form Page Backgrounds
 static const struct BgTemplate sFormPageBgTemplates[4] =
 {
     {
@@ -630,13 +1659,13 @@ static const struct BgTemplate sFormPageBgTemplates[4] =
     },
 };
 
-//Form Page Window Template
+//MARK:Form Page Windows
 static const struct WindowTemplate sFormPageWinTemplates[3] =
 {
     {
         .bg = 2,
-        .tilemapLeft = 2,
-        .tilemapTop = 6,
+        .tilemapLeft = 12,
+        .tilemapTop = 12,
         .width = 14,
         .height = 18,
         .paletteNum = 15,
@@ -644,8 +1673,8 @@ static const struct WindowTemplate sFormPageWinTemplates[3] =
     },
     {
         .bg = 0,
-        .tilemapLeft = 18,
-        .tilemapTop = 11,
+        .tilemapLeft = 12,
+        .tilemapTop = 12,
         .width = 12,
         .height = 3,
         .paletteNum = 15,
@@ -654,7 +1683,7 @@ static const struct WindowTemplate sFormPageWinTemplates[3] =
     DUMMY_WIN_TEMPLATE,
 };
 
-// Graphics data for Move Pages
+//MARK:Moves Page Graphics
 static const u16 sMoveBackgroundPalette[] = INCBIN_U16("graphics/pokedex/researchdex/move_background.gbapal");
 static const u16 sMovePagesPalette[] = INCBIN_U16("graphics/pokedex/researchdex/move_pages.gbapal");
 static const u32 sMoveBackgroundTilemap[] = INCBIN_U32("graphics/pokedex/researchdex/move_background_tiles.bin.lz");
@@ -662,7 +1691,7 @@ static const u32 sMovePagesTilemap[] = INCBIN_U32("graphics/pokedex/researchdex/
 static const u32 sMoveBackgroundTiles[] = INCBIN_U32("graphics/pokedex/researchdex/move_background_tiles.4bpp.lz");
 static const u32 sMovePagesTiles[] = INCBIN_U32("graphics/pokedex/researchdex/move_pages_tiles.4bpp.lz");
 
-// Move Page Background Template
+//MARK:Moves Page Backgrounds
 static const struct BgTemplate sMovePageBgTemplates[4] =
 {
     {
@@ -703,13 +1732,13 @@ static const struct BgTemplate sMovePageBgTemplates[4] =
     },
 };
 
-//Move Page Window Template
+//MARK:Moves Page Windows
 static const struct WindowTemplate sMovePageWinTemplates[3] =
 {
     {
         .bg = 2,
-        .tilemapLeft = 2,
-        .tilemapTop = 6,
+        .tilemapLeft = 14,
+        .tilemapTop = 14,
         .width = 14,
         .height = 18,
         .paletteNum = 15,
@@ -717,8 +1746,8 @@ static const struct WindowTemplate sMovePageWinTemplates[3] =
     },
     {
         .bg = 0,
-        .tilemapLeft = 18,
-        .tilemapTop = 11,
+        .tilemapLeft = 14,
+        .tilemapTop = 14,
         .width = 12,
         .height = 3,
         .paletteNum = 15,
@@ -728,9 +1757,6 @@ static const struct WindowTemplate sMovePageWinTemplates[3] =
 };
 
 //MARK:LIST PAGE
-
-///////////////////////General Loading Activities///////////////////////
-
 void Task_StartListPage(u8 taskId)
 {
     if (!gPaletteFade.active)
@@ -794,9 +1820,7 @@ void CB2_ListPageSetUp(void)
         gMain.state++;
         break;
     case 5:
-        DisplayMagnifierListText();
-        DisplayCurrentPokemonPicture();
-        DisplayCurrentPokemonCategoryTypeText();
+        UpdateListDisplay();
         CreateTask(Task_ListPageWaitFadeIn, 0);
         gMain.state++;
         break;
@@ -871,12 +1895,28 @@ static void ListPage_InitWindows(void)
     InitWindows(sListPageWinTemplates);
     DeactivateAllTextPrinters();
     LoadPalette(gStandardMenuPalette, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
-    FillWindowPixelBuffer(0, PIXEL_FILL(0));
-    FillWindowPixelBuffer(1, PIXEL_FILL(0));
-    PutWindowTilemap(0);
-    PutWindowTilemap(1);
-    CopyWindowToVram(0, COPYWIN_FULL);
-    CopyWindowToVram(1, COPYWIN_FULL);
+    FillWindowPixelBuffer(LISTPAGE_SCROLLING_TEXT, PIXEL_FILL(0));
+    FillWindowPixelBuffer(LISTPAGE_CATEGORY_TYPE, PIXEL_FILL(0));
+    FillWindowPixelBuffer(LISTPAGE_CAUGHT_COUNT, PIXEL_FILL(0));
+    FillWindowPixelBuffer(LISTPAGE_RESEARCH_LEVEL, PIXEL_FILL(0));
+    PutWindowTilemap(LISTPAGE_SCROLLING_TEXT);
+    PutWindowTilemap(LISTPAGE_CATEGORY_TYPE);
+    PutWindowTilemap(LISTPAGE_CAUGHT_COUNT);
+    PutWindowTilemap(LISTPAGE_RESEARCH_LEVEL);
+    CopyWindowToVram(LISTPAGE_SCROLLING_TEXT, COPYWIN_FULL);
+    CopyWindowToVram(LISTPAGE_CATEGORY_TYPE, COPYWIN_FULL);
+    CopyWindowToVram(LISTPAGE_CAUGHT_COUNT, COPYWIN_FULL);
+    CopyWindowToVram(LISTPAGE_RESEARCH_LEVEL, COPYWIN_FULL);
+
+    RemoveWindow(INFOPAGE_CATEGORY_TYPE);
+    RemoveWindow(INFOPAGE_WEIGHT);
+
+    DisplayMagnifierListText();
+    DisplayCurrentPokemonPicture();
+    DisplayCurrentPokemonCategoryTypeText();
+    DisplayListPageResearchLevel();
+    DisplayCaughtMasteredPokemonCount();
+    DisplayCurrentPokemonType();
 }
 
 static void Task_ListPageWaitFadeIn(u8 taskId)
@@ -887,8 +1927,7 @@ static void Task_ListPageWaitFadeIn(u8 taskId)
     }
 }
 
-//MARK:LIST PAGE INPUT TASK
-
+//MARK:List Input Task
 static void Task_ListPageInput(u8 taskId)
 {
     if (JOY_NEW(A_BUTTON))
@@ -903,47 +1942,57 @@ static void Task_ListPageInput(u8 taskId)
     }
     if (JOY_REPEAT(DPAD_UP))
     {
-        FillWindowPixelBuffer(0, TEXT_COLOR_TRANSPARENT);
-        FillWindowPixelBuffer(1, TEXT_COLOR_TRANSPARENT);
         if(sResearchPokedexState->selectedPokemon > 0){
             sResearchPokedexState->selectedPokemon--;
         }
+        UpdateListDisplay();
     }
     if (JOY_REPEAT(DPAD_DOWN))
     {
-        FillWindowPixelBuffer(0, TEXT_COLOR_TRANSPARENT);
-        FillWindowPixelBuffer(1, TEXT_COLOR_TRANSPARENT);
         if(sResearchPokedexState->selectedPokemon < HIGHEST_MON_NUMBER){
             sResearchPokedexState->selectedPokemon++;
         }
+        UpdateListDisplay();
     }
     if (JOY_REPEAT(DPAD_LEFT))
     {
-        FillWindowPixelBuffer(0, TEXT_COLOR_TRANSPARENT);
-        FillWindowPixelBuffer(1, TEXT_COLOR_TRANSPARENT);
         if(sResearchPokedexState->selectedPokemon > 5){
             sResearchPokedexState->selectedPokemon -= 5;
         }
         else{
             sResearchPokedexState->selectedPokemon = 0;
         }
+        UpdateListDisplay();
     }
     if (JOY_REPEAT(DPAD_RIGHT))
     {
-        FillWindowPixelBuffer(0, TEXT_COLOR_TRANSPARENT);
-        FillWindowPixelBuffer(1, TEXT_COLOR_TRANSPARENT);
         if(sResearchPokedexState->selectedPokemon < HIGHEST_MON_NUMBER - 5){
             sResearchPokedexState->selectedPokemon += 5;
         }
         else{
             sResearchPokedexState->selectedPokemon = HIGHEST_MON_NUMBER;
         }
+        UpdateListDisplay();
     }
+}
+
+//MARK:Refresh List
+static void UpdateListDisplay(void)
+{
+    FillWindowPixelBuffer(LISTPAGE_SCROLLING_TEXT, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
+    FillWindowPixelBuffer(LISTPAGE_CATEGORY_TYPE, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
+    FillWindowPixelBuffer(LISTPAGE_CAUGHT_COUNT, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
+    FillWindowPixelBuffer(LISTPAGE_RESEARCH_LEVEL, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
+    FillWindowPixelBuffer(INFOPAGE_CATEGORY_TYPE, PIXEL_FILL(0));
+    FillWindowPixelBuffer(INFOPAGE_CATEGORY_TYPE, PIXEL_FILL(0));
     DisplayMagnifierListText();
     DisplayCurrentPokemonPicture();
     DisplayCurrentPokemonCategoryTypeText();
+    DisplayListPageResearchLevel();
+    DisplayCurrentPokemonType();
 }
 
+//MARK:Mag List
 static void DisplayMagnifierListText(void)
 {
     u8 xOffset = 3;
@@ -993,51 +2042,67 @@ static void DisplayMagnifierListText(void)
             break;
         }
     }
-    PutWindowTilemap(0);
-    CopyWindowToVram(0, COPYWIN_FULL);
+    CopyWindowToVram(LISTPAGE_SCROLLING_TEXT, COPYWIN_FULL);
 }
 
+//MARK:Line Item
 static void DisplayMagnifierLineItemText(u16 currentMon, u8 fontID, u8 xPos, u8 yPos)
 {
     u8 color[3] = {0, 10, 3};
+    
     if(sResearchPokedexState->pokedexList[currentMon].seen)
     {
         ConvertIntToDecimalStringN(gStringVar1, currentMon, STR_CONV_MODE_LEADING_ZEROS, 4);
         StringExpandPlaceholders(gStringVar2, GetSpeciesName(currentMon));
         StringExpandPlaceholders(gStringVar4, sText_PokedexListItem);
-        AddTextPrinterParameterized4(0, fontID, xPos, yPos, 0, 0, color, TEXT_SKIP_DRAW, gStringVar4);  
+        AddTextPrinterParameterized4(LISTPAGE_SCROLLING_TEXT, fontID, xPos, yPos, 0, 0, color, TEXT_SKIP_DRAW, gStringVar4);  
     }
     else
     {
-
+        ConvertIntToDecimalStringN(gStringVar1, currentMon, STR_CONV_MODE_LEADING_ZEROS, 4);
+        StringExpandPlaceholders(gStringVar2, sText_SingleSpace);
+        StringExpandPlaceholders(gStringVar4, sText_PokedexListItem);
+        AddTextPrinterParameterized4(LISTPAGE_SCROLLING_TEXT, fontID, xPos, yPos, 0, 0, color, TEXT_SKIP_DRAW, gStringVar4);
     }
 }
 
+//MARK:PKMN Pic
 static void DisplayCurrentPokemonPicture(void)
 {
-    u8 xPos = 160;
-    u8 yPos = 95;
+    u8 xPos = 159;
+    u8 yPos = 88;
     u16 currentMon = sResearchPokedexState->selectedPokemon + 1;
 
+    FreeAndDestroyMonPicSprite(sResearchPokedexState->monSpriteId);
+    sResearchPokedexState->monSpriteId = CreateMonSpriteFromNationalDexNumber(currentMon, xPos, yPos, 14);
     if(sResearchPokedexState->pokedexList[currentMon].seen)
     {
-        FreeAndDestroyMonPicSprite(sResearchPokedexState->monSpriteId);
-        sResearchPokedexState->monSpriteId = CreateMonSpriteFromNationalDexNumber(currentMon, xPos, yPos, 2);
+        gSprites[sResearchPokedexState->monSpriteId].invisible = FALSE;
         gSprites[sResearchPokedexState->monSpriteId].oam.priority = 3;
     }
     else
     {
-
+        gSprites[sResearchPokedexState->monSpriteId].invisible = TRUE;
+        gSprites[sResearchPokedexState->monSpriteId].oam.priority = 3;
     }
 }
 
+//MARK:PKMN Bg
+// static void GetCurrentPokemonBackground(void)
+// {
+//     LZDecompressVram(gBattleTerrainTiles_TallGrass, (void *)(BG_CHAR_ADDR(2)));
+//     LZDecompressVram(gBattleTerrainTilemap_TallGrass, (void *)(BG_SCREEN_ADDR(26)));
+//     LoadCompressedPalette(gBattleTerrainPalette_TallGrass, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
+// }
+
+//MARK:Category Type
 static void DisplayCurrentPokemonCategoryTypeText(void)
 {
     u8 xOffset = 0;
     u8 yOffset = 6;
     u8 color[3] = {0, 10, 3};
-    u16 currentMon = sResearchPokedexState->selectedPokemon + 1;
     u8 fontsize = FONT_NORMAL;
+    u16 currentMon = sResearchPokedexState->selectedPokemon + 1;
 
     if(sResearchPokedexState->pokedexList[currentMon].seen)
     {
@@ -1046,14 +2111,81 @@ static void DisplayCurrentPokemonCategoryTypeText(void)
         {
             fontsize = FONT_NARROW;
         }
-        AddTextPrinterParameterized4(1, fontsize, xOffset, yOffset, 0, 0, color, TEXT_SKIP_DRAW, gStringVar3);
-        PutWindowTilemap(1);
-        CopyWindowToVram(1, COPYWIN_FULL);
+        AddTextPrinterParameterized4(LISTPAGE_CATEGORY_TYPE, fontsize, xOffset, yOffset, 0, 0, color, TEXT_SKIP_DRAW, gStringVar3);
+        CopyWindowToVram(LISTPAGE_CATEGORY_TYPE, COPYWIN_FULL);
     }
     else
     {
-
+        AddTextPrinterParameterized4(LISTPAGE_CATEGORY_TYPE, fontsize, xOffset, yOffset, 0, 0, color, TEXT_SKIP_DRAW, sText_SingleSpace);
+        CopyWindowToVram(LISTPAGE_CATEGORY_TYPE, COPYWIN_FULL);
     }
+}
+
+//MARK:Caught Cnts
+static void DisplayCaughtMasteredPokemonCount(void)
+{
+    u8 xOffset = 8;
+    u8 yOffset = 3;
+    u8 color[3] = {0, 10, 3};
+    u8 fontsize = FONT_NARROW;
+    u16 seenCount = GetResearchDexSeenCount();
+    u16 caughtCount = GetResearchDexMasteredCount();
+
+    ConvertIntToDecimalStringN(gStringVar2, seenCount, STR_CONV_MODE_LEADING_ZEROS, 4);
+    AddTextPrinterParameterized4(LISTPAGE_CAUGHT_COUNT, fontsize, xOffset, yOffset, 0, 0, color, TEXT_SKIP_DRAW, gStringVar2);
+    CopyWindowToVram(LISTPAGE_CAUGHT_COUNT, COPYWIN_FULL);
+
+    ConvertIntToDecimalStringN(gStringVar3, caughtCount, STR_CONV_MODE_LEADING_ZEROS, 4);
+    AddTextPrinterParameterized4(LISTPAGE_CAUGHT_COUNT, fontsize, xOffset, yOffset + 11, 0, 0, color, TEXT_SKIP_DRAW, gStringVar3);
+    CopyWindowToVram(LISTPAGE_CAUGHT_COUNT, COPYWIN_FULL);
+}
+
+//MARK:Rsrch Level
+static void DisplayListPageResearchLevel(void)
+{
+    u8 xOffset = 5;
+    u8 yOffset = 3;
+    u8 color[3] = {0, 10, 3};
+    u8 fontsize = FONT_NARROWER;
+    u8 researchLevel = sResearchPokedexState->pokedexList[sResearchPokedexState->selectedPokemon + 1].researchLevel;
+
+    ConvertIntToDecimalStringN(gStringVar1, researchLevel, STR_CONV_MODE_LEADING_ZEROS, 2);
+    StringExpandPlaceholders(gStringVar4, sText_ResearchLevelText);
+    AddTextPrinterParameterized4(LISTPAGE_RESEARCH_LEVEL, fontsize, xOffset, yOffset, 0, 0, color, TEXT_SKIP_DRAW, gStringVar4);
+    CopyWindowToVram(LISTPAGE_RESEARCH_LEVEL, COPYWIN_FULL);
+}
+
+//MARK:Type Icons
+static void DisplayCurrentPokemonType(void)
+{
+    u16 currentMon = sResearchPokedexState->selectedPokemon + 1;
+    u8 type1 = gSpeciesInfo[currentMon].types[0];
+    u8 type2 = gSpeciesInfo[currentMon].types[1];
+    u8 xPos = 208;
+    u8 yPos = 64;
+
+    DestroySpriteAndFreeResources(&gSprites[sResearchPokedexState->typeIcon1]);
+    DestroySpriteAndFreeResources(&gSprites[sResearchPokedexState->typeIcon2]);
+    LoadSpritePalette(&gTypes0SpritePalette);
+    LoadSpritePalette(&gTypes1SpritePalette);
+    LoadSpritePalette(&gTypes2SpritePalette);
+
+    if(sResearchPokedexState->pokedexList[currentMon].seen)
+    {
+        if (type1 == type2)
+        {
+            sResearchPokedexState->typeIcon1 = CreateSprite(&gTypeIconSpriteTemplates[type1][0],xPos,yPos,0);
+        }
+        else
+        {
+            sResearchPokedexState->typeIcon1 = CreateSprite(&gTypeIconSpriteTemplates[type1][1],xPos,yPos,0);
+            sResearchPokedexState->typeIcon2 = CreateSprite(&gTypeIconSpriteTemplates[type2][2],xPos,yPos,0);
+        }
+    }
+    else{
+        //sResearchPokedexState->typeIcon1 = CreateSprite(&gTypeIconSpriteTemplates[0][0],xPos,yPos,0);
+    }
+    
 }
 
 //MARK:INFO PAGE
@@ -1123,6 +2255,7 @@ void CB2_InfoPageSetUp(void)
         gMain.state++;
         break;
     case 5:
+        DisplayCurrentPokemonWeight();
         CreateTask(Task_InfoPageWaitFadeIn, 0);
         gMain.state++;
         break;
@@ -1197,12 +2330,17 @@ static void InfoPage_InitWindows(void)
     InitWindows(sInfoPageWinTemplates);
     DeactivateAllTextPrinters();
     LoadPalette(gStandardMenuPalette, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
-    FillWindowPixelBuffer(0, PIXEL_FILL(0));
-    FillWindowPixelBuffer(1, PIXEL_FILL(0));
-    PutWindowTilemap(0);
-    PutWindowTilemap(1);
-    CopyWindowToVram(0, COPYWIN_FULL);
-    CopyWindowToVram(1, COPYWIN_FULL);
+    FillWindowPixelBuffer(INFOPAGE_CATEGORY_TYPE, PIXEL_FILL(0));
+    FillWindowPixelBuffer(INFOPAGE_WEIGHT, PIXEL_FILL(0));
+    PutWindowTilemap(INFOPAGE_CATEGORY_TYPE);
+    PutWindowTilemap(INFOPAGE_WEIGHT);
+    CopyWindowToVram(INFOPAGE_CATEGORY_TYPE, COPYWIN_FULL);
+    CopyWindowToVram(INFOPAGE_WEIGHT, COPYWIN_FULL);
+
+    RemoveWindow(LISTPAGE_SCROLLING_TEXT);
+    RemoveWindow(LISTPAGE_CATEGORY_TYPE);
+    RemoveWindow(LISTPAGE_CAUGHT_COUNT);
+    RemoveWindow(LISTPAGE_RESEARCH_LEVEL);
 }
 
 static void Task_InfoPageWaitFadeIn(u8 taskId)
@@ -1213,14 +2351,13 @@ static void Task_InfoPageWaitFadeIn(u8 taskId)
     }
 }
 
-//MARK:INFO PAGE INPUT TASK
+//MARK:Info Page Input Task
 
 static void Task_InfoPageInput(u8 taskId)
 {
     if (JOY_NEW(A_BUTTON))
     {
-        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
-        gTasks[taskId].func = Task_StartListPage;
+
     }
     if (JOY_NEW(B_BUTTON))
     {
@@ -1234,6 +2371,7 @@ static void Task_InfoPageInput(u8 taskId)
         if(sResearchPokedexState->selectedPokemon > 0){
             sResearchPokedexState->selectedPokemon--;
         }
+        DisplayCurrentPokemonWeight();
     }
     if (JOY_REPEAT(DPAD_DOWN))
     {
@@ -1242,6 +2380,7 @@ static void Task_InfoPageInput(u8 taskId)
         if(sResearchPokedexState->selectedPokemon < HIGHEST_MON_NUMBER){
             sResearchPokedexState->selectedPokemon++;
         }
+        DisplayCurrentPokemonWeight();
     }
     if (JOY_REPEAT(DPAD_LEFT))
     {
@@ -1252,6 +2391,33 @@ static void Task_InfoPageInput(u8 taskId)
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
         gTasks[taskId].func = Task_StartStatPage;
     }
+}
+
+//MARK:Info Page Displayers
+
+static void DisplayCurrentPokemonWeight(void)
+{
+    u8 xOffset = 6;
+    u8 yOffset = 6;
+    u8 color[3] = {0, 10, 3};
+    u16 currentMon = sResearchPokedexState->selectedPokemon + 1;
+    u8 fontsize = FONT_NORMAL;
+    FillWindowPixelBuffer(3, PIXEL_FILL(0));
+
+    u32 weight = GetSpeciesWeight(currentMon);
+    u8* weightString;
+    weightString = ConvertMonWeightToString(weight);
+
+    if(sResearchPokedexState->pokedexList[currentMon].seen)
+    {
+        AddTextPrinterParameterized4(3, fontsize, xOffset, yOffset, 0, 0, color, TEXT_SKIP_DRAW, weightString);
+        CopyWindowToVram(3, COPYWIN_FULL);
+    }
+    else
+    {
+
+    }
+    Free(weightString);
 }
 
 //MARK:STAT PAGE
@@ -2249,3 +3415,29 @@ static void Task_MovePageInput(u8 taskId)
 }
 
 //MARK:GETTERS/SETTERS
+
+u16 GetResearchDexSeenCount(void)
+{
+    u16 count = 0;
+    u16 i;
+
+    for (i = 0; i < HIGHEST_MON_NUMBER; i++)
+    {
+        if (sResearchPokedexState->pokedexList[i].seen)
+            count++;
+    }
+    return count;
+}
+
+u16 GetResearchDexMasteredCount(void)
+{
+    u16 count = 0;
+    u16 i;
+
+    for (i = 0; i < HIGHEST_MON_NUMBER; i++)
+    {
+        if (sResearchPokedexState->pokedexList[i].researchLevel == 10)
+            count++;
+    }
+    return count;
+}

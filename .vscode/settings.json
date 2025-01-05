@@ -19,6 +19,9 @@
         "global.h": "c",
         "contest_painting.h": "c",
         "image_processing_effects.h": "c",
-        "macro.h": "c"
+        "macro.h": "c",
+        "battle_terrain.h": "c",
+        "pokemon_icon.h": "c",
+        "types_info.h": "c"
     }
 }

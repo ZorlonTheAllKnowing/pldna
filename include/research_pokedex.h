@@ -4,7 +4,7 @@
 void Task_StartResearchPokedex_FromOverworldMenu(u8 taskId);
 
 #define MAX_MONS_ON_SCREEN 4
-#define HIGHEST_MON_NUMBER 2000
+#define HIGHEST_MON_NUMBER 1000
 
 enum PokedexPages
 {
@@ -18,10 +18,10 @@ enum PokedexPages
 };
 
 enum{
-    LIST_PAGE_BG0,
-    LIST_PAGE_BG1,
-    LIST_PAGE_BG2,
-    LIST_PAGE_BG3,
+    BG_PAGE_CONTENT,
+    BG_BOOK_PAGES,
+    BG_SCROLLING_LIST,
+    BG_BOOK_COVER,
 };
 
 #endif // GUARD_DIPLOMA_H
