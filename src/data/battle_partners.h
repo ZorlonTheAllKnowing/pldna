@@ -9,7 +9,7 @@
 #line 1 "src/data/battle_partners.party"
 
 #line 1
-    [DIFFICULTY_NORMAL][PARTNER_NONE] =
+    [PARTNER_NONE] =
     {
 #line 3
         .trainerClass = TRAINER_CLASS_PKMN_TRAINER_1,
@@ -24,7 +24,7 @@
         },
     },
 #line 8
-    [DIFFICULTY_NORMAL][PARTNER_STEVEN] =
+    [PARTNER_STEVEN] =
     {
 #line 9
         .trainerName = _("STEVEN"),

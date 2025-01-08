@@ -3,13 +3,13 @@
 
 ASSUMPTIONS
 {
-    ASSUME(GetMoveEffect(MOVE_MAGIC_COAT) == EFFECT_MAGIC_COAT);
+    ASSUME(gMovesInfo[MOVE_MAGIC_COAT].effect == EFFECT_MAGIC_COAT);
 }
 
 SINGLE_BATTLE_TEST("Magic Coat prints the correct message when bouncing back a move")
 {
     GIVEN {
-        ASSUME(GetMoveEffect(MOVE_SPORE) == EFFECT_SLEEP);
+        ASSUME(gMovesInfo[MOVE_SPORE].effect == EFFECT_SLEEP);
         PLAYER(SPECIES_ZIGZAGOON);
         OPPONENT(SPECIES_WYNAUT);
     } WHEN {

@@ -11,11 +11,22 @@
 
 // The Gen. 4+ contest data comes from urpg's contest movedex.
 
+#if B_EXPANDED_MOVE_NAMES == TRUE
+#define HANDLE_EXPANDED_MOVE_NAME(_name, ...) COMPOUND_STRING(DEFAULT(_name, __VA_ARGS__))
+#else
+#define HANDLE_EXPANDED_MOVE_NAME(_name, ...) COMPOUND_STRING(_name)
+#endif
+
 #if B_BINDING_TURNS >= GEN_5
 #define BINDING_TURNS "4 or 5"
 #else
 #define BINDING_TURNS "2 to 5"
 #endif
+
+/* First arg is the charge turn string id, second arg depends on effect
+EFFECT_SEMI_INVULNERABLE/EFFECT_SKY_DROP: semi-invulnerable STATUS3 to apply to battler
+EFFECT_TWO_TURNS_ATTACK/EFFECT_SOLAR_BEAM: weather in which to skip charge turn */
+#define TWO_TURN_ARG(stringid, ...) (stringid) __VA_OPT__(| ((__VA_ARGS__) << 16))
 
 // Shared Move Description entries
 
@@ -123,7 +134,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .mirrorMoveBanned = TRUE,
         .sketchBanned = TRUE,
         .assistBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_None,
+        .battleAnimScript = Move_NONE,
     },
 
     [MOVE_POUND] =
@@ -146,7 +157,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = COMBO_STARTER_POUND,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Pound,
+        .battleAnimScript = Move_POUND,
     },
 
     [MOVE_KARATE_CHOP] =
@@ -169,7 +180,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY},
-        .battleAnimScript = gBattleAnimMove_KarateChop,
+        .battleAnimScript = Move_KARATE_CHOP,
     },
 
     [MOVE_DOUBLE_SLAP] =
@@ -191,7 +202,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_POUND},
-        .battleAnimScript = gBattleAnimMove_DoubleSlap,
+        .battleAnimScript = Move_DOUBLE_SLAP,
     },
 
     [MOVE_COMET_PUNCH] =
@@ -214,7 +225,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_CometPunch,
+        .battleAnimScript = Move_COMET_PUNCH,
     },
 
     [MOVE_MEGA_PUNCH] =
@@ -237,7 +248,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY, COMBO_STARTER_MIND_READER},
-        .battleAnimScript = gBattleAnimMove_MegaPunch,
+        .battleAnimScript = Move_MEGA_PUNCH,
     },
 
     [MOVE_PAY_DAY] =
@@ -261,7 +272,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PayDay,
+        .battleAnimScript = Move_PAY_DAY,
     },
 
     [MOVE_FIRE_PUNCH] =
@@ -288,7 +299,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = COMBO_STARTER_FIRE_PUNCH,
         .contestComboMoves = {COMBO_STARTER_ICE_PUNCH, COMBO_STARTER_SUNNY_DAY, COMBO_STARTER_THUNDER_PUNCH},
-        .battleAnimScript = gBattleAnimMove_FirePunch,
+        .battleAnimScript = Move_FIRE_PUNCH,
     },
 
     [MOVE_ICE_PUNCH] =
@@ -319,12 +330,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = COMBO_STARTER_ICE_PUNCH,
         .contestComboMoves = {COMBO_STARTER_FIRE_PUNCH, COMBO_STARTER_THUNDER_PUNCH},
-        .battleAnimScript = gBattleAnimMove_IcePunch,
+        .battleAnimScript = Move_ICE_PUNCH,
     },
 
     [MOVE_THUNDER_PUNCH] =
     {
-        .name = COMPOUND_STRING("Thunder Punch"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("ThunderPunch", "Thunder Punch"),
         .description = COMPOUND_STRING(
             "An electrified punch that\n"
             "may paralyze the foe."),
@@ -346,7 +357,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = COMBO_STARTER_THUNDER_PUNCH,
         .contestComboMoves = {COMBO_STARTER_CHARGE, COMBO_STARTER_FIRE_PUNCH, COMBO_STARTER_ICE_PUNCH},
-        .battleAnimScript = gBattleAnimMove_ThunderPunch,
+        .battleAnimScript = Move_THUNDER_PUNCH,
     },
 
     [MOVE_SCRATCH] =
@@ -368,7 +379,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = COMBO_STARTER_SCRATCH,
         .contestComboMoves = {COMBO_STARTER_LEER},
-        .battleAnimScript = gBattleAnimMove_Scratch,
+        .battleAnimScript = Move_SCRATCH,
     },
 
     [MOVE_VISE_GRIP] =
@@ -390,7 +401,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = COMBO_STARTER_VICE_GRIP,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ViseGrip,
+        .battleAnimScript = Move_VISE_GRIP,
     },
 
     [MOVE_GUILLOTINE] =
@@ -412,7 +423,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_VICE_GRIP},
-        .battleAnimScript = gBattleAnimMove_Guillotine,
+        .battleAnimScript = Move_GUILLOTINE,
     },
 
     [MOVE_RAZOR_WIND] =
@@ -433,12 +444,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .sleepTalkBanned = TRUE,
         .instructBanned = TRUE,
         .windMove = B_EXTRAPOLATED_MOVE_FLAGS,
-        .argument.twoTurnAttack = { .stringId =  STRINGID_PKMNWHIPPEDWHIRLWIND },
+        .argument = TWO_TURN_ARG(STRINGID_PKMNWHIPPEDWHIRLWIND),
         .contestEffect = CONTEST_EFFECT_AFFECTED_BY_PREV_APPEAL,
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_RazorWind,
+        .battleAnimScript = Move_RAZOR_WIND,
     },
 
     [MOVE_SWORDS_DANCE] =
@@ -462,7 +473,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = COMBO_STARTER_SWORDS_DANCE,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SwordsDance,
+        .battleAnimScript = Move_SWORDS_DANCE,
     },
 
     [MOVE_CUT] =
@@ -485,7 +496,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SWORDS_DANCE},
-        .battleAnimScript = gBattleAnimMove_Cut,
+        .battleAnimScript = Move_CUT,
     },
 
     [MOVE_GUST] =
@@ -509,7 +520,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Gust,
+        .battleAnimScript = Move_GUST,
     },
 
     [MOVE_WING_ATTACK] =
@@ -531,7 +542,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_WingAttack,
+        .battleAnimScript = Move_WING_ATTACK,
     },
 
     [MOVE_WHIRLWIND] =
@@ -559,7 +570,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Whirlwind,
+        .battleAnimScript = Move_WHIRLWIND,
     },
 
     [MOVE_FLY] =
@@ -581,12 +592,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .sleepTalkBanned = TRUE,
         .instructBanned = TRUE,
         .assistBanned = TRUE,
-        .argument.twoTurnAttack = { .stringId =  STRINGID_PKMNFLEWHIGH, .status = COMPRESS_BITS(STATUS3_ON_AIR) },
+        .argument = TWO_TURN_ARG(STRINGID_PKMNFLEWHIGH, COMPRESS_BITS(STATUS3_ON_AIR)),
         .contestEffect = CONTEST_EFFECT_AVOID_STARTLE,
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Fly,
+        .battleAnimScript = Move_FLY,
     },
 
     [MOVE_BIND] =
@@ -612,7 +623,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_VICE_GRIP},
-        .battleAnimScript = gBattleAnimMove_Bind,
+        .battleAnimScript = Move_BIND,
     },
 
     [MOVE_SLAM] =
@@ -635,7 +646,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_POUND},
-        .battleAnimScript = gBattleAnimMove_Slam,
+        .battleAnimScript = Move_SLAM,
     },
 
     [MOVE_VINE_WHIP] =
@@ -663,7 +674,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_GROWTH},
-        .battleAnimScript = gBattleAnimMove_VineWhip,
+        .battleAnimScript = Move_VINE_WHIP,
     },
 
     [MOVE_STOMP] =
@@ -691,7 +702,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_LEER},
-        .battleAnimScript = gBattleAnimMove_Stomp,
+        .battleAnimScript = Move_STOMP,
     },
 
     [MOVE_DOUBLE_KICK] =
@@ -714,7 +725,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_DoubleKick,
+        .battleAnimScript = Move_DOUBLE_KICK,
     },
 
     [MOVE_MEGA_KICK] =
@@ -736,7 +747,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY, COMBO_STARTER_MIND_READER},
-        .battleAnimScript = gBattleAnimMove_MegaKick,
+        .battleAnimScript = Move_MEGA_KICK,
     },
 
     [MOVE_JUMP_KICK] =
@@ -765,7 +776,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_MIND_READER},
-        .battleAnimScript = gBattleAnimMove_JumpKick,
+        .battleAnimScript = Move_JUMP_KICK,
     },
 
     [MOVE_ROLLING_KICK] =
@@ -792,7 +803,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_RollingKick,
+        .battleAnimScript = Move_ROLLING_KICK,
     },
 
     [MOVE_SAND_ATTACK] =
@@ -815,7 +826,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = COMBO_STARTER_SAND_ATTACK,
         .contestComboMoves = {COMBO_STARTER_MUD_SLAP, COMBO_STARTER_SANDSTORM},
-        .battleAnimScript = gBattleAnimMove_SandAttack,
+        .battleAnimScript = Move_SAND_ATTACK,
     },
 
     [MOVE_HEADBUTT] =
@@ -841,7 +852,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY},
-        .battleAnimScript = gBattleAnimMove_Headbutt,
+        .battleAnimScript = Move_HEADBUTT,
     },
 
     [MOVE_HORN_ATTACK] =
@@ -863,7 +874,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = COMBO_STARTER_HORN_ATTACK,
         .contestComboMoves = {COMBO_STARTER_LEER},
-        .battleAnimScript = gBattleAnimMove_HornAttack,
+        .battleAnimScript = Move_HORN_ATTACK,
     },
 
     [MOVE_FURY_ATTACK] =
@@ -885,7 +896,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_HORN_ATTACK, COMBO_STARTER_PECK},
-        .battleAnimScript = gBattleAnimMove_FuryAttack,
+        .battleAnimScript = Move_FURY_ATTACK,
     },
 
     [MOVE_HORN_DRILL] =
@@ -907,7 +918,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_HORN_ATTACK},
-        .battleAnimScript = gBattleAnimMove_HornDrill,
+        .battleAnimScript = Move_HORN_DRILL,
     },
 
     [MOVE_TACKLE] =
@@ -935,7 +946,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_DEFENSE_CURL, COMBO_STARTER_HARDEN, COMBO_STARTER_LEER},
-        .battleAnimScript = gBattleAnimMove_Tackle,
+        .battleAnimScript = Move_TACKLE,
     },
 
     [MOVE_BODY_SLAM] =
@@ -963,7 +974,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_BodySlam,
+        .battleAnimScript = Move_BODY_SLAM,
     },
 
     [MOVE_WRAP] =
@@ -988,7 +999,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Wrap,
+        .battleAnimScript = Move_WRAP,
     },
 
     [MOVE_TAKE_DOWN] =
@@ -1011,7 +1022,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY, COMBO_STARTER_HARDEN},
-        .battleAnimScript = gBattleAnimMove_TakeDown,
+        .battleAnimScript = Move_TAKE_DOWN,
     },
 
     [MOVE_THRASH] =
@@ -1038,7 +1049,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_RAGE},
-        .battleAnimScript = gBattleAnimMove_Thrash,
+        .battleAnimScript = Move_THRASH,
     },
 
     [MOVE_DOUBLE_EDGE] =
@@ -1061,7 +1072,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY, COMBO_STARTER_HARDEN},
-        .battleAnimScript = gBattleAnimMove_DoubleEdge,
+        .battleAnimScript = Move_DOUBLE_EDGE,
     },
 
     [MOVE_TAIL_WHIP] =
@@ -1084,7 +1095,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CHARM},
-        .battleAnimScript = gBattleAnimMove_TailWhip,
+        .battleAnimScript = Move_TAIL_WHIP,
     },
 
     [MOVE_POISON_STING] =
@@ -1109,7 +1120,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PoisonSting,
+        .battleAnimScript = Move_POISON_STING,
     },
 
     [MOVE_TWINEEDLE] =
@@ -1136,7 +1147,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Twineedle,
+        .battleAnimScript = Move_TWINEEDLE,
     },
 
     [MOVE_PIN_MISSILE] =
@@ -1157,7 +1168,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PinMissile,
+        .battleAnimScript = Move_PIN_MISSILE,
     },
 
     [MOVE_LEER] =
@@ -1180,7 +1191,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = COMBO_STARTER_LEER,
         .contestComboMoves = {COMBO_STARTER_RAGE, COMBO_STARTER_SCARY_FACE},
-        .battleAnimScript = gBattleAnimMove_Leer,
+        .battleAnimScript = Move_LEER,
     },
 
     [MOVE_BITE] =
@@ -1207,7 +1218,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_LEER, COMBO_STARTER_SCARY_FACE},
-        .battleAnimScript = gBattleAnimMove_Bite,
+        .battleAnimScript = Move_BITE,
     },
 
     [MOVE_GROWL] =
@@ -1232,7 +1243,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CHARM},
-        .battleAnimScript = gBattleAnimMove_Growl,
+        .battleAnimScript = Move_GROWL,
     },
 
     [MOVE_ROAR] =
@@ -1260,7 +1271,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Roar,
+        .battleAnimScript = Move_ROAR,
     },
 
     [MOVE_SING] =
@@ -1285,7 +1296,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = COMBO_STARTER_SING,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Sing,
+        .battleAnimScript = Move_SING,
     },
 
     [MOVE_SUPERSONIC] =
@@ -1310,7 +1321,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Supersonic,
+        .battleAnimScript = Move_SUPERSONIC,
     },
 
     [MOVE_SONIC_BOOM] =
@@ -1327,12 +1338,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
-        .argument = { .fixedDamage = 20 },
+        .argument = 20,
         .contestEffect = CONTEST_EFFECT_BETTER_IF_SAME_TYPE,
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SonicBoom,
+        .battleAnimScript = Move_SONIC_BOOM,
     },
 
     [MOVE_DISABLE] =
@@ -1362,7 +1373,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Disable,
+        .battleAnimScript = Move_DISABLE,
     },
 
     [MOVE_ACID] =
@@ -1391,7 +1402,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Acid,
+        .battleAnimScript = Move_ACID,
     },
 
     [MOVE_EMBER] =
@@ -1416,7 +1427,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_Ember,
+        .battleAnimScript = Move_EMBER,
     },
 
     [MOVE_FLAMETHROWER] =
@@ -1441,7 +1452,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_Flamethrower,
+        .battleAnimScript = Move_FLAMETHROWER,
     },
 
     [MOVE_MIST] =
@@ -1466,7 +1477,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Mist,
+        .battleAnimScript = Move_MIST,
     },
 
     [MOVE_WATER_GUN] =
@@ -1487,7 +1498,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_MUD_SPORT, COMBO_STARTER_RAIN_DANCE, COMBO_STARTER_WATER_SPORT},
-        .battleAnimScript = gBattleAnimMove_WaterGun,
+        .battleAnimScript = Move_WATER_GUN,
     },
 
     [MOVE_HYDRO_PUMP] =
@@ -1508,7 +1519,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_RAIN_DANCE},
-        .battleAnimScript = gBattleAnimMove_HydroPump,
+        .battleAnimScript = Move_HYDRO_PUMP,
     },
 
     [MOVE_SURF] =
@@ -1531,7 +1542,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = COMBO_STARTER_SURF,
         .contestComboMoves = {COMBO_STARTER_DIVE, COMBO_STARTER_RAIN_DANCE},
-        .battleAnimScript = gBattleAnimMove_Surf,
+        .battleAnimScript = Move_SURF,
     },
 
     [MOVE_ICE_BEAM] =
@@ -1553,7 +1564,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
         .additionalEffects = ADDITIONAL_EFFECTS({
-            // The following effect is also relevant in battle_Pike.c
+            // The following effect is also relevant in battle_pike.c
             // If you cherry-pick this to use something other than the config, make sure to update it there too
             .moveEffect = MOVE_EFFECT_FREEZE_OR_FROSTBITE,
             .chance = 10,
@@ -1562,7 +1573,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_HAIL},
-        .battleAnimScript = gBattleAnimMove_IceBeam,
+        .battleAnimScript = Move_ICE_BEAM,
     },
 
     [MOVE_BLIZZARD] =
@@ -1592,7 +1603,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_HAIL, COMBO_STARTER_POWDER_SNOW},
-        .battleAnimScript = gBattleAnimMove_Blizzard,
+        .battleAnimScript = Move_BLIZZARD,
     },
 
     [MOVE_PSYBEAM] =
@@ -1617,7 +1628,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CALM_MIND},
-        .battleAnimScript = gBattleAnimMove_Psybeam,
+        .battleAnimScript = Move_PSYBEAM,
     },
 
     [MOVE_BUBBLE_BEAM] =
@@ -1642,7 +1653,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_RAIN_DANCE},
-        .battleAnimScript = gBattleAnimMove_BubbleBeam,
+        .battleAnimScript = Move_BUBBLE_BEAM,
     },
 
     [MOVE_AURORA_BEAM] =
@@ -1667,7 +1678,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_HAIL},
-        .battleAnimScript = gBattleAnimMove_AuroraBeam,
+        .battleAnimScript = Move_AURORA_BEAM,
     },
 
     [MOVE_HYPER_BEAM] =
@@ -1691,7 +1702,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_HyperBeam,
+        .battleAnimScript = Move_HYPER_BEAM,
     },
 
     [MOVE_PECK] =
@@ -1713,7 +1724,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = COMBO_STARTER_PECK,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Peck,
+        .battleAnimScript = Move_PECK,
     },
 
     [MOVE_DRILL_PECK] =
@@ -1735,7 +1746,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_PECK},
-        .battleAnimScript = gBattleAnimMove_DrillPeck,
+        .battleAnimScript = Move_DRILL_PECK,
     },
 
     [MOVE_SUBMISSION] =
@@ -1758,7 +1769,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_MIND_READER},
-        .battleAnimScript = gBattleAnimMove_Submission,
+        .battleAnimScript = Move_SUBMISSION,
     },
 
     [MOVE_LOW_KICK] =
@@ -1780,7 +1791,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_LowKick,
+        .battleAnimScript = Move_LOW_KICK,
     },
 
     [MOVE_COUNTER] =
@@ -1807,7 +1818,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_TAUNT},
-        .battleAnimScript = gBattleAnimMove_Counter,
+        .battleAnimScript = Move_COUNTER,
     },
 
     [MOVE_SEISMIC_TOSS] =
@@ -1830,7 +1841,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_FAKE_OUT},
-        .battleAnimScript = gBattleAnimMove_SeismicToss,
+        .battleAnimScript = Move_SEISMIC_TOSS,
     },
 
     [MOVE_STRENGTH] =
@@ -1852,7 +1863,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Strength,
+        .battleAnimScript = Move_STRENGTH,
     },
 
     [MOVE_ABSORB] =
@@ -1869,14 +1880,13 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
-        .argument = { .absorbPercentage = 50 },
         .ignoresKingsRock = (B_UPDATED_MOVE_FLAGS == GEN_3 || B_UPDATED_MOVE_FLAGS == GEN_4),
         .healingMove = B_HEAL_BLOCKING >= GEN_6,
         .contestEffect = CONTEST_EFFECT_STARTLE_PREV_MON,
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_GROWTH},
-        .battleAnimScript = gBattleAnimMove_Absorb,
+        .battleAnimScript = Move_ABSORB,
     },
 
     [MOVE_MEGA_DRAIN] =
@@ -1891,7 +1901,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
-        .argument = { .absorbPercentage = 50 },
         .zMove = { .powerOverride = 120 },
         .ignoresKingsRock = (B_UPDATED_MOVE_FLAGS == GEN_3 || B_UPDATED_MOVE_FLAGS == GEN_4),
         .healingMove = B_HEAL_BLOCKING >= GEN_6,
@@ -1899,7 +1908,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_GROWTH},
-        .battleAnimScript = gBattleAnimMove_MegaDrain,
+        .battleAnimScript = Move_MEGA_DRAIN,
     },
 
     [MOVE_LEECH_SEED] =
@@ -1922,7 +1931,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = COMBO_STARTER_LEECH_SEED,
         .contestComboMoves = {COMBO_STARTER_GROWTH, COMBO_STARTER_WORRY_SEED},
-        .battleAnimScript = gBattleAnimMove_LeechSeed,
+        .battleAnimScript = Move_LEECH_SEED,
     },
 
     [MOVE_GROWTH] =
@@ -1952,7 +1961,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = COMBO_STARTER_GROWTH,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Growth,
+        .battleAnimScript = Move_GROWTH,
     },
 
     [MOVE_RAZOR_LEAF] =
@@ -1975,7 +1984,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_GROWTH},
-        .battleAnimScript = gBattleAnimMove_RazorLeaf,
+        .battleAnimScript = Move_RAZOR_LEAF,
     },
 
     [MOVE_SOLAR_BEAM] =
@@ -1994,17 +2003,17 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .category = DAMAGE_CATEGORY_SPECIAL,
         .sleepTalkBanned = TRUE,
         .instructBanned = TRUE,
-        .argument.twoTurnAttack = { .stringId =  STRINGID_PKMNTOOKSUNLIGHT, .status = B_WEATHER_SUN },
+        .argument = TWO_TURN_ARG(STRINGID_PKMNTOOKSUNLIGHT, B_WEATHER_SUN),
         .contestEffect = CONTEST_EFFECT_HIGHLY_APPEALING,
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_GROWTH, COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_SolarBeam,
+        .battleAnimScript = Move_SOLAR_BEAM,
     },
 
     [MOVE_POISON_POWDER] =
     {
-        .name = COMPOUND_STRING("Poison Powder"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("PoisonPowder", "Poison Powder"),
         .description = COMPOUND_STRING(
             "Scatters a toxic powder\n"
             "that may poison the foe."),
@@ -2023,7 +2032,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SWEET_SCENT},
-        .battleAnimScript = gBattleAnimMove_PoisonPowder,
+        .battleAnimScript = Move_POISON_POWDER,
     },
 
     [MOVE_STUN_SPORE] =
@@ -2047,7 +2056,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SWEET_SCENT},
-        .battleAnimScript = gBattleAnimMove_StunSpore,
+        .battleAnimScript = Move_STUN_SPORE,
     },
 
     [MOVE_SLEEP_POWDER] =
@@ -2071,7 +2080,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SWEET_SCENT},
-        .battleAnimScript = gBattleAnimMove_SleepPowder,
+        .battleAnimScript = Move_SLEEP_POWDER,
     },
 
     [MOVE_PETAL_DANCE] =
@@ -2105,7 +2114,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_GROWTH},
-        .battleAnimScript = gBattleAnimMove_PetalDance,
+        .battleAnimScript = Move_PETAL_DANCE,
     },
 
     [MOVE_STRING_SHOT] =
@@ -2128,7 +2137,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = COMBO_STARTER_STRING_SHOT,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_StringShot,
+        .battleAnimScript = Move_STRING_SHOT,
     },
 
     [MOVE_DRAGON_RAGE] =
@@ -2146,12 +2155,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
         .ignoresKingsRock = (B_UPDATED_MOVE_FLAGS == GEN_4) || (B_UPDATED_MOVE_FLAGS < GEN_3),
-        .argument = { .fixedDamage = 40 },
+        .argument = 40,
         .contestEffect = CONTEST_EFFECT_BETTER_WHEN_LATER,
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = COMBO_STARTER_DRAGON_RAGE,
         .contestComboMoves = {COMBO_STARTER_DRAGON_BREATH, COMBO_STARTER_DRAGON_DANCE, COMBO_STARTER_DRAGON_RUSH, COMBO_STARTER_DRAGON_TAIL},
-        .battleAnimScript = gBattleAnimMove_DragonRage,
+        .battleAnimScript = Move_DRAGON_RAGE,
     },
 
     [MOVE_FIRE_SPIN] =
@@ -2176,12 +2185,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_FireSpin,
+        .battleAnimScript = Move_FIRE_SPIN,
     },
 
     [MOVE_THUNDER_SHOCK] =
     {
-        .name = COMPOUND_STRING("Thunder Shock"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("ThunderShock", "Thunder Shock"),
         .description = COMPOUND_STRING(
             "An electrical attack that\n"
             "may paralyze the foe."),
@@ -2201,7 +2210,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CHARGE},
-        .battleAnimScript = gBattleAnimMove_ThunderShock,
+        .battleAnimScript = Move_THUNDER_SHOCK,
     },
 
     [MOVE_THUNDERBOLT] =
@@ -2226,7 +2235,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CHARGE},
-        .battleAnimScript = gBattleAnimMove_Thunderbolt,
+        .battleAnimScript = Move_THUNDERBOLT,
     },
 
     [MOVE_THUNDER_WAVE] =
@@ -2249,7 +2258,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CHARGE},
-        .battleAnimScript = gBattleAnimMove_ThunderWave,
+        .battleAnimScript = Move_THUNDER_WAVE,
     },
 
     [MOVE_THUNDER] =
@@ -2275,7 +2284,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CHARGE, COMBO_STARTER_LOCK_ON, COMBO_STARTER_RAIN_DANCE},
-        .battleAnimScript = gBattleAnimMove_Thunder,
+        .battleAnimScript = Move_THUNDER,
     },
 
     [MOVE_ROCK_THROW] =
@@ -2296,7 +2305,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = COMBO_STARTER_ROCK_THROW,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_RockThrow,
+        .battleAnimScript = Move_ROCK_THROW,
     },
 
     [MOVE_EARTHQUAKE] =
@@ -2320,7 +2329,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = COMBO_STARTER_EARTHQUAKE,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Earthquake,
+        .battleAnimScript = Move_EARTHQUAKE,
     },
 
     [MOVE_FISSURE] =
@@ -2343,7 +2352,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_EARTHQUAKE},
-        .battleAnimScript = gBattleAnimMove_Fissure,
+        .battleAnimScript = Move_FISSURE,
     },
 
     [MOVE_DIG] =
@@ -2365,12 +2374,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .instructBanned = TRUE,
         .assistBanned = TRUE,
         .skyBattleBanned = TRUE,
-        .argument.twoTurnAttack = { .stringId = STRINGID_PKMNDUGHOLE, .status = COMPRESS_BITS(STATUS3_UNDERGROUND) },
+        .argument = TWO_TURN_ARG(STRINGID_PKMNDUGHOLE, COMPRESS_BITS(STATUS3_UNDERGROUND)),
         .contestEffect = CONTEST_EFFECT_AVOID_STARTLE,
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Dig,
+        .battleAnimScript = Move_DIG,
     },
 
     [MOVE_TOXIC] =
@@ -2393,7 +2402,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = COMBO_STARTER_TOXIC,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Toxic,
+        .battleAnimScript = Move_TOXIC,
     },
 
     [MOVE_CONFUSION] =
@@ -2418,7 +2427,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = COMBO_STARTER_CONFUSION,
         .contestComboMoves = {COMBO_STARTER_CALM_MIND, COMBO_STARTER_KINESIS, COMBO_STARTER_PSYCHIC},
-        .battleAnimScript = gBattleAnimMove_Confusion,
+        .battleAnimScript = Move_CONFUSION,
     },
 
     [MOVE_PSYCHIC] =
@@ -2443,7 +2452,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = COMBO_STARTER_PSYCHIC,
         .contestComboMoves = {COMBO_STARTER_CALM_MIND, COMBO_STARTER_CONFUSION, COMBO_STARTER_KINESIS},
-        .battleAnimScript = gBattleAnimMove_Psychic,
+        .battleAnimScript = Move_PSYCHIC,
     },
 
     [MOVE_HYPNOSIS] =
@@ -2466,7 +2475,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = COMBO_STARTER_HYPNOSIS,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Hypnosis,
+        .battleAnimScript = Move_HYPNOSIS,
     },
 
     [MOVE_MEDITATE] =
@@ -2491,7 +2500,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CALM_MIND},
-        .battleAnimScript = gBattleAnimMove_Meditate,
+        .battleAnimScript = Move_MEDITATE,
     },
 
     [MOVE_AGILITY] =
@@ -2516,7 +2525,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_DOUBLE_TEAM},
-        .battleAnimScript = gBattleAnimMove_Agility,
+        .battleAnimScript = Move_AGILITY,
     },
 
     [MOVE_QUICK_ATTACK] =
@@ -2538,7 +2547,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_DOUBLE_TEAM},
-        .battleAnimScript = gBattleAnimMove_QuickAttack,
+        .battleAnimScript = Move_QUICK_ATTACK,
     },
 
     [MOVE_RAGE] =
@@ -2560,7 +2569,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = COMBO_STARTER_RAGE,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Rage,
+        .battleAnimScript = Move_RAGE,
     },
 
     [MOVE_TELEPORT] =
@@ -2584,7 +2593,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CONFUSION, COMBO_STARTER_DOUBLE_TEAM, COMBO_STARTER_KINESIS, COMBO_STARTER_PSYCHIC},
-        .battleAnimScript = gBattleAnimMove_Teleport,
+        .battleAnimScript = Move_TELEPORT,
     },
 
     [MOVE_NIGHT_SHADE] =
@@ -2605,7 +2614,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_NightShade,
+        .battleAnimScript = Move_NIGHT_SHADE,
     },
 
     [MOVE_MIMIC] =
@@ -2635,7 +2644,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Mimic,
+        .battleAnimScript = Move_MIMIC,
     },
 
     [MOVE_SCREECH] =
@@ -2660,7 +2669,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Screech,
+        .battleAnimScript = Move_SCREECH,
     },
 
     [MOVE_DOUBLE_TEAM] =
@@ -2685,7 +2694,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = COMBO_STARTER_DOUBLE_TEAM,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_DoubleTeam,
+        .battleAnimScript = Move_DOUBLE_TEAM,
     },
 
     [MOVE_RECOVER] =
@@ -2717,7 +2726,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Recover,
+        .battleAnimScript = Move_RECOVER,
     },
 
     [MOVE_HARDEN] =
@@ -2742,7 +2751,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = COMBO_STARTER_HARDEN,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Harden,
+        .battleAnimScript = Move_HARDEN,
     },
 
     [MOVE_MINIMIZE] =
@@ -2767,7 +2776,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Minimize,
+        .battleAnimScript = Move_MINIMIZE,
     },
 
     [MOVE_SMOKESCREEN] =
@@ -2790,7 +2799,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SMOG},
-        .battleAnimScript = gBattleAnimMove_Smokescreen,
+        .battleAnimScript = Move_SMOKESCREEN,
     },
 
     [MOVE_CONFUSE_RAY] =
@@ -2813,7 +2822,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ConfuseRay,
+        .battleAnimScript = Move_CONFUSE_RAY,
     },
 
     [MOVE_WITHDRAW] =
@@ -2838,7 +2847,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_RAIN_DANCE},
-        .battleAnimScript = gBattleAnimMove_Withdraw,
+        .battleAnimScript = Move_WITHDRAW,
     },
 
     [MOVE_DEFENSE_CURL] =
@@ -2863,7 +2872,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = COMBO_STARTER_DEFENSE_CURL,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_DefenseCurl,
+        .battleAnimScript = Move_DEFENSE_CURL,
     },
 
     [MOVE_BARRIER] =
@@ -2888,7 +2897,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Barrier,
+        .battleAnimScript = Move_BARRIER,
     },
 
     [MOVE_LIGHT_SCREEN] =
@@ -2913,7 +2922,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CALM_MIND},
-        .battleAnimScript = gBattleAnimMove_LightScreen,
+        .battleAnimScript = Move_LIGHT_SCREEN,
     },
 
     [MOVE_HAZE] =
@@ -2938,7 +2947,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_HAIL},
-        .battleAnimScript = gBattleAnimMove_Haze,
+        .battleAnimScript = Move_HAZE,
     },
 
     [MOVE_REFLECT] =
@@ -2963,7 +2972,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CALM_MIND},
-        .battleAnimScript = gBattleAnimMove_Reflect,
+        .battleAnimScript = Move_REFLECT,
     },
 
     [MOVE_FOCUS_ENERGY] =
@@ -2981,7 +2990,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_STATUS,
         .zMove = { .effect = Z_EFFECT_ACC_UP_1 },
-        .argument = { .status = STATUS2_FOCUS_ENERGY },
+        .argument = STATUS2_FOCUS_ENERGY,
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
         .snatchAffected = TRUE,
@@ -2989,7 +2998,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = COMBO_STARTER_FOCUS_ENERGY,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FocusEnergy,
+        .battleAnimScript = Move_FOCUS_ENERGY,
     },
 
     [MOVE_BIDE] =
@@ -3014,7 +3023,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Bide,
+        .battleAnimScript = Move_BIDE,
     },
 
     [MOVE_METRONOME] =
@@ -3044,7 +3053,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Metronome,
+        .battleAnimScript = Move_METRONOME,
     },
 
     [MOVE_MIRROR_MOVE] =
@@ -3073,12 +3082,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_MirrorMove,
+        .battleAnimScript = Move_MIRROR_MOVE,
     },
 
     [MOVE_SELF_DESTRUCT] =
     {
-        .name = COMPOUND_STRING("Self-Destruct"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("SelfDestruct", "Self-Destruct"),
         .description = COMPOUND_STRING(
             "Inflicts severe damage but\n"
             "makes the user faint."),
@@ -3095,7 +3104,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SelfDestruct,
+        .battleAnimScript = Move_SELF_DESTRUCT,
     },
 
     [MOVE_EGG_BOMB] =
@@ -3117,7 +3126,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SOFT_BOILED},
-        .battleAnimScript = gBattleAnimMove_EggBomb,
+        .battleAnimScript = Move_EGG_BOMB,
     },
 
     [MOVE_LICK] =
@@ -3143,7 +3152,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Lick,
+        .battleAnimScript = Move_LICK,
     },
 
     [MOVE_SMOG] =
@@ -3168,7 +3177,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = COMBO_STARTER_SMOG,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Smog,
+        .battleAnimScript = Move_SMOG,
     },
 
     [MOVE_SLUDGE] =
@@ -3193,7 +3202,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = COMBO_STARTER_SLUDGE,
         .contestComboMoves = {COMBO_STARTER_SLUDGE_BOMB},
-        .battleAnimScript = gBattleAnimMove_Sludge,
+        .battleAnimScript = Move_SLUDGE,
     },
 
     [MOVE_BONE_CLUB] =
@@ -3218,7 +3227,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = COMBO_STARTER_BONE_CLUB,
         .contestComboMoves = {COMBO_STARTER_BONEMERANG, COMBO_STARTER_BONE_RUSH, COMBO_STARTER_SHADOW_BONE},
-        .battleAnimScript = gBattleAnimMove_BoneClub,
+        .battleAnimScript = Move_BONE_CLUB,
     },
 
     [MOVE_FIRE_BLAST] =
@@ -3243,7 +3252,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_FireBlast,
+        .battleAnimScript = Move_FIRE_BLAST,
     },
 
     [MOVE_WATERFALL] =
@@ -3271,7 +3280,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_RAIN_DANCE},
-        .battleAnimScript = gBattleAnimMove_Waterfall,
+        .battleAnimScript = Move_WATERFALL,
     },
 
     [MOVE_CLAMP] =
@@ -3297,7 +3306,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_RAIN_DANCE},
-        .battleAnimScript = gBattleAnimMove_Clamp,
+        .battleAnimScript = Move_CLAMP,
     },
 
     [MOVE_SWIFT] =
@@ -3318,7 +3327,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Swift,
+        .battleAnimScript = Move_SWIFT,
     },
 
     [MOVE_SKULL_BASH] =
@@ -3338,7 +3347,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .makesContact = TRUE,
         .sleepTalkBanned = TRUE,
         .instructBanned = TRUE,
-        .argument.twoTurnAttack = { .stringId = STRINGID_PKMNLOWEREDHEAD },
+        .argument = TWO_TURN_ARG(STRINGID_PKMNLOWEREDHEAD),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_DEF_PLUS_1,
             .self = TRUE,
@@ -3348,7 +3357,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SkullBash,
+        .battleAnimScript = Move_SKULL_BASH,
     },
 
     [MOVE_SPIKE_CANNON] =
@@ -3369,7 +3378,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SpikeCannon,
+        .battleAnimScript = Move_SPIKE_CANNON,
     },
 
     [MOVE_CONSTRICT] =
@@ -3395,7 +3404,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Constrict,
+        .battleAnimScript = Move_CONSTRICT,
     },
 
     [MOVE_AMNESIA] =
@@ -3420,7 +3429,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Amnesia,
+        .battleAnimScript = Move_AMNESIA,
     },
 
     [MOVE_KINESIS] =
@@ -3443,7 +3452,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = COMBO_STARTER_KINESIS,
         .contestComboMoves = {COMBO_STARTER_CONFUSION, COMBO_STARTER_PSYCHIC},
-        .battleAnimScript = gBattleAnimMove_Kinesis,
+        .battleAnimScript = Move_KINESIS,
     },
 
     [MOVE_SOFT_BOILED] =
@@ -3469,12 +3478,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = COMBO_STARTER_SOFT_BOILED,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SoftBoiled,
+        .battleAnimScript = Move_SOFT_BOILED,
     },
 
     [MOVE_HIGH_JUMP_KICK] =
     {
-        .name = COMPOUND_STRING("High Jump Kick"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("HighJumpKick", "High Jump Kick"),
         .description = COMPOUND_STRING(
             "A jumping knee kick. If it\n"
             "misses, the user is hurt."),
@@ -3498,7 +3507,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_MIND_READER},
-        .battleAnimScript = gBattleAnimMove_HighJumpKick,
+        .battleAnimScript = Move_HIGH_JUMP_KICK,
     },
 
     [MOVE_GLARE] =
@@ -3527,7 +3536,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_LEER},
-        .battleAnimScript = gBattleAnimMove_Glare,
+        .battleAnimScript = Move_GLARE,
     },
 
     [MOVE_DREAM_EATER] =
@@ -3549,7 +3558,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CALM_MIND, COMBO_STARTER_HYPNOSIS},
-        .battleAnimScript = gBattleAnimMove_DreamEater,
+        .battleAnimScript = Move_DREAM_EATER,
     },
 
     [MOVE_POISON_GAS] =
@@ -3578,7 +3587,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PoisonGas,
+        .battleAnimScript = Move_POISON_GAS,
     },
 
     [MOVE_BARRAGE] =
@@ -3600,7 +3609,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Barrage,
+        .battleAnimScript = Move_BARRAGE,
     },
 
     [MOVE_LEECH_LIFE] =
@@ -3617,7 +3626,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .absorbPercentage = 50 },
         .makesContact = TRUE,
         .ignoresKingsRock = (B_UPDATED_MOVE_FLAGS == GEN_3 || B_UPDATED_MOVE_FLAGS == GEN_4),
         .healingMove = B_HEAL_BLOCKING >= GEN_6,
@@ -3625,7 +3633,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_LeechLife,
+        .battleAnimScript = Move_LEECH_LIFE,
     },
 
     [MOVE_LOVELY_KISS] =
@@ -3648,7 +3656,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_LovelyKiss,
+        .battleAnimScript = Move_LOVELY_KISS,
     },
 
     [MOVE_SKY_ATTACK] =
@@ -3668,7 +3676,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .criticalHitStage = B_UPDATED_MOVE_DATA >= GEN_3,
         .sleepTalkBanned = TRUE,
         .instructBanned = TRUE,
-        .argument.twoTurnAttack = { .stringId = B_UPDATED_MOVE_DATA >= GEN_4 ? STRINGID_CLOAKEDINAHARSHLIGHT : STRINGID_PKMNISGLOWING },
+        .argument = TWO_TURN_ARG(B_UPDATED_MOVE_DATA >= GEN_4 ? STRINGID_CLOAKEDINAHARSHLIGHT : STRINGID_PKMNISGLOWING),
     #if B_UPDATED_MOVE_DATA >= GEN_3
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_FLINCH,
@@ -3679,7 +3687,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SkyAttack,
+        .battleAnimScript = Move_SKY_ATTACK,
     },
 
     [MOVE_TRANSFORM] =
@@ -3709,7 +3717,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Transform,
+        .battleAnimScript = Move_TRANSFORM,
     },
 
     [MOVE_BUBBLE] =
@@ -3734,7 +3742,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_RAIN_DANCE},
-        .battleAnimScript = gBattleAnimMove_Bubble,
+        .battleAnimScript = Move_BUBBLE,
     },
 
     [MOVE_DIZZY_PUNCH] =
@@ -3761,7 +3769,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_DizzyPunch,
+        .battleAnimScript = Move_DIZZY_PUNCH,
     },
 
     [MOVE_SPORE] =
@@ -3785,7 +3793,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Spore,
+        .battleAnimScript = Move_SPORE,
     },
 
     [MOVE_FLASH] =
@@ -3808,7 +3816,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Flash,
+        .battleAnimScript = Move_FLASH,
     },
 
     [MOVE_PSYWAVE] =
@@ -3829,7 +3837,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CALM_MIND},
-        .battleAnimScript = gBattleAnimMove_Psywave,
+        .battleAnimScript = Move_PSYWAVE,
     },
 
     [MOVE_SPLASH] =
@@ -3854,7 +3862,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Splash,
+        .battleAnimScript = Move_SPLASH,
     },
 
     [MOVE_ACID_ARMOR] =
@@ -3879,7 +3887,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_AcidArmor,
+        .battleAnimScript = Move_ACID_ARMOR,
     },
 
     [MOVE_CRABHAMMER] =
@@ -3902,7 +3910,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_RAIN_DANCE, COMBO_STARTER_SWORDS_DANCE},
-        .battleAnimScript = gBattleAnimMove_Crabhammer,
+        .battleAnimScript = Move_CRABHAMMER,
     },
 
     [MOVE_EXPLOSION] =
@@ -3924,7 +3932,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Explosion,
+        .battleAnimScript = Move_EXPLOSION,
     },
 
     [MOVE_FURY_SWIPES] =
@@ -3946,7 +3954,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SCRATCH},
-        .battleAnimScript = gBattleAnimMove_FurySwipes,
+        .battleAnimScript = Move_FURY_SWIPES,
     },
 
     [MOVE_BONEMERANG] =
@@ -3968,7 +3976,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = COMBO_STARTER_BONEMERANG,
         .contestComboMoves = {COMBO_STARTER_BONE_CLUB, COMBO_STARTER_BONE_RUSH, COMBO_STARTER_SHADOW_BONE},
-        .battleAnimScript = gBattleAnimMove_Bonemerang,
+        .battleAnimScript = Move_BONEMERANG,
     },
 
     [MOVE_REST] =
@@ -3994,7 +4002,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = COMBO_STARTER_REST,
         .contestComboMoves = {COMBO_STARTER_BELLY_DRUM, COMBO_STARTER_CHARM, COMBO_STARTER_YAWN},
-        .battleAnimScript = gBattleAnimMove_Rest,
+        .battleAnimScript = Move_REST,
     },
 
     [MOVE_ROCK_SLIDE] =
@@ -4019,7 +4027,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_ROCK_THROW},
-        .battleAnimScript = gBattleAnimMove_RockSlide,
+        .battleAnimScript = Move_ROCK_SLIDE,
     },
 
     [MOVE_HYPER_FANG] =
@@ -4046,7 +4054,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_HyperFang,
+        .battleAnimScript = Move_HYPER_FANG,
     },
 
     [MOVE_SHARPEN] =
@@ -4071,7 +4079,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Sharpen,
+        .battleAnimScript = Move_SHARPEN,
     },
 
     [MOVE_CONVERSION] =
@@ -4096,7 +4104,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Conversion,
+        .battleAnimScript = Move_CONVERSION,
     },
 
     [MOVE_TRI_ATTACK] =
@@ -4121,7 +4129,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_LOCK_ON},
-        .battleAnimScript = gBattleAnimMove_TriAttack,
+        .battleAnimScript = Move_TRI_ATTACK,
     },
 
     [MOVE_SUPER_FANG] =
@@ -4144,7 +4152,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SCARY_FACE},
-        .battleAnimScript = gBattleAnimMove_SuperFang,
+        .battleAnimScript = Move_SUPER_FANG,
     },
 
     [MOVE_SLASH] =
@@ -4168,7 +4176,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SCRATCH, COMBO_STARTER_SWORDS_DANCE},
-        .battleAnimScript = gBattleAnimMove_Slash,
+        .battleAnimScript = Move_SLASH,
     },
 
     [MOVE_SUBSTITUTE] =
@@ -4194,7 +4202,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Substitute,
+        .battleAnimScript = Move_SUBSTITUTE,
     },
 
     [MOVE_STRUGGLE] =
@@ -4232,7 +4240,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .encoreBanned = TRUE,
         .assistBanned = TRUE,
         .sketchBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_Struggle,
+        .battleAnimScript = Move_STRUGGLE,
     },
 
     [MOVE_SKETCH] =
@@ -4265,7 +4273,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Sketch,
+        .battleAnimScript = Move_SKETCH,
     },
 
     [MOVE_TRIPLE_KICK] =
@@ -4288,7 +4296,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY},
-        .battleAnimScript = gBattleAnimMove_TripleKick,
+        .battleAnimScript = Move_TRIPLE_KICK,
     },
 
     [MOVE_THIEF] =
@@ -4318,7 +4326,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Thief,
+        .battleAnimScript = Move_THIEF,
     },
 
     [MOVE_SPIDER_WEB] =
@@ -4342,7 +4350,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_STRING_SHOT},
-        .battleAnimScript = gBattleAnimMove_SpiderWeb,
+        .battleAnimScript = Move_SPIDER_WEB,
     },
 
     [MOVE_MIND_READER] =
@@ -4364,7 +4372,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = COMBO_STARTER_MIND_READER,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_MindReader,
+        .battleAnimScript = Move_MIND_READER,
     },
 
     [MOVE_NIGHTMARE] =
@@ -4387,7 +4395,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Nightmare,
+        .battleAnimScript = Move_NIGHTMARE,
     },
 
     [MOVE_FLAME_WHEEL] =
@@ -4414,7 +4422,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_FlameWheel,
+        .battleAnimScript = Move_FLAME_WHEEL,
     },
 
     [MOVE_SNORE] =
@@ -4442,7 +4450,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_REST},
-        .battleAnimScript = gBattleAnimMove_Snore,
+        .battleAnimScript = Move_SNORE,
     },
 
     [MOVE_CURSE] =
@@ -4467,7 +4475,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = COMBO_STARTER_CURSE,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Curse,
+        .battleAnimScript = Move_CURSE,
     },
 
     [MOVE_FLAIL] =
@@ -4489,7 +4497,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_ENDURE},
-        .battleAnimScript = gBattleAnimMove_Flail,
+        .battleAnimScript = Move_FLAIL,
     },
 
     [MOVE_CONVERSION_2] =
@@ -4514,7 +4522,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Conversion2,
+        .battleAnimScript = Move_CONVERSION_2,
     },
 
     [MOVE_AEROBLAST] =
@@ -4537,7 +4545,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Aeroblast,
+        .battleAnimScript = Move_AEROBLAST,
     },
 
     [MOVE_COTTON_SPORE] =
@@ -4561,7 +4569,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_CottonSpore,
+        .battleAnimScript = Move_COTTON_SPORE,
     },
 
     [MOVE_REVERSAL] =
@@ -4583,7 +4591,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_ENDURE},
-        .battleAnimScript = gBattleAnimMove_Reversal,
+        .battleAnimScript = Move_REVERSAL,
     },
 
     [MOVE_SPITE] =
@@ -4607,7 +4615,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CURSE},
-        .battleAnimScript = gBattleAnimMove_Spite,
+        .battleAnimScript = Move_SPITE,
     },
 
     [MOVE_POWDER_SNOW] =
@@ -4636,7 +4644,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = COMBO_STARTER_POWDER_SNOW,
         .contestComboMoves = {COMBO_STARTER_HAIL},
-        .battleAnimScript = gBattleAnimMove_PowderSnow,
+        .battleAnimScript = Move_POWDER_SNOW,
     },
 
     [MOVE_PROTECT] =
@@ -4661,7 +4669,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_HARDEN},
-        .battleAnimScript = gBattleAnimMove_Protect,
+        .battleAnimScript = Move_PROTECT,
     },
 
     [MOVE_MACH_PUNCH] =
@@ -4684,7 +4692,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_MachPunch,
+        .battleAnimScript = Move_MACH_PUNCH,
     },
 
     [MOVE_SCARY_FACE] =
@@ -4707,7 +4715,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = COMBO_STARTER_SCARY_FACE,
         .contestComboMoves = {COMBO_STARTER_LEER, COMBO_STARTER_RAGE},
-        .battleAnimScript = gBattleAnimMove_ScaryFace,
+        .battleAnimScript = Move_SCARY_FACE,
     },
 
     [MOVE_FEINT_ATTACK] =
@@ -4729,7 +4737,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_FAKE_OUT, COMBO_STARTER_LEER, COMBO_STARTER_POUND},
-        .battleAnimScript = gBattleAnimMove_FeintAttack,
+        .battleAnimScript = Move_FEINT_ATTACK,
     },
 
     [MOVE_SWEET_KISS] =
@@ -4752,7 +4760,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CHARM},
-        .battleAnimScript = gBattleAnimMove_SweetKiss,
+        .battleAnimScript = Move_SWEET_KISS,
     },
 
     [MOVE_BELLY_DRUM] =
@@ -4777,7 +4785,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = COMBO_STARTER_BELLY_DRUM,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_BellyDrum,
+        .battleAnimScript = Move_BELLY_DRUM,
     },
 
     [MOVE_SLUDGE_BOMB] =
@@ -4803,7 +4811,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = COMBO_STARTER_SLUDGE_BOMB,
         .contestComboMoves = {COMBO_STARTER_SLUDGE},
-        .battleAnimScript = gBattleAnimMove_SludgeBomb,
+        .battleAnimScript = Move_SLUDGE_BOMB,
     },
 
     [MOVE_MUD_SLAP] =
@@ -4828,7 +4836,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = COMBO_STARTER_MUD_SLAP,
         .contestComboMoves = {COMBO_STARTER_MUD_SPORT, COMBO_STARTER_SAND_ATTACK, COMBO_STARTER_SANDSTORM},
-        .battleAnimScript = gBattleAnimMove_MudSlap,
+        .battleAnimScript = Move_MUD_SLAP,
     },
 
     [MOVE_OCTAZOOKA] =
@@ -4854,7 +4862,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_LOCK_ON, COMBO_STARTER_RAIN_DANCE},
-        .battleAnimScript = gBattleAnimMove_Octazooka,
+        .battleAnimScript = Move_OCTAZOOKA,
     },
 
     [MOVE_SPIKES] =
@@ -4881,7 +4889,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Spikes,
+        .battleAnimScript = Move_SPIKES,
     },
 
     [MOVE_ZAP_CANNON] =
@@ -4907,7 +4915,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CHARGE, COMBO_STARTER_LOCK_ON},
-        .battleAnimScript = gBattleAnimMove_ZapCannon,
+        .battleAnimScript = Move_ZAP_CANNON,
     },
 
     [MOVE_FORESIGHT] =
@@ -4931,7 +4939,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Foresight,
+        .battleAnimScript = Move_FORESIGHT,
     },
 
     [MOVE_DESTINY_BOND] =
@@ -4959,7 +4967,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CURSE, COMBO_STARTER_ENDURE, COMBO_STARTER_MEAN_LOOK},
-        .battleAnimScript = gBattleAnimMove_DestinyBond,
+        .battleAnimScript = Move_DESTINY_BOND,
     },
 
     [MOVE_PERISH_SONG] =
@@ -4985,7 +4993,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_MEAN_LOOK, COMBO_STARTER_SING},
-        .battleAnimScript = gBattleAnimMove_PerishSong,
+        .battleAnimScript = Move_PERISH_SONG,
     },
 
     [MOVE_ICY_WIND] =
@@ -5011,7 +5019,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_HAIL},
-        .battleAnimScript = gBattleAnimMove_IcyWind,
+        .battleAnimScript = Move_ICY_WIND,
     },
 
     [MOVE_DETECT] =
@@ -5038,7 +5046,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_TAUNT},
-        .battleAnimScript = gBattleAnimMove_Detect,
+        .battleAnimScript = Move_DETECT,
     },
 
     [MOVE_BONE_RUSH] =
@@ -5059,7 +5067,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = COMBO_STARTER_BONE_RUSH,
         .contestComboMoves = {COMBO_STARTER_BONE_CLUB, COMBO_STARTER_BONEMERANG, COMBO_STARTER_FOCUS_ENERGY, COMBO_STARTER_SHADOW_BONE},
-        .battleAnimScript = gBattleAnimMove_BoneRush,
+        .battleAnimScript = Move_BONE_RUSH,
     },
 
     [MOVE_LOCK_ON] =
@@ -5081,7 +5089,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = COMBO_STARTER_LOCK_ON,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_LockOn,
+        .battleAnimScript = Move_LOCK_ON,
     },
 
     [MOVE_OUTRAGE] =
@@ -5108,7 +5116,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Outrage,
+        .battleAnimScript = Move_OUTRAGE,
     },
 
     [MOVE_SANDSTORM] =
@@ -5133,7 +5141,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = COMBO_STARTER_SANDSTORM,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Sandstorm,
+        .battleAnimScript = Move_SANDSTORM,
     },
 
     [MOVE_GIGA_DRAIN] =
@@ -5150,14 +5158,13 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
-        .argument = { .absorbPercentage = 50 },
         .ignoresKingsRock = (B_UPDATED_MOVE_FLAGS == GEN_3 || B_UPDATED_MOVE_FLAGS == GEN_4),
         .healingMove = B_HEAL_BLOCKING >= GEN_6,
         .contestEffect = CONTEST_EFFECT_STARTLE_MON_WITH_JUDGES_ATTENTION,
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_GROWTH},
-        .battleAnimScript = gBattleAnimMove_GigaDrain,
+        .battleAnimScript = Move_GIGA_DRAIN,
     },
 
     [MOVE_ENDURE] =
@@ -5184,7 +5191,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = COMBO_STARTER_ENDURE,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Endure,
+        .battleAnimScript = Move_ENDURE,
     },
 
     [MOVE_CHARM] =
@@ -5207,7 +5214,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = COMBO_STARTER_CHARM,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Charm,
+        .battleAnimScript = Move_CHARM,
     },
 
     [MOVE_ROLLOUT] =
@@ -5231,7 +5238,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_DEFENSE_CURL, COMBO_STARTER_HARDEN},
-        .battleAnimScript = gBattleAnimMove_Rollout,
+        .battleAnimScript = Move_ROLLOUT,
     },
 
     [MOVE_FALSE_SWIPE] =
@@ -5251,7 +5258,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SWORDS_DANCE},
-        .battleAnimScript = gBattleAnimMove_FalseSwipe,
+        .battleAnimScript = Move_FALSE_SWIPE,
     },
 
     [MOVE_SWAGGER] =
@@ -5274,7 +5281,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Swagger,
+        .battleAnimScript = Move_SWAGGER,
     },
 
     [MOVE_MILK_DRINK] =
@@ -5300,7 +5307,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_MilkDrink,
+        .battleAnimScript = Move_MILK_DRINK,
     },
 
     [MOVE_SPARK] =
@@ -5326,7 +5333,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CHARGE},
-        .battleAnimScript = gBattleAnimMove_Spark,
+        .battleAnimScript = Move_SPARK,
     },
 
     [MOVE_FURY_CUTTER] =
@@ -5355,7 +5362,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SWORDS_DANCE},
-        .battleAnimScript = gBattleAnimMove_FuryCutter,
+        .battleAnimScript = Move_FURY_CUTTER,
     },
 
     [MOVE_STEEL_WING] =
@@ -5382,7 +5389,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SteelWing,
+        .battleAnimScript = Move_STEEL_WING,
     },
 
     [MOVE_MEAN_LOOK] =
@@ -5406,7 +5413,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = COMBO_STARTER_MEAN_LOOK,
         .contestComboMoves = {COMBO_STARTER_CURSE},
-        .battleAnimScript = gBattleAnimMove_MeanLook,
+        .battleAnimScript = Move_MEAN_LOOK,
     },
 
     [MOVE_ATTRACT] =
@@ -5430,7 +5437,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Attract,
+        .battleAnimScript = Move_ATTRACT,
     },
 
     [MOVE_SLEEP_TALK] =
@@ -5461,7 +5468,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_REST},
-        .battleAnimScript = gBattleAnimMove_SleepTalk,
+        .battleAnimScript = Move_SLEEP_TALK,
     },
 
     [MOVE_HEAL_BELL] =
@@ -5488,7 +5495,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = COMBO_STARTER_HEAL_BELL,
         .contestComboMoves = {COMBO_STARTER_LUCKY_CHANT},
-        .battleAnimScript = gBattleAnimMove_HealBell,
+        .battleAnimScript = Move_HEAL_BELL,
     },
 
     [MOVE_RETURN] =
@@ -5510,7 +5517,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Return,
+        .battleAnimScript = Move_RETURN,
     },
 
     [MOVE_PRESENT] =
@@ -5532,7 +5539,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Present,
+        .battleAnimScript = Move_PRESENT,
     },
 
     [MOVE_FRUSTRATION] =
@@ -5554,7 +5561,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Frustration,
+        .battleAnimScript = Move_FRUSTRATION,
     },
 
     [MOVE_SAFEGUARD] =
@@ -5579,7 +5586,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Safeguard,
+        .battleAnimScript = Move_SAFEGUARD,
     },
 
     [MOVE_PAIN_SPLIT] =
@@ -5601,7 +5608,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_ENDURE},
-        .battleAnimScript = gBattleAnimMove_PainSplit,
+        .battleAnimScript = Move_PAIN_SPLIT,
     },
 
     [MOVE_SACRED_FIRE] =
@@ -5627,7 +5634,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_SacredFire,
+        .battleAnimScript = Move_SACRED_FIRE,
     },
 
     [MOVE_MAGNITUDE] =
@@ -5650,12 +5657,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Magnitude,
+        .battleAnimScript = Move_MAGNITUDE,
     },
 
     [MOVE_DYNAMIC_PUNCH] =
     {
-        .name = COMPOUND_STRING("Dynamic Punch"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("DynamicPunch", "Dynamic Punch"),
         .description = COMPOUND_STRING(
             "Powerful and sure to cause\n"
             "confusion, but inaccurate."),
@@ -5677,7 +5684,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY, COMBO_STARTER_MIND_READER},
-        .battleAnimScript = gBattleAnimMove_DynamicPunch,
+        .battleAnimScript = Move_DYNAMIC_PUNCH,
     },
 
     [MOVE_MEGAHORN] =
@@ -5699,12 +5706,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Megahorn,
+        .battleAnimScript = Move_MEGAHORN,
     },
 
     [MOVE_DRAGON_BREATH] =
     {
-        .name = COMPOUND_STRING("Dragon Breath"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("DragonBreath", "Dragon Breath"),
         .description = COMPOUND_STRING(
             "Strikes the foe with an\n"
             "incredible blast of breath."),
@@ -5725,7 +5732,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = COMBO_STARTER_DRAGON_BREATH,
         .contestComboMoves = {COMBO_STARTER_DRAGON_DANCE, COMBO_STARTER_DRAGON_RAGE, COMBO_STARTER_DRAGON_RUSH, COMBO_STARTER_DRAGON_TAIL},
-        .battleAnimScript = gBattleAnimMove_DragonBreath,
+        .battleAnimScript = Move_DRAGON_BREATH,
     },
 
     [MOVE_BATON_PASS] =
@@ -5749,7 +5756,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_BatonPass,
+        .battleAnimScript = Move_BATON_PASS,
     },
 
     [MOVE_ENCORE] =
@@ -5774,7 +5781,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Encore,
+        .battleAnimScript = Move_ENCORE,
     },
 
     [MOVE_PURSUIT] =
@@ -5797,7 +5804,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Pursuit,
+        .battleAnimScript = Move_PURSUIT,
     },
 
     [MOVE_RAPID_SPIN] =
@@ -5831,7 +5838,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_RapidSpin,
+        .battleAnimScript = Move_RAPID_SPIN,
     },
 
     [MOVE_SWEET_SCENT] =
@@ -5854,7 +5861,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = COMBO_STARTER_SWEET_SCENT,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SweetScent,
+        .battleAnimScript = Move_SWEET_SCENT,
     },
 
     [MOVE_IRON_TAIL] =
@@ -5880,7 +5887,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_IronTail,
+        .battleAnimScript = Move_IRON_TAIL,
     },
 
     [MOVE_METAL_CLAW] =
@@ -5907,7 +5914,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_METAL_SOUND},
-        .battleAnimScript = gBattleAnimMove_MetalClaw,
+        .battleAnimScript = Move_METAL_CLAW,
     },
 
     [MOVE_VITAL_THROW] =
@@ -5929,7 +5936,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_FAKE_OUT},
-        .battleAnimScript = gBattleAnimMove_VitalThrow,
+        .battleAnimScript = Move_VITAL_THROW,
     },
 
     [MOVE_MORNING_SUN] =
@@ -5955,7 +5962,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_MorningSun,
+        .battleAnimScript = Move_MORNING_SUN,
     },
 
     [MOVE_SYNTHESIS] =
@@ -5981,7 +5988,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_Synthesis,
+        .battleAnimScript = Move_SYNTHESIS,
     },
 
     [MOVE_MOONLIGHT] =
@@ -6007,7 +6014,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_Moonlight,
+        .battleAnimScript = Move_MOONLIGHT,
     },
 
     [MOVE_HIDDEN_POWER] =
@@ -6028,7 +6035,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_HiddenPower,
+        .battleAnimScript = Move_HIDDEN_POWER,
     },
 
     [MOVE_CROSS_CHOP] =
@@ -6051,7 +6058,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY},
-        .battleAnimScript = gBattleAnimMove_CrossChop,
+        .battleAnimScript = Move_CROSS_CHOP,
     },
 
     [MOVE_TWISTER] =
@@ -6078,7 +6085,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Twister,
+        .battleAnimScript = Move_TWISTER,
     },
 
     [MOVE_RAIN_DANCE] =
@@ -6102,7 +6109,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = COMBO_STARTER_RAIN_DANCE,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_RainDance,
+        .battleAnimScript = Move_RAIN_DANCE,
     },
 
     [MOVE_SUNNY_DAY] =
@@ -6126,7 +6133,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = COMBO_STARTER_SUNNY_DAY,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SunnyDay,
+        .battleAnimScript = Move_SUNNY_DAY,
     },
 
     [MOVE_CRUNCH] =
@@ -6161,7 +6168,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SCARY_FACE},
-        .battleAnimScript = gBattleAnimMove_Crunch,
+        .battleAnimScript = Move_CRUNCH,
     },
 
     [MOVE_MIRROR_COAT] =
@@ -6186,7 +6193,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_TAUNT},
-        .battleAnimScript = gBattleAnimMove_MirrorCoat,
+        .battleAnimScript = Move_MIRROR_COAT,
     },
 
     [MOVE_PSYCH_UP] =
@@ -6212,12 +6219,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PsychUp,
+        .battleAnimScript = Move_PSYCH_UP,
     },
 
     [MOVE_EXTREME_SPEED] =
     {
-        .name = COMPOUND_STRING("Extreme Speed"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("ExtremeSpeed", "Extreme Speed"),
         .description = COMPOUND_STRING(
             "An extremely fast and\n"
             "powerful attack."),
@@ -6234,12 +6241,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ExtremeSpeed,
+        .battleAnimScript = Move_EXTREME_SPEED,
     },
 
     [MOVE_ANCIENT_POWER] =
     {
-        .name = COMPOUND_STRING("Ancient Power"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("AncientPower", "Ancient Power"),
         .description = COMPOUND_STRING(
             "An attack that may raise\n"
             "all stats."),
@@ -6261,7 +6268,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_AncientPower,
+        .battleAnimScript = Move_ANCIENT_POWER,
     },
 
     [MOVE_SHADOW_BALL] =
@@ -6287,7 +6294,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ShadowBall,
+        .battleAnimScript = Move_SHADOW_BALL,
     },
 
     [MOVE_FUTURE_SIGHT] =
@@ -6316,7 +6323,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CALM_MIND, COMBO_STARTER_CONFUSION, COMBO_STARTER_KINESIS, COMBO_STARTER_PSYCHIC},
-        .battleAnimScript = gBattleAnimMove_FutureSight,
+        .battleAnimScript = Move_FUTURE_SIGHT,
     },
 
     [MOVE_ROCK_SMASH] =
@@ -6342,7 +6349,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_RockSmash,
+        .battleAnimScript = Move_ROCK_SMASH,
     },
 
     [MOVE_WHIRLPOOL] =
@@ -6367,7 +6374,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_RAIN_DANCE},
-        .battleAnimScript = gBattleAnimMove_Whirlpool,
+        .battleAnimScript = Move_WHIRLPOOL,
     },
 
     [MOVE_BEAT_UP] =
@@ -6388,7 +6395,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_BeatUp,
+        .battleAnimScript = Move_BEAT_UP,
     },
 
     [MOVE_FAKE_OUT] =
@@ -6414,7 +6421,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = COMBO_STARTER_FAKE_OUT,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FakeOut,
+        .battleAnimScript = Move_FAKE_OUT,
     },
 
     [MOVE_UPROAR] =
@@ -6447,7 +6454,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Uproar,
+        .battleAnimScript = Move_UPROAR,
     },
 
     [MOVE_STOCKPILE] =
@@ -6472,7 +6479,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = COMBO_STARTER_STOCKPILE,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Stockpile,
+        .battleAnimScript = Move_STOCKPILE,
     },
 
     [MOVE_SPIT_UP] =
@@ -6494,7 +6501,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_STOCKPILE},
-        .battleAnimScript = gBattleAnimMove_SpitUp,
+        .battleAnimScript = Move_SPIT_UP,
     },
 
     [MOVE_SWALLOW] =
@@ -6520,7 +6527,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_STOCKPILE},
-        .battleAnimScript = gBattleAnimMove_Swallow,
+        .battleAnimScript = Move_SWALLOW,
     },
 
     [MOVE_HEAT_WAVE] =
@@ -6546,7 +6553,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_HeatWave,
+        .battleAnimScript = Move_HEAT_WAVE,
     },
 
     [MOVE_HAIL] =
@@ -6570,7 +6577,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = COMBO_STARTER_HAIL,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Hail,
+        .battleAnimScript = Move_HAIL,
     },
 
     [MOVE_TORMENT] =
@@ -6593,7 +6600,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Torment,
+        .battleAnimScript = Move_TORMENT,
     },
 
     [MOVE_FLATTER] =
@@ -6616,7 +6623,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CHARM},
-        .battleAnimScript = gBattleAnimMove_Flatter,
+        .battleAnimScript = Move_FLATTER,
     },
 
     [MOVE_WILL_O_WISP] =
@@ -6639,7 +6646,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_WillOWisp,
+        .battleAnimScript = Move_WILL_O_WISP,
     },
 
     [MOVE_MEMENTO] =
@@ -6661,7 +6668,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Memento,
+        .battleAnimScript = Move_MEMENTO,
     },
 
     [MOVE_FACADE] =
@@ -6683,7 +6690,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Facade,
+        .battleAnimScript = Move_FACADE,
     },
 
     [MOVE_FOCUS_PUNCH] =
@@ -6713,12 +6720,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY},
-        .battleAnimScript = gBattleAnimMove_FocusPunch,
+        .battleAnimScript = Move_FOCUS_PUNCH,
     },
 
     [MOVE_SMELLING_SALTS] =
     {
-        .name = COMPOUND_STRING("Smelling Salts"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("SmellngSalts", "Smelling Salts"),
         .description = COMPOUND_STRING(
             "Powerful against paralyzed\n"
             "foes, but also heals them."),
@@ -6730,7 +6737,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .status = STATUS1_PARALYSIS },
+        .argument = STATUS1_PARALYSIS,
         .makesContact = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_REMOVE_STATUS,
@@ -6739,7 +6746,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SmellingSalts,
+        .battleAnimScript = Move_SMELLING_SALTS,
     },
 
     [MOVE_FOLLOW_ME] =
@@ -6766,7 +6773,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FollowMe,
+        .battleAnimScript = Move_FOLLOW_ME,
     },
 
     [MOVE_NATURE_POWER] =
@@ -6794,7 +6801,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_NaturePower,
+        .battleAnimScript = Move_NATURE_POWER,
     },
 
     [MOVE_CHARGE] =
@@ -6819,7 +6826,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = COMBO_STARTER_CHARGE,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Charge,
+        .battleAnimScript = Move_CHARGE,
     },
 
     [MOVE_TAUNT] =
@@ -6843,7 +6850,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = COMBO_STARTER_TAUNT,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Taunt,
+        .battleAnimScript = Move_TAUNT,
     },
 
     [MOVE_HELPING_HAND] =
@@ -6871,7 +6878,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_HelpingHand,
+        .battleAnimScript = Move_HELPING_HAND,
     },
 
     [MOVE_TRICK] =
@@ -6896,7 +6903,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Trick,
+        .battleAnimScript = Move_TRICK,
     },
 
     [MOVE_ROLE_PLAY] =
@@ -6921,7 +6928,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_RolePlay,
+        .battleAnimScript = Move_ROLE_PLAY,
     },
 
     [MOVE_WISH] =
@@ -6947,7 +6954,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Wish,
+        .battleAnimScript = Move_WISH,
     },
 
     [MOVE_ASSIST] =
@@ -6977,7 +6984,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Assist,
+        .battleAnimScript = Move_ASSIST,
     },
 
     [MOVE_INGRAIN] =
@@ -7003,7 +7010,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Ingrain,
+        .battleAnimScript = Move_INGRAIN,
     },
 
     [MOVE_SUPERPOWER] =
@@ -7029,7 +7036,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_LOCK_ON, COMBO_STARTER_MIND_READER},
-        .battleAnimScript = gBattleAnimMove_Superpower,
+        .battleAnimScript = Move_SUPERPOWER,
     },
 
     [MOVE_MAGIC_COAT] =
@@ -7053,7 +7060,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_MagicCoat,
+        .battleAnimScript = Move_MAGIC_COAT,
     },
 
     [MOVE_RECYCLE] =
@@ -7078,7 +7085,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Recycle,
+        .battleAnimScript = Move_RECYCLE,
     },
 
     [MOVE_REVENGE] =
@@ -7098,7 +7105,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = COMBO_STARTER_REVENGE,
         .contestComboMoves = {COMBO_STARTER_PAYBACK},
-        .battleAnimScript = gBattleAnimMove_Revenge,
+        .battleAnimScript = Move_REVENGE,
     },
 
     [MOVE_BRICK_BREAK] =
@@ -7120,7 +7127,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY},
-        .battleAnimScript = gBattleAnimMove_BrickBreak,
+        .battleAnimScript = Move_BRICK_BREAK,
     },
 
     [MOVE_YAWN] =
@@ -7143,7 +7150,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = COMBO_STARTER_YAWN,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Yawn,
+        .battleAnimScript = Move_YAWN,
     },
 
     [MOVE_KNOCK_OFF] =
@@ -7168,7 +7175,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_FAKE_OUT},
-        .battleAnimScript = gBattleAnimMove_KnockOff,
+        .battleAnimScript = Move_KNOCK_OFF,
     },
 
     [MOVE_ENDEAVOR] =
@@ -7191,7 +7198,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_ENDURE},
-        .battleAnimScript = gBattleAnimMove_Endeavor,
+        .battleAnimScript = Move_ENDEAVOR,
     },
 
     [MOVE_ERUPTION] =
@@ -7200,7 +7207,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .description = COMPOUND_STRING(
             "The higher the user's HP,\n"
             "the more damage caused."),
-        .effect = EFFECT_POWER_BASED_ON_USER_HP,
+        .effect = EFFECT_ERUPTION,
         .power = 150,
         .type = TYPE_FIRE,
         .accuracy = 100,
@@ -7212,7 +7219,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_EARTHQUAKE, COMBO_STARTER_ENDURE, COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_Eruption,
+        .battleAnimScript = Move_ERUPTION,
     },
 
     [MOVE_SKILL_SWAP] =
@@ -7235,7 +7242,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SkillSwap,
+        .battleAnimScript = Move_SKILL_SWAP,
     },
 
     [MOVE_IMPRISON] =
@@ -7262,7 +7269,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Imprison,
+        .battleAnimScript = Move_IMPRISON,
     },
 
     [MOVE_REFRESH] =
@@ -7287,7 +7294,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SING, COMBO_STARTER_WATER_SPORT},
-        .battleAnimScript = gBattleAnimMove_Refresh,
+        .battleAnimScript = Move_REFRESH,
     },
 
     [MOVE_GRUDGE] =
@@ -7312,7 +7319,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CURSE},
-        .battleAnimScript = gBattleAnimMove_Grudge,
+        .battleAnimScript = Move_GRUDGE,
     },
 
     [MOVE_SNATCH] =
@@ -7339,7 +7346,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Snatch,
+        .battleAnimScript = Move_SNATCH,
     },
 
     [MOVE_SECRET_POWER] =
@@ -7364,7 +7371,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SecretPower,
+        .battleAnimScript = Move_SECRET_POWER,
     },
 
     [MOVE_DIVE] =
@@ -7386,12 +7393,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .instructBanned = TRUE,
         .assistBanned = TRUE,
         .skyBattleBanned = TRUE,
-        .argument.twoTurnAttack = { .stringId =  STRINGID_PKMNHIDUNDERWATER, .status = COMPRESS_BITS(STATUS3_UNDERWATER) },
+        .argument = TWO_TURN_ARG(STRINGID_PKMNHIDUNDERWATER, COMPRESS_BITS(STATUS3_UNDERWATER)),
         .contestEffect = CONTEST_EFFECT_AVOID_STARTLE_ONCE,
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = COMBO_STARTER_DIVE,
         .contestComboMoves = {COMBO_STARTER_RAIN_DANCE, COMBO_STARTER_SURF},
-        .battleAnimScript = gBattleAnimMove_Dive,
+        .battleAnimScript = Move_DIVE,
     },
 
     [MOVE_ARM_THRUST] =
@@ -7413,7 +7420,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_FAKE_OUT, COMBO_STARTER_FOCUS_ENERGY},
-        .battleAnimScript = gBattleAnimMove_ArmThrust,
+        .battleAnimScript = Move_ARM_THRUST,
     },
 
     [MOVE_CAMOUFLAGE] =
@@ -7438,7 +7445,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Camouflage,
+        .battleAnimScript = Move_CAMOUFLAGE,
     },
 
     [MOVE_TAIL_GLOW] =
@@ -7463,7 +7470,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_TailGlow,
+        .battleAnimScript = Move_TAIL_GLOW,
     },
 
     [MOVE_LUSTER_PURGE] =
@@ -7488,7 +7495,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CALM_MIND},
-        .battleAnimScript = gBattleAnimMove_LusterPurge,
+        .battleAnimScript = Move_LUSTER_PURGE,
     },
 
     [MOVE_MIST_BALL] =
@@ -7514,12 +7521,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CALM_MIND},
-        .battleAnimScript = gBattleAnimMove_MistBall,
+        .battleAnimScript = Move_MIST_BALL,
     },
 
     [MOVE_FEATHER_DANCE] =
     {
-        .name = COMPOUND_STRING("Feather Dance"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("FeatherDance", "Feather Dance"),
         .description = COMPOUND_STRING(
             "Envelops the foe with down\n"
             "to sharply reduce Attack."),
@@ -7538,7 +7545,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FeatherDance,
+        .battleAnimScript = Move_FEATHER_DANCE,
     },
 
     [MOVE_TEETER_DANCE] =
@@ -7562,7 +7569,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_TeeterDance,
+        .battleAnimScript = Move_TEETER_DANCE,
     },
 
     [MOVE_BLAZE_KICK] =
@@ -7589,7 +7596,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_BlazeKick,
+        .battleAnimScript = Move_BLAZE_KICK,
     },
 
     [MOVE_MUD_SPORT] =
@@ -7614,7 +7621,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = COMBO_STARTER_MUD_SPORT,
         .contestComboMoves = {COMBO_STARTER_MUD_SLAP, COMBO_STARTER_SANDSTORM, COMBO_STARTER_WATER_SPORT},
-        .battleAnimScript = gBattleAnimMove_MudSport,
+        .battleAnimScript = Move_MUD_SPORT,
     },
 
     [MOVE_ICE_BALL] =
@@ -7639,7 +7646,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_HAIL},
-        .battleAnimScript = gBattleAnimMove_IceBall,
+        .battleAnimScript = Move_ICE_BALL,
     },
 
     [MOVE_NEEDLE_ARM] =
@@ -7666,7 +7673,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_NeedleArm,
+        .battleAnimScript = Move_NEEDLE_ARM,
     },
 
     [MOVE_SLACK_OFF] =
@@ -7692,7 +7699,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SlackOff,
+        .battleAnimScript = Move_SLACK_OFF,
     },
 
     [MOVE_HYPER_VOICE] =
@@ -7715,7 +7722,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_HyperVoice,
+        .battleAnimScript = Move_HYPER_VOICE,
     },
 
     [MOVE_POISON_FANG] =
@@ -7742,7 +7749,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PoisonFang,
+        .battleAnimScript = Move_POISON_FANG,
     },
 
     [MOVE_CRUSH_CLAW] =
@@ -7768,7 +7775,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SWORDS_DANCE},
-        .battleAnimScript = gBattleAnimMove_CrushClaw,
+        .battleAnimScript = Move_CRUSH_CLAW,
     },
 
     [MOVE_BLAST_BURN] =
@@ -7793,7 +7800,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_BlastBurn,
+        .battleAnimScript = Move_BLAST_BURN,
     },
 
     [MOVE_HYDRO_CANNON] =
@@ -7818,7 +7825,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_RAIN_DANCE},
-        .battleAnimScript = gBattleAnimMove_HydroCannon,
+        .battleAnimScript = Move_HYDRO_CANNON,
     },
 
     [MOVE_METEOR_MASH] =
@@ -7846,7 +7853,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_MeteorMash,
+        .battleAnimScript = Move_METEOR_MASH,
     },
 
     [MOVE_ASTONISH] =
@@ -7873,7 +7880,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Astonish,
+        .battleAnimScript = Move_ASTONISH,
     },
 
     [MOVE_WEATHER_BALL] =
@@ -7896,7 +7903,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_HAIL, COMBO_STARTER_RAIN_DANCE, COMBO_STARTER_SANDSTORM, COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_WeatherBall,
+        .battleAnimScript = Move_WEATHER_BALL,
     },
 
     [MOVE_AROMATHERAPY] =
@@ -7921,7 +7928,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Aromatherapy,
+        .battleAnimScript = Move_AROMATHERAPY,
     },
 
     [MOVE_FAKE_TEARS] =
@@ -7944,7 +7951,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FakeTears,
+        .battleAnimScript = Move_FAKE_TEARS,
     },
 
     [MOVE_AIR_CUTTER] =
@@ -7968,7 +7975,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_AirCutter,
+        .battleAnimScript = Move_AIR_CUTTER,
     },
 
     [MOVE_OVERHEAT] =
@@ -7994,7 +8001,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_Overheat,
+        .battleAnimScript = Move_OVERHEAT,
     },
 
     [MOVE_ODOR_SLEUTH] =
@@ -8018,7 +8025,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_OdorSleuth,
+        .battleAnimScript = Move_ODOR_SLEUTH,
     },
 
     [MOVE_ROCK_TOMB] =
@@ -8043,7 +8050,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_ROCK_THROW},
-        .battleAnimScript = gBattleAnimMove_RockTomb,
+        .battleAnimScript = Move_ROCK_TOMB,
     },
 
     [MOVE_SILVER_WIND] =
@@ -8070,7 +8077,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SilverWind,
+        .battleAnimScript = Move_SILVER_WIND,
     },
 
     [MOVE_METAL_SOUND] =
@@ -8095,12 +8102,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = COMBO_STARTER_METAL_SOUND,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_MetalSound,
+        .battleAnimScript = Move_METAL_SOUND,
     },
 
     [MOVE_GRASS_WHISTLE] =
     {
-        .name = COMPOUND_STRING("Grass Whistle"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("GrassWhistle", "Grass Whistle"),
         .description = COMPOUND_STRING(
             "Lulls the foe into sleep\n"
             "with a pleasant melody."),
@@ -8120,7 +8127,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_GrassWhistle,
+        .battleAnimScript = Move_GRASS_WHISTLE,
     },
 
     [MOVE_TICKLE] =
@@ -8143,7 +8150,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Tickle,
+        .battleAnimScript = Move_TICKLE,
     },
 
     [MOVE_COSMIC_POWER] =
@@ -8168,7 +8175,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_CosmicPower,
+        .battleAnimScript = Move_COSMIC_POWER,
     },
 
     [MOVE_WATER_SPOUT] =
@@ -8177,7 +8184,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .description = COMPOUND_STRING(
             "Inflicts more damage if the\n"
             "user's HP is high."),
-        .effect = EFFECT_POWER_BASED_ON_USER_HP,
+        .effect = EFFECT_ERUPTION,
         .power = 150,
         .type = TYPE_WATER,
         .accuracy = 100,
@@ -8189,7 +8196,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_RAIN_DANCE},
-        .battleAnimScript = gBattleAnimMove_WaterSpout,
+        .battleAnimScript = Move_WATER_SPOUT,
     },
 
     [MOVE_SIGNAL_BEAM] =
@@ -8214,7 +8221,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SignalBeam,
+        .battleAnimScript = Move_SIGNAL_BEAM,
     },
 
     [MOVE_SHADOW_PUNCH] =
@@ -8237,7 +8244,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ShadowPunch,
+        .battleAnimScript = Move_SHADOW_PUNCH,
     },
 
     [MOVE_EXTRASENSORY] =
@@ -8263,7 +8270,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Extrasensory,
+        .battleAnimScript = Move_EXTRASENSORY,
     },
 
     [MOVE_SKY_UPPERCUT] =
@@ -8287,7 +8294,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY},
-        .battleAnimScript = gBattleAnimMove_SkyUppercut,
+        .battleAnimScript = Move_SKY_UPPERCUT,
     },
 
     [MOVE_SAND_TOMB] =
@@ -8311,7 +8318,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SANDSTORM},
-        .battleAnimScript = gBattleAnimMove_SandTomb,
+        .battleAnimScript = Move_SAND_TOMB,
     },
 
     [MOVE_SHEER_COLD] =
@@ -8332,7 +8339,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_HAIL, COMBO_STARTER_MIND_READER},
-        .battleAnimScript = gBattleAnimMove_SheerCold,
+        .battleAnimScript = Move_SHEER_COLD,
     },
 
     [MOVE_MUDDY_WATER] =
@@ -8358,7 +8365,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_RAIN_DANCE},
-        .battleAnimScript = gBattleAnimMove_MuddyWater,
+        .battleAnimScript = Move_MUDDY_WATER,
     },
 
     [MOVE_BULLET_SEED] =
@@ -8380,7 +8387,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_GROWTH},
-        .battleAnimScript = gBattleAnimMove_BulletSeed,
+        .battleAnimScript = Move_BULLET_SEED,
     },
 
     [MOVE_AERIAL_ACE] =
@@ -8403,7 +8410,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_AerialAce,
+        .battleAnimScript = Move_AERIAL_ACE,
     },
 
     [MOVE_ICICLE_SPEAR] =
@@ -8424,7 +8431,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_IcicleSpear,
+        .battleAnimScript = Move_ICICLE_SPEAR,
     },
 
     [MOVE_IRON_DEFENSE] =
@@ -8449,7 +8456,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_IronDefense,
+        .battleAnimScript = Move_IRON_DEFENSE,
     },
 
     [MOVE_BLOCK] =
@@ -8473,7 +8480,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Block,
+        .battleAnimScript = Move_BLOCK,
     },
 
     [MOVE_HOWL] =
@@ -8487,7 +8494,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .type = TYPE_NORMAL,
         .accuracy = 0,
         .pp = 40,
-        .target = MOVE_TARGET_USER, // Targeting is handled through the script
+        .target = MOVE_TARGET_USER,
         .priority = 0,
         .category = DAMAGE_CATEGORY_STATUS,
         .zMove = { .effect = Z_EFFECT_ATK_UP_1 },
@@ -8499,7 +8506,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Howl,
+        .battleAnimScript = Move_HOWL,
     },
 
     [MOVE_DRAGON_CLAW] =
@@ -8521,7 +8528,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_DRAGON_BREATH, COMBO_STARTER_DRAGON_DANCE, COMBO_STARTER_DRAGON_RAGE, COMBO_STARTER_DRAGON_RUSH, COMBO_STARTER_DRAGON_TAIL},
-        .battleAnimScript = gBattleAnimMove_DragonClaw,
+        .battleAnimScript = Move_DRAGON_CLAW,
     },
 
     [MOVE_FRENZY_PLANT] =
@@ -8547,7 +8554,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_GROWTH},
-        .battleAnimScript = gBattleAnimMove_FrenzyPlant,
+        .battleAnimScript = Move_FRENZY_PLANT,
     },
 
     [MOVE_BULK_UP] =
@@ -8572,7 +8579,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_BulkUp,
+        .battleAnimScript = Move_BULK_UP,
     },
 
     [MOVE_BOUNCE] =
@@ -8594,7 +8601,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .sleepTalkBanned = TRUE,
         .instructBanned = TRUE,
         .assistBanned = TRUE,
-        .argument.twoTurnAttack = { .stringId =  STRINGID_PKMNSPRANGUP, .status = COMPRESS_BITS(STATUS3_ON_AIR) },
+        .argument = TWO_TURN_ARG(STRINGID_PKMNSPRANGUP, COMPRESS_BITS(STATUS3_ON_AIR)),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_PARALYSIS,
             .chance = 30,
@@ -8603,7 +8610,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Bounce,
+        .battleAnimScript = Move_BOUNCE,
     },
 
     [MOVE_MUD_SHOT] =
@@ -8628,7 +8635,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SANDSTORM},
-        .battleAnimScript = gBattleAnimMove_MudShot,
+        .battleAnimScript = Move_MUD_SHOT,
     },
 
     [MOVE_POISON_TAIL] =
@@ -8655,7 +8662,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PoisonTail,
+        .battleAnimScript = Move_POISON_TAIL,
     },
 
     [MOVE_COVET] =
@@ -8684,7 +8691,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Covet,
+        .battleAnimScript = Move_COVET,
     },
 
     [MOVE_VOLT_TACKLE] =
@@ -8713,7 +8720,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_VoltTackle,
+        .battleAnimScript = Move_VOLT_TACKLE,
     },
 
     [MOVE_MAGICAL_LEAF] =
@@ -8734,7 +8741,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_GROWTH},
-        .battleAnimScript = gBattleAnimMove_MagicalLeaf,
+        .battleAnimScript = Move_MAGICAL_LEAF,
     },
 
     [MOVE_WATER_SPORT] =
@@ -8759,7 +8766,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = COMBO_STARTER_WATER_SPORT,
         .contestComboMoves = {COMBO_STARTER_MUD_SPORT, COMBO_STARTER_RAIN_DANCE},
-        .battleAnimScript = gBattleAnimMove_WaterSport,
+        .battleAnimScript = Move_WATER_SPORT,
     },
 
     [MOVE_CALM_MIND] =
@@ -8784,7 +8791,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = COMBO_STARTER_CALM_MIND,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_CalmMind,
+        .battleAnimScript = Move_CALM_MIND,
     },
 
     [MOVE_LEAF_BLADE] =
@@ -8808,7 +8815,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_LeafBlade,
+        .battleAnimScript = Move_LEAF_BLADE,
     },
 
     [MOVE_DRAGON_DANCE] =
@@ -8834,7 +8841,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = COMBO_STARTER_DRAGON_DANCE,
         .contestComboMoves = {COMBO_STARTER_DRAGON_BREATH, COMBO_STARTER_DRAGON_RAGE, COMBO_STARTER_DRAGON_RUSH, COMBO_STARTER_DRAGON_TAIL},
-        .battleAnimScript = gBattleAnimMove_DragonDance,
+        .battleAnimScript = Move_DRAGON_DANCE,
     },
 
     [MOVE_ROCK_BLAST] =
@@ -8856,7 +8863,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_RockBlast,
+        .battleAnimScript = Move_ROCK_BLAST,
     },
 
     [MOVE_SHOCK_WAVE] =
@@ -8877,7 +8884,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CHARGE},
-        .battleAnimScript = gBattleAnimMove_ShockWave,
+        .battleAnimScript = Move_SHOCK_WAVE,
     },
 
     [MOVE_WATER_PULSE] =
@@ -8903,7 +8910,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_RAIN_DANCE},
-        .battleAnimScript = gBattleAnimMove_WaterPulse,
+        .battleAnimScript = Move_WATER_PULSE,
     },
 
     [MOVE_DOOM_DESIRE] =
@@ -8926,7 +8933,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_DoomDesire,
+        .battleAnimScript = Move_DOOM_DESIRE,
     },
 
     [MOVE_PSYCHO_BOOST] =
@@ -8951,7 +8958,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CALM_MIND},
-        .battleAnimScript = gBattleAnimMove_PsychoBoost,
+        .battleAnimScript = Move_PSYCHO_BOOST,
     },
 
     [MOVE_ROOST] =
@@ -8977,7 +8984,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_BRAVE_BIRD},
-        .battleAnimScript = gBattleAnimMove_Roost,
+        .battleAnimScript = Move_ROOST,
     },
 
     [MOVE_GRAVITY] =
@@ -9002,7 +9009,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Gravity,
+        .battleAnimScript = Move_GRAVITY,
     },
 
     [MOVE_MIRACLE_EYE] =
@@ -9026,7 +9033,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_MiracleEye,
+        .battleAnimScript = Move_MIRACLE_EYE,
     },
 
     [MOVE_WAKE_UP_SLAP] =
@@ -9043,7 +9050,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .status = STATUS1_SLEEP },
+        .argument = STATUS1_SLEEP,
         .makesContact = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_REMOVE_STATUS,
@@ -9052,7 +9059,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_WakeUpSlap,
+        .battleAnimScript = Move_WAKE_UP_SLAP,
     },
 
     [MOVE_HAMMER_ARM] =
@@ -9079,7 +9086,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY},
-        .battleAnimScript = gBattleAnimMove_HammerArm,
+        .battleAnimScript = Move_HAMMER_ARM,
     },
 
     [MOVE_GYRO_BALL] =
@@ -9102,7 +9109,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_GyroBall,
+        .battleAnimScript = Move_GYRO_BALL,
     },
 
     [MOVE_HEALING_WISH] =
@@ -9125,7 +9132,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_HealingWish,
+        .battleAnimScript = Move_HEALING_WISH,
     },
 
     [MOVE_BRINE] =
@@ -9146,7 +9153,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_RAIN_DANCE},
-        .battleAnimScript = gBattleAnimMove_Brine,
+        .battleAnimScript = Move_BRINE,
     },
 
     [MOVE_NATURAL_GIFT] =
@@ -9167,7 +9174,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_NaturalGift,
+        .battleAnimScript = Move_NATURAL_GIFT,
     },
 
     [MOVE_FEINT] =
@@ -9194,7 +9201,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Feint,
+        .battleAnimScript = Move_FEINT,
     },
 
     [MOVE_PLUCK] =
@@ -9217,7 +9224,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Pluck,
+        .battleAnimScript = Move_PLUCK,
     },
 
     [MOVE_TAILWIND] =
@@ -9243,7 +9250,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Tailwind,
+        .battleAnimScript = Move_TAILWIND,
     },
 
     [MOVE_ACUPRESSURE] =
@@ -9268,7 +9275,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Acupressure,
+        .battleAnimScript = Move_ACUPRESSURE,
     },
 
     [MOVE_METAL_BURST] =
@@ -9290,7 +9297,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_METAL_SOUND},
-        .battleAnimScript = gBattleAnimMove_MetalBurst,
+        .battleAnimScript = Move_METAL_BURST,
     },
 
     [MOVE_U_TURN] =
@@ -9310,7 +9317,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_UTurn,
+        .battleAnimScript = Move_U_TURN,
     },
 
     [MOVE_CLOSE_COMBAT] =
@@ -9334,7 +9341,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY, COMBO_STARTER_MIND_READER},
-        .battleAnimScript = gBattleAnimMove_CloseCombat,
+        .battleAnimScript = Move_CLOSE_COMBAT,
     },
 
     [MOVE_PAYBACK] =
@@ -9356,7 +9363,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = COMBO_STARTER_PAYBACK,
         .contestComboMoves = {COMBO_STARTER_REVENGE},
-        .battleAnimScript = gBattleAnimMove_Payback,
+        .battleAnimScript = Move_PAYBACK,
     },
 
     [MOVE_ASSURANCE] =
@@ -9378,7 +9385,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_PAYBACK, COMBO_STARTER_REVENGE},
-        .battleAnimScript = gBattleAnimMove_Assurance,
+        .battleAnimScript = Move_ASSURANCE,
     },
 
     [MOVE_EMBARGO] =
@@ -9401,7 +9408,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Embargo,
+        .battleAnimScript = Move_EMBARGO,
     },
 
     [MOVE_FLING] =
@@ -9423,7 +9430,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Fling,
+        .battleAnimScript = Move_FLING,
     },
 
     [MOVE_PSYCHO_SHIFT] =
@@ -9445,7 +9452,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PsychoShift,
+        .battleAnimScript = Move_PSYCHO_SHIFT,
     },
 
     [MOVE_TRUMP_CARD] =
@@ -9467,7 +9474,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_TrumpCard,
+        .battleAnimScript = Move_TRUMP_CARD,
     },
 
     [MOVE_HEAL_BLOCK] =
@@ -9490,27 +9497,28 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_HealBlock,
+        .battleAnimScript = Move_HEAL_BLOCK,
     },
 
     [MOVE_WRING_OUT] =
     {
         .name = COMPOUND_STRING("Wring Out"),
         .description = sWringOutDescription,
-        .effect = EFFECT_POWER_BASED_ON_TARGET_HP,
-        .power = 120,
+        .effect = EFFECT_VARY_POWER_BASED_ON_HP,
+        .power = 1,
         .type = TYPE_NORMAL,
         .accuracy = 100,
         .pp = 5,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
+        .argument = 120,
         .makesContact = TRUE,
         .contestEffect = CONTEST_EFFECT_STARTLE_PREV_MON,
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_WringOut,
+        .battleAnimScript = Move_WRING_OUT,
     },
 
     [MOVE_POWER_TRICK] =
@@ -9535,7 +9543,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PowerTrick,
+        .battleAnimScript = Move_POWER_TRICK,
     },
 
     [MOVE_GASTRO_ACID] =
@@ -9558,7 +9566,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_GastroAcid,
+        .battleAnimScript = Move_GASTRO_ACID,
     },
 
     [MOVE_LUCKY_CHANT] =
@@ -9583,7 +9591,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = COMBO_STARTER_LUCKY_CHANT,
         .contestComboMoves = {COMBO_STARTER_HEAL_BELL},
-        .battleAnimScript = gBattleAnimMove_LuckyChant,
+        .battleAnimScript = Move_LUCKY_CHANT,
     },
 
     [MOVE_ME_FIRST] =
@@ -9615,7 +9623,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_MeFirst,
+        .battleAnimScript = Move_ME_FIRST,
     },
 
     [MOVE_COPYCAT] =
@@ -9646,7 +9654,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Copycat,
+        .battleAnimScript = Move_COPYCAT,
     },
 
     [MOVE_POWER_SWAP] =
@@ -9669,7 +9677,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PowerSwap,
+        .battleAnimScript = Move_POWER_SWAP,
     },
 
     [MOVE_GUARD_SWAP] =
@@ -9692,7 +9700,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_GuardSwap,
+        .battleAnimScript = Move_GUARD_SWAP,
     },
 
     [MOVE_PUNISHMENT] =
@@ -9714,7 +9722,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Punishment,
+        .battleAnimScript = Move_PUNISHMENT,
     },
 
     [MOVE_LAST_RESORT] =
@@ -9736,7 +9744,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_LastResort,
+        .battleAnimScript = Move_LAST_RESORT,
     },
 
     [MOVE_WORRY_SEED] =
@@ -9759,7 +9767,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = COMBO_STARTER_WORRY_SEED,
         .contestComboMoves = {COMBO_STARTER_LEECH_SEED},
-        .battleAnimScript = gBattleAnimMove_WorrySeed,
+        .battleAnimScript = Move_WORRY_SEED,
     },
 
     [MOVE_SUCKER_PUNCH] =
@@ -9779,7 +9787,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SuckerPunch,
+        .battleAnimScript = Move_SUCKER_PUNCH,
     },
 
     [MOVE_TOXIC_SPIKES] =
@@ -9806,7 +9814,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ToxicSpikes,
+        .battleAnimScript = Move_TOXIC_SPIKES,
     },
 
     [MOVE_HEART_SWAP] =
@@ -9829,7 +9837,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_HeartSwap,
+        .battleAnimScript = Move_HEART_SWAP,
     },
 
     [MOVE_AQUA_RING] =
@@ -9854,7 +9862,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_AquaRing,
+        .battleAnimScript = Move_AQUA_RING,
     },
 
     [MOVE_MAGNET_RISE] =
@@ -9880,7 +9888,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_MagnetRise,
+        .battleAnimScript = Move_MAGNET_RISE,
     },
 
     [MOVE_FLARE_BLITZ] =
@@ -9908,7 +9916,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_FlareBlitz,
+        .battleAnimScript = Move_FLARE_BLITZ,
     },
 
     [MOVE_FORCE_PALM] =
@@ -9934,7 +9942,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ForcePalm,
+        .battleAnimScript = Move_FORCE_PALM,
     },
 
     [MOVE_AURA_SPHERE] =
@@ -9957,7 +9965,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_AuraSphere,
+        .battleAnimScript = Move_AURA_SPHERE,
     },
 
     [MOVE_ROCK_POLISH] =
@@ -9982,7 +9990,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_RockPolish,
+        .battleAnimScript = Move_ROCK_POLISH,
     },
 
     [MOVE_POISON_JAB] =
@@ -10008,7 +10016,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PoisonJab,
+        .battleAnimScript = Move_POISON_JAB,
     },
 
     [MOVE_DARK_PULSE] =
@@ -10034,7 +10042,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_DarkPulse,
+        .battleAnimScript = Move_DARK_PULSE,
     },
 
     [MOVE_NIGHT_SLASH] =
@@ -10058,7 +10066,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_NightSlash,
+        .battleAnimScript = Move_NIGHT_SLASH,
     },
 
     [MOVE_AQUA_TAIL] =
@@ -10080,7 +10088,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_RAIN_DANCE},
-        .battleAnimScript = gBattleAnimMove_AquaTail,
+        .battleAnimScript = Move_AQUA_TAIL,
     },
 
     [MOVE_SEED_BOMB] =
@@ -10102,7 +10110,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SeedBomb,
+        .battleAnimScript = Move_SEED_BOMB,
     },
 
     [MOVE_AIR_SLASH] =
@@ -10128,7 +10136,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_AirSlash,
+        .battleAnimScript = Move_AIR_SLASH,
     },
 
     [MOVE_X_SCISSOR] =
@@ -10151,7 +10159,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SWORDS_DANCE},
-        .battleAnimScript = gBattleAnimMove_XScissor,
+        .battleAnimScript = Move_X_SCISSOR,
     },
 
     [MOVE_BUG_BUZZ] =
@@ -10178,7 +10186,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_BugBuzz,
+        .battleAnimScript = Move_BUG_BUZZ,
     },
 
     [MOVE_DRAGON_PULSE] =
@@ -10200,7 +10208,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_DragonPulse,
+        .battleAnimScript = Move_DRAGON_PULSE,
     },
 
     [MOVE_DRAGON_RUSH] =
@@ -10227,7 +10235,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = COMBO_STARTER_DRAGON_RUSH,
         .contestComboMoves = {COMBO_STARTER_DRAGON_BREATH, COMBO_STARTER_DRAGON_DANCE, COMBO_STARTER_DRAGON_RAGE, COMBO_STARTER_DRAGON_TAIL},
-        .battleAnimScript = gBattleAnimMove_DragonRush,
+        .battleAnimScript = Move_DRAGON_RUSH,
     },
 
     [MOVE_POWER_GEM] =
@@ -10248,7 +10256,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PowerGem,
+        .battleAnimScript = Move_POWER_GEM,
     },
 
     [MOVE_DRAIN_PUNCH] =
@@ -10263,7 +10271,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .absorbPercentage = 50 },
         .makesContact = TRUE,
         .punchingMove = TRUE,
         .healingMove = B_HEAL_BLOCKING >= GEN_6,
@@ -10271,7 +10278,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY},
-        .battleAnimScript = gBattleAnimMove_DrainPunch,
+        .battleAnimScript = Move_DRAIN_PUNCH,
     },
 
     [MOVE_VACUUM_WAVE] =
@@ -10292,7 +10299,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_VacuumWave,
+        .battleAnimScript = Move_VACUUM_WAVE,
     },
 
     [MOVE_FOCUS_BLAST] =
@@ -10318,7 +10325,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_FOCUS_ENERGY},
-        .battleAnimScript = gBattleAnimMove_FocusBlast,
+        .battleAnimScript = Move_FOCUS_BLAST,
     },
 
     [MOVE_ENERGY_BALL] =
@@ -10344,7 +10351,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_GROWTH},
-        .battleAnimScript = gBattleAnimMove_EnergyBall,
+        .battleAnimScript = Move_ENERGY_BALL,
     },
 
     [MOVE_BRAVE_BIRD] =
@@ -10367,7 +10374,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = COMBO_STARTER_BRAVE_BIRD,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_BraveBird,
+        .battleAnimScript = Move_BRAVE_BIRD,
     },
 
     [MOVE_EARTH_POWER] =
@@ -10393,7 +10400,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_EarthPower,
+        .battleAnimScript = Move_EARTH_POWER,
     },
 
     [MOVE_SWITCHEROO] =
@@ -10418,7 +10425,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Switcheroo,
+        .battleAnimScript = Move_SWITCHEROO,
     },
 
     [MOVE_GIGA_IMPACT] =
@@ -10442,7 +10449,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_GigaImpact,
+        .battleAnimScript = Move_GIGA_IMPACT,
     },
 
     [MOVE_NASTY_PLOT] =
@@ -10467,7 +10474,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_NastyPlot,
+        .battleAnimScript = Move_NASTY_PLOT,
     },
 
     [MOVE_BULLET_PUNCH] =
@@ -10490,7 +10497,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_BulletPunch,
+        .battleAnimScript = Move_BULLET_PUNCH,
     },
 
     [MOVE_AVALANCHE] =
@@ -10510,7 +10517,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Avalanche,
+        .battleAnimScript = Move_AVALANCHE,
     },
 
     [MOVE_ICE_SHARD] =
@@ -10531,7 +10538,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_IceShard,
+        .battleAnimScript = Move_ICE_SHARD,
     },
 
     [MOVE_SHADOW_CLAW] =
@@ -10554,7 +10561,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ShadowClaw,
+        .battleAnimScript = Move_SHADOW_CLAW,
     },
 
     [MOVE_THUNDER_FANG] =
@@ -10585,7 +10592,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = COMBO_STARTER_THUNDER_FANG,
         .contestComboMoves = {COMBO_STARTER_CHARGE, COMBO_STARTER_FIRE_FANG, COMBO_STARTER_ICE_FANG},
-        .battleAnimScript = gBattleAnimMove_ThunderFang,
+        .battleAnimScript = Move_THUNDER_FANG,
     },
 
     [MOVE_ICE_FANG] =
@@ -10620,7 +10627,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = COMBO_STARTER_ICE_FANG,
         .contestComboMoves = {COMBO_STARTER_FIRE_FANG, COMBO_STARTER_THUNDER_FANG},
-        .battleAnimScript = gBattleAnimMove_IceFang,
+        .battleAnimScript = Move_ICE_FANG,
     },
 
     [MOVE_FIRE_FANG] =
@@ -10651,7 +10658,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = COMBO_STARTER_FIRE_FANG,
         .contestComboMoves = {COMBO_STARTER_ICE_FANG, COMBO_STARTER_THUNDER_FANG},
-        .battleAnimScript = gBattleAnimMove_FireFang,
+        .battleAnimScript = Move_FIRE_FANG,
     },
 
     [MOVE_SHADOW_SNEAK] =
@@ -10673,7 +10680,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ShadowSneak,
+        .battleAnimScript = Move_SHADOW_SNEAK,
     },
 
     [MOVE_MUD_BOMB] =
@@ -10699,7 +10706,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_MudBomb,
+        .battleAnimScript = Move_MUD_BOMB,
     },
 
     [MOVE_PSYCHO_CUT] =
@@ -10722,7 +10729,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PsychoCut,
+        .battleAnimScript = Move_PSYCHO_CUT,
     },
 
     [MOVE_ZEN_HEADBUTT] =
@@ -10748,7 +10755,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ZenHeadbutt,
+        .battleAnimScript = Move_ZEN_HEADBUTT,
     },
 
     [MOVE_MIRROR_SHOT] =
@@ -10773,7 +10780,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_MirrorShot,
+        .battleAnimScript = Move_MIRROR_SHOT,
     },
 
     [MOVE_FLASH_CANNON] =
@@ -10798,7 +10805,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FlashCannon,
+        .battleAnimScript = Move_FLASH_CANNON,
     },
 
     [MOVE_ROCK_CLIMB] =
@@ -10824,7 +10831,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_RockClimb,
+        .battleAnimScript = Move_ROCK_CLIMB,
     },
 
     [MOVE_DEFOG] =
@@ -10848,7 +10855,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Defog,
+        .battleAnimScript = Move_DEFOG,
     },
 
     [MOVE_TRICK_ROOM] =
@@ -10871,7 +10878,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_TrickRoom,
+        .battleAnimScript = Move_TRICK_ROOM,
     },
 
     [MOVE_DRACO_METEOR] =
@@ -10896,7 +10903,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_DracoMeteor,
+        .battleAnimScript = Move_DRACO_METEOR,
     },
 
     [MOVE_DISCHARGE] =
@@ -10921,7 +10928,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CHARGE},
-        .battleAnimScript = gBattleAnimMove_Discharge,
+        .battleAnimScript = Move_DISCHARGE,
     },
 
     [MOVE_LAVA_PLUME] =
@@ -10944,7 +10951,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_LavaPlume,
+        .battleAnimScript = Move_LAVA_PLUME,
     },
 
     [MOVE_LEAF_STORM] =
@@ -10969,7 +10976,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_LeafStorm,
+        .battleAnimScript = Move_LEAF_STORM,
     },
 
     [MOVE_POWER_WHIP] =
@@ -10991,7 +10998,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_GROWTH},
-        .battleAnimScript = gBattleAnimMove_PowerWhip,
+        .battleAnimScript = Move_POWER_WHIP,
     },
 
     [MOVE_ROCK_WRECKER] =
@@ -11015,7 +11022,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_RockWrecker,
+        .battleAnimScript = Move_ROCK_WRECKER,
     },
 
     [MOVE_CROSS_POISON] =
@@ -11043,7 +11050,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_CrossPoison,
+        .battleAnimScript = Move_CROSS_POISON,
     },
 
     [MOVE_GUNK_SHOT] =
@@ -11068,7 +11075,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_GunkShot,
+        .battleAnimScript = Move_GUNK_SHOT,
     },
 
     [MOVE_IRON_HEAD] =
@@ -11094,7 +11101,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_IronHead,
+        .battleAnimScript = Move_IRON_HEAD,
     },
 
     [MOVE_MAGNET_BOMB] =
@@ -11116,7 +11123,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_MagnetBomb,
+        .battleAnimScript = Move_MAGNET_BOMB,
     },
 
     [MOVE_STONE_EDGE] =
@@ -11138,7 +11145,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_StoneEdge,
+        .battleAnimScript = Move_STONE_EDGE,
     },
 
     [MOVE_CAPTIVATE] =
@@ -11161,7 +11168,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CHARM},
-        .battleAnimScript = gBattleAnimMove_Captivate,
+        .battleAnimScript = Move_CAPTIVATE,
     },
 
     [MOVE_STEALTH_ROCK] =
@@ -11187,7 +11194,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_StealthRock,
+        .battleAnimScript = Move_STEALTH_ROCK,
     },
 
     [MOVE_GRASS_KNOT] =
@@ -11210,7 +11217,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_GrassKnot,
+        .battleAnimScript = Move_GRASS_KNOT,
     },
 
     [MOVE_CHATTER] =
@@ -11250,7 +11257,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Chatter,
+        .battleAnimScript = Move_CHATTER,
     },
 
     [MOVE_JUDGMENT] =
@@ -11267,12 +11274,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
-        .argument = { .holdEffect = HOLD_EFFECT_PLATE },
+        .argument = HOLD_EFFECT_PLATE,
         .contestEffect = CONTEST_EFFECT_SCRAMBLE_NEXT_TURN_ORDER,
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Judgment,
+        .battleAnimScript = Move_JUDGMENT,
     },
 
     [MOVE_BUG_BITE] =
@@ -11295,7 +11302,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_BugBite,
+        .battleAnimScript = Move_BUG_BITE,
     },
 
     [MOVE_CHARGE_BEAM] =
@@ -11321,7 +11328,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CHARGE},
-        .battleAnimScript = gBattleAnimMove_ChargeBeam,
+        .battleAnimScript = Move_CHARGE_BEAM,
     },
 
     [MOVE_WOOD_HAMMER] =
@@ -11344,7 +11351,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_WoodHammer,
+        .battleAnimScript = Move_WOOD_HAMMER,
     },
 
     [MOVE_AQUA_JET] =
@@ -11366,7 +11373,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_RAIN_DANCE},
-        .battleAnimScript = gBattleAnimMove_AquaJet,
+        .battleAnimScript = Move_AQUA_JET,
     },
 
     [MOVE_ATTACK_ORDER] =
@@ -11388,7 +11395,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = COMBO_STARTER_ATTACK_ORDER,
         .contestComboMoves = {COMBO_STARTER_DEFEND_ORDER, COMBO_STARTER_HEAL_ORDER},
-        .battleAnimScript = gBattleAnimMove_AttackOrder,
+        .battleAnimScript = Move_ATTACK_ORDER,
     },
 
     [MOVE_DEFEND_ORDER] =
@@ -11413,7 +11420,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = COMBO_STARTER_DEFEND_ORDER,
         .contestComboMoves = {COMBO_STARTER_ATTACK_ORDER, COMBO_STARTER_HEAL_ORDER},
-        .battleAnimScript = gBattleAnimMove_DefendOrder,
+        .battleAnimScript = Move_DEFEND_ORDER,
     },
 
     [MOVE_HEAL_ORDER] =
@@ -11439,7 +11446,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = COMBO_STARTER_HEAL_ORDER,
         .contestComboMoves = {COMBO_STARTER_ATTACK_ORDER, COMBO_STARTER_DEFEND_ORDER},
-        .battleAnimScript = gBattleAnimMove_HealOrder,
+        .battleAnimScript = Move_HEAL_ORDER,
     },
 
     [MOVE_HEAD_SMASH] =
@@ -11462,7 +11469,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_HeadSmash,
+        .battleAnimScript = Move_HEAD_SMASH,
     },
 
     [MOVE_DOUBLE_HIT] =
@@ -11485,7 +11492,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_DoubleHit,
+        .battleAnimScript = Move_DOUBLE_HIT,
     },
 
     [MOVE_ROAR_OF_TIME] =
@@ -11510,7 +11517,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_RoarOfTime,
+        .battleAnimScript = Move_ROAR_OF_TIME,
     },
 
     [MOVE_SPACIAL_REND] =
@@ -11532,7 +11539,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SpacialRend,
+        .battleAnimScript = Move_SPACIAL_REND,
     },
 
     [MOVE_LUNAR_DANCE] =
@@ -11556,27 +11563,28 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_LunarDance,
+        .battleAnimScript = Move_LUNAR_DANCE,
     },
 
     [MOVE_CRUSH_GRIP] =
     {
         .name = COMPOUND_STRING("Crush Grip"),
         .description = sWringOutDescription,
-        .effect = EFFECT_POWER_BASED_ON_TARGET_HP,
-        .power = 120,
+        .effect = EFFECT_VARY_POWER_BASED_ON_HP,
+        .power = 1,
         .type = TYPE_NORMAL,
         .accuracy = 100,
         .pp = 5,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
+        .argument = 120,
         .makesContact = TRUE,
         .contestEffect = CONTEST_EFFECT_BADLY_STARTLE_FRONT_MON,
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_CrushGrip,
+        .battleAnimScript = Move_CRUSH_GRIP,
     },
 
     [MOVE_MAGMA_STORM] =
@@ -11600,7 +11608,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_MagmaStorm,
+        .battleAnimScript = Move_MAGMA_STORM,
     },
 
     [MOVE_DARK_VOID] =
@@ -11624,7 +11632,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_DarkVoid,
+        .battleAnimScript = Move_DARK_VOID,
     },
 
     [MOVE_SEED_FLARE] =
@@ -11649,7 +11657,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SeedFlare,
+        .battleAnimScript = Move_SEED_FLARE,
     },
 
     [MOVE_OMINOUS_WIND] =
@@ -11676,7 +11684,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_OminousWind,
+        .battleAnimScript = Move_OMINOUS_WIND,
     },
 
     [MOVE_SHADOW_FORCE] =
@@ -11697,7 +11705,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .sleepTalkBanned = TRUE,
         .instructBanned = TRUE,
         .assistBanned = TRUE,
-        .argument.twoTurnAttack = { .stringId = STRINGID_VANISHEDINSTANTLY, .status = COMPRESS_BITS(STATUS3_PHANTOM_FORCE) },
+        .argument = TWO_TURN_ARG(STRINGID_VANISHEDINSTANTLY, COMPRESS_BITS(STATUS3_PHANTOM_FORCE)),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_FEINT,
         }),
@@ -11705,7 +11713,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ShadowForce,
+        .battleAnimScript = Move_SHADOW_FORCE,
     },
 
     [MOVE_HONE_CLAWS] =
@@ -11730,7 +11738,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_HoneClaws,
+        .battleAnimScript = Move_HONE_CLAWS,
     },
 
     [MOVE_WIDE_GUARD] =
@@ -11747,7 +11755,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_USER,
         .priority = 3,
         .category = DAMAGE_CATEGORY_STATUS,
-        .argument = { .protect.side = TRUE, },
+        .argument = TRUE, // Protects the whole side.
         .zMove = { .effect = Z_EFFECT_DEF_UP_1 },
         .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
@@ -11757,7 +11765,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_WideGuard,
+        .battleAnimScript = Move_WIDE_GUARD,
     },
 
     [MOVE_GUARD_SPLIT] =
@@ -11780,7 +11788,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_GuardSplit,
+        .battleAnimScript = Move_GUARD_SPLIT,
     },
 
     [MOVE_POWER_SPLIT] =
@@ -11803,7 +11811,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PowerSplit,
+        .battleAnimScript = Move_POWER_SPLIT,
     },
 
     [MOVE_WONDER_ROOM] =
@@ -11826,7 +11834,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_WonderRoom,
+        .battleAnimScript = Move_WONDER_ROOM,
     },
 
     [MOVE_PSYSHOCK] =
@@ -11845,7 +11853,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Psyshock,
+        .battleAnimScript = Move_PSYSHOCK,
     },
 
     [MOVE_VENOSHOCK] =
@@ -11862,12 +11870,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
-        .argument = { .status = STATUS1_PSN_ANY },
+        .argument = STATUS1_PSN_ANY,
         .contestEffect = CONTEST_EFFECT_BETTER_IF_SAME_TYPE,
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_TOXIC},
-        .battleAnimScript = gBattleAnimMove_Venoshock,
+        .battleAnimScript = Move_VENOSHOCK,
     },
 
     [MOVE_AUTOTOMIZE] =
@@ -11892,7 +11900,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Autotomize,
+        .battleAnimScript = Move_AUTOTOMIZE,
     },
 
     [MOVE_RAGE_POWDER] =
@@ -11920,7 +11928,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_RagePowder,
+        .battleAnimScript = Move_RAGE_POWDER,
     },
 
     [MOVE_TELEKINESIS] =
@@ -11944,7 +11952,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Telekinesis,
+        .battleAnimScript = Move_TELEKINESIS,
     },
 
     [MOVE_MAGIC_ROOM] =
@@ -11967,7 +11975,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_MagicRoom,
+        .battleAnimScript = Move_MAGIC_ROOM,
     },
 
     [MOVE_SMACK_DOWN] =
@@ -11993,7 +12001,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SmackDown,
+        .battleAnimScript = Move_SMACK_DOWN,
     },
 
     [MOVE_STORM_THROW] =
@@ -12014,7 +12022,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_StormThrow,
+        .battleAnimScript = Move_STORM_THROW,
     },
 
     [MOVE_FLAME_BURST] =
@@ -12039,7 +12047,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FlameBurst,
+        .battleAnimScript = Move_FLAME_BURST,
     },
 
     [MOVE_SLUDGE_WAVE] =
@@ -12064,7 +12072,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SludgeWave,
+        .battleAnimScript = Move_SLUDGE_WAVE,
     },
 
     [MOVE_QUIVER_DANCE] =
@@ -12090,7 +12098,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_QuiverDance,
+        .battleAnimScript = Move_QUIVER_DANCE,
     },
 
     [MOVE_HEAVY_SLAM] =
@@ -12112,7 +12120,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_HeavySlam,
+        .battleAnimScript = Move_HEAVY_SLAM,
     },
 
     [MOVE_SYNCHRONOISE] =
@@ -12133,7 +12141,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Synchronoise,
+        .battleAnimScript = Move_SYNCHRONOISE,
     },
 
     [MOVE_ELECTRO_BALL] =
@@ -12155,7 +12163,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ElectroBall,
+        .battleAnimScript = Move_ELECTRO_BALL,
     },
 
     [MOVE_SOAK] =
@@ -12178,7 +12186,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Soak,
+        .battleAnimScript = Move_SOAK,
     },
 
     [MOVE_FLAME_CHARGE] =
@@ -12205,14 +12213,14 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FlameCharge,
+        .battleAnimScript = Move_FLAME_CHARGE,
     },
 
     [MOVE_COIL] =
     {
         .name = COMPOUND_STRING("Coil"),
         .description = COMPOUND_STRING(
-            "Coils up to raise Attack,\n"
+            "Coils up to raise Attack\n"
             "Defense and Accuracy."),
         .effect = EFFECT_COIL,
         .power = 0,
@@ -12230,7 +12238,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Coil,
+        .battleAnimScript = Move_COIL,
     },
 
     [MOVE_LOW_SWEEP] =
@@ -12256,7 +12264,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_LowSweep,
+        .battleAnimScript = Move_LOW_SWEEP,
     },
 
     [MOVE_ACID_SPRAY] =
@@ -12282,7 +12290,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_AcidSpray,
+        .battleAnimScript = Move_ACID_SPRAY,
     },
 
     [MOVE_FOUL_PLAY] =
@@ -12304,7 +12312,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FoulPlay,
+        .battleAnimScript = Move_FOUL_PLAY,
     },
 
     [MOVE_SIMPLE_BEAM] =
@@ -12327,7 +12335,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SimpleBeam,
+        .battleAnimScript = Move_SIMPLE_BEAM,
     },
 
     [MOVE_ENTRAINMENT] =
@@ -12350,7 +12358,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Entrainment,
+        .battleAnimScript = Move_ENTRAINMENT,
     },
 
     [MOVE_AFTER_YOU] =
@@ -12376,7 +12384,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_AfterYou,
+        .battleAnimScript = Move_AFTER_YOU,
     },
 
     [MOVE_ROUND] =
@@ -12402,7 +12410,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Round,
+        .battleAnimScript = Move_ROUND,
     },
 
     [MOVE_ECHOED_VOICE] =
@@ -12425,7 +12433,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_EchoedVoice,
+        .battleAnimScript = Move_ECHOED_VOICE,
     },
 
     [MOVE_CHIP_AWAY] =
@@ -12446,7 +12454,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ChipAway,
+        .battleAnimScript = Move_CHIP_AWAY,
     },
 
     [MOVE_CLEAR_SMOG] =
@@ -12470,7 +12478,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ClearSmog,
+        .battleAnimScript = Move_CLEAR_SMOG,
     },
 
     [MOVE_STORED_POWER] =
@@ -12491,7 +12499,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_StoredPower,
+        .battleAnimScript = Move_STORED_POWER,
     },
 
     [MOVE_QUICK_GUARD] =
@@ -12508,7 +12516,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_USER,
         .priority = 3,
         .category = DAMAGE_CATEGORY_STATUS,
-        .argument = { .protect.side = TRUE, },
+        .argument = TRUE, // Protects the whole side.
         .zMove = { .effect = Z_EFFECT_DEF_UP_1 },
         .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
@@ -12518,7 +12526,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_QuickGuard,
+        .battleAnimScript = Move_QUICK_GUARD,
     },
 
     [MOVE_ALLY_SWITCH] =
@@ -12542,7 +12550,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_AllySwitch,
+        .battleAnimScript = Move_ALLY_SWITCH,
     },
 
     [MOVE_SCALD] =
@@ -12568,7 +12576,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = COMBO_STARTER_SCALD,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Scald,
+        .battleAnimScript = Move_SCALD,
     },
 
     [MOVE_SHELL_SMASH] =
@@ -12593,7 +12601,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ShellSmash,
+        .battleAnimScript = Move_SHELL_SMASH,
     },
 
     [MOVE_HEAL_PULSE] =
@@ -12619,7 +12627,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_HealPulse,
+        .battleAnimScript = Move_HEAL_PULSE,
     },
 
     [MOVE_HEX] =
@@ -12637,12 +12645,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
         .zMove = { .powerOverride = 160 },
-        .argument = { .status = STATUS1_ANY },
+        .argument = STATUS1_ANY,
         .contestEffect = CONTEST_EFFECT_BETTER_IF_SAME_TYPE,
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_TOXIC},
-        .battleAnimScript = gBattleAnimMove_Hex,
+        .battleAnimScript = Move_HEX,
     },
 
     [MOVE_SKY_DROP] =
@@ -12664,12 +12672,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .sleepTalkBanned = TRUE,
         .instructBanned = TRUE,
         .assistBanned = TRUE,
-        .argument.twoTurnAttack = { .stringId = STRINGID_PKMNTOOKTARGETHIGH, .status = COMPRESS_BITS(STATUS3_ON_AIR) },
+        .argument = TWO_TURN_ARG(STRINGID_PKMNTOOKTARGETHIGH, COMPRESS_BITS(STATUS3_ON_AIR)),
         .contestEffect = CONTEST_EFFECT_AVOID_STARTLE,
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SkyDrop,
+        .battleAnimScript = Move_SKY_DROP,
     },
 
     [MOVE_SHIFT_GEAR] =
@@ -12694,7 +12702,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ShiftGear,
+        .battleAnimScript = Move_SHIFT_GEAR,
     },
 
     [MOVE_CIRCLE_THROW] =
@@ -12716,7 +12724,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_CircleThrow,
+        .battleAnimScript = Move_CIRCLE_THROW,
     },
 
     [MOVE_INCINERATE] =
@@ -12740,7 +12748,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Incinerate,
+        .battleAnimScript = Move_INCINERATE,
     },
 
     [MOVE_QUASH] =
@@ -12763,7 +12771,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Quash,
+        .battleAnimScript = Move_QUASH,
     },
 
     [MOVE_ACROBATICS] =
@@ -12785,7 +12793,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Acrobatics,
+        .battleAnimScript = Move_ACROBATICS,
     },
 
     [MOVE_REFLECT_TYPE] =
@@ -12809,7 +12817,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ReflectType,
+        .battleAnimScript = Move_REFLECT_TYPE,
     },
 
     [MOVE_RETALIATE] =
@@ -12831,7 +12839,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Retaliate,
+        .battleAnimScript = Move_RETALIATE,
     },
 
     [MOVE_FINAL_GAMBIT] =
@@ -12854,7 +12862,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FinalGambit,
+        .battleAnimScript = Move_FINAL_GAMBIT,
     },
 
     [MOVE_BESTOW] =
@@ -12881,7 +12889,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Bestow,
+        .battleAnimScript = Move_BESTOW,
     },
 
     [MOVE_INFERNO] =
@@ -12906,7 +12914,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Inferno,
+        .battleAnimScript = Move_INFERNO,
     },
 
     [MOVE_WATER_PLEDGE] =
@@ -12928,7 +12936,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_WaterPledge,
+        .battleAnimScript = Move_WATER_PLEDGE,
     },
 
     [MOVE_FIRE_PLEDGE] =
@@ -12950,7 +12958,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FirePledge,
+        .battleAnimScript = Move_FIRE_PLEDGE,
     },
 
     [MOVE_GRASS_PLEDGE] =
@@ -12972,7 +12980,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_GrassPledge,
+        .battleAnimScript = Move_GRASS_PLEDGE,
     },
 
     [MOVE_VOLT_SWITCH] =
@@ -12991,7 +12999,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_VoltSwitch,
+        .battleAnimScript = Move_VOLT_SWITCH,
     },
 
     [MOVE_STRUGGLE_BUG] =
@@ -13016,7 +13024,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_StruggleBug,
+        .battleAnimScript = Move_STRUGGLE_BUG,
     },
 
     [MOVE_BULLDOZE] =
@@ -13042,7 +13050,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Bulldoze,
+        .battleAnimScript = Move_BULLDOZE,
     },
 
     [MOVE_FROST_BREATH] =
@@ -13062,7 +13070,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FrostBreath,
+        .battleAnimScript = Move_FROST_BREATH,
     },
 
     [MOVE_DRAGON_TAIL] =
@@ -13084,7 +13092,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = COMBO_STARTER_DRAGON_TAIL,
         .contestComboMoves = {COMBO_STARTER_DRAGON_BREATH, COMBO_STARTER_DRAGON_DANCE, COMBO_STARTER_DRAGON_RAGE, COMBO_STARTER_DRAGON_RUSH},
-        .battleAnimScript = gBattleAnimMove_DragonTail,
+        .battleAnimScript = Move_DRAGON_TAIL,
     },
 
     [MOVE_WORK_UP] =
@@ -13109,7 +13117,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_WorkUp,
+        .battleAnimScript = Move_WORK_UP,
     },
 
     [MOVE_ELECTROWEB] =
@@ -13134,7 +13142,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Electroweb,
+        .battleAnimScript = Move_ELECTROWEB,
     },
 
     [MOVE_WILD_CHARGE] =
@@ -13157,7 +13165,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_WildCharge,
+        .battleAnimScript = Move_WILD_CHARGE,
     },
 
     [MOVE_DRILL_RUN] =
@@ -13180,7 +13188,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_DrillRun,
+        .battleAnimScript = Move_DRILL_RUN,
     },
 
     [MOVE_DUAL_CHOP] =
@@ -13203,7 +13211,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_DualChop,
+        .battleAnimScript = Move_DUAL_CHOP,
     },
 
     [MOVE_HEART_STAMP] =
@@ -13229,7 +13237,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_HeartStamp,
+        .battleAnimScript = Move_HEART_STAMP,
     },
 
     [MOVE_HORN_LEECH] =
@@ -13244,14 +13252,13 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .absorbPercentage = 50 },
         .makesContact = TRUE,
         .healingMove = B_HEAL_BLOCKING >= GEN_6,
         .contestEffect = CONTEST_EFFECT_STARTLE_MON_WITH_JUDGES_ATTENTION,
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_HornLeech,
+        .battleAnimScript = Move_HORN_LEECH,
     },
 
     [MOVE_SACRED_SWORD] =
@@ -13273,7 +13280,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SacredSword,
+        .battleAnimScript = Move_SACRED_SWORD,
     },
 
     [MOVE_RAZOR_SHELL] =
@@ -13300,7 +13307,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_RazorShell,
+        .battleAnimScript = Move_RAZOR_SHELL,
     },
 
     [MOVE_HEAT_CRASH] =
@@ -13321,7 +13328,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_HeatCrash,
+        .battleAnimScript = Move_HEAT_CRASH,
     },
 
     [MOVE_LEAF_TORNADO] =
@@ -13347,7 +13354,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_LeafTornado,
+        .battleAnimScript = Move_LEAF_TORNADO,
     },
 
     [MOVE_STEAMROLLER] =
@@ -13374,7 +13381,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Steamroller,
+        .battleAnimScript = Move_STEAMROLLER,
     },
 
     [MOVE_COTTON_GUARD] =
@@ -13399,7 +13406,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_CottonGuard,
+        .battleAnimScript = Move_COTTON_GUARD,
     },
 
     [MOVE_NIGHT_DAZE] =
@@ -13424,7 +13431,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_NightDaze,
+        .battleAnimScript = Move_NIGHT_DAZE,
     },
 
     [MOVE_PSYSTRIKE] =
@@ -13443,7 +13450,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Psystrike,
+        .battleAnimScript = Move_PSYSTRIKE,
     },
 
     [MOVE_TAIL_SLAP] =
@@ -13465,7 +13472,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_TailSlap,
+        .battleAnimScript = Move_TAIL_SLAP,
     },
 
     [MOVE_HURRICANE] =
@@ -13492,7 +13499,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Hurricane,
+        .battleAnimScript = Move_HURRICANE,
     },
 
     [MOVE_HEAD_CHARGE] =
@@ -13515,7 +13522,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_HeadCharge,
+        .battleAnimScript = Move_HEAD_CHARGE,
     },
 
     [MOVE_GEAR_GRIND] =
@@ -13539,7 +13546,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_GearGrind,
+        .battleAnimScript = Move_GEAR_GRIND,
     },
 
     [MOVE_SEARING_SHOT] =
@@ -13563,7 +13570,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SearingShot,
+        .battleAnimScript = Move_SEARING_SHOT,
     },
 
     [MOVE_TECHNO_BLAST] =
@@ -13580,13 +13587,13 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
-        .argument = { .holdEffect = HOLD_EFFECT_DRIVE },
+        .argument = HOLD_EFFECT_DRIVE,
         .metronomeBanned = TRUE,
         .contestEffect = CONTEST_EFFECT_EXCITE_AUDIENCE_IN_ANY_CONTEST,
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_TechnoBlast,
+        .battleAnimScript = Move_TECHNO_BLAST,
     },
 
     [MOVE_RELIC_SONG] =
@@ -13603,7 +13610,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_BOTH,
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
-        .argument = { .status = STATUS1_SLEEP },
+        .argument = STATUS1_SLEEP,
         .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
         .soundMove = TRUE,
         .metronomeBanned = TRUE,
@@ -13615,7 +13622,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_RelicSong,
+        .battleAnimScript = Move_RELIC_SONG,
     },
 
     [MOVE_SECRET_SWORD] =
@@ -13638,7 +13645,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SecretSword,
+        .battleAnimScript = Move_SECRET_SWORD,
     },
 
     [MOVE_GLACIATE] =
@@ -13663,7 +13670,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Glaciate,
+        .battleAnimScript = Move_GLACIATE,
     },
 
     [MOVE_BOLT_STRIKE] =
@@ -13689,7 +13696,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_BoltStrike,
+        .battleAnimScript = Move_BOLT_STRIKE,
     },
 
     [MOVE_BLUE_FLARE] =
@@ -13714,7 +13721,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_BlueFlare,
+        .battleAnimScript = Move_BLUE_FLARE,
     },
 
     [MOVE_FIERY_DANCE] =
@@ -13741,7 +13748,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FieryDance,
+        .battleAnimScript = Move_FIERY_DANCE,
     },
 
     [MOVE_FREEZE_SHOCK] =
@@ -13761,7 +13768,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .metronomeBanned = TRUE,
         .sleepTalkBanned = TRUE,
         .instructBanned = TRUE,
-        .argument.twoTurnAttack = { .stringId = STRINGID_CLOAKEDINAFREEZINGLIGHT },
+        .argument = TWO_TURN_ARG(STRINGID_CLOAKEDINAFREEZINGLIGHT),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_PARALYSIS,
             .chance = 30,
@@ -13770,7 +13777,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FreezeShock,
+        .battleAnimScript = Move_FREEZE_SHOCK,
     },
 
     [MOVE_ICE_BURN] =
@@ -13790,7 +13797,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .metronomeBanned = TRUE,
         .sleepTalkBanned = TRUE,
         .instructBanned = TRUE,
-        .argument.twoTurnAttack = { .stringId = STRINGID_CLOAKEDINAFREEZINGLIGHT },
+        .argument = TWO_TURN_ARG(STRINGID_CLOAKEDINAFREEZINGLIGHT),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_BURN,
             .chance = 30,
@@ -13799,7 +13806,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_IceBurn,
+        .battleAnimScript = Move_ICE_BURN,
     },
 
     [MOVE_SNARL] =
@@ -13827,7 +13834,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Snarl,
+        .battleAnimScript = Move_SNARL,
     },
 
     [MOVE_ICICLE_CRASH] =
@@ -13852,7 +13859,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_IcicleCrash,
+        .battleAnimScript = Move_ICICLE_CRASH,
     },
 
     [MOVE_V_CREATE] =
@@ -13880,7 +13887,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_VCreate,
+        .battleAnimScript = Move_V_CREATE,
     },
 
     [MOVE_FUSION_FLARE] =
@@ -13902,7 +13909,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FusionFlare,
+        .battleAnimScript = Move_FUSION_FLARE,
     },
 
     [MOVE_FUSION_BOLT] =
@@ -13923,7 +13930,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FusionBolt,
+        .battleAnimScript = Move_FUSION_BOLT,
     },
 
     [MOVE_FLYING_PRESS] =
@@ -13941,7 +13948,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
         .zMove = { .powerOverride = 170 },
-        .argument = { .type = TYPE_FLYING },
+        .argument = TYPE_FLYING,
         .makesContact = TRUE,
         .minimizeDoubleDamage = TRUE,
         .gravityBanned = TRUE,
@@ -13950,7 +13957,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FlyingPress,
+        .battleAnimScript = Move_FLYING_PRESS,
     },
 
     [MOVE_MAT_BLOCK] =
@@ -13967,7 +13974,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_USER,
         .priority = 0,
         .category = DAMAGE_CATEGORY_STATUS,
-        .argument = { .protect.side = TRUE },
+        .argument = TRUE, // Protects the whole side.
         .zMove = { .effect = Z_EFFECT_DEF_UP_1 },
         .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
@@ -13980,7 +13987,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_MatBlock,
+        .battleAnimScript = Move_MAT_BLOCK,
     },
 
     [MOVE_BELCH] =
@@ -14009,7 +14016,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Belch,
+        .battleAnimScript = Move_BELCH,
     },
 
     [MOVE_ROTOTILLER] =
@@ -14034,7 +14041,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Rototiller,
+        .battleAnimScript = Move_ROTOTILLER,
     },
 
     [MOVE_STICKY_WEB] =
@@ -14060,7 +14067,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_StickyWeb,
+        .battleAnimScript = Move_STICKY_WEB,
     },
 
     [MOVE_FELL_STINGER] =
@@ -14082,12 +14089,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FellStinger,
+        .battleAnimScript = Move_FELL_STINGER,
     },
 
     [MOVE_PHANTOM_FORCE] =
     {
-        .name = COMPOUND_STRING("Phantom Force"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("PhantomForce", "Phantom Force"),
         .description = sShadowForceDescription,
         .effect = EFFECT_SEMI_INVULNERABLE,
         .power = 90,
@@ -14103,7 +14110,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .sleepTalkBanned = TRUE,
         .instructBanned = TRUE,
         .assistBanned = TRUE,
-        .argument.twoTurnAttack = { .stringId = STRINGID_VANISHEDINSTANTLY, .status = COMPRESS_BITS(STATUS3_PHANTOM_FORCE) },
+        .argument = TWO_TURN_ARG(STRINGID_VANISHEDINSTANTLY, COMPRESS_BITS(STATUS3_PHANTOM_FORCE)),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_FEINT,
         }),
@@ -14111,12 +14118,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PhantomForce,
+        .battleAnimScript = Move_PHANTOM_FORCE,
     },
 
     [MOVE_TRICK_OR_TREAT] =
     {
-        .name = COMPOUND_STRING("Trick-or-Treat"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("TrickOrTreat", "Trick-or-Treat"),
         .description = COMPOUND_STRING(
             "Goes trick-or-treating\n"
             "making the foe Ghost-type."),
@@ -14128,14 +14135,14 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_STATUS,
-        .argument = { .type = TYPE_GHOST },
+        .argument = TYPE_GHOST,
         .zMove = { .effect = Z_EFFECT_ALL_STATS_UP_1 },
         .magicCoatAffected = TRUE,
         .contestEffect = CONTEST_EFFECT_WORSEN_CONDITION_OF_PREV_MONS,
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_TrickOrTreat,
+        .battleAnimScript = Move_TRICK_OR_TREAT,
     },
 
     [MOVE_NOBLE_ROAR] =
@@ -14160,7 +14167,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_NobleRoar,
+        .battleAnimScript = Move_NOBLE_ROAR,
     },
 
     [MOVE_ION_DELUGE] =
@@ -14184,12 +14191,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_IonDeluge,
+        .battleAnimScript = Move_ION_DELUGE,
     },
 
     [MOVE_PARABOLIC_CHARGE] =
     {
-        .name = COMPOUND_STRING("Parabolic Charge"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("ParabolcChrg", "Parabolic Charge"),
         .description = COMPOUND_STRING(
             "Damages adjacent Pokémon\n"
             "and heals up by half of it."),
@@ -14201,18 +14208,17 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_FOES_AND_ALLY,
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
-        .argument = { .absorbPercentage = 50 },
         .healingMove = B_HEAL_BLOCKING >= GEN_6,
         .contestEffect = CONTEST_EFFECT_STARTLE_MON_WITH_JUDGES_ATTENTION,
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ParabolicCharge,
+        .battleAnimScript = Move_PARABOLIC_CHARGE,
     },
 
     [MOVE_FORESTS_CURSE] =
     {
-        .name = COMPOUND_STRING("Forest's Curse"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("Forest'sCurs", "Forest's Curse"),
         .description = COMPOUND_STRING(
             "Puts a curse on the foe\n"
             "making the foe Grass-type."),
@@ -14224,19 +14230,19 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_STATUS,
-        .argument = { .type = TYPE_GRASS },
+        .argument = TYPE_GRASS,
         .zMove = { .effect = Z_EFFECT_ALL_STATS_UP_1 },
         .magicCoatAffected = TRUE,
         .contestEffect = CONTEST_EFFECT_WORSEN_CONDITION_OF_PREV_MONS,
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ForestsCurse,
+        .battleAnimScript = Move_FORESTS_CURSE,
     },
 
     [MOVE_PETAL_BLIZZARD] =
     {
-        .name = COMPOUND_STRING("Petal Blizzard"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("PetalBlizzrd", "Petal Blizzard"),
         .description = COMPOUND_STRING(
             "Stirs up a violent storm\n"
             "of petals to attack."),
@@ -14253,7 +14259,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PetalBlizzard,
+        .battleAnimScript = Move_PETAL_BLIZZARD,
     },
 
     [MOVE_FREEZE_DRY] =
@@ -14274,7 +14280,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
-        .argument = { .type = TYPE_WATER },
+        .argument = TYPE_WATER,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_FREEZE_OR_FROSTBITE,
             .chance = 10,
@@ -14283,12 +14289,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FreezeDry,
+        .battleAnimScript = Move_FREEZE_DRY,
     },
 
     [MOVE_DISARMING_VOICE] =
     {
-        .name = COMPOUND_STRING("Disarming Voice"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("DisrmngVoice", "Disarming Voice"),
         .description = COMPOUND_STRING(
             "Lets out a charming cry\n"
             "that cannot be evaded."),
@@ -14306,7 +14312,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_DisarmingVoice,
+        .battleAnimScript = Move_DISARMING_VOICE,
     },
 
     [MOVE_PARTING_SHOT] =
@@ -14331,7 +14337,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PartingShot,
+        .battleAnimScript = Move_PARTING_SHOT,
     },
 
     [MOVE_TOPSY_TURVY] =
@@ -14354,12 +14360,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_TopsyTurvy,
+        .battleAnimScript = Move_TOPSY_TURVY,
     },
 
     [MOVE_DRAINING_KISS] =
     {
-        .name = COMPOUND_STRING("Draining Kiss"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("DrainingKiss", "Draining Kiss"),
         .description = sDrainingKissDescription,
         .effect = EFFECT_ABSORB,
         .power = 50,
@@ -14369,19 +14375,19 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
-        .argument = { .absorbPercentage = 75 },
+        .argument = 75, // restores 75% HP instead of 50% HP
         .makesContact = TRUE,
         .healingMove = B_HEAL_BLOCKING >= GEN_6,
         .contestEffect = CONTEST_EFFECT_STARTLE_MON_WITH_JUDGES_ATTENTION,
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_DrainingKiss,
+        .battleAnimScript = Move_DRAINING_KISS,
     },
 
     [MOVE_CRAFTY_SHIELD] =
     {
-        .name = COMPOUND_STRING("Crafty Shield"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("CraftyShield", "Crafty Shield"),
         .description = COMPOUND_STRING(
             "Evades status moves for\n"
             "one turn."),
@@ -14393,7 +14399,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_USER,
         .priority = 3,
         .category = DAMAGE_CATEGORY_STATUS,
-        .argument = { .protect.side = TRUE, },
+        .argument = TRUE, // Protects the whole side.
         .zMove = { .effect = Z_EFFECT_SPDEF_UP_1 },
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
@@ -14402,12 +14408,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_CraftyShield,
+        .battleAnimScript = Move_CRAFTY_SHIELD,
     },
 
     [MOVE_FLOWER_SHIELD] =
     {
-        .name = COMPOUND_STRING("Flower Shield"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("FlowerShield", "Flower Shield"),
         .description = COMPOUND_STRING(
             "Raises the Defense of\n"
             "Grass-type Pokémon."),
@@ -14416,7 +14422,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .type = TYPE_FAIRY,
         .accuracy = 0,
         .pp = 10,
-        .target = MOVE_TARGET_USER, // The targeting of Flower Shield is handled through a script
+        .target = MOVE_TARGET_ALL_BATTLERS,
         .priority = 0,
         .category = DAMAGE_CATEGORY_STATUS,
         .zMove = { .effect = Z_EFFECT_DEF_UP_1 },
@@ -14426,12 +14432,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FlowerShield,
+        .battleAnimScript = Move_FLOWER_SHIELD,
     },
 
     [MOVE_GRASSY_TERRAIN] =
     {
-        .name = COMPOUND_STRING("Grassy Terrain"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("GrssyTerrain", "Grassy Terrain"),
         .description = COMPOUND_STRING(
             "The ground turns to grass\n"
             "for 5 turns. Restores HP."),
@@ -14451,12 +14457,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = COMBO_STARTER_GRASSY_TERRAIN,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_GrassyTerrain,
+        .battleAnimScript = Move_GRASSY_TERRAIN,
     },
 
     [MOVE_MISTY_TERRAIN] =
     {
-        .name = COMPOUND_STRING("Misty Terrain"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("MistyTerrain", "Misty Terrain"),
         .description = COMPOUND_STRING(
             "Covers the ground with mist\n"
             "for 5 turns. Blocks status."),
@@ -14476,7 +14482,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = COMBO_STARTER_MISTY_TERRAIN,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_MistyTerrain,
+        .battleAnimScript = Move_MISTY_TERRAIN,
     },
 
     [MOVE_ELECTRIFY] =
@@ -14498,7 +14504,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Electrify,
+        .battleAnimScript = Move_ELECTRIFY,
     },
 
     [MOVE_PLAY_ROUGH] =
@@ -14524,7 +14530,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PlayRough,
+        .battleAnimScript = Move_PLAY_ROUGH,
     },
 
     [MOVE_FAIRY_WIND] =
@@ -14546,7 +14552,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FairyWind,
+        .battleAnimScript = Move_FAIRY_WIND,
     },
 
     [MOVE_MOONBLAST] =
@@ -14571,7 +14577,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Moonblast,
+        .battleAnimScript = Move_MOONBLAST,
     },
 
     [MOVE_BOOMBURST] =
@@ -14594,7 +14600,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Boomburst,
+        .battleAnimScript = Move_BOOMBURST,
     },
 
     [MOVE_FAIRY_LOCK] =
@@ -14618,12 +14624,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FairyLock,
+        .battleAnimScript = Move_FAIRY_LOCK,
     },
 
     [MOVE_KINGS_SHIELD] =
     {
-        .name = COMPOUND_STRING("King's Shield"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("King'sShield", "King's Shield"),
         .description = COMPOUND_STRING(
             "Evades damage, and sharply\n"
             "reduces Attack if struck."),
@@ -14646,7 +14652,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_KingsShield,
+        .battleAnimScript = Move_KINGS_SHIELD,
     },
 
     [MOVE_PLAY_NICE] =
@@ -14671,7 +14677,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PlayNice,
+        .battleAnimScript = Move_PLAY_NICE,
     },
 
     [MOVE_CONFIDE] =
@@ -14697,12 +14703,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Confide,
+        .battleAnimScript = Move_CONFIDE,
     },
 
     [MOVE_DIAMOND_STORM] =
     {
-        .name = COMPOUND_STRING("Diamond Storm"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("DiamondStorm", "Diamond Storm"),
         .description = COMPOUND_STRING(
             "Whips up a storm of\n"
             "diamonds. May up Defense."),
@@ -14724,12 +14730,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_DiamondStorm,
+        .battleAnimScript = Move_DIAMOND_STORM,
     },
 
     [MOVE_STEAM_ERUPTION] =
     {
-        .name = COMPOUND_STRING("Steam Eruption"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("SteamErption", "Steam Eruption"),
         .description = COMPOUND_STRING(
             "Immerses the foe in heated\n"
             "steam. May inflict a burn."),
@@ -14751,12 +14757,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SCALD},
-        .battleAnimScript = gBattleAnimMove_SteamEruption,
+        .battleAnimScript = Move_STEAM_ERUPTION,
     },
 
     [MOVE_HYPERSPACE_HOLE] =
     {
-        .name = COMPOUND_STRING("Hyperspace Hole"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("HyprspceHole", "Hyperspace Hole"),
         .description = sHyperspaceHoleDescription,
         .effect = EFFECT_HIT,
         .power = 80,
@@ -14776,12 +14782,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = COMBO_STARTER_HYPERSPACE_HOLE,
         .contestComboMoves = {COMBO_STARTER_HYPERSPACE_FURY},
-        .battleAnimScript = gBattleAnimMove_HyperspaceHole,
+        .battleAnimScript = Move_HYPERSPACE_HOLE,
     },
 
     [MOVE_WATER_SHURIKEN] =
     {
-        .name = COMPOUND_STRING("Water Shuriken"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("WatrShuriken", "Water Shuriken"),
         .description = COMPOUND_STRING(
             "Throws 2 to 5 stars that\n"
             "are sure to strike first."),
@@ -14797,12 +14803,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_WaterShuriken,
+        .battleAnimScript = Move_WATER_SHURIKEN,
     },
 
     [MOVE_MYSTICAL_FIRE] =
     {
-        .name = COMPOUND_STRING("Mystical Fire"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("MysticalFire", "Mystical Fire"),
         .description = COMPOUND_STRING(
             "Breathes a special, hot\n"
             "fire. Lowers Sp. Atk."),
@@ -14822,7 +14828,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_MysticalFire,
+        .battleAnimScript = Move_MYSTICAL_FIRE,
     },
 
     [MOVE_SPIKY_SHIELD] =
@@ -14849,12 +14855,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SpikyShield,
+        .battleAnimScript = Move_SPIKY_SHIELD,
     },
 
     [MOVE_AROMATIC_MIST] =
     {
-        .name = COMPOUND_STRING("Aromatic Mist"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("AromaticMist", "Aromatic Mist"),
         .description = COMPOUND_STRING(
             "Raises the Sp. Def of a\n"
             "partner Pokémon."),
@@ -14874,12 +14880,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_AromaticMist,
+        .battleAnimScript = Move_AROMATIC_MIST,
     },
 
     [MOVE_EERIE_IMPULSE] =
     {
-        .name = COMPOUND_STRING("Eerie Impulse"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("EerieImpulse", "Eerie Impulse"),
         .description = COMPOUND_STRING(
             "Exposes the foe to a pulse\n"
             "that sharply cuts Sp. Atk."),
@@ -14897,7 +14903,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_EerieImpulse,
+        .battleAnimScript = Move_EERIE_IMPULSE,
     },
 
     [MOVE_VENOM_DRENCH] =
@@ -14920,7 +14926,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_TOXIC},
-        .battleAnimScript = gBattleAnimMove_VenomDrench,
+        .battleAnimScript = Move_VENOM_DRENCH,
     },
 
     [MOVE_POWDER] =
@@ -14944,7 +14950,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Powder,
+        .battleAnimScript = Move_POWDER,
     },
 
     [MOVE_GEOMANCY] =
@@ -14965,17 +14971,17 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .sleepTalkBanned = TRUE,
         .instructBanned = TRUE,
         .skyBattleBanned = TRUE,
-        .argument.twoTurnAttack = { .stringId = STRINGID_PKNMABSORBINGPOWER },
+        .argument = TWO_TURN_ARG(STRINGID_PKNMABSORBINGPOWER),
         .contestEffect = CONTEST_EFFECT_IMPROVE_CONDITION_PREVENT_NERVOUSNESS,
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Geomancy,
+        .battleAnimScript = Move_GEOMANCY,
     },
 
     [MOVE_MAGNETIC_FLUX] =
     {
-        .name = COMPOUND_STRING("Magnetic Flux"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("MagneticFlux", "Magnetic Flux"),
         .description = COMPOUND_STRING(
             "Boosts the defenses of\n"
             "those with Plus or Minus."),
@@ -14996,7 +15002,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_MagneticFlux,
+        .battleAnimScript = Move_MAGNETIC_FLUX,
     },
 
     [MOVE_HAPPY_HOUR] =
@@ -15005,7 +15011,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .description = COMPOUND_STRING(
             "Doubles the amount of\n"
             "Prize Money received."),
-        .effect = EFFECT_HAPPY_HOUR,
+        .effect = EFFECT_DO_NOTHING,
         .power = 0,
         .type = TYPE_NORMAL,
         .accuracy = 0,
@@ -15020,12 +15026,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_HappyHour,
+        .battleAnimScript = Move_HAPPY_HOUR,
     },
 
     [MOVE_ELECTRIC_TERRAIN] =
     {
-        .name = COMPOUND_STRING("Electric Terrain"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("ElctrcTrrain", "Electric Terrain"),
         .description = COMPOUND_STRING(
             "Electrifies the ground for\n"
             "5 turns. Prevents sleep."),
@@ -15045,12 +15051,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = COMBO_STARTER_ELECTRIC_TERRAIN,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ElectricTerrain,
+        .battleAnimScript = Move_ELECTRIC_TERRAIN,
     },
 
     [MOVE_DAZZLING_GLEAM] =
     {
-        .name = COMPOUND_STRING("Dazzling Gleam"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("DazzlngGleam", "Dazzling Gleam"),
         .description = COMPOUND_STRING(
             "Damages foes by emitting\n"
             "a bright flash."),
@@ -15066,7 +15072,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_DazzlingGleam,
+        .battleAnimScript = Move_DAZZLING_GLEAM,
     },
 
     [MOVE_CELEBRATE] =
@@ -15075,7 +15081,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .description = COMPOUND_STRING(
             "Congratulates you on your\n"
             "special day."),
-        .effect = EFFECT_CELEBRATE,
+        .effect = EFFECT_DO_NOTHING,
         .power = 0,
         .type = TYPE_NORMAL,
         .accuracy = 0,
@@ -15096,7 +15102,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Celebrate,
+        .battleAnimScript = Move_CELEBRATE,
     },
 
     [MOVE_HOLD_HANDS] =
@@ -15105,7 +15111,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .description = COMPOUND_STRING(
             "The user and ally hold hands\n"
             "making them happy."),
-        .effect = EFFECT_HOLD_HANDS,
+        .effect = EFFECT_DO_NOTHING,
         .power = 0,
         .type = TYPE_NORMAL,
         .accuracy = 0,
@@ -15126,12 +15132,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_HoldHands,
+        .battleAnimScript = Move_HOLD_HANDS,
     },
 
     [MOVE_BABY_DOLL_EYES] =
     {
-        .name = COMPOUND_STRING("Baby-Doll Eyes"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("BabyDollEyes", "Baby-Doll Eyes"),
         .description = COMPOUND_STRING(
             "Lowers the foe's Attack\n"
             "before it can move."),
@@ -15149,7 +15155,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_BabyDollEyes,
+        .battleAnimScript = Move_BABY_DOLL_EYES,
     },
 
     [MOVE_NUZZLE] =
@@ -15175,7 +15181,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Nuzzle,
+        .battleAnimScript = Move_NUZZLE,
     },
 
     [MOVE_HOLD_BACK] =
@@ -15195,7 +15201,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_HoldBack,
+        .battleAnimScript = Move_HOLD_BACK,
     },
 
     [MOVE_INFESTATION] =
@@ -15220,12 +15226,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Infestation,
+        .battleAnimScript = Move_INFESTATION,
     },
 
     [MOVE_POWER_UP_PUNCH] =
     {
-        .name = COMPOUND_STRING("Power-Up Punch"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("PowerUpPunch", "Power-Up Punch"),
         .description = COMPOUND_STRING(
             "A hard punch that raises\n"
             "the user's Attack."),
@@ -15248,12 +15254,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PowerUpPunch,
+        .battleAnimScript = Move_POWER_UP_PUNCH,
     },
 
     [MOVE_OBLIVION_WING] =
     {
-        .name = COMPOUND_STRING("Oblivion Wing"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("OblivionWing", "Oblivion Wing"),
         .description = sDrainingKissDescription,
         .effect = EFFECT_ABSORB,
         .power = 80,
@@ -15263,18 +15269,18 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
-        .argument = { .absorbPercentage = 75 },
+        .argument = 75, // restores 75% HP instead of 50% HP
         .healingMove = B_HEAL_BLOCKING >= GEN_6,
         .contestEffect = CONTEST_EFFECT_STARTLE_MON_WITH_JUDGES_ATTENTION,
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_OblivionWing,
+        .battleAnimScript = Move_OBLIVION_WING,
     },
 
     [MOVE_THOUSAND_ARROWS] =
     {
-        .name = COMPOUND_STRING("Thousand Arrows"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("ThousndArrws", "Thousand Arrows"),
         .description = COMPOUND_STRING(
             "Can hit Flying foes, then\n"
             "knocks them to the ground."),
@@ -15297,12 +15303,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = COMBO_STARTER_THOUSAND_ARROWS,
         .contestComboMoves = {COMBO_STARTER_THOUSAND_WAVES},
-        .battleAnimScript = gBattleAnimMove_ThousandArrows,
+        .battleAnimScript = Move_THOUSAND_ARROWS,
     },
 
     [MOVE_THOUSAND_WAVES] =
     {
-        .name = COMPOUND_STRING("Thousand Waves"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("ThousndWaves", "Thousand Waves"),
         .description = COMPOUND_STRING(
             "Those hit by the wave can\n"
             "no longer escape."),
@@ -15323,7 +15329,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = COMBO_STARTER_THOUSAND_WAVES,
         .contestComboMoves = {COMBO_STARTER_THOUSAND_ARROWS},
-        .battleAnimScript = gBattleAnimMove_ThousandWaves,
+        .battleAnimScript = Move_THOUSAND_WAVES,
     },
 
     [MOVE_LANDS_WRATH] =
@@ -15345,12 +15351,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_LandsWrath,
+        .battleAnimScript = Move_LANDS_WRATH,
     },
 
     [MOVE_LIGHT_OF_RUIN] =
     {
-        .name = COMPOUND_STRING("Light Of Ruin"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("LightOfRuin", "Light Of Ruin"),
         .description = COMPOUND_STRING(
             "Fires a great beam of light\n"
             "that also hurts the user."),
@@ -15364,7 +15370,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
         .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_LightOfRuin,
+        .battleAnimScript = Move_LIGHT_OF_RUIN,
     },
 
     [MOVE_ORIGIN_PULSE] =
@@ -15387,12 +15393,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_OriginPulse,
+        .battleAnimScript = Move_ORIGIN_PULSE,
     },
 
     [MOVE_PRECIPICE_BLADES] =
     {
-        .name = COMPOUND_STRING("Precipice Blades"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("PrcipceBldes", "Precipice Blades"),
         .description = COMPOUND_STRING(
             "Fearsome blades of stone\n"
             "attack both foes."),
@@ -15409,12 +15415,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PrecipiceBlades,
+        .battleAnimScript = Move_PRECIPICE_BLADES,
     },
 
     [MOVE_DRAGON_ASCENT] =
     {
-        .name = COMPOUND_STRING("Dragon Ascent"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("DragonAscent", "Dragon Ascent"),
         .description = sCloseCombatDescription,
         .effect = EFFECT_HIT,
         .power = 120,
@@ -15434,12 +15440,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_DragonAscent,
+        .battleAnimScript = Move_DRAGON_ASCENT,
     },
 
     [MOVE_HYPERSPACE_FURY] =
     {
-        .name = COMPOUND_STRING("Hyperspace Fury"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("HyprspceFury", "Hyperspace Fury"),
         .description = sHyperspaceHoleDescription,
         .effect = EFFECT_HYPERSPACE_FURY,
         .power = 100,
@@ -15462,7 +15468,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = COMBO_STARTER_HYPERSPACE_FURY,
         .contestComboMoves = {COMBO_STARTER_HYPERSPACE_HOLE},
-        .battleAnimScript = gBattleAnimMove_HyperspaceFury,
+        .battleAnimScript = Move_HYPERSPACE_FURY,
     },
 
     [MOVE_SHORE_UP] =
@@ -15488,12 +15494,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SANDSTORM},
-        .battleAnimScript = gBattleAnimMove_ShoreUp,
+        .battleAnimScript = Move_SHORE_UP,
     },
 
     [MOVE_FIRST_IMPRESSION] =
     {
-        .name = COMPOUND_STRING("First Impression"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("FrstImpressn", "First Impression"),
         .description = COMPOUND_STRING(
             "Hits hard and first.\n"
             "Only works first turn."),
@@ -15505,18 +15511,18 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 2,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .moveProperty = MOVE_FIRST_IMPRESSION },
+        .argument = MOVE_FIRST_IMPRESSION,
         .makesContact = TRUE,
         .contestEffect = CONTEST_EFFECT_BETTER_IF_FIRST,
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FirstImpression,
+        .battleAnimScript = Move_FIRST_IMPRESSION,
     },
 
     [MOVE_BANEFUL_BUNKER] =
     {
-        .name = COMPOUND_STRING("Baneful Bunker"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("BanefulBunkr", "Baneful Bunker"),
         .description = COMPOUND_STRING(
             "Protects user and poisons\n"
             "foes on contact."),
@@ -15538,12 +15544,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_BanefulBunker,
+        .battleAnimScript = Move_BANEFUL_BUNKER,
     },
 
     [MOVE_SPIRIT_SHACKLE] =
     {
-        .name = COMPOUND_STRING("Spirit Shackle"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("SpiritShackl", "Spirit Shackle"),
         .description = COMPOUND_STRING(
             "After being hit, foes can\n"
             "no longer escape."),
@@ -15563,12 +15569,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SpiritShackle,
+        .battleAnimScript = Move_SPIRIT_SHACKLE,
     },
 
     [MOVE_DARKEST_LARIAT] =
     {
-        .name = COMPOUND_STRING("Darkest Lariat"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("DarkstLariat", "Darkest Lariat"),
         .description = COMPOUND_STRING(
             "Swings the arms to strike\n"
             "It ignores stat changes."),
@@ -15586,12 +15592,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_DarkestLariat,
+        .battleAnimScript = Move_DARKEST_LARIAT,
     },
 
     [MOVE_SPARKLING_ARIA] =
     {
-        .name = COMPOUND_STRING("Sparkling Aria"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("SparklngAria", "Sparkling Aria"),
         .description = COMPOUND_STRING(
             "Sings with bubbles. Cures\n"
             "burns on contact."),
@@ -15603,7 +15609,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_FOES_AND_ALLY,
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
-        .argument = { .status = STATUS1_BURN },
+        .argument = STATUS1_BURN,
         .ignoresSubstitute = B_UPDATED_MOVE_FLAGS >= GEN_6,
         .soundMove = TRUE,
         .additionalEffects = ADDITIONAL_EFFECTS({
@@ -15614,7 +15620,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SCALD},
-        .battleAnimScript = gBattleAnimMove_SparklingAria,
+        .battleAnimScript = Move_SPARKLING_ARIA,
     },
 
     [MOVE_ICE_HAMMER] =
@@ -15641,12 +15647,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_HAIL},
-        .battleAnimScript = gBattleAnimMove_IceHammer,
+        .battleAnimScript = Move_ICE_HAMMER,
     },
 
     [MOVE_FLORAL_HEALING] =
     {
-        .name = COMPOUND_STRING("Floral Healing"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("FloralHealng", "Floral Healing"),
         .description = COMPOUND_STRING(
             "Restores an ally's HP.\n"
             "Heals more on grass."),
@@ -15659,7 +15665,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_STATUS,
         .zMove = { .effect = Z_EFFECT_RESET_STATS },
-        .argument = { .moveProperty = MOVE_EFFECT_FLORAL_HEALING },
+        .argument = MOVE_EFFECT_FLORAL_HEALING,
         .mirrorMoveBanned = TRUE,
         .healingMove = TRUE,
         .magicCoatAffected = TRUE,
@@ -15667,12 +15673,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FloralHealing,
+        .battleAnimScript = Move_FLORAL_HEALING,
     },
 
     [MOVE_HIGH_HORSEPOWER] =
     {
-        .name = COMPOUND_STRING("High Horsepower"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("HighHorsepwr", "High Horsepower"),
         .description = COMPOUND_STRING(
             "Slams hard into the foe with\n"
             "its entire body."),
@@ -15689,7 +15695,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_HighHorsepower,
+        .battleAnimScript = Move_HIGH_HORSEPOWER,
     },
 
     [MOVE_STRENGTH_SAP] =
@@ -15713,7 +15719,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_StrengthSap,
+        .battleAnimScript = Move_STRENGTH_SAP,
     },
 
     [MOVE_SOLAR_BLADE] =
@@ -15734,12 +15740,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .slicingMove = TRUE,
         .sleepTalkBanned = TRUE,
         .instructBanned = TRUE,
-        .argument.twoTurnAttack = { .stringId = STRINGID_PKMNTOOKSUNLIGHT, .status = B_WEATHER_SUN },
+        .argument = TWO_TURN_ARG(STRINGID_PKMNTOOKSUNLIGHT, B_WEATHER_SUN),
         .contestEffect = CONTEST_EFFECT_HIGHLY_APPEALING,
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_SolarBlade,
+        .battleAnimScript = Move_SOLAR_BLADE,
     },
 
     [MOVE_LEAFAGE] =
@@ -15760,7 +15766,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_GROWTH},
-        .battleAnimScript = gBattleAnimMove_Leafage,
+        .battleAnimScript = Move_LEAFAGE,
     },
 
     [MOVE_SPOTLIGHT] =
@@ -15787,7 +15793,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Spotlight,
+        .battleAnimScript = Move_SPOTLIGHT,
     },
 
     [MOVE_TOXIC_THREAD] =
@@ -15810,7 +15816,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_TOXIC},
-        .battleAnimScript = gBattleAnimMove_ToxicThread,
+        .battleAnimScript = Move_TOXIC_THREAD,
     },
 
     [MOVE_LASER_FOCUS] =
@@ -15835,7 +15841,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_LaserFocus,
+        .battleAnimScript = Move_LASER_FOCUS,
     },
 
     [MOVE_GEAR_UP] =
@@ -15861,7 +15867,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_GearUp,
+        .battleAnimScript = Move_GEAR_UP,
     },
 
     [MOVE_THROAT_CHOP] =
@@ -15887,7 +15893,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ThroatChop,
+        .battleAnimScript = Move_THROAT_CHOP,
     },
 
     [MOVE_POLLEN_PUFF] =
@@ -15909,7 +15915,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PollenPuff,
+        .battleAnimScript = Move_POLLEN_PUFF,
     },
 
     [MOVE_ANCHOR_SHOT] =
@@ -15935,12 +15941,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_AnchorShot,
+        .battleAnimScript = Move_ANCHOR_SHOT,
     },
 
     [MOVE_PSYCHIC_TERRAIN] =
     {
-        .name = COMPOUND_STRING("Psychic Terrain"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("PsychcTrrain", "Psychic Terrain"),
         .description = COMPOUND_STRING(
             "The ground turns weird for\n"
             "5 turns. Blocks priority."),
@@ -15959,7 +15965,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = COMBO_STARTER_PSYCHIC_TERRAIN,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PsychicTerrain,
+        .battleAnimScript = Move_PSYCHIC_TERRAIN,
     },
 
     [MOVE_LUNGE] =
@@ -15985,7 +15991,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Lunge,
+        .battleAnimScript = Move_LUNGE,
     },
 
     [MOVE_FIRE_LASH] =
@@ -16011,7 +16017,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_FireLash,
+        .battleAnimScript = Move_FIRE_LASH,
     },
 
     [MOVE_POWER_TRIP] =
@@ -16033,7 +16039,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PowerTrip,
+        .battleAnimScript = Move_POWER_TRIP,
     },
 
     [MOVE_BURN_UP] =
@@ -16051,7 +16057,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
         .thawsUser = TRUE,
-        .argument = { .type = TYPE_FIRE },
+        .argument = TYPE_FIRE,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_REMOVE_ARG_TYPE,
             .self = TRUE,
@@ -16060,7 +16066,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_SUNNY_DAY},
-        .battleAnimScript = gBattleAnimMove_BurnUp,
+        .battleAnimScript = Move_BURN_UP,
     },
 
     [MOVE_SPEED_SWAP] =
@@ -16083,7 +16089,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SpeedSwap,
+        .battleAnimScript = Move_SPEED_SWAP,
     },
 
     [MOVE_SMART_STRIKE] =
@@ -16105,7 +16111,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SmartStrike,
+        .battleAnimScript = Move_SMART_STRIKE,
     },
 
     [MOVE_PURIFY] =
@@ -16130,12 +16136,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Purify,
+        .battleAnimScript = Move_PURIFY,
     },
 
     [MOVE_REVELATION_DANCE] =
     {
-        .name = COMPOUND_STRING("Revelation Dance"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("RvlationDnce", "Revelation Dance"),
         .description = COMPOUND_STRING(
             "Dances with mystical power.\n"
             "Matches user's first type."),
@@ -16152,12 +16158,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_RevelationDance,
+        .battleAnimScript = Move_REVELATION_DANCE,
     },
 
     [MOVE_CORE_ENFORCER] =
     {
-        .name = COMPOUND_STRING("Core Enforcer"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("CoreEnforcer", "Core Enforcer"),
         .description = COMPOUND_STRING(
             "Hits with a ray that\n"
             "nullifies the foe's ability."),
@@ -16177,7 +16183,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_CoreEnforcer,
+        .battleAnimScript = Move_CORE_ENFORCER,
     },
 
     [MOVE_TROP_KICK] =
@@ -16203,7 +16209,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_TropKick,
+        .battleAnimScript = Move_TROP_KICK,
     },
 
     [MOVE_INSTRUCT] =
@@ -16229,7 +16235,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Instruct,
+        .battleAnimScript = Move_INSTRUCT,
     },
 
     [MOVE_BEAK_BLAST] =
@@ -16258,12 +16264,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_BeakBlast,
+        .battleAnimScript = Move_BEAK_BLAST,
     },
 
     [MOVE_CLANGING_SCALES] =
     {
-        .name = COMPOUND_STRING("Clanging Scales"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("ClngngScales", "Clanging Scales"),
         .description = COMPOUND_STRING(
             "Makes a big noise with\n"
             "its scales. Drops Defense."),
@@ -16285,12 +16291,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ClangingScales,
+        .battleAnimScript = Move_CLANGING_SCALES,
     },
 
     [MOVE_DRAGON_HAMMER] =
     {
-        .name = COMPOUND_STRING("Dragon Hammer"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("DragonHammer", "Dragon Hammer"),
         .description = COMPOUND_STRING(
             "Swings its whole body\n"
             "like a hammer to damage."),
@@ -16307,7 +16313,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_DRAGON_BREATH, COMBO_STARTER_DRAGON_DANCE, COMBO_STARTER_DRAGON_RAGE, COMBO_STARTER_DRAGON_RUSH, COMBO_STARTER_DRAGON_TAIL},
-        .battleAnimScript = gBattleAnimMove_DragonHammer,
+        .battleAnimScript = Move_DRAGON_HAMMER,
     },
 
     [MOVE_BRUTAL_SWING] =
@@ -16329,7 +16335,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_BrutalSwing,
+        .battleAnimScript = Move_BRUTAL_SWING,
     },
 
     [MOVE_AURORA_VEIL] =
@@ -16354,7 +16360,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_HAIL},
-        .battleAnimScript = gBattleAnimMove_AuroraVeil,
+        .battleAnimScript = Move_AURORA_VEIL,
     },
 
     [MOVE_SHELL_TRAP] =
@@ -16382,7 +16388,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ShellTrap,
+        .battleAnimScript = Move_SHELL_TRAP,
     },
 
     [MOVE_FLEUR_CANNON] =
@@ -16408,12 +16414,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FleurCannon,
+        .battleAnimScript = Move_FLEUR_CANNON,
     },
 
     [MOVE_PSYCHIC_FANGS] =
     {
-        .name = COMPOUND_STRING("Psychic Fangs"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("PsychicFangs", "Psychic Fangs"),
         .description = COMPOUND_STRING(
             "Chomps with psychic fangs.\n"
             "Destroys any barriers."),
@@ -16431,12 +16437,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PsychicFangs,
+        .battleAnimScript = Move_PSYCHIC_FANGS,
     },
 
     [MOVE_STOMPING_TANTRUM] =
     {
-        .name = COMPOUND_STRING("Stomping Tantrum"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("StmpngTantrm", "Stomping Tantrum"),
         .description = COMPOUND_STRING(
             "Stomps around angrily.\n"
             "Stronger after a failure."),
@@ -16454,7 +16460,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_StompingTantrum,
+        .battleAnimScript = Move_STOMPING_TANTRUM,
     },
 
     [MOVE_SHADOW_BONE] =
@@ -16479,7 +16485,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = COMBO_STARTER_SHADOW_BONE,
         .contestComboMoves = {COMBO_STARTER_BONE_CLUB, COMBO_STARTER_BONEMERANG, COMBO_STARTER_BONE_RUSH},
-        .battleAnimScript = gBattleAnimMove_ShadowBone,
+        .battleAnimScript = Move_SHADOW_BONE,
     },
 
     [MOVE_ACCELEROCK] =
@@ -16501,7 +16507,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Accelerock,
+        .battleAnimScript = Move_ACCELEROCK,
     },
 
     [MOVE_LIQUIDATION] =
@@ -16527,12 +16533,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_RAIN_DANCE},
-        .battleAnimScript = gBattleAnimMove_Liquidation,
+        .battleAnimScript = Move_LIQUIDATION,
     },
 
     [MOVE_PRISMATIC_LASER] =
     {
-        .name = COMPOUND_STRING("Prismatic Laser"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("PrsmaticLasr", "Prismatic Laser"),
         .description = COMPOUND_STRING(
             "A high power laser that\n"
             "forces recharge next turn."),
@@ -16552,12 +16558,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PrismaticLaser,
+        .battleAnimScript = Move_PRISMATIC_LASER,
     },
 
     [MOVE_SPECTRAL_THIEF] =
     {
-        .name = COMPOUND_STRING("Spectral Thief"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("SpectrlThief", "Spectral Thief"),
         .description = COMPOUND_STRING(
             "Steals the target's stat\n"
             "boosts, then attacks."),
@@ -16579,12 +16585,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SpectralThief,
+        .battleAnimScript = Move_SPECTRAL_THIEF,
     },
 
     [MOVE_SUNSTEEL_STRIKE] =
     {
-        .name = COMPOUND_STRING("Sunsteel Strike"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("SnsteelStrke", "Sunsteel Strike"),
         .description = COMPOUND_STRING(
             "A sun-fueled strike that\n"
             "ignores abilities."),
@@ -16603,12 +16609,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SunsteelStrike,
+        .battleAnimScript = Move_SUNSTEEL_STRIKE,
     },
 
     [MOVE_MOONGEIST_BEAM] =
     {
-        .name = COMPOUND_STRING("Moongeist Beam"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("MoongestBeam", "Moongeist Beam"),
         .description = COMPOUND_STRING(
             "A moon-powered beam that\n"
             "ignores abilities."),
@@ -16626,7 +16632,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_MoongeistBeam,
+        .battleAnimScript = Move_MOONGEIST_BEAM,
     },
 
     [MOVE_TEARFUL_LOOK] =
@@ -16650,7 +16656,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_TearfulLook,
+        .battleAnimScript = Move_TEARFUL_LOOK,
     },
 
     [MOVE_ZING_ZAP] =
@@ -16676,12 +16682,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_CHARGE},
-        .battleAnimScript = gBattleAnimMove_ZingZap,
+        .battleAnimScript = Move_ZING_ZAP,
     },
 
     [MOVE_NATURES_MADNESS] =
     {
-        .name = COMPOUND_STRING("Nature's Madness"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("Natur'sMadns", "Nature's Madness"),
         .description = COMPOUND_STRING(
             "Halves the foe's HP with\n"
             "the power of nature."),
@@ -16698,7 +16704,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_NaturesMadness,
+        .battleAnimScript = Move_NATURES_MADNESS,
     },
 
     [MOVE_MULTI_ATTACK] =
@@ -16715,13 +16721,13 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .holdEffect = HOLD_EFFECT_MEMORY },
+        .argument = HOLD_EFFECT_MEMORY,
         .makesContact = TRUE,
         .contestEffect = CONTEST_EFFECT_SCRAMBLE_NEXT_TURN_ORDER,
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_MultiAttack,
+        .battleAnimScript = Move_MULTI_ATTACK,
     },
 
     [MOVE_MIND_BLOWN] =
@@ -16743,7 +16749,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_MindBlown,
+        .battleAnimScript = Move_MIND_BLOWN,
     },
 
     [MOVE_PLASMA_FISTS] =
@@ -16752,7 +16758,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .description = COMPOUND_STRING(
             "Hits with electrical fists.\n"
             "Normal moves turn Electric."),
-        .effect = EFFECT_HIT,
+        .effect = EFFECT_PLASMA_FISTS,
         .power = 100,
         .type = TYPE_ELECTRIC,
         .accuracy = 100,
@@ -16767,17 +16773,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_ION_DELUGE,
-            .chance = 100,
-            .sheerForceBoost = SHEER_FORCE_NO_BOOST,
-        }),
-        .battleAnimScript = gBattleAnimMove_PlasmaFists,
+        .battleAnimScript = Move_PLASMA_FISTS,
     },
 
     [MOVE_PHOTON_GEYSER] =
     {
-        .name = COMPOUND_STRING("Photon Geyser"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("PhotonGeyser", "Photon Geyser"),
         .description = COMPOUND_STRING(
             "User's highest attack stat\n"
             "determines its category."),
@@ -16795,7 +16796,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PhotonGeyser,
+        .battleAnimScript = Move_PHOTON_GEYSER,
     },
 
     [MOVE_ZIPPY_ZAP] =
@@ -16820,15 +16821,14 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_EVS_PLUS_1,
             .chance = 100,
-            .sheerForceBoost = SHEER_FORCE_NO_BOOST,
         }),
         #endif
-        .battleAnimScript = gBattleAnimMove_ZippyZap,
+        .battleAnimScript = Move_ZIPPY_ZAP,
     },
 
     [MOVE_SPLISHY_SPLASH] =
     {
-        .name = COMPOUND_STRING("Splishy Splash"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("SplishySplsh", "Splishy Splash"),
         .description = COMPOUND_STRING(
             "A huge electrified wave that\n"
             "may paralyze the foe."),
@@ -16846,7 +16846,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_PARALYSIS,
             .chance = 30,
         }),
-        .battleAnimScript = gBattleAnimMove_SplishySplash,
+        .battleAnimScript = Move_SPLISHY_SPLASH,
     },
 
     [MOVE_FLOATY_FALL] =
@@ -16870,9 +16870,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_FLINCH,
             .chance = 30,
-            .sheerForceBoost = SHEER_FORCE_NO_BOOST,
         }),
-        .battleAnimScript = gBattleAnimMove_FloatyFall,
+        .battleAnimScript = Move_FLOATY_FALL,
     },
 
     [MOVE_PIKA_PAPOW] =
@@ -16891,12 +16890,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .category = DAMAGE_CATEGORY_SPECIAL,
         .mirrorMoveBanned = B_UPDATED_MOVE_FLAGS < GEN_8,
         .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_PikaPapow,
+        .battleAnimScript = Move_PIKA_PAPOW,
     },
 
     [MOVE_BOUNCY_BUBBLE] =
     {
-        .name = COMPOUND_STRING("Bouncy Bubble"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("BouncyBubble", "Bouncy Bubble"),
         .description = COMPOUND_STRING(
             "An attack that absorbs\n"
         #if B_UPDATED_MOVE_DATA >= GEN_8
@@ -16912,11 +16911,11 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
-        .argument = { .absorbPercentage = B_UPDATED_MOVE_DATA >= GEN_8 ? 100 : 50 },
+        .argument = B_UPDATED_MOVE_DATA >= GEN_8 ? 100 : 50, // restores 100% HP instead of 50% HP
         .mirrorMoveBanned = B_UPDATED_MOVE_FLAGS < GEN_8,
         .metronomeBanned = TRUE,
         .healingMove = B_HEAL_BLOCKING >= GEN_6,
-        .battleAnimScript = gBattleAnimMove_BouncyBubble,
+        .battleAnimScript = Move_BOUNCY_BUBBLE,
     },
 
     [MOVE_BUZZY_BUZZ] =
@@ -16938,9 +16937,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_PARALYSIS,
             .chance = 100,
-            .sheerForceBoost = SHEER_FORCE_NO_BOOST,
         }),
-        .battleAnimScript = gBattleAnimMove_BuzzyBuzz,
+        .battleAnimScript = Move_BUZZY_BUZZ,
     },
 
     [MOVE_SIZZLY_SLIDE] =
@@ -16964,9 +16962,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_BURN,
             .chance = 100,
-            .sheerForceBoost = SHEER_FORCE_NO_BOOST,
         }),
-        .battleAnimScript = gBattleAnimMove_SizzlySlide,
+        .battleAnimScript = Move_SIZZLY_SLIDE,
     },
 
     [MOVE_GLITZY_GLOW] =
@@ -16975,7 +16972,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .description = COMPOUND_STRING(
             "Telekinetic force that sets\n"
             "wall, lowering Sp. Atk damage."),
-        .effect = EFFECT_HIT,
+        .effect = EFFECT_GLITZY_GLOW,
         .power = B_UPDATED_MOVE_DATA >= GEN_8 ? 80 : 90,
         .type = TYPE_PSYCHIC,
         .accuracy = B_UPDATED_MOVE_DATA >= GEN_8 ? 95 : 100,
@@ -16985,12 +16982,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .category = DAMAGE_CATEGORY_SPECIAL,
         .mirrorMoveBanned = B_UPDATED_MOVE_FLAGS < GEN_8,
         .metronomeBanned = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_LIGHT_SCREEN,
-            .chance = 100,
-            .sheerForceBoost = SHEER_FORCE_NO_BOOST,
-        }),
-        .battleAnimScript = gBattleAnimMove_GlitzyGlow,
+        .battleAnimScript = Move_GLITZY_GLOW,
     },
 
     [MOVE_BADDY_BAD] =
@@ -16999,7 +16991,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .description = COMPOUND_STRING(
             "Acting badly, attacks. Sets\n"
             "wall, lowering Attack damage."),
-        .effect = EFFECT_HIT,
+        .effect = EFFECT_BADDY_BAD,
         .power = B_UPDATED_MOVE_DATA >= GEN_8 ? 80 : 90,
         .type = TYPE_DARK,
         .accuracy = B_UPDATED_MOVE_DATA >= GEN_8 ? 95 : 100,
@@ -17009,12 +17001,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .category = DAMAGE_CATEGORY_SPECIAL,
         .mirrorMoveBanned = B_UPDATED_MOVE_FLAGS < GEN_8,
         .metronomeBanned = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_REFLECT,
-            .chance = 100,
-            .sheerForceBoost = SHEER_FORCE_NO_BOOST,
-        }),
-        .battleAnimScript = gBattleAnimMove_BaddyBad,
+        .battleAnimScript = Move_BADDY_BAD,
     },
 
     [MOVE_SAPPY_SEED] =
@@ -17023,7 +17010,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .description = COMPOUND_STRING(
             "Giant stalk scatters seeds\n"
             "that drain HP every turn."),
-        .effect = EFFECT_HIT,
+        .effect = EFFECT_SAPPY_SEED,
         .power = B_UPDATED_MOVE_DATA >= GEN_8 ? 100 : 90,
         .type = TYPE_GRASS,
         .accuracy = B_UPDATED_MOVE_DATA >= GEN_8 ? 90 : 100,
@@ -17034,12 +17021,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .mirrorMoveBanned = B_UPDATED_MOVE_FLAGS < GEN_8,
         .magicCoatAffected = TRUE,
         .metronomeBanned = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_LEECH_SEED,
-            .chance = 100,
-            .sheerForceBoost = SHEER_FORCE_NO_BOOST,
-        }),
-        .battleAnimScript = gBattleAnimMove_SappySeed,
+        .battleAnimScript = Move_SAPPY_SEED,
     },
 
     [MOVE_FREEZY_FROST] =
@@ -17048,7 +17030,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .description = COMPOUND_STRING(
             "Crystal from cold haze hits.\n"
             "Eliminates all stat changes."),
-        .effect = EFFECT_HIT,
+        .effect = EFFECT_FREEZY_FROST,
         .power = B_UPDATED_MOVE_DATA >= GEN_8 ? 100 : 90,
         .type = TYPE_ICE,
         .accuracy = B_UPDATED_MOVE_DATA >= GEN_8 ? 90 : 100,
@@ -17058,21 +17040,16 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .category = DAMAGE_CATEGORY_SPECIAL,
         .mirrorMoveBanned = B_UPDATED_MOVE_FLAGS < GEN_8,
         .metronomeBanned = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_HAZE,
-            .chance = 100,
-            .sheerForceBoost = SHEER_FORCE_NO_BOOST,
-        }),
-        .battleAnimScript = gBattleAnimMove_FreezyFrost,
+        .battleAnimScript = Move_FREEZY_FROST,
     },
 
     [MOVE_SPARKLY_SWIRL] =
     {
-        .name = COMPOUND_STRING("Sparkly Swirl"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("SparklySwirl", "Sparkly Swirl"),
         .description = COMPOUND_STRING(
             "Wrap foe with whirlwind of\n"
             "scent. Heals party's status."),
-        .effect = EFFECT_SPARKLY_SWIRL, // Temprorary
+        .effect = EFFECT_SPARKLY_SWIRL,
         .power = B_UPDATED_MOVE_DATA >= GEN_8 ? 120 : 90,
         .type = TYPE_FAIRY,
         .accuracy = B_UPDATED_MOVE_DATA >= GEN_8 ? 85 : 100,
@@ -17082,17 +17059,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .category = DAMAGE_CATEGORY_SPECIAL,
         .mirrorMoveBanned = B_UPDATED_MOVE_FLAGS < GEN_8,
         .metronomeBanned = TRUE,
-        // .additionalEffects = ADDITIONAL_EFFECTS({
-        //     .moveEffect = 0, // MOVE_EFFECT_AROMATHERAPY, Added 0 for Sheer Force boost
-        //     .chance = 100,
-        //     .sheerForceBoost = SHEER_FORCE_NO_BOOST,
-        // }),
-        .battleAnimScript = gBattleAnimMove_SparklySwirl,
+        .battleAnimScript = Move_SPARKLY_SWIRL,
     },
 
     [MOVE_VEEVEE_VOLLEY] =
     {
-        .name = COMPOUND_STRING("Veevee Volley"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("VeeveeVolley", "Veevee Volley"),
         .description = COMPOUND_STRING(
             "Eevee's love increases its\n"
             "power. It never misses."),
@@ -17107,12 +17079,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .makesContact = TRUE,
         .mirrorMoveBanned = B_UPDATED_MOVE_FLAGS < GEN_8,
         .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_VeeveeVolley,
+        .battleAnimScript = Move_VEEVEE_VOLLEY,
     },
 
     [MOVE_DOUBLE_IRON_BASH] =
     {
-        .name = COMPOUND_STRING("Double Iron Bash"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("DublIronBash", "Double Iron Bash"),
         .description = COMPOUND_STRING(
             "The user spins and hits with\n"
             "its arms. May cause flinch."),
@@ -17137,12 +17109,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_DoubleIronBash,
+        .battleAnimScript = Move_DOUBLE_IRON_BASH,
     },
 
     [MOVE_DYNAMAX_CANNON] =
     {
-        .name = COMPOUND_STRING("Dynamax Cannon"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("DynamxCannon", "Dynamax Cannon"),
         .description = COMPOUND_STRING(
             "Unleashes core energy.\n"
             "2x against Dynamaxed foes."),
@@ -17167,7 +17139,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_DynamaxCannon,
+        .battleAnimScript = Move_DYNAMAX_CANNON,
     },
 
     [MOVE_SNIPE_SHOT] =
@@ -17189,7 +17161,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SnipeShot,
+        .battleAnimScript = Move_SNIPE_SHOT,
     },
 
     [MOVE_JAW_LOCK] =
@@ -17215,7 +17187,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_JawLock,
+        .battleAnimScript = Move_JAW_LOCK,
     },
 
     [MOVE_STUFF_CHEEKS] =
@@ -17239,7 +17211,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_StuffCheeks,
+        .battleAnimScript = Move_STUFF_CHEEKS,
     },
 
     [MOVE_NO_RETREAT] =
@@ -17263,7 +17235,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_NoRetreat,
+        .battleAnimScript = Move_NO_RETREAT,
     },
 
     [MOVE_TAR_SHOT] =
@@ -17285,7 +17257,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_TarShot,
+        .battleAnimScript = Move_TAR_SHOT,
     },
 
     [MOVE_MAGIC_POWDER] =
@@ -17302,14 +17274,14 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_STATUS,
-        .argument = { .type = TYPE_PSYCHIC },
+        .argument = TYPE_PSYCHIC,
         .magicCoatAffected = TRUE,
         .powderMove = TRUE,
         .contestEffect = CONTEST_EFFECT_WORSEN_CONDITION_OF_PREV_MONS,
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_MagicPowder,
+        .battleAnimScript = Move_MAGIC_POWDER,
     },
 
     [MOVE_DRAGON_DARTS] =
@@ -17332,7 +17304,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_DragonDarts,
+        .battleAnimScript = Move_DRAGON_DARTS,
     },
 
     [MOVE_TEATIME] =
@@ -17356,7 +17328,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Teatime,
+        .battleAnimScript = Move_TEATIME,
     },
 
     [MOVE_OCTOLOCK] =
@@ -17364,7 +17336,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .name = COMPOUND_STRING("Octolock"),
         .description = COMPOUND_STRING(
             "Traps the foe to lower Def\n"
-            "and Sp. Def each turn."),
+            "and Sp. Def fall each turn."),
         .effect = EFFECT_OCTOLOCK,
         .power = 0,
         .type = TYPE_FIGHTING,
@@ -17377,7 +17349,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Octolock,
+        .battleAnimScript = Move_OCTOLOCK,
     },
 
     [MOVE_BOLT_BEAK] =
@@ -17399,12 +17371,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_BoltBeak,
+        .battleAnimScript = Move_BOLT_BEAK,
     },
 
     [MOVE_FISHIOUS_REND] =
     {
-        .name = COMPOUND_STRING("Fishious Rend"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("FishiousRend", "Fishious Rend"),
         .description = COMPOUND_STRING(
             "Double power if the user\n"
             "moves before the target."),
@@ -17422,7 +17394,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FishiousRend,
+        .battleAnimScript = Move_FISHIOUS_REND,
     },
 
     [MOVE_COURT_CHANGE] =
@@ -17444,12 +17416,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_CourtChange,
+        .battleAnimScript = Move_COURT_CHANGE,
     },
 
     [MOVE_CLANGOROUS_SOUL] =
     {
-        .name = COMPOUND_STRING("Clangorous Soul"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("ClngrousSoul", "Clangorous Soul"),
         .description = COMPOUND_STRING(
             "The user uses some of its\n"
             "HP to raise all its stats."),
@@ -17471,7 +17443,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ClangorousSoul,
+        .battleAnimScript = Move_CLANGOROUS_SOUL,
     },
 
     [MOVE_BODY_PRESS] =
@@ -17495,7 +17467,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_BodyPress,
+        .battleAnimScript = Move_BODY_PRESS,
     },
 
     [MOVE_DECORATE] =
@@ -17519,7 +17491,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Decorate,
+        .battleAnimScript = Move_DECORATE,
     },
 
     [MOVE_DRUM_BEATING] =
@@ -17545,7 +17517,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_DrumBeating,
+        .battleAnimScript = Move_DRUM_BEATING,
     },
 
     [MOVE_SNAP_TRAP] =
@@ -17572,7 +17544,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SnapTrap,
+        .battleAnimScript = Move_SNAP_TRAP,
     },
 
     [MOVE_PYRO_BALL] =
@@ -17600,12 +17572,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_PyroBall,
+        .battleAnimScript = Move_PYRO_BALL,
     },
 
     [MOVE_BEHEMOTH_BLADE] =
     {
-        .name = COMPOUND_STRING("Behemoth Blade"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("BehemthBlade", "Behemoth Blade"),
         .description = COMPOUND_STRING(
             "Strikes as a sword. Deals 2x\n"
             "damage to Dynamaxed foes."),
@@ -17627,12 +17599,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_BehemothBlade,
+        .battleAnimScript = Move_BEHEMOTH_BLADE,
     },
 
     [MOVE_BEHEMOTH_BASH] =
     {
-        .name = COMPOUND_STRING("Behemoth Bash"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("BehemothBash", "Behemoth Bash"),
         .description = COMPOUND_STRING(
             "Attacks as a shield. Deals 2x\n"
             "damage to Dynamaxed foes."),
@@ -17653,7 +17625,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_BehemothBash,
+        .battleAnimScript = Move_BEHEMOTH_BASH,
     },
 
     [MOVE_AURA_WHEEL] =
@@ -17680,12 +17652,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_AuraWheel,
+        .battleAnimScript = Move_AURA_WHEEL,
     },
 
     [MOVE_BREAKING_SWIPE] =
     {
-        .name = COMPOUND_STRING("Breaking Swipe"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("BreakngSwipe", "Breaking Swipe"),
         .description = COMPOUND_STRING(
             "Swings its tail to attack.\n"
             "Lowers the Atk of those hit."),
@@ -17707,7 +17679,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_BreakingSwipe,
+        .battleAnimScript = Move_BREAKING_SWIPE,
     },
 
     [MOVE_BRANCH_POKE] =
@@ -17730,7 +17702,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_BranchPoke,
+        .battleAnimScript = Move_BRANCH_POKE,
     },
 
     [MOVE_OVERDRIVE] =
@@ -17754,7 +17726,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Overdrive,
+        .battleAnimScript = Move_OVERDRIVE,
     },
 
     [MOVE_APPLE_ACID] =
@@ -17780,7 +17752,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_AppleAcid,
+        .battleAnimScript = Move_APPLE_ACID,
     },
 
     [MOVE_GRAV_APPLE] =
@@ -17806,7 +17778,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_GravApple,
+        .battleAnimScript = Move_GRAV_APPLE,
     },
 
     [MOVE_SPIRIT_BREAK] =
@@ -17833,12 +17805,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SpiritBreak,
+        .battleAnimScript = Move_SPIRIT_BREAK,
     },
 
     [MOVE_STRANGE_STEAM] =
     {
-        .name = COMPOUND_STRING("Strange Steam"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("StrangeSteam", "Strange Steam"),
         .description = COMPOUND_STRING(
             "Emits a strange steam to\n"
             "potentially confuse the foe."),
@@ -17859,7 +17831,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_StrangeSteam,
+        .battleAnimScript = Move_STRANGE_STEAM,
     },
 
     [MOVE_LIFE_DEW] =
@@ -17886,7 +17858,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_LifeDew,
+        .battleAnimScript = Move_LIFE_DEW,
     },
 
     [MOVE_OBSTRUCT] =
@@ -17911,12 +17883,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Obstruct,
+        .battleAnimScript = Move_OBSTRUCT,
     },
 
     [MOVE_FALSE_SURRENDER] =
     {
-        .name = COMPOUND_STRING("False Surrender"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("FalsSurrendr", "False Surrender"),
         .description = COMPOUND_STRING(
             "Bows to stab the foe\n"
             "with hair. It never misses."),
@@ -17934,12 +17906,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FalseSurrender,
+        .battleAnimScript = Move_FALSE_SURRENDER,
     },
 
     [MOVE_METEOR_ASSAULT] =
     {
-        .name = COMPOUND_STRING("Meteor Assault"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("MeteorAssalt", "Meteor Assault"),
         .description = COMPOUND_STRING(
             "Attacks with a thick leek.\n"
             "The user must then rest."),
@@ -17961,7 +17933,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_MeteorAssault,
+        .battleAnimScript = Move_METEOR_ASSAULT,
     },
 
     [MOVE_ETERNABEAM] =
@@ -17987,7 +17959,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Eternabeam,
+        .battleAnimScript = Move_ETERNABEAM,
     },
 
     [MOVE_STEEL_BEAM] =
@@ -18009,12 +17981,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SteelBeam,
+        .battleAnimScript = Move_STEEL_BEAM,
     },
 
     [MOVE_EXPANDING_FORCE] =
     {
-        .name = COMPOUND_STRING("Expanding Force"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("ExpandngForc", "Expanding Force"),
         .description = COMPOUND_STRING(
             "Power goes up and damages\n"
             "all foes on Psychic Terrain."),
@@ -18030,7 +18002,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_PSYCHIC_TERRAIN},
-        .battleAnimScript = gBattleAnimMove_ExpandingForce,
+        .battleAnimScript = Move_EXPANDING_FORCE,
     },
 
     [MOVE_STEEL_ROLLER] =
@@ -18048,13 +18020,13 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
         .makesContact = TRUE,
-        .argument = { .moveProperty = ARG_TRY_REMOVE_TERRAIN_FAIL }, // Remove a field terrain if there is one and hit, otherwise fail.
+        .argument = ARG_TRY_REMOVE_TERRAIN_FAIL, // Remove a field terrain if there is one and hit, otherwise fail.
         .skyBattleBanned = TRUE,
         .contestEffect = CONTEST_EFFECT_WORSEN_CONDITION_OF_PREV_MONS,
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SteelRoller,
+        .battleAnimScript = Move_STEEL_ROLLER,
     },
 
     [MOVE_SCALE_SHOT] =
@@ -18071,12 +18043,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .moveProperty = MOVE_EFFECT_SCALE_SHOT },
+        .argument = MOVE_EFFECT_SCALE_SHOT,
         .contestEffect = CONTEST_EFFECT_NEXT_APPEAL_EARLIER,
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ScaleShot,
+        .battleAnimScript = Move_SCALE_SHOT,
     },
 
     [MOVE_METEOR_BEAM] =
@@ -18094,7 +18066,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
         .instructBanned = TRUE,
-        .argument.twoTurnAttack = { .stringId = STRINGID_METEORBEAMCHARGING },
+        .argument = TWO_TURN_ARG(STRINGID_METEORBEAMCHARGING),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_SP_ATK_PLUS_1,
             .self = TRUE,
@@ -18104,12 +18076,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_MeteorBeam,
+        .battleAnimScript = Move_METEOR_BEAM,
     },
 
     [MOVE_SHELL_SIDE_ARM] =
     {
-        .name = COMPOUND_STRING("Shell Side Arm"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("ShellSideArm", "Shell Side Arm"),
         .description = COMPOUND_STRING(
             "Deals better of physical and\n"
             "special damage. May poison."),
@@ -18129,12 +18101,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ShellSideArm,
+        .battleAnimScript = Move_SHELL_SIDE_ARM,
     },
 
     [MOVE_MISTY_EXPLOSION] =
     {
-        .name = COMPOUND_STRING("Misty Explosion"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("MstyExplsion", "Misty Explosion"),
         .description = COMPOUND_STRING(
             "Hit everything and faint.\n"
             "Powers up on Misty Terrain."),
@@ -18150,7 +18122,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_MISTY_TERRAIN},
-        .battleAnimScript = gBattleAnimMove_MistyExplosion,
+        .battleAnimScript = Move_MISTY_EXPLOSION,
     },
 
     [MOVE_GRASSY_GLIDE] =
@@ -18173,12 +18145,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_GRASSY_TERRAIN},
-        .battleAnimScript = gBattleAnimMove_GrassyGlide,
+        .battleAnimScript = Move_GRASSY_GLIDE,
     },
 
     [MOVE_RISING_VOLTAGE] =
     {
-        .name = COMPOUND_STRING("Rising Voltage"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("RisngVoltage", "Rising Voltage"),
         .description = COMPOUND_STRING(
             "This move's power doubles\n"
             "when on Electric Terrain."),
@@ -18194,12 +18166,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_ELECTRIC_TERRAIN},
-        .battleAnimScript = gBattleAnimMove_RisingVoltage,
+        .battleAnimScript = Move_RISING_VOLTAGE,
     },
 
     [MOVE_TERRAIN_PULSE] =
     {
-        .name = COMPOUND_STRING("Terrain Pulse"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("TerrainPulse", "Terrain Pulse"),
         .description = COMPOUND_STRING(
             "Type and power changes\n"
             "depending on the terrain."),
@@ -18216,12 +18188,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {COMBO_STARTER_ELECTRIC_TERRAIN, COMBO_STARTER_MISTY_TERRAIN, COMBO_STARTER_GRASSY_TERRAIN, COMBO_STARTER_PSYCHIC_TERRAIN},
-        .battleAnimScript = gBattleAnimMove_TerrainPulse,
+        .battleAnimScript = Move_TERRAIN_PULSE,
     },
 
     [MOVE_SKITTER_SMACK] =
     {
-        .name = COMPOUND_STRING("Skitter Smack"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("SkitterSmack", "Skitter Smack"),
         .description = COMPOUND_STRING(
             "User skitters behind foe to\n"
             "attack. Lowers foe's Sp. Atk."),
@@ -18242,12 +18214,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SkitterSmack,
+        .battleAnimScript = Move_SKITTER_SMACK,
     },
 
     [MOVE_BURNING_JEALOUSY] =
     {
-        .name = COMPOUND_STRING("Burning Jealousy"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("BrningJelosy", "Burning Jealousy"),
         .description = COMPOUND_STRING(
             "Foes that have stats upped\n"
             "during the turn get burned."),
@@ -18268,7 +18240,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_BurningJealousy,
+        .battleAnimScript = Move_BURNING_JEALOUSY,
     },
 
     [MOVE_LASH_OUT] =
@@ -18290,7 +18262,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_LashOut,
+        .battleAnimScript = Move_LASH_OUT,
     },
 
     [MOVE_POLTERGEIST] =
@@ -18311,12 +18283,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Poltergeist,
+        .battleAnimScript = Move_POLTERGEIST,
     },
 
     [MOVE_CORROSIVE_GAS] =
     {
-        .name = COMPOUND_STRING("Corrosive Gas"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("CorrosiveGas", "Corrosive Gas"),
         .description = COMPOUND_STRING(
             "Highly acidic gas melts items\n"
             "held by surrounding Pokémon."),
@@ -18333,7 +18305,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_CorrosiveGas,
+        .battleAnimScript = Move_CORROSIVE_GAS,
     },
 
     [MOVE_COACHING] =
@@ -18357,7 +18329,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_Coaching,
+        .battleAnimScript = Move_COACHING,
     },
 
     [MOVE_FLIP_TURN] =
@@ -18379,7 +18351,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FlipTurn,
+        .battleAnimScript = Move_FLIP_TURN,
     },
 
     [MOVE_TRIPLE_AXEL] =
@@ -18402,12 +18374,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_TripleAxel,
+        .battleAnimScript = Move_TRIPLE_AXEL,
     },
 
     [MOVE_DUAL_WINGBEAT] =
     {
-        .name = COMPOUND_STRING("Dual Wingbeat"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("DualWingbeat", "Dual Wingbeat"),
         .description = COMPOUND_STRING(
             "User slams the target with\n"
             "wings and hits twice in a row."),
@@ -18425,12 +18397,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_DualWingbeat,
+        .battleAnimScript = Move_DUAL_WINGBEAT,
     },
 
     [MOVE_SCORCHING_SANDS] =
     {
-        .name = COMPOUND_STRING("Scorching Sands"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("ScorchngSnds", "Scorching Sands"),
         .description = COMPOUND_STRING(
             "Throws scorching sand at\n"
             "the target. May leave a burn."),
@@ -18451,12 +18423,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ScorchingSands,
+        .battleAnimScript = Move_SCORCHING_SANDS,
     },
 
     [MOVE_JUNGLE_HEALING] =
     {
-        .name = COMPOUND_STRING("Jungle Healing"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("JungleHealng", "Jungle Healing"),
         .description = COMPOUND_STRING(
             "Heals HP and status of\n"
             "itself and allies in battle."),
@@ -18477,7 +18449,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_JungleHealing,
+        .battleAnimScript = Move_JUNGLE_HEALING,
     },
 
     [MOVE_WICKED_BLOW] =
@@ -18502,12 +18474,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_WickedBlow,
+        .battleAnimScript = Move_WICKED_BLOW,
     },
 
     [MOVE_SURGING_STRIKES] =
     {
-        .name = COMPOUND_STRING("Surging Strikes"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("SurgngStrkes", "Surging Strikes"),
         .description = COMPOUND_STRING(
             "Mastering the Water style,\n"
             "strikes with 3 critical hits."),
@@ -18528,7 +18500,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_SurgingStrikes,
+        .battleAnimScript = Move_SURGING_STRIKES,
     },
 
     [MOVE_THUNDER_CAGE] =
@@ -18553,16 +18525,16 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ThunderCage,
+        .battleAnimScript = Move_THUNDER_CAGE,
     },
 
     [MOVE_DRAGON_ENERGY] =
     {
-        .name = COMPOUND_STRING("Dragon Energy"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("DragonEnergy", "Dragon Energy"),
         .description = COMPOUND_STRING(
             "The higher the user's HP\n"
             "the more damage caused."),
-        .effect = EFFECT_POWER_BASED_ON_USER_HP,
+        .effect = EFFECT_ERUPTION,
         .power = 150,
         .type = TYPE_DRAGON,
         .accuracy = 100,
@@ -18575,12 +18547,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_COOL,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_DragonEnergy,
+        .battleAnimScript = Move_DRAGON_ENERGY,
     },
 
     [MOVE_FREEZING_GLARE] =
     {
-        .name = COMPOUND_STRING("Freezing Glare"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("FreezngGlare", "Freezing Glare"),
         .description = COMPOUND_STRING(
             "Shoots psychic power from\n"
         #if B_USE_FROSTBITE == TRUE
@@ -18605,7 +18577,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_CUTE,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FreezingGlare,
+        .battleAnimScript = Move_FREEZING_GLARE,
     },
 
     [MOVE_FIERY_WRATH] =
@@ -18631,12 +18603,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_FieryWrath,
+        .battleAnimScript = Move_FIERY_WRATH,
     },
 
     [MOVE_THUNDEROUS_KICK] =
     {
-        .name = COMPOUND_STRING("Thunderous Kick"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("ThnderusKick", "Thunderous Kick"),
         .description = COMPOUND_STRING(
             "Uses a lightning-like kick\n"
             "to hit. Lowers foe's Defense."),
@@ -18658,12 +18630,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_TOUGH,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_ThunderousKick,
+        .battleAnimScript = Move_THUNDEROUS_KICK,
     },
 
     [MOVE_GLACIAL_LANCE] =
     {
-        .name = COMPOUND_STRING("Glacial Lance"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("GlacialLance", "Glacial Lance"),
         .description = COMPOUND_STRING(
             "Hurls a blizzard-cloaked\n"
             "icicle lance at foes."),
@@ -18680,12 +18652,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_BEAUTY,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_GlacialLance,
+        .battleAnimScript = Move_GLACIAL_LANCE,
     },
 
     [MOVE_ASTRAL_BARRAGE] =
     {
-        .name = COMPOUND_STRING("Astral Barrage"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("AstrlBarrage", "Astral Barrage"),
         .description = COMPOUND_STRING(
             "Sends a frightful amount\n"
             "of small ghosts at foes."),
@@ -18702,7 +18674,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .battleAnimScript = gBattleAnimMove_AstralBarrage,
+        .battleAnimScript = Move_ASTRAL_BARRAGE,
     },
 
     [MOVE_EERIE_SPELL] =
@@ -18711,7 +18683,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .description = COMPOUND_STRING(
             "Attacks with psychic power.\n"
             "Foe's last move has 3 PP cut."),
-        .effect = EFFECT_HIT,
+        .effect = EFFECT_EERIE_SPELL,
         .power = 80,
         .type = TYPE_PSYCHIC,
         .accuracy = 100,
@@ -18725,11 +18697,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .contestCategory = CONTEST_CATEGORY_SMART,
         .contestComboStarterId = 0,
         .contestComboMoves = {0},
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_EERIE_SPELL,
-            .chance = 100,
-        }),
-        .battleAnimScript = gBattleAnimMove_EerieSpell,
+        .battleAnimScript = Move_EERIE_SPELL,
     },
 
     [MOVE_DIRE_CLAW] =
@@ -18751,12 +18719,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_DIRE_CLAW,
             .chance = 50,
         }),
-        .battleAnimScript = gBattleAnimMove_DireClaw,
+        .battleAnimScript = Move_DIRE_CLAW,
     },
 
     [MOVE_PSYSHIELD_BASH] =
     {
-        .name = COMPOUND_STRING("Psyshield Bash"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("PsyshieldBsh", "Psyshield Bash"),
         .description = COMPOUND_STRING(
             "Hits a foe with psychic\n"
             "energy. May raise Defense."),
@@ -18774,7 +18742,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .self = TRUE,
             .chance = 100,
         }),
-        .battleAnimScript = gBattleAnimMove_PsyshieldBash,
+        .battleAnimScript = Move_PSYSHIELD_BASH,
     },
 
     [MOVE_POWER_SHIFT] =
@@ -18795,7 +18763,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
         .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_PowerShift,
+        .battleAnimScript = Move_POWER_SHIFT,
 },
 
     [MOVE_STONE_AXE] =
@@ -18818,12 +18786,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_STEALTH_ROCK,
             .chance = 100,
         }),
-        .battleAnimScript = gBattleAnimMove_StoneAxe,
+        .battleAnimScript = Move_STONE_AXE,
     },
 
     [MOVE_SPRINGTIDE_STORM] =
     {
-        .name = COMPOUND_STRING("Springtide Storm"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("SprngtdeStrm", "Springtide Storm"),
         .description = COMPOUND_STRING(
             "Wraps a foe in fierce winds.\n"
             "Varies with the user's form."),
@@ -18841,12 +18809,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_ATK_MINUS_1,
             .chance = 30,
         }),
-        .battleAnimScript = gBattleAnimMove_SpringtideStorm,
+        .battleAnimScript = Move_SPRINGTIDE_STORM,
     },
 
     [MOVE_MYSTICAL_POWER] =
     {
-        .name = COMPOUND_STRING("Mystical Power"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("MystcalPower", "Mystical Power"),
         .description = COMPOUND_STRING(
             "A mysterious power strikes,\n"
             "raising the user's Sp. Atk."),
@@ -18863,7 +18831,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .self = TRUE,
             .chance = 100,
         }),
-        .battleAnimScript = gBattleAnimMove_MysticalPower,
+        .battleAnimScript = Move_MYSTICAL_POWER,
     },
 
     [MOVE_RAGING_FURY] =
@@ -18885,7 +18853,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_THRASH,
             .self = TRUE,
         }),
-        .battleAnimScript = gBattleAnimMove_RagingFury,
+        .battleAnimScript = Move_RAGING_FURY,
     },
 
     [MOVE_WAVE_CRASH] =
@@ -18905,7 +18873,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .category = DAMAGE_CATEGORY_PHYSICAL,
         .makesContact = TRUE,
         .skyBattleBanned = B_EXTRAPOLATED_MOVE_FLAGS,
-        .battleAnimScript = gBattleAnimMove_WaveCrash,
+        .battleAnimScript = Move_WAVE_CRASH,
     },
 
     [MOVE_CHLOROBLAST] =
@@ -18922,12 +18890,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
-        .battleAnimScript = gBattleAnimMove_Chloroblast,
+        .battleAnimScript = Move_CHLOROBLAST,
     },
 
     [MOVE_MOUNTAIN_GALE] =
     {
-        .name = COMPOUND_STRING("Mountain Gale"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("MountainGale", "Mountain Gale"),
         .description = COMPOUND_STRING(
             "Giant chunks of ice damage\n"
             "the foe. It may flinch."),
@@ -18943,12 +18911,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_FLINCH,
             .chance = 30,
         }),
-        .battleAnimScript = gBattleAnimMove_MountainGale,
+        .battleAnimScript = Move_MOUNTAIN_GALE,
     },
 
     [MOVE_VICTORY_DANCE] =
     {
-        .name = COMPOUND_STRING("Victory Dance"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("VictoryDance", "Victory Dance"),
         .description = COMPOUND_STRING(
             "Dances to raise Attack,\n"
             "Defense and Speed."),
@@ -18964,12 +18932,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_VictoryDance,
+        .battleAnimScript = Move_VICTORY_DANCE,
     },
 
     [MOVE_HEADLONG_RUSH] =
     {
-        .name = COMPOUND_STRING("Headlong Rush"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("HeadlongRush", "Headlong Rush"),
         .description = COMPOUND_STRING(
             "Hits with a full-body tackle.\n"
             "Lowers the users's defenses."),
@@ -18987,7 +18955,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_DEF_SPDEF_DOWN,
             .self = TRUE,
         }),
-        .battleAnimScript = gBattleAnimMove_HeadlongRush,
+        .battleAnimScript = Move_HEADLONG_RUSH,
     },
 
     [MOVE_BARB_BARRAGE] =
@@ -19004,12 +18972,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .status = STATUS1_PSN_ANY },
+        .argument = STATUS1_PSN_ANY,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_POISON,
             .chance = 50,
         }),
-        .battleAnimScript = gBattleAnimMove_BarbBarrage,
+        .battleAnimScript = Move_BARB_BARRAGE,
     },
 
     [MOVE_ESPER_WING] =
@@ -19032,12 +19000,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .self = TRUE,
             .chance = 100,
         }),
-        .battleAnimScript = gBattleAnimMove_EsperWing,
+        .battleAnimScript = Move_ESPER_WING,
     },
 
     [MOVE_BITTER_MALICE] =
     {
-        .name = COMPOUND_STRING("Bitter Malice"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("BitterMalice", "Bitter Malice"),
         .description = COMPOUND_STRING(
             "A spine-chilling resentment.\n"
             "Lowers the foe's Attack."),
@@ -19053,7 +19021,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_ATK_MINUS_1,
             .chance = 100,
         }),
-        .battleAnimScript = gBattleAnimMove_BitterMalice,
+        .battleAnimScript = Move_BITTER_MALICE,
     },
 
     [MOVE_SHELTER] =
@@ -19073,12 +19041,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_Shelter,
+        .battleAnimScript = Move_SHELTER,
     },
 
     [MOVE_TRIPLE_ARROWS] =
     {
-        .name = COMPOUND_STRING("Triple Arrows"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("TripleArrows", "Triple Arrows"),
         .description = COMPOUND_STRING(
             "High critical hit ratio.\n"
             "May lower Defense or flinch."),
@@ -19099,12 +19067,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_FLINCH,
             .chance = 30,
         }),
-        .battleAnimScript = gBattleAnimMove_TripleArrows,
+        .battleAnimScript = Move_TRIPLE_ARROWS,
     },
 
     [MOVE_INFERNAL_PARADE] =
     {
-        .name = COMPOUND_STRING("Infernal Parade"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("InfrnlParade", "Infernal Parade"),
         .description = COMPOUND_STRING(
             "Hurts a foe harder if it has\n"
             "an ailment. May leave a burn."),
@@ -19116,17 +19084,17 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
-        .argument = { .status = STATUS1_ANY },
+        .argument = STATUS1_ANY,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_BURN,
             .chance = 30,
         }),
-        .battleAnimScript = gBattleAnimMove_InfernalParade,
+        .battleAnimScript = Move_INFERNAL_PARADE,
     },
 
     [MOVE_CEASELESS_EDGE] =
     {
-        .name = COMPOUND_STRING("Ceaseless Edge"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("CeaslessEdge", "Ceaseless Edge"),
         .description = COMPOUND_STRING(
             "High critical hit ratio. Sets\n"
             "Splinters that hurt the foe."),
@@ -19144,12 +19112,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_SPIKES,
             .chance = 100,
         }),
-        .battleAnimScript = gBattleAnimMove_CeaselessEdge,
+        .battleAnimScript = Move_CEASELESS_EDGE,
     },
 
     [MOVE_BLEAKWIND_STORM] =
     {
-        .name = COMPOUND_STRING("Bleakwind Storm"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("BlekwndStorm", "Bleakwind Storm"),
         .description = COMPOUND_STRING(
             "Hits with brutal, cold winds.\n"
             "May lower the foe's Speed."),
@@ -19166,12 +19134,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_SPD_MINUS_1,
             .chance = 30,
         }),
-        .battleAnimScript = gBattleAnimMove_BleakwindStorm,
+        .battleAnimScript = Move_BLEAKWIND_STORM,
     },
 
     [MOVE_WILDBOLT_STORM] =
     {
-        .name = COMPOUND_STRING("Wildbolt Storm"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("WildbltStorm", "Wildbolt Storm"),
         .description = COMPOUND_STRING(
             "Hits with a brutal tempest.\n"
             "May inflict paralysis."),
@@ -19188,12 +19156,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_PARALYSIS,
             .chance = 20,
         }),
-        .battleAnimScript = gBattleAnimMove_WildboltStorm,
+        .battleAnimScript = Move_WILDBOLT_STORM,
     },
 
     [MOVE_SANDSEAR_STORM] =
     {
-        .name = COMPOUND_STRING("Sandsear Storm"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("SndsearStorm", "Sandsear Storm"),
         .description = COMPOUND_STRING(
             "Hits with brutally hot sand.\n"
             "May inflict a burn."),
@@ -19210,12 +19178,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_BURN,
             .chance = 20,
         }),
-        .battleAnimScript = gBattleAnimMove_SandsearStorm,
+        .battleAnimScript = Move_SANDSEAR_STORM,
     },
 
     [MOVE_LUNAR_BLESSING] =
     {
-        .name = COMPOUND_STRING("Lunar Blessing"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("LunarBlessng", "Lunar Blessing"),
         .description = COMPOUND_STRING(
             "The user heals and cures\n"
             "itself and its ally."),
@@ -19231,7 +19199,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
         .healingMove = TRUE,
-        .battleAnimScript = gBattleAnimMove_LunarBlessing,
+        .battleAnimScript = Move_LUNAR_BLESSING,
     },
 
     [MOVE_TAKE_HEART] =
@@ -19251,7 +19219,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .snatchAffected = TRUE,
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_TakeHeart,
+        .battleAnimScript = Move_TAKE_HEART,
     },
 
     [MOVE_TERA_BLAST] =
@@ -19273,7 +19241,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_TERA_BLAST,
             .self = TRUE,
         }),
-        .battleAnimScript = gBattleAnimMove_TeraBlast,
+        .battleAnimScript = Move_TERA_BLAST,
     },
 
     [MOVE_SILK_TRAP] =
@@ -19293,7 +19261,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
         .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_SilkTrap,
+        .battleAnimScript = Move_SILK_TRAP,
     },
 
     [MOVE_AXE_KICK] =
@@ -19315,12 +19283,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_CONFUSION,
             .chance = 30,
         }),
-        .battleAnimScript = gBattleAnimMove_AxeKick,
+        .battleAnimScript = Move_AXE_KICK,
     },
 
     [MOVE_LAST_RESPECTS] =
     {
-        .name = COMPOUND_STRING("Last Respects"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("LastRespects", "Last Respects"),
         .description = COMPOUND_STRING(
             "This move deals more damage\n"
             "for each defeated ally."),
@@ -19333,7 +19301,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
         .metronomeBanned = TRUE, // Only since it isn't implemented yet
-        .battleAnimScript = gBattleAnimMove_LastRespects,
+        .battleAnimScript = Move_LAST_RESPECTS,
     },
 
     [MOVE_LUMINA_CRASH] =
@@ -19354,7 +19322,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_SP_DEF_MINUS_2,
             .chance = 100,
         }),
-        .battleAnimScript = gBattleAnimMove_LuminaCrash,
+        .battleAnimScript = Move_LUMINA_CRASH,
     },
 
     [MOVE_ORDER_UP] =
@@ -19363,7 +19331,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .description = COMPOUND_STRING(
             "Boosts a user's stats\n"
             "depending on Tatsugiri."),
-        .effect = EFFECT_ORDER_UP,
+        .effect = EFFECT_PLACEHOLDER, // EFFECT_ORDER_UP
         .power = 80,
         .type = TYPE_DRAGON,
         .accuracy = 100,
@@ -19373,12 +19341,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .category = DAMAGE_CATEGORY_PHYSICAL,
         .mirrorMoveBanned = TRUE,
         .metronomeBanned = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_ORDER_UP,
-            .self = TRUE,
-            .chance = 100,
-        }),
-        .battleAnimScript = gBattleAnimMove_OrderUp,
+        .battleAnimScript = Move_ORDER_UP,
     },
 
     [MOVE_JET_PUNCH] =
@@ -19398,12 +19361,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .makesContact = TRUE,
         .punchingMove = TRUE,
         .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_JetPunch,
+        .battleAnimScript = Move_JET_PUNCH,
     },
 
     [MOVE_SPICY_EXTRACT] =
     {
-        .name = COMPOUND_STRING("Spicy Extract"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("SpicyExtract", "Spicy Extract"),
         .description = COMPOUND_STRING(
             "Sharply ups target's Attack,\n"
             "harshly lowers its Defense."),
@@ -19417,7 +19380,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .category = DAMAGE_CATEGORY_STATUS,
         .magicCoatAffected = TRUE,
         .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_SpicyExtract,
+        .battleAnimScript = Move_SPICY_EXTRACT,
     },
 
     [MOVE_SPIN_OUT] =
@@ -19440,12 +19403,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_SPD_MINUS_2,
             .self = TRUE,
         }),
-        .battleAnimScript = gBattleAnimMove_SpinOut,
+        .battleAnimScript = Move_SPIN_OUT,
     },
 
     [MOVE_POPULATION_BOMB] =
     {
-        .name = COMPOUND_STRING("Population Bomb"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("PoplatinBomb", "Population Bomb"),
         .description = COMPOUND_STRING(
             "The user's fellows hit one\n"
             "to ten times in a row."),
@@ -19461,7 +19424,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .slicingMove = TRUE,
         .metronomeBanned = TRUE,
         .strikeCount = 10,
-        .battleAnimScript = gBattleAnimMove_PopulationBomb,
+        .battleAnimScript = Move_POPULATION_BOMB,
     },
 
     [MOVE_ICE_SPINNER] =
@@ -19479,9 +19442,9 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
         .makesContact = TRUE,
-        .argument = { .moveProperty = ARG_TRY_REMOVE_TERRAIN_HIT }, // Remove the active field terrain if there is one.
+        .argument = ARG_TRY_REMOVE_TERRAIN_HIT, // Remove the active field terrain if there is one.
         .skyBattleBanned = B_EXTRAPOLATED_MOVE_FLAGS,
-        .battleAnimScript = gBattleAnimMove_IceSpinner,
+        .battleAnimScript = Move_ICE_SPINNER,
     },
 
     [MOVE_GLAIVE_RUSH] =
@@ -19499,12 +19462,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
         .makesContact = TRUE,
-        .battleAnimScript = gBattleAnimMove_GlaiveRush,
+        .battleAnimScript = Move_GLAIVE_RUSH,
     },
 
     [MOVE_REVIVAL_BLESSING] =
     {
-        .name = COMPOUND_STRING("Revival Blessing"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("RevivlBlesng", "Revival Blessing"),
         .description = COMPOUND_STRING(
             "Revives a fainted party {PKMN}\n"
             "and restores half of its HP."),
@@ -19521,7 +19484,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .metronomeBanned = TRUE,
         .healingMove = TRUE,
         .sketchBanned = (B_SKETCH_BANS >= GEN_9),
-        .battleAnimScript = gBattleAnimMove_RevivalBlessing,
+        .battleAnimScript = Move_REVIVAL_BLESSING,
     },
 
     [MOVE_SALT_CURE] =
@@ -19530,7 +19493,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .description = COMPOUND_STRING(
             "Hurts foe every turn. Double\n"
             "damage to Steel and Water."),
-        .effect = EFFECT_HIT,
+        .effect = EFFECT_SALT_CURE,
         .power = 40,
         .type = TYPE_ROCK,
         .accuracy = 100,
@@ -19539,11 +19502,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
         .metronomeBanned = TRUE,
-        .additionalEffects = ADDITIONAL_EFFECTS({
-            .moveEffect = MOVE_EFFECT_SALT_CURE,
-            .chance = 100,
-        }),
-        .battleAnimScript = gBattleAnimMove_SaltCure,
+        .battleAnimScript = Move_SALT_CURE,
     },
 
     [MOVE_TRIPLE_DIVE] =
@@ -19562,7 +19521,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .category = DAMAGE_CATEGORY_PHYSICAL,
         .makesContact = TRUE,
         .strikeCount = 3,
-        .battleAnimScript = gBattleAnimMove_TripleDive,
+        .battleAnimScript = Move_TRIPLE_DIVE,
     },
 
     [MOVE_MORTAL_SPIN] =
@@ -19588,7 +19547,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_POISON,
             .chance = 100,
         }),
-        .battleAnimScript = gBattleAnimMove_MortalSpin,
+        .battleAnimScript = Move_MORTAL_SPIN,
     },
 
     [MOVE_DOODLE] =
@@ -19608,7 +19567,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
         .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_Doodle,
+        .battleAnimScript = Move_DOODLE,
     },
 
     [MOVE_FILLET_AWAY] =
@@ -19630,12 +19589,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
         .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_FilletAway,
+        .battleAnimScript = Move_FILLET_AWAY,
     },
 
     [MOVE_KOWTOW_CLEAVE] =
     {
-        .name = COMPOUND_STRING("Kowtow Cleave"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("KowtowCleave", "Kowtow Cleave"),
         .description = COMPOUND_STRING(
             "User slashes the foe after\n"
             "kowtowing. It never misses."),
@@ -19649,7 +19608,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .category = DAMAGE_CATEGORY_PHYSICAL,
         .makesContact = TRUE,
         .slicingMove = TRUE,
-        .battleAnimScript = gBattleAnimMove_KowtowCleave,
+        .battleAnimScript = Move_KOWTOW_CLEAVE,
     },
 
     [MOVE_FLOWER_TRICK] =
@@ -19667,7 +19626,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
         .alwaysCriticalHit = TRUE,
-        .battleAnimScript = gBattleAnimMove_FlowerTrick,
+        .battleAnimScript = Move_FLOWER_TRICK,
     },
 
     [MOVE_TORCH_SONG] =
@@ -19691,7 +19650,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .self = TRUE,
             .chance = 100,
         }),
-        .battleAnimScript = gBattleAnimMove_TorchSong,
+        .battleAnimScript = Move_TORCH_SONG,
     },
 
     [MOVE_AQUA_STEP] =
@@ -19715,7 +19674,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .self = TRUE,
             .chance = 100,
         }),
-        .battleAnimScript = gBattleAnimMove_AquaStep,
+        .battleAnimScript = Move_AQUA_STEP,
     },
 
     [MOVE_RAGING_BULL] =
@@ -19734,7 +19693,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .category = DAMAGE_CATEGORY_PHYSICAL,
         .makesContact = TRUE,
         .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_RagingBull,
+        .battleAnimScript = Move_RAGING_BULL,
     },
 
     [MOVE_MAKE_IT_RAIN] =
@@ -19759,7 +19718,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_SP_ATK_MINUS_1,
             .self = TRUE,
         }),
-        .battleAnimScript = gBattleAnimMove_MakeItRain,
+        .battleAnimScript = Move_MAKE_IT_RAIN,
     },
 
     [MOVE_RUINATION] =
@@ -19777,12 +19736,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
         .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_Ruination,
+        .battleAnimScript = Move_RUINATION,
     },
 
     [MOVE_COLLISION_COURSE] =
     {
-        .name = COMPOUND_STRING("Collision Course"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("ColisinCours", "Collision Course"),
         .description = COMPOUND_STRING(
             "Prehistoric explosion that's\n"
             "stronger if super effective."),
@@ -19796,12 +19755,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .category = DAMAGE_CATEGORY_PHYSICAL,
         .makesContact = TRUE,
         .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_CollisionCourse,
+        .battleAnimScript = Move_COLLISION_COURSE,
     },
 
     [MOVE_ELECTRO_DRIFT] =
     {
-        .name = COMPOUND_STRING("Electro Drift"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("ElectroDrift", "Electro Drift"),
         .description = COMPOUND_STRING(
             "Futuristic electricity. It's\n"
             "stronger if super effective."),
@@ -19815,7 +19774,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .category = DAMAGE_CATEGORY_SPECIAL,
         .makesContact = TRUE,
         .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_ElectroDrift,
+        .battleAnimScript = Move_ELECTRO_DRIFT,
     },
 
     [MOVE_SHED_TAIL] =
@@ -19836,12 +19795,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
         .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_ShedTail,
+        .battleAnimScript = Move_SHED_TAIL,
     },
 
     [MOVE_CHILLY_RECEPTION] =
     {
-        .name = COMPOUND_STRING("Chilly Reception"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("ChilReceptin", "Chilly Reception"),
         .description = COMPOUND_STRING(
             "Bad joke summons snowstorm.\n"
             "The user also switches out."),
@@ -19857,7 +19816,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
         .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_ChillyReception,
+        .battleAnimScript = Move_CHILLY_RECEPTION,
     },
 
     [MOVE_TIDY_UP] =
@@ -19877,7 +19836,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
         .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_TidyUp,
+        .battleAnimScript = Move_TIDY_UP,
     },
 
     [MOVE_SNOWSCAPE] =
@@ -19898,7 +19857,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .ignoresProtect = TRUE,
         .mirrorMoveBanned = TRUE,
         .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_Snowscape,
+        .battleAnimScript = Move_SNOWSCAPE,
     },
 
     [MOVE_POUNCE] =
@@ -19921,7 +19880,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_SPD_MINUS_1,
             .chance = 100,
         }),
-        .battleAnimScript = gBattleAnimMove_Pounce,
+        .battleAnimScript = Move_POUNCE,
     },
 
     [MOVE_TRAILBLAZE] =
@@ -19945,12 +19904,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .self = TRUE,
             .chance = 100,
         }),
-        .battleAnimScript = gBattleAnimMove_Trailblaze,
+        .battleAnimScript = Move_TRAILBLAZE,
     },
 
     [MOVE_CHILLING_WATER] =
     {
-        .name = COMPOUND_STRING("Chilling Water"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("ChillingWatr", "Chilling Water"),
         .description = COMPOUND_STRING(
             "A shower with ice-cold water\n"
             "lowers the target's Attack."),
@@ -19967,7 +19926,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_ATK_MINUS_1,
             .chance = 100,
         }),
-        .battleAnimScript = gBattleAnimMove_ChillingWater,
+        .battleAnimScript = Move_CHILLING_WATER,
     },
 
     [MOVE_HYPER_DRILL] =
@@ -19987,7 +19946,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .makesContact = TRUE,
         .ignoresProtect = TRUE,
         .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_HyperDrill,
+        .battleAnimScript = Move_HYPER_DRILL,
     },
 
     [MOVE_TWIN_BEAM] =
@@ -20006,7 +19965,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .category = DAMAGE_CATEGORY_SPECIAL,
         .strikeCount = 2,
         .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_TwinBeam,
+        .battleAnimScript = Move_TWIN_BEAM,
     },
 
     [MOVE_RAGE_FIST] =
@@ -20026,7 +19985,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .makesContact = TRUE,
         .punchingMove = TRUE,
         .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_RageFist,
+        .battleAnimScript = Move_RAGE_FIST,
     },
 
     [MOVE_ARMOR_CANNON] =
@@ -20048,7 +20007,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_DEF_SPDEF_DOWN,
             .self = TRUE,
         }),
-        .battleAnimScript = gBattleAnimMove_ArmorCannon,
+        .battleAnimScript = Move_ARMOR_CANNON,
     },
 
     [MOVE_BITTER_BLADE] =
@@ -20065,11 +20024,10 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .absorbPercentage = 50 },
         .makesContact = TRUE,
         .slicingMove = TRUE,
         .healingMove = TRUE,
-        .battleAnimScript = gBattleAnimMove_BitterBlade,
+        .battleAnimScript = Move_BITTER_BLADE,
     },
 
     [MOVE_DOUBLE_SHOCK] =
@@ -20088,17 +20046,17 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .category = DAMAGE_CATEGORY_PHYSICAL,
         .makesContact = TRUE,
         .metronomeBanned = TRUE,
-        .argument = { .type = TYPE_ELECTRIC },
+        .argument = TYPE_ELECTRIC,
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_REMOVE_ARG_TYPE,
             .self = TRUE,
         }),
-        .battleAnimScript = gBattleAnimMove_DoubleShock,
+        .battleAnimScript = Move_DOUBLE_SHOCK,
     },
 
     [MOVE_GIGATON_HAMMER] =
     {
-        .name = COMPOUND_STRING("Gigaton Hammer"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("GigatonHammr", "Gigaton Hammer"),
         .description = COMPOUND_STRING(
             "Swings a huge hammer. Can't\n"
             "be used twice in a row."),
@@ -20111,7 +20069,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
         .cantUseTwice = TRUE,
-        .battleAnimScript = gBattleAnimMove_GigatonHammer,
+        .battleAnimScript = Move_GIGATON_HAMMER,
     },
 
     [MOVE_COMEUPPANCE] =
@@ -20131,7 +20089,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .makesContact = TRUE,
         .meFirstBanned = TRUE,
         .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_Comeuppance,
+        .battleAnimScript = Move_COMEUPPANCE,
     },
 
     [MOVE_AQUA_CUTTER] =
@@ -20150,12 +20108,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
         .slicingMove = TRUE,
-        .battleAnimScript = gBattleAnimMove_AquaCutter,
+        .battleAnimScript = Move_AQUA_CUTTER,
     },
 
     [MOVE_BLAZING_TORQUE] =
     {
-        .name = COMPOUND_STRING("Blazing Torque"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("BlazngTorque", "Blazing Torque"),
         .description = COMPOUND_STRING("---"),
         .effect = EFFECT_HIT,
         .power = 80,
@@ -20179,12 +20137,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_BURN,
             .chance = 30,
         }),
-        .battleAnimScript = gBattleAnimMove_BlazingTorque,
+        .battleAnimScript = Move_BLAZING_TORQUE,
     },
 
     [MOVE_WICKED_TORQUE] =
     {
-        .name = COMPOUND_STRING("Wicked Torque"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("WickedTorque", "Wicked Torque"),
         .description = COMPOUND_STRING("---"),
         .effect = EFFECT_HIT,
         .power = 80,
@@ -20208,12 +20166,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_SLEEP,
             .chance = 10,
         }),
-        .battleAnimScript = gBattleAnimMove_WickedTorque,
+        .battleAnimScript = Move_WICKED_TORQUE,
     },
 
     [MOVE_NOXIOUS_TORQUE] =
     {
-        .name = COMPOUND_STRING("Noxious Torque"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("NoxiusTorque", "Noxious Torque"),
         .description = COMPOUND_STRING("---"),
         .effect = EFFECT_HIT,
         .power = 100,
@@ -20237,12 +20195,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_POISON,
             .chance = 30,
         }),
-        .battleAnimScript = gBattleAnimMove_NoxiousTorque,
+        .battleAnimScript = Move_NOXIOUS_TORQUE,
     },
 
     [MOVE_COMBAT_TORQUE] =
     {
-        .name = COMPOUND_STRING("Combat Torque"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("CombatTorque", "Combat Torque"),
         .description = COMPOUND_STRING("---"),
         .effect = EFFECT_HIT,
         .power = 100,
@@ -20266,12 +20224,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_PARALYSIS,
             .chance = 30,
         }),
-        .battleAnimScript = gBattleAnimMove_CombatTorque,
+        .battleAnimScript = Move_COMBAT_TORQUE,
     },
 
     [MOVE_MAGICAL_TORQUE] =
     {
-        .name = COMPOUND_STRING("Magical Torque"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("MagiclTorque", "Magical Torque"),
         .description = COMPOUND_STRING("---"),
         .effect = EFFECT_HIT,
         .power = 100,
@@ -20295,7 +20253,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_CONFUSION,
             .chance = 30,
         }),
-        .battleAnimScript = gBattleAnimMove_MagicalTorque,
+        .battleAnimScript = Move_MAGICAL_TORQUE,
     },
 
     [MOVE_PSYBLADE] =
@@ -20314,7 +20272,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .category = DAMAGE_CATEGORY_PHYSICAL,
         .makesContact = TRUE,
         .slicingMove = TRUE,
-        .battleAnimScript = gBattleAnimMove_Psyblade,
+        .battleAnimScript = Move_PSYBLADE,
     },
 
     [MOVE_HYDRO_STEAM] =
@@ -20332,7 +20290,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
         .thawsUser = TRUE,
-        .battleAnimScript = gBattleAnimMove_HydroSteam,
+        .battleAnimScript = Move_HYDRO_STEAM,
     },
 
     [MOVE_BLOOD_MOON] =
@@ -20350,12 +20308,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
         .cantUseTwice = TRUE,
-        .battleAnimScript = gBattleAnimMove_BloodMoon,
+        .battleAnimScript = Move_BLOOD_MOON,
     },
 
     [MOVE_MATCHA_GOTCHA] =
     {
-        .name = COMPOUND_STRING("Matcha Gotcha"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("MatchaGotcha", "Matcha Gotcha"),
         .description = COMPOUND_STRING(
             "Absorbs half the damage\n"
             "inflicted. May cause a burn."),
@@ -20367,7 +20325,6 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_BOTH,
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
-        .argument = { .absorbPercentage = 50 },
         .thawsUser = TRUE,
         .metronomeBanned = TRUE,
         .healingMove = B_EXTRAPOLATED_MOVE_FLAGS,
@@ -20375,7 +20332,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_BURN,
             .chance = 20,
         }),
-        .battleAnimScript = gBattleAnimMove_MatchaGotcha,
+        .battleAnimScript = Move_MATCHA_GOTCHA,
     },
 
     [MOVE_SYRUP_BOMB] =
@@ -20398,7 +20355,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_SYRUP_BOMB,
             .chance = 100,
         }),
-        .battleAnimScript = gBattleAnimMove_SyrupBomb,
+        .battleAnimScript = Move_SYRUP_BOMB,
     },
 
     [MOVE_IVY_CUDGEL] =
@@ -20417,7 +20374,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
         .metronomeBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_IvyCudgel,
+        .battleAnimScript = Move_IVY_CUDGEL,
     },
 
     [MOVE_ELECTRO_SHOT] =
@@ -20434,19 +20391,18 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
-        .argument.twoTurnAttack = { .stringId = STRINGID_ELECTROSHOTCHARGING, .status = B_WEATHER_RAIN },
+        .argument = TWO_TURN_ARG(STRINGID_ELECTROSHOTCHARGING, B_WEATHER_RAIN),
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_SP_ATK_PLUS_1,
             .self = TRUE,
             .onChargeTurnOnly = TRUE,
-            .sheerForceBoost = SHEER_FORCE_BOOST,
-        }),
-        .battleAnimScript = gBattleAnimMove_ElectroShot,
+        }, SHEER_FORCE_HACK),
+        .battleAnimScript = Move_ELECTRO_SHOT,
     },
 
     [MOVE_TERA_STARSTORM] =
     {
-        .name = COMPOUND_STRING("Tera Starstorm"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("TeraStarstrm", "Tera Starstorm"),
         .description = COMPOUND_STRING(
             "In Terapagos's Stellar\n"
             "Form, it hits all foes."),
@@ -20462,7 +20418,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .copycatBanned = TRUE,
         .mimicBanned = TRUE,
         .sketchBanned = (B_SKETCH_BANS >= GEN_9),
-        .battleAnimScript = gBattleAnimMove_TeraStarstorm,
+        .battleAnimScript = Move_TERA_STARSTORM,
     },
 
     [MOVE_FICKLE_BEAM] =
@@ -20479,12 +20435,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
-        .battleAnimScript = gBattleAnimMove_FickleBeam,
+        .battleAnimScript = Move_FICKLE_BEAM,
     },
 
     [MOVE_BURNING_BULWARK] =
     {
-        .name = COMPOUND_STRING("Burning Bulwark"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("BurnngBulwrk", "Burning Bulwark"),
         .description = COMPOUND_STRING(
             "Evades attack, and burns\n"
             "the foe if struck."),
@@ -20502,7 +20458,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .metronomeBanned = TRUE,
         .copycatBanned = TRUE,
         .assistBanned = TRUE,
-        .battleAnimScript = gBattleAnimMove_BurningBulwark,
+        .battleAnimScript = Move_BURNING_BULWARK,
     },
 
     [MOVE_THUNDERCLAP] =
@@ -20517,12 +20473,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 1,
         .category = DAMAGE_CATEGORY_SPECIAL,
-        .battleAnimScript = gBattleAnimMove_Thunderclap,
+        .battleAnimScript = Move_THUNDERCLAP,
     },
 
     [MOVE_MIGHTY_CLEAVE] =
     {
-        .name = COMPOUND_STRING("Mighty Cleave"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("MightyCleave", "Mighty Cleave"),
         .description = sFeintDescription,
         .effect = EFFECT_HIT,
         .power = 95,
@@ -20535,12 +20491,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .makesContact = TRUE,
         .ignoresProtect = TRUE,
         .slicingMove = TRUE,
-        .battleAnimScript = gBattleAnimMove_MightyCleave,
+        .battleAnimScript = Move_MIGHTY_CLEAVE,
     },
 
     [MOVE_TACHYON_CUTTER] =
     {
-        .name = COMPOUND_STRING("Tachyon Cutter"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("TachyonCuttr", "Tachyon Cutter"),
         .description = COMPOUND_STRING(
             "Launches particle blades at\n"
             "the target. Strikes twice."),
@@ -20554,23 +20510,24 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .category = DAMAGE_CATEGORY_SPECIAL,
         .strikeCount = 2,
         .slicingMove = TRUE,
-        .battleAnimScript = gBattleAnimMove_TachyonCutter,
+        .battleAnimScript = Move_TACHYON_CUTTER,
     },
 
     [MOVE_HARD_PRESS] =
     {
         .name = COMPOUND_STRING("Hard Press"),
         .description = sWringOutDescription,
-        .effect = EFFECT_POWER_BASED_ON_TARGET_HP,
-        .power = 100,
+        .effect = EFFECT_VARY_POWER_BASED_ON_HP,
+        .power = 1,
         .type = TYPE_STEEL,
         .accuracy = 100,
         .pp = 10,
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
+        .argument = 100,
         .makesContact = TRUE,
-        .battleAnimScript = gBattleAnimMove_HardPress,
+        .battleAnimScript = Move_HARD_PRESS,
     },
 
     [MOVE_DRAGON_CHEER] =
@@ -20588,12 +20545,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_STATUS,
         .ignoresSubstitute = TRUE,
-        .battleAnimScript = gBattleAnimMove_DragonCheer,
+        .battleAnimScript = Move_DRAGON_CHEER,
     },
 
     [MOVE_ALLURING_VOICE] =
     {
-        .name = COMPOUND_STRING("Alluring Voice"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("AllurngVoice", "Alluring Voice"),
         .description = COMPOUND_STRING(
             "Confuses foe if its stats\n"
             "were boosted this turn."),
@@ -20612,7 +20569,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .onlyIfTargetRaisedStats = TRUE,
             .chance = 100,
         }),
-        .battleAnimScript = gBattleAnimMove_AlluringVoice,
+        .battleAnimScript = Move_ALLURING_VOICE,
     },
 
     [MOVE_TEMPER_FLARE] =
@@ -20630,12 +20587,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
         .makesContact = TRUE,
-        .battleAnimScript = gBattleAnimMove_TemperFlare,
+        .battleAnimScript = Move_TEMPER_FLARE,
     },
 
     [MOVE_SUPERCELL_SLAM] =
     {
-        .name = COMPOUND_STRING("Supercell Slam"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("SuprcellSlam", "Supercell Slam"),
         .description = COMPOUND_STRING(
             "An electrified slam. If it\n"
             "misses, the user is hurt."),
@@ -20648,13 +20605,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
         .makesContact = TRUE,
-        .minimizeDoubleDamage = TRUE,
-        .battleAnimScript = gBattleAnimMove_SupercellSlam,
+        .battleAnimScript = Move_SUPERCELL_SLAM,
     },
 
     [MOVE_PSYCHIC_NOISE] =
     {
-        .name = COMPOUND_STRING("Psychic Noise"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("PsychicNoise", "Psychic Noise"),
         .description = COMPOUND_STRING(
             "Unpleasant sound waves that\n"
             "damage and prevent healing."),
@@ -20672,7 +20628,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_PSYCHIC_NOISE,
             .chance = 100,
         }),
-        .battleAnimScript = gBattleAnimMove_PsychicNoise,
+        .battleAnimScript = Move_PSYCHIC_NOISE,
     },
 
     [MOVE_UPPER_HAND] =
@@ -20694,12 +20650,12 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_FLINCH,
             .chance = 100,
         }),
-        .battleAnimScript = gBattleAnimMove_UpperHand,
+        .battleAnimScript = Move_UPPER_HAND,
     },
 
     [MOVE_MALIGNANT_CHAIN] =
     {
-        .name = COMPOUND_STRING("Malignant Chain"),
+        .name = HANDLE_EXPANDED_MOVE_NAME("MalignntChan", "Malignant Chain"),
         .description = COMPOUND_STRING(
             "A corrosive chain attack\n"
             "that may badly poison."),
@@ -20714,9 +20670,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .additionalEffects = ADDITIONAL_EFFECTS({
             .moveEffect = MOVE_EFFECT_TOXIC,
             .chance = 50,
-            .sheerForceBoost = SHEER_FORCE_BOOST,
         }),
-        .battleAnimScript = gBattleAnimMove_MalignantChain,
+        .battleAnimScript = Move_MALIGNANT_CHAIN,
     },
 
     // Z-Moves
@@ -20732,7 +20687,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,    //determined from move type
-        .battleAnimScript = gBattleAnimMove_BreakneckBlitz,
+        .battleAnimScript = Move_BREAKNECK_BLITZ,
     },
     [MOVE_ALL_OUT_PUMMELING] =
     {
@@ -20746,7 +20701,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_AllOutPummeling,
+        .battleAnimScript = Move_ALL_OUT_PUMMELING,
     },
     [MOVE_SUPERSONIC_SKYSTRIKE] =
     {
@@ -20760,7 +20715,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_SupersonicSkystrike,
+        .battleAnimScript = Move_SUPERSONIC_SKYSTRIKE,
     },
     [MOVE_ACID_DOWNPOUR] =
     {
@@ -20774,7 +20729,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_AcidDownpour,
+        .battleAnimScript = Move_ACID_DOWNPOUR,
     },
     [MOVE_TECTONIC_RAGE] =
     {
@@ -20789,7 +20744,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
         .skyBattleBanned = B_EXTRAPOLATED_MOVE_FLAGS,
-        .battleAnimScript = gBattleAnimMove_TectonicRage,
+        .battleAnimScript = Move_TECTONIC_RAGE,
     },
     [MOVE_CONTINENTAL_CRUSH] =
     {
@@ -20803,7 +20758,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_ContinentalCrush,
+        .battleAnimScript = Move_CONTINENTAL_CRUSH,
     },
     [MOVE_SAVAGE_SPIN_OUT] =
     {
@@ -20817,7 +20772,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_SavageSpinOut,
+        .battleAnimScript = Move_SAVAGE_SPIN_OUT,
     },
     [MOVE_NEVER_ENDING_NIGHTMARE] =
     {
@@ -20831,7 +20786,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_NeverEndingNightmare,
+        .battleAnimScript = Move_NEVER_ENDING_NIGHTMARE,
     },
     [MOVE_CORKSCREW_CRASH] =
     {
@@ -20845,7 +20800,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_CorkscrewCrash,
+        .battleAnimScript = Move_CORKSCREW_CRASH,
     },
     [MOVE_INFERNO_OVERDRIVE] =
     {
@@ -20859,7 +20814,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_InfernoOverdrive,
+        .battleAnimScript = Move_INFERNO_OVERDRIVE,
     },
     [MOVE_HYDRO_VORTEX] =
     {
@@ -20873,7 +20828,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_HydroVortex,
+        .battleAnimScript = Move_HYDRO_VORTEX,
     },
     [MOVE_BLOOM_DOOM] =
     {
@@ -20887,7 +20842,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_BloomDoom,
+        .battleAnimScript = Move_BLOOM_DOOM,
     },
     [MOVE_GIGAVOLT_HAVOC] =
     {
@@ -20901,7 +20856,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_GigavoltHavoc,
+        .battleAnimScript = Move_GIGAVOLT_HAVOC,
     },
     [MOVE_SHATTERED_PSYCHE] =
     {
@@ -20915,7 +20870,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_ShatteredPsyche,
+        .battleAnimScript = Move_SHATTERED_PSYCHE,
     },
     [MOVE_SUBZERO_SLAMMER] =
     {
@@ -20929,7 +20884,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_SubzeroSlammer,
+        .battleAnimScript = Move_SUBZERO_SLAMMER,
     },
     [MOVE_DEVASTATING_DRAKE] =
     {
@@ -20943,7 +20898,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_DevastatingDrake,
+        .battleAnimScript = Move_DEVASTATING_DRAKE,
     },
     [MOVE_BLACK_HOLE_ECLIPSE] =
     {
@@ -20957,7 +20912,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_BlackHoleEclipse,
+        .battleAnimScript = Move_BLACK_HOLE_ECLIPSE,
     },
     [MOVE_TWINKLE_TACKLE] =
     {
@@ -20971,7 +20926,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_TwinkleTackle,
+        .battleAnimScript = Move_TWINKLE_TACKLE,
     },
     [MOVE_CATASTROPIKA] =
     {
@@ -20985,7 +20940,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_Catastropika,
+        .battleAnimScript = Move_CATASTROPIKA,
     },
     [MOVE_10000000_VOLT_THUNDERBOLT] =
     {
@@ -21000,7 +20955,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
-        .battleAnimScript = gBattleAnimMove_10000000VoltThunderbolt,
+        .battleAnimScript = Move_10000000_VOLT_THUNDERBOLT,
     },
     [MOVE_STOKED_SPARKSURFER] =
     {
@@ -21018,7 +20973,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .moveEffect = MOVE_EFFECT_PARALYSIS,
             .chance = 100,
         }),
-        .battleAnimScript = gBattleAnimMove_StokedSparksurfer,
+        .battleAnimScript = Move_STOKED_SPARKSURFER,
     },
     [MOVE_EXTREME_EVOBOOST] =
     {
@@ -21032,7 +20987,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_USER,
         .priority = 0,
         .category = DAMAGE_CATEGORY_STATUS,
-        .battleAnimScript = gBattleAnimMove_ExtremeEvoboost,
+        .battleAnimScript = Move_EXTREME_EVOBOOST,
     },
     [MOVE_PULVERIZING_PANCAKE] =
     {
@@ -21046,7 +21001,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_PulverizingPancake,
+        .battleAnimScript = Move_PULVERIZING_PANCAKE,
     },
     [MOVE_GENESIS_SUPERNOVA] =
     {
@@ -21060,8 +21015,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
-        .argument = { .moveProperty = ARG_SET_PSYCHIC_TERRAIN }, // Set Psychic Terrain. If there's a different field terrain active, overwrite it.
-        .battleAnimScript = gBattleAnimMove_GenesisSupernova,
+        .argument = ARG_SET_PSYCHIC_TERRAIN, // Set Psychic Terrain. If there's a different field terrain active, overwrite it.
+        .battleAnimScript = Move_GENESIS_SUPERNOVA,
     },
     [MOVE_SINISTER_ARROW_RAID] =
     {
@@ -21075,7 +21030,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_SinisterArrowRaid,
+        .battleAnimScript = Move_SINISTER_ARROW_RAID,
     },
     [MOVE_MALICIOUS_MOONSAULT] =
     {
@@ -21089,7 +21044,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_MaliciousMoonsault,
+        .battleAnimScript = Move_MALICIOUS_MOONSAULT,
     },
     [MOVE_OCEANIC_OPERETTA] =
     {
@@ -21103,7 +21058,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
-        .battleAnimScript = gBattleAnimMove_OceanicOperetta,
+        .battleAnimScript = Move_OCEANIC_OPERETTA,
     },
     [MOVE_SPLINTERED_STORMSHARDS] =
     {
@@ -21117,8 +21072,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .moveProperty = ARG_TRY_REMOVE_TERRAIN_HIT },  // Remove the active field terrain if there is one.
-        .battleAnimScript = gBattleAnimMove_SplinteredStormshards,
+        .argument = ARG_TRY_REMOVE_TERRAIN_HIT,  // Remove the active field terrain if there is one.
+        .battleAnimScript = Move_SPLINTERED_STORMSHARDS,
     },
     [MOVE_LETS_SNUGGLE_FOREVER] =
     {
@@ -21132,7 +21087,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_LetsSnuggleForever,
+        .battleAnimScript = Move_LETS_SNUGGLE_FOREVER,
     },
     [MOVE_CLANGOROUS_SOULBLAZE] =
     {
@@ -21153,7 +21108,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
             .self = TRUE,
             .chance = 100,
         }),
-        .battleAnimScript = gBattleAnimMove_ClangorousSoulblaze,
+        .battleAnimScript = Move_CLANGOROUS_SOULBLAZE,
     },
     [MOVE_GUARDIAN_OF_ALOLA] =
     {
@@ -21167,7 +21122,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
-        .battleAnimScript = gBattleAnimMove_GuardianOfAlola,
+        .battleAnimScript = Move_GUARDIAN_OF_ALOLA,
     },
     [MOVE_SEARING_SUNRAZE_SMASH] =
     {
@@ -21182,7 +21137,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
         .ignoresTargetAbility = TRUE,
-        .battleAnimScript = gBattleAnimMove_SearingSunrazeSmash,
+        .battleAnimScript = Move_SEARING_SUNRAZE_SMASH,
     },
     [MOVE_MENACING_MOONRAZE_MAELSTROM] =
     {
@@ -21197,7 +21152,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
         .ignoresTargetAbility = TRUE,
-        .battleAnimScript = gBattleAnimMove_MenacingMoonrazeMaelstrom,
+        .battleAnimScript = Move_MENACING_MOONRAZE_MAELSTROM,
     },
     [MOVE_LIGHT_THAT_BURNS_THE_SKY] =
     {
@@ -21212,7 +21167,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .priority = 0,
         .category = DAMAGE_CATEGORY_SPECIAL,
         .ignoresTargetAbility = TRUE,
-        .battleAnimScript = gBattleAnimMove_LightThatBurnsTheSky,
+        .battleAnimScript = Move_LIGHT_THAT_BURNS_THE_SKY,
     },
     [MOVE_SOUL_STEALING_7_STAR_STRIKE] =
     {
@@ -21226,7 +21181,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .battleAnimScript = gBattleAnimMove_SoulStealing7StarStrike,
+        .battleAnimScript = Move_SOUL_STEALING_7_STAR_STRIKE,
     },
 
     [MOVE_MAX_GUARD] =
@@ -21241,7 +21196,7 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_USER,
         .priority = 4,
         .category = DAMAGE_CATEGORY_STATUS,
-        .battleAnimScript = gBattleAnimMove_MaxGuard,
+        .battleAnimScript = Move_MAX_GUARD,
     },
 
     [MOVE_MAX_FLARE] =
@@ -21256,8 +21211,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_SUN },
-        .battleAnimScript = gBattleAnimMove_MaxFlare,
+        .argument = MAX_EFFECT_SUN,
+        .battleAnimScript = Move_MAX_FLARE,
     },
 
     [MOVE_MAX_FLUTTERBY] =
@@ -21272,8 +21227,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_LOWER_SP_ATK },
-        .battleAnimScript = gBattleAnimMove_MaxFlutterby,
+        .argument = MAX_EFFECT_LOWER_SP_ATK,
+        .battleAnimScript = Move_MAX_FLUTTERBY,
     },
 
     [MOVE_MAX_LIGHTNING] =
@@ -21288,8 +21243,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_ELECTRIC_TERRAIN },
-        .battleAnimScript = gBattleAnimMove_MaxLightning,
+        .argument = MAX_EFFECT_ELECTRIC_TERRAIN,
+        .battleAnimScript = Move_MAX_LIGHTNING,
     },
 
     [MOVE_MAX_STRIKE] =
@@ -21304,8 +21259,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_LOWER_SPEED },
-        .battleAnimScript = gBattleAnimMove_MaxStrike,
+        .argument = MAX_EFFECT_LOWER_SPEED,
+        .battleAnimScript = Move_MAX_STRIKE,
     },
 
     [MOVE_MAX_KNUCKLE] =
@@ -21320,8 +21275,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_RAISE_TEAM_ATTACK },
-        .battleAnimScript = gBattleAnimMove_MaxKnuckle,
+        .argument = MAX_EFFECT_RAISE_TEAM_ATTACK,
+        .battleAnimScript = Move_MAX_KNUCKLE,
     },
 
     [MOVE_MAX_PHANTASM] =
@@ -21336,8 +21291,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_LOWER_DEFENSE },
-        .battleAnimScript = gBattleAnimMove_MaxPhantasm,
+        .argument = MAX_EFFECT_LOWER_DEFENSE,
+        .battleAnimScript = Move_MAX_PHANTASM,
     },
 
     [MOVE_MAX_HAILSTORM] =
@@ -21352,8 +21307,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_HAIL },
-        .battleAnimScript = gBattleAnimMove_MaxHailstorm,
+        .argument = MAX_EFFECT_HAIL,
+        .battleAnimScript = Move_MAX_HAILSTORM,
     },
 
     [MOVE_MAX_OOZE] =
@@ -21368,8 +21323,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_RAISE_TEAM_SP_ATK },
-        .battleAnimScript = gBattleAnimMove_MaxOoze,
+        .argument = MAX_EFFECT_RAISE_TEAM_SP_ATK,
+        .battleAnimScript = Move_MAX_OOZE,
     },
 
     [MOVE_MAX_GEYSER] =
@@ -21384,8 +21339,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_RAIN },
-        .battleAnimScript = gBattleAnimMove_MaxGeyser,
+        .argument = MAX_EFFECT_RAIN,
+        .battleAnimScript = Move_MAX_GEYSER,
     },
 
     [MOVE_MAX_AIRSTREAM] =
@@ -21400,8 +21355,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_RAISE_TEAM_SPEED },
-        .battleAnimScript = gBattleAnimMove_MaxAirstream,
+        .argument = MAX_EFFECT_RAISE_TEAM_SPEED,
+        .battleAnimScript = Move_MAX_AIRSTREAM,
     },
 
     [MOVE_MAX_STARFALL] =
@@ -21416,8 +21371,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_MISTY_TERRAIN },
-        .battleAnimScript = gBattleAnimMove_MaxStarfall,
+        .argument = MAX_EFFECT_MISTY_TERRAIN,
+        .battleAnimScript = Move_MAX_STARFALL,
     },
 
     [MOVE_MAX_WYRMWIND] =
@@ -21432,8 +21387,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_LOWER_ATTACK },
-        .battleAnimScript = gBattleAnimMove_MaxWyrmwind,
+        .argument = MAX_EFFECT_LOWER_ATTACK,
+        .battleAnimScript = Move_MAX_WYRMWIND,
     },
 
     [MOVE_MAX_MINDSTORM] =
@@ -21448,8 +21403,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_PSYCHIC_TERRAIN },
-        .battleAnimScript = gBattleAnimMove_MaxMindstorm,
+        .argument = MAX_EFFECT_PSYCHIC_TERRAIN,
+        .battleAnimScript = Move_MAX_MINDSTORM,
     },
 
     [MOVE_MAX_ROCKFALL] =
@@ -21464,8 +21419,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_SANDSTORM },
-        .battleAnimScript = gBattleAnimMove_MaxRockfall,
+        .argument = MAX_EFFECT_SANDSTORM,
+        .battleAnimScript = Move_MAX_ROCKFALL,
     },
 
     [MOVE_MAX_QUAKE] =
@@ -21480,9 +21435,9 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_RAISE_TEAM_SP_DEF },
+        .argument = MAX_EFFECT_RAISE_TEAM_SP_DEF,
         .skyBattleBanned = B_EXTRAPOLATED_MOVE_FLAGS,
-        .battleAnimScript = gBattleAnimMove_MaxQuake,
+        .battleAnimScript = Move_MAX_QUAKE,
     },
 
     [MOVE_MAX_DARKNESS] =
@@ -21497,8 +21452,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_LOWER_SP_DEF },
-        .battleAnimScript = gBattleAnimMove_MaxDarkness,
+        .argument = MAX_EFFECT_LOWER_SP_DEF,
+        .battleAnimScript = Move_MAX_DARKNESS,
     },
 
     [MOVE_MAX_OVERGROWTH] =
@@ -21513,8 +21468,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_GRASSY_TERRAIN },
-        .battleAnimScript = gBattleAnimMove_MaxOvergrowth,
+        .argument = MAX_EFFECT_GRASSY_TERRAIN,
+        .battleAnimScript = Move_MAX_OVERGROWTH,
     },
 
     [MOVE_MAX_STEELSPIKE] =
@@ -21529,8 +21484,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_RAISE_TEAM_DEFENSE },
-        .battleAnimScript = gBattleAnimMove_MaxSteelspike,
+        .argument = MAX_EFFECT_RAISE_TEAM_DEFENSE,
+        .battleAnimScript = Move_MAX_STEELSPIKE,
     },
 
     [MOVE_G_MAX_VINE_LASH] =
@@ -21545,8 +21500,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_VINE_LASH },
-        .battleAnimScript = gBattleAnimMove_GMaxVineLash,
+        .argument = MAX_EFFECT_VINE_LASH,
+        .battleAnimScript = Move_G_MAX_VINE_LASH,
     },
 
     [MOVE_G_MAX_WILDFIRE] =
@@ -21561,13 +21516,13 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_WILDFIRE },
-        .battleAnimScript = gBattleAnimMove_GMaxWildfire,
+        .argument = MAX_EFFECT_WILDFIRE,
+        .battleAnimScript = Move_G_MAX_WILDFIRE,
     },
 
     [MOVE_G_MAX_CANNONADE] =
     {
-        .name = COMPOUND_STRING("G-Max Cannonade"),
+        .name = COMPOUND_STRING("G-Max Canonade"),
         .description = sNullDescription,    //ANIM TODO
         .effect = EFFECT_MAX_MOVE,
         .power = 10,
@@ -21577,8 +21532,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_CANNONADE },
-        .battleAnimScript = gBattleAnimMove_GMaxCannonade,
+        .argument = MAX_EFFECT_CANNONADE,
+        .battleAnimScript = Move_G_MAX_CANNONADE,
     },
 
     [MOVE_G_MAX_BEFUDDLE] =
@@ -21593,8 +21548,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_EFFECT_SPORE_FOES },
-        .battleAnimScript = gBattleAnimMove_GMaxBefuddle,
+        .argument = MAX_EFFECT_EFFECT_SPORE_FOES,
+        .battleAnimScript = Move_G_MAX_BEFUDDLE,
     },
 
     [MOVE_G_MAX_VOLT_CRASH] =
@@ -21609,8 +21564,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_PARALYZE_FOES },
-        .battleAnimScript = gBattleAnimMove_GMaxVoltCrash,
+        .argument = MAX_EFFECT_PARALYZE_FOES,
+        .battleAnimScript = Move_G_MAX_VOLT_CRASH,
     },
 
     [MOVE_G_MAX_GOLD_RUSH] =
@@ -21625,8 +21580,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_CONFUSE_FOES_PAY_DAY },
-        .battleAnimScript = gBattleAnimMove_GMaxGoldRush,
+        .argument = MAX_EFFECT_CONFUSE_FOES_PAY_DAY,
+        .battleAnimScript = Move_G_MAX_GOLD_RUSH,
     },
 
     [MOVE_G_MAX_CHI_STRIKE] =
@@ -21641,8 +21596,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_CRIT_PLUS },
-        .battleAnimScript = gBattleAnimMove_GMaxChiStrike,
+        .argument = MAX_EFFECT_CRIT_PLUS,
+        .battleAnimScript = Move_G_MAX_CHI_STRIKE,
     },
 
     [MOVE_G_MAX_TERROR] =
@@ -21657,8 +21612,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_MEAN_LOOK },
-        .battleAnimScript = gBattleAnimMove_GMaxTerror,
+        .argument = MAX_EFFECT_MEAN_LOOK,
+        .battleAnimScript = Move_G_MAX_TERROR,
     },
 
     [MOVE_G_MAX_FOAM_BURST] =
@@ -21673,8 +21628,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_LOWER_SPEED_2_FOES },
-        .battleAnimScript = gBattleAnimMove_GMaxFoamBurst,
+        .argument = MAX_EFFECT_LOWER_SPEED_2_FOES,
+        .battleAnimScript = Move_G_MAX_FOAM_BURST,
     },
 
     [MOVE_G_MAX_RESONANCE] =
@@ -21689,8 +21644,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_AURORA_VEIL },
-        .battleAnimScript = gBattleAnimMove_GMaxResonance,
+        .argument = MAX_EFFECT_AURORA_VEIL,
+        .battleAnimScript = Move_G_MAX_RESONANCE,
     },
 
     [MOVE_G_MAX_CUDDLE] =
@@ -21705,8 +21660,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_INFATUATE_FOES },
-        .battleAnimScript = gBattleAnimMove_GMaxCuddle,
+        .argument = MAX_EFFECT_INFATUATE_FOES,
+        .battleAnimScript = Move_G_MAX_CUDDLE,
     },
 
     [MOVE_G_MAX_REPLENISH] =
@@ -21721,8 +21676,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_RECYCLE_BERRIES },
-        .battleAnimScript = gBattleAnimMove_GMaxReplenish,
+        .argument = MAX_EFFECT_RECYCLE_BERRIES,
+        .battleAnimScript = Move_G_MAX_REPLENISH,
     },
 
     [MOVE_G_MAX_MALODOR] =
@@ -21737,8 +21692,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_POISON_FOES },
-        .battleAnimScript = gBattleAnimMove_GMaxMalodor,
+        .argument = MAX_EFFECT_POISON_FOES,
+        .battleAnimScript = Move_G_MAX_MALODOR,
     },
 
     [MOVE_G_MAX_MELTDOWN] =
@@ -21753,8 +21708,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_TORMENT_FOES },
-        .battleAnimScript = gBattleAnimMove_GMaxMeltdown,
+        .argument = MAX_EFFECT_TORMENT_FOES,
+        .battleAnimScript = Move_G_MAX_MELTDOWN,
     },
 
     [MOVE_G_MAX_DRUM_SOLO] =
@@ -21769,9 +21724,9 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_FIXED_POWER },
+        .argument = MAX_EFFECT_FIXED_POWER,
         .ignoresTargetAbility = TRUE,
-        .battleAnimScript = gBattleAnimMove_GMaxDrumSolo,
+        .battleAnimScript = Move_G_MAX_DRUM_SOLO,
     },
 
     [MOVE_G_MAX_FIREBALL] =
@@ -21786,9 +21741,9 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_FIXED_POWER },
+        .argument = MAX_EFFECT_FIXED_POWER,
         .ignoresTargetAbility = TRUE,
-        .battleAnimScript = gBattleAnimMove_GMaxFireball,
+        .battleAnimScript = Move_G_MAX_FIREBALL,
     },
 
     [MOVE_G_MAX_HYDROSNIPE] =
@@ -21803,9 +21758,9 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_FIXED_POWER },
+        .argument = MAX_EFFECT_FIXED_POWER,
         .ignoresTargetAbility = TRUE,
-        .battleAnimScript = gBattleAnimMove_GMaxHydrosnipe,
+        .battleAnimScript = Move_G_MAX_HYDROSNIPE,
     },
 
     [MOVE_G_MAX_WIND_RAGE] =
@@ -21820,8 +21775,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_DEFOG },
-        .battleAnimScript = gBattleAnimMove_GMaxWindRage,
+        .argument = MAX_EFFECT_DEFOG,
+        .battleAnimScript = Move_G_MAX_WIND_RAGE,
     },
 
     [MOVE_G_MAX_GRAVITAS] =
@@ -21836,8 +21791,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_GRAVITY },
-        .battleAnimScript = gBattleAnimMove_GMaxGravitas,
+        .argument = MAX_EFFECT_GRAVITY,
+        .battleAnimScript = Move_G_MAX_GRAVITAS,
     },
 
     [MOVE_G_MAX_STONESURGE] =
@@ -21852,8 +21807,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_STEALTH_ROCK },
-        .battleAnimScript = gBattleAnimMove_GMaxStonesurge,
+        .argument = MAX_EFFECT_STEALTH_ROCK,
+        .battleAnimScript = Move_G_MAX_STONESURGE,
     },
 
     [MOVE_G_MAX_VOLCALITH] =
@@ -21868,8 +21823,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_VOLCALITH },
-        .battleAnimScript = gBattleAnimMove_GMaxVolcalith,
+        .argument = MAX_EFFECT_VOLCALITH,
+        .battleAnimScript = Move_G_MAX_VOLCALITH,
     },
 
     [MOVE_G_MAX_TARTNESS] =
@@ -21884,8 +21839,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_LOWER_EVASIVENESS_FOES },
-        .battleAnimScript = gBattleAnimMove_GMaxTartness,
+        .argument = MAX_EFFECT_LOWER_EVASIVENESS_FOES,
+        .battleAnimScript = Move_G_MAX_TARTNESS,
     },
 
     [MOVE_G_MAX_SWEETNESS] =
@@ -21900,8 +21855,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_AROMATHERAPY },
-        .battleAnimScript = gBattleAnimMove_GMaxSweetness,
+        .argument = MAX_EFFECT_AROMATHERAPY,
+        .battleAnimScript = Move_G_MAX_SWEETNESS,
     },
 
     [MOVE_G_MAX_SANDBLAST] =
@@ -21916,8 +21871,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_SANDBLAST_FOES },
-        .battleAnimScript = gBattleAnimMove_GMaxSandblast,
+        .argument = MAX_EFFECT_SANDBLAST_FOES,
+        .battleAnimScript = Move_G_MAX_SANDBLAST,
     },
 
     [MOVE_G_MAX_STUN_SHOCK] =
@@ -21932,8 +21887,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_POISON_PARALYZE_FOES },
-        .battleAnimScript = gBattleAnimMove_GMaxStunShock,
+        .argument = MAX_EFFECT_POISON_PARALYZE_FOES,
+        .battleAnimScript = Move_G_MAX_STUN_SHOCK,
     },
 
     [MOVE_G_MAX_CENTIFERNO] =
@@ -21948,8 +21903,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_FIRE_SPIN_FOES },
-        .battleAnimScript = gBattleAnimMove_GMaxCentiferno,
+        .argument = MAX_EFFECT_FIRE_SPIN_FOES,
+        .battleAnimScript = Move_G_MAX_CENTIFERNO,
     },
 
     [MOVE_G_MAX_SMITE] =
@@ -21964,8 +21919,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_CONFUSE_FOES },
-        .battleAnimScript = gBattleAnimMove_GMaxSmite,
+        .argument = MAX_EFFECT_CONFUSE_FOES,
+        .battleAnimScript = Move_G_MAX_SMITE,
     },
 
 
@@ -21981,8 +21936,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_YAWN_FOE },
-        .battleAnimScript = gBattleAnimMove_GMaxSnooze,
+        .argument = MAX_EFFECT_YAWN_FOE,
+        .battleAnimScript = Move_G_MAX_SNOOZE,
     },
 
     [MOVE_G_MAX_FINALE] =
@@ -21997,8 +21952,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_HEAL_TEAM },
-        .battleAnimScript = gBattleAnimMove_GMaxFinale,
+        .argument = MAX_EFFECT_HEAL_TEAM,
+        .battleAnimScript = Move_G_MAX_FINALE,
     },
 
     [MOVE_G_MAX_STEELSURGE] =
@@ -22013,8 +21968,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_STEELSURGE },
-        .battleAnimScript = gBattleAnimMove_GMaxSteelsurge,
+        .argument = MAX_EFFECT_STEELSURGE,
+        .battleAnimScript = Move_G_MAX_STEELSURGE,
     },
 
     [MOVE_G_MAX_DEPLETION] =
@@ -22029,8 +21984,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_SPITE },
-        .battleAnimScript = gBattleAnimMove_GMaxDepletion,
+        .argument = MAX_EFFECT_SPITE,
+        .battleAnimScript = Move_G_MAX_DEPLETION,
     },
 
     [MOVE_G_MAX_ONE_BLOW] =
@@ -22045,8 +22000,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_BYPASS_PROTECT },
-        .battleAnimScript = gBattleAnimMove_GMaxOneBlow,
+        .argument = MAX_EFFECT_BYPASS_PROTECT,
+        .battleAnimScript = Move_G_MAX_ONE_BLOW,
     },
 
     [MOVE_G_MAX_RAPID_FLOW] =
@@ -22061,8 +22016,8 @@ const struct MoveInfo gMovesInfo[MOVES_COUNT_DYNAMAX] =
         .target = MOVE_TARGET_SELECTED,
         .priority = 0,
         .category = DAMAGE_CATEGORY_PHYSICAL,
-        .argument = { .maxEffect = MAX_EFFECT_BYPASS_PROTECT },
-        .battleAnimScript = gBattleAnimMove_GMaxRapidFlow,
+        .argument = MAX_EFFECT_BYPASS_PROTECT,
+        .battleAnimScript = Move_G_MAX_RAPID_FLOW,
     },
 
 };

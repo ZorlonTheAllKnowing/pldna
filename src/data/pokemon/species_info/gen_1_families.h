@@ -94,9 +94,9 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .weight = 130,
         .description = COMPOUND_STRING(
             "To support its bulb, Ivysaur's legs\n"
-            "grow sturdy. If it spends more time lying in\n"
-            "the sunlight, the bud will soon bloom into\n"
-            "a large flower."),
+            "grow sturdy. If it spends more time lying\n"
+            "in the sunlight, the bud will soon bloom\n"
+            "into a large flower."),
         .pokemonScale = 335,
         .pokemonOffset = 13,
         .trainerScale = 256,
@@ -161,7 +161,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .height = 20,
         .weight = 1000,
         .description = COMPOUND_STRING(
-            "Venusaur's flower is said to take on vivid\n"
+            "Venusaur's flower may take on vivid\n"
             "colors if it gets plenty of nutrition and\n"
             "sunlight. The flower's aroma soothes the\n"
             "emotions of people."),
@@ -407,8 +407,8 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .height = 11,
         .weight = 190,
         .description = COMPOUND_STRING(
-            "Without pity, its sharp claws destroy foes.\n"
-            "If it encounters a strong enemy, it\n"
+            "Without pity, its sharp claws destroy\n"
+            "foes. If it encounters a strong enemy, it\n"
             "becomes agitated, and the flame on its\n"
             "tail flares with a bluish white color."),
         .pokemonScale = 302,
@@ -476,8 +476,8 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .description = COMPOUND_STRING(
             "A Charizard flies about in search of\n"
             "strong opponents. It breathes intense\n"
-            "flames that can melt any material. However,\n"
-            "it will never torch a weaker foe."),
+            "flames that can melt any material.\n"
+            "However, it will never torch a weaker foe."),
         .pokemonScale = 256,
         .pokemonOffset = 1,
         .trainerScale = 302,
@@ -707,8 +707,8 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .weight = 90,
         .description = COMPOUND_STRING(
             "Its shell is not just for protection.\n"
-            "Its rounded shape and the grooves on its\n"
-            "surface minimize resistance in water,\n"
+            "Its rounded shape and the grooves on\n"
+            "its surface minimize resistance in water,\n"
             "enabling Squirtle to swim at high speeds."),
         .pokemonScale = 412,
         .pokemonOffset = 18,
@@ -837,8 +837,8 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .weight = 855,
         .description = COMPOUND_STRING(
             "The waterspouts that protrude from its\n"
-            "shell are highly accurate. Their bullets of\n"
-            "water can precisely nail tin cans from\n"
+            "shell are highly accurate. Their bullets\n"
+            "of water can precisely nail tin cans from\n"
             "a distance of over 160 feet."),
         .pokemonScale = 256,
         .pokemonOffset = -1,

@@ -40,12 +40,16 @@ const uq4_12_t gTypeEffectivenessTable[NUMBER_OF_MON_TYPES][NUMBER_OF_MON_TYPES]
 #undef ______
 #undef X
 
-// Notes regarding custom data:
-// - The "generic" field is large enough that the text for TYPE_ELECTRIC will exceed TEXT_BUFF_ARRAY_COUNT.
-// - In this array there's commented-out data such as references to type-resist berries that would otherwise would go unused.
-//   However, we figured this information would be useful for users that want to add their own types as a reminder of
-//   what data would they need to add in order to have their new types be fully fledged like official types.
-// - Changing "isHiddenPowerType" for any type will change the distribution of all Hidden Power types from vanilla.
+#if B_EXPANDED_TYPE_NAMES == TRUE
+#define HANDLE_EXPANDED_TYPE_NAME(_name, ...) _(DEFAULT(_name, __VA_ARGS__))
+#else
+#define HANDLE_EXPANDED_TYPE_NAME(_name, ...) _(_name)
+#endif
+
+// .generic is large enough that the text for TYPE_ELECTRIC will exceed TEXT_BUFF_ARRAY_COUNT.
+// In this array there's commented-out data such as references to type-resist berries that would otherwise would go unused.
+// However, we figured this information would be useful for users that want to add their own types as a reminder of
+// what data would they need to add in order to have their new types be fully fledged like official types.
 const struct TypeInfo gTypesInfo[NUMBER_OF_MON_TYPES] =
 {
     [TYPE_NONE] =
@@ -56,9 +60,6 @@ const struct TypeInfo gTypesInfo[NUMBER_OF_MON_TYPES] =
         .teraTypeRGBValue = RGB_WHITE,
         .damageCategory = DAMAGE_CATEGORY_PHYSICAL,
         .paletteTMHM = gItemIconPalette_NormalTMHM,
-        .useSecondTypeIconPalette = FALSE,
-        .isSpecialCaseType = TRUE,
-        .isHiddenPowerType = FALSE,
     },
     [TYPE_NORMAL] =
     {
@@ -70,9 +71,6 @@ const struct TypeInfo gTypesInfo[NUMBER_OF_MON_TYPES] =
         .teraTypeRGBValue = RGB_WHITE, // custom
         .damageCategory = DAMAGE_CATEGORY_PHYSICAL,
         .paletteTMHM = gItemIconPalette_NormalTMHM,
-        .useSecondTypeIconPalette = FALSE,
-        .isSpecialCaseType = FALSE,
-        .isHiddenPowerType = FALSE,
         //.enhanceItem = ITEM_SILK_SCARF,
         //.berry = ITEM_CHILAN_BERRY,
         //.gem = ITEM_NORMAL_GEM,
@@ -82,7 +80,7 @@ const struct TypeInfo gTypesInfo[NUMBER_OF_MON_TYPES] =
     },
     [TYPE_FIGHTING] =
     {
-        .name = _("Fighting"),
+        .name = HANDLE_EXPANDED_TYPE_NAME("Fight", "Fighting"),
         .generic = _("a FIGHTING move"),
         .palette = 13,
         .zMove = MOVE_ALL_OUT_PUMMELING,
@@ -90,9 +88,6 @@ const struct TypeInfo gTypesInfo[NUMBER_OF_MON_TYPES] =
         .teraTypeRGBValue = RGB(26, 8, 14),
         .damageCategory = DAMAGE_CATEGORY_PHYSICAL,
         .paletteTMHM = gItemIconPalette_FightingTMHM,
-        .useSecondTypeIconPalette = FALSE,
-        .isSpecialCaseType = FALSE,
-        .isHiddenPowerType = TRUE,
         //.enhanceItem = ITEM_BLACK_BELT,
         //.berry = ITEM_CHOPLE_BERRY,
         //.gem = ITEM_FIGHTING_GEM,
@@ -112,9 +107,6 @@ const struct TypeInfo gTypesInfo[NUMBER_OF_MON_TYPES] =
         .teraTypeRGBValue = RGB(31, 26, 7),
         .damageCategory = DAMAGE_CATEGORY_PHYSICAL,
         .paletteTMHM = gItemIconPalette_FlyingTMHM,
-        .useSecondTypeIconPalette = FALSE,
-        .isSpecialCaseType = FALSE,
-        .isHiddenPowerType = TRUE,
         //.enhanceItem = ITEM_SHARP_BEAK,
         //.berry = ITEM_COBA_BERRY,
         //.gem = ITEM_FLYING_GEM,
@@ -134,9 +126,6 @@ const struct TypeInfo gTypesInfo[NUMBER_OF_MON_TYPES] =
         .teraTypeRGBValue = RGB(26, 10, 25), // custom
         .damageCategory = DAMAGE_CATEGORY_PHYSICAL,
         .paletteTMHM = gItemIconPalette_PoisonTMHM,
-        .useSecondTypeIconPalette = FALSE,
-        .isSpecialCaseType = FALSE,
-        .isHiddenPowerType = TRUE,
         //.enhanceItem = ITEM_POISON_BARB,
         //.berry = ITEM_KEBIA_BERRY,
         //.gem = ITEM_POISON_GEM,
@@ -156,9 +145,6 @@ const struct TypeInfo gTypesInfo[NUMBER_OF_MON_TYPES] =
         .teraTypeRGBValue = RGB(25, 23, 18),
         .damageCategory = DAMAGE_CATEGORY_PHYSICAL,
         .paletteTMHM = gItemIconPalette_GroundTMHM,
-        .useSecondTypeIconPalette = FALSE,
-        .isSpecialCaseType = FALSE,
-        .isHiddenPowerType = TRUE,
         //.enhanceItem = ITEM_SOFT_SAND,
         //.berry = ITEM_SHUCA_BERRY,
         //.gem = ITEM_GROUND_GEM,
@@ -178,9 +164,6 @@ const struct TypeInfo gTypesInfo[NUMBER_OF_MON_TYPES] =
         .teraTypeRGBValue = RGB(18, 16, 8), // custom
         .damageCategory = DAMAGE_CATEGORY_PHYSICAL,
         .paletteTMHM = gItemIconPalette_RockTMHM,
-        .useSecondTypeIconPalette = FALSE,
-        .isSpecialCaseType = FALSE,
-        .isHiddenPowerType = TRUE,
         //.enhanceItem = ITEM_HARD_STONE,
         //.berry = ITEM_CHARTI_BERRY,
         //.gem = ITEM_ROCK_GEM,
@@ -200,9 +183,6 @@ const struct TypeInfo gTypesInfo[NUMBER_OF_MON_TYPES] =
         .teraTypeRGBValue = RGB(18, 24, 6),
         .damageCategory = DAMAGE_CATEGORY_PHYSICAL,
         .paletteTMHM = gItemIconPalette_BugTMHM,
-        .useSecondTypeIconPalette = FALSE,
-        .isSpecialCaseType = FALSE,
-        .isHiddenPowerType = TRUE,
         //.enhanceItem = ITEM_SILVER_POWDER,
         //.berry = ITEM_TANGA_BERRY,
         //.gem = ITEM_BUG_GEM,
@@ -222,9 +202,6 @@ const struct TypeInfo gTypesInfo[NUMBER_OF_MON_TYPES] =
         .teraTypeRGBValue = RGB(12, 10, 16),
         .damageCategory = DAMAGE_CATEGORY_PHYSICAL,
         .paletteTMHM = gItemIconPalette_GhostTMHM,
-        .useSecondTypeIconPalette = FALSE,
-        .isSpecialCaseType = FALSE,
-        .isHiddenPowerType = TRUE,
         //.enhanceItem = ITEM_SPELL_TAG,
         //.berry = ITEM_KASIB_BERRY,
         //.gem = ITEM_GHOST_GEM,
@@ -244,9 +221,6 @@ const struct TypeInfo gTypesInfo[NUMBER_OF_MON_TYPES] =
         .teraTypeRGBValue = RGB(19, 19, 20),
         .damageCategory = DAMAGE_CATEGORY_PHYSICAL,
         .paletteTMHM = gItemIconPalette_SteelTMHM,
-        .useSecondTypeIconPalette = FALSE,
-        .isSpecialCaseType = FALSE,
-        .isHiddenPowerType = TRUE,
         //.enhanceItem = ITEM_METAL_COAT,
         //.berry = ITEM_BABIRI_BERRY,
         //.gem = ITEM_STEEL_GEM,
@@ -263,9 +237,6 @@ const struct TypeInfo gTypesInfo[NUMBER_OF_MON_TYPES] =
         .palette = 15,
         .teraTypeRGBValue = RGB_WHITE,
         .damageCategory = DAMAGE_CATEGORY_SPECIAL,
-        .useSecondTypeIconPalette = FALSE,
-        .isSpecialCaseType = TRUE,
-        .isHiddenPowerType = FALSE,
     },
     [TYPE_FIRE] =
     {
@@ -277,9 +248,6 @@ const struct TypeInfo gTypesInfo[NUMBER_OF_MON_TYPES] =
         .teraTypeRGBValue = RGB(31, 20, 11),
         .damageCategory = DAMAGE_CATEGORY_SPECIAL,
         .paletteTMHM = gItemIconPalette_FireTMHM,
-        .useSecondTypeIconPalette = TRUE,
-        .isSpecialCaseType = FALSE,
-        .isHiddenPowerType = TRUE,
         //.enhanceItem = ITEM_CHARCOAL,
         //.berry = ITEM_OCCA_BERRY,
         //.gem = ITEM_FIRE_GEM,
@@ -299,9 +267,6 @@ const struct TypeInfo gTypesInfo[NUMBER_OF_MON_TYPES] =
         .teraTypeRGBValue = RGB(10, 18, 27),
         .damageCategory = DAMAGE_CATEGORY_SPECIAL,
         .paletteTMHM = gItemIconPalette_WaterTMHM,
-        .useSecondTypeIconPalette = TRUE,
-        .isSpecialCaseType = FALSE,
-        .isHiddenPowerType = TRUE,
         //.enhanceItem = ITEM_MYSTIC_WATER,
         //.berry = ITEM_PASSHO_BERRY,
         //.gem = ITEM_WATER_GEM,
@@ -321,9 +286,6 @@ const struct TypeInfo gTypesInfo[NUMBER_OF_MON_TYPES] =
         .teraTypeRGBValue = RGB(12, 24, 11),
         .damageCategory = DAMAGE_CATEGORY_SPECIAL,
         .paletteTMHM = gItemIconPalette_GrassTMHM,
-        .useSecondTypeIconPalette = TRUE,
-        .isSpecialCaseType = FALSE,
-        .isHiddenPowerType = TRUE,
         //.enhanceItem = ITEM_MIRACLE_SEED,
         //.berry = ITEM_RINDO_BERRY,
         //.gem = ITEM_GRASS_GEM,
@@ -335,7 +297,7 @@ const struct TypeInfo gTypesInfo[NUMBER_OF_MON_TYPES] =
     },
     [TYPE_ELECTRIC] =
     {
-        .name = _("Electric"),
+        .name = HANDLE_EXPANDED_TYPE_NAME("Electr", "Electric"),
         .generic = _("an ELECTRIC move"),
         .palette = 13,
         .zMove = MOVE_GIGAVOLT_HAVOC,
@@ -343,9 +305,6 @@ const struct TypeInfo gTypesInfo[NUMBER_OF_MON_TYPES] =
         .teraTypeRGBValue = RGB(30, 26, 7),
         .damageCategory = DAMAGE_CATEGORY_SPECIAL,
         .paletteTMHM = gItemIconPalette_ElectricTMHM,
-        .useSecondTypeIconPalette = TRUE,
-        .isSpecialCaseType = FALSE,
-        .isHiddenPowerType = TRUE,
         //.enhanceItem = ITEM_MAGNET,
         //.berry = ITEM_WACAN_BERRY,
         //.gem = ITEM_ELECTRIC_GEM,
@@ -357,7 +316,7 @@ const struct TypeInfo gTypesInfo[NUMBER_OF_MON_TYPES] =
     },
     [TYPE_PSYCHIC] =
     {
-        .name = _("Psychic"),
+        .name = HANDLE_EXPANDED_TYPE_NAME("Psychc", "Psychic"),
         .generic = _("a PSYCHIC move"),
         .palette = 14,
         .zMove = MOVE_SHATTERED_PSYCHE,
@@ -365,9 +324,6 @@ const struct TypeInfo gTypesInfo[NUMBER_OF_MON_TYPES] =
         .teraTypeRGBValue = RGB(31, 14, 15),
         .damageCategory = DAMAGE_CATEGORY_SPECIAL,
         .paletteTMHM = gItemIconPalette_PsychicTMHM,
-        .useSecondTypeIconPalette = TRUE,
-        .isSpecialCaseType = FALSE,
-        .isHiddenPowerType = TRUE,
         //.enhanceItem = ITEM_TWISTED_SPOON,
         //.berry = ITEM_PAYAPA_BERRY,
         //.gem = ITEM_PSYCHIC_GEM,
@@ -387,9 +343,6 @@ const struct TypeInfo gTypesInfo[NUMBER_OF_MON_TYPES] =
         .teraTypeRGBValue = RGB(14, 26, 25),
         .damageCategory = DAMAGE_CATEGORY_SPECIAL,
         .paletteTMHM = gItemIconPalette_IceTMHM,
-        .useSecondTypeIconPalette = TRUE,
-        .isSpecialCaseType = FALSE,
-        .isHiddenPowerType = TRUE,
         //.enhanceItem = ITEM_NEVER_MELT_ICE,
         //.berry = ITEM_YACHE_BERRY,
         //.gem = ITEM_ICE_GEM,
@@ -409,9 +362,6 @@ const struct TypeInfo gTypesInfo[NUMBER_OF_MON_TYPES] =
         .teraTypeRGBValue = RGB(10, 18, 27),
         .damageCategory = DAMAGE_CATEGORY_SPECIAL,
         .paletteTMHM = gItemIconPalette_DragonTMHM,
-        .useSecondTypeIconPalette = TRUE,
-        .isSpecialCaseType = FALSE,
-        .isHiddenPowerType = TRUE,
         //.enhanceItem = ITEM_DRAGON_FANG,
         //.berry = ITEM_HABAN_BERRY,
         //.gem = ITEM_DRAGON_GEM,
@@ -431,9 +381,6 @@ const struct TypeInfo gTypesInfo[NUMBER_OF_MON_TYPES] =
         .teraTypeRGBValue = RGB(6, 5, 8),
         .damageCategory = DAMAGE_CATEGORY_SPECIAL,
         .paletteTMHM = gItemIconPalette_DarkTMHM,
-        .useSecondTypeIconPalette = TRUE,
-        .isSpecialCaseType = FALSE,
-        .isHiddenPowerType = TRUE,
         //.enhanceItem = ITEM_BLACK_GLASSES,
         //.berry = ITEM_COLBUR_BERRY,
         //.gem = ITEM_DARK_GEM,
@@ -453,9 +400,6 @@ const struct TypeInfo gTypesInfo[NUMBER_OF_MON_TYPES] =
         .teraTypeRGBValue = RGB(31, 15, 21),
         .damageCategory = DAMAGE_CATEGORY_SPECIAL,
         .paletteTMHM = gItemIconPalette_FairyTMHM,
-        .useSecondTypeIconPalette = TRUE,
-        .isSpecialCaseType = FALSE,
-        .isHiddenPowerType = FALSE,
         //.enhanceItem = ITEM_FAIRY_FEATHER,
         //.berry = ITEM_ROSELI_BERRY,
         //.gem = ITEM_FAIRY_GEM,
@@ -467,16 +411,13 @@ const struct TypeInfo gTypesInfo[NUMBER_OF_MON_TYPES] =
     },
     [TYPE_STELLAR] =
     {
-        .name = _("Stellar"),
+        .name = HANDLE_EXPANDED_TYPE_NAME("Stellr", "Stellar"),
         .generic = _("a STELLAR move"),
         .palette = 15,
         .zMove = MOVE_BREAKNECK_BLITZ,
         .maxMove = MOVE_MAX_STRIKE,
         .teraTypeRGBValue = RGB(10, 18, 27),
         .paletteTMHM = gItemIconPalette_NormalTMHM, // failsafe
-        .useSecondTypeIconPalette = FALSE,
-        .isSpecialCaseType = TRUE,
-        .isHiddenPowerType = FALSE,
         // .teraShard = ITEM_STELLAR_TERA_SHARD,
     },
 };

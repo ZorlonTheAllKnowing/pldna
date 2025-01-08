@@ -131,31 +131,6 @@
 
 #define FEATURE_FLAG_ASSERT(flag, id) STATIC_ASSERT(flag > TEMP_FLAGS_END || flag == 0, id)
 
-#ifndef NDEBUG
-static inline void CycleCountStart()
-{
-    REG_TM2CNT_H = 0;
-    REG_TM3CNT_H = 0;
-
-    REG_TM2CNT_L = 0;
-    REG_TM3CNT_L = 0;
-
-    // init timers (tim3 count up mode, tim2 every clock cycle)
-    REG_TM3CNT_H = TIMER_ENABLE | TIMER_COUNTUP;
-    REG_TM2CNT_H = TIMER_1CLK | TIMER_ENABLE;
-}
-
-static inline u32 CycleCountEnd()
-{
-    // stop timers
-    REG_TM2CNT_H = 0;
-    REG_TM3CNT_H = 0;
-
-    // return result
-    return REG_TM2CNT_L | (REG_TM3CNT_L << 16u);
-}
-#endif
-
 struct Coords8
 {
     s8 x;
@@ -200,22 +175,13 @@ struct Time
     /*0x04*/ s8 seconds;
 };
 
-#include "constants/items.h"
-#define ITEM_FLAGS_COUNT ((ITEMS_COUNT / 8) + ((ITEMS_COUNT % 8) ? 1 : 0))
 
 struct SaveBlock3
 {
 #if OW_USE_FAKE_RTC
     struct Time fakeRTC;
 #endif
-#if OW_SHOW_ITEM_DESCRIPTIONS == OW_ITEM_DESCRIPTIONS_FIRST_TIME
-    u8 itemFlags[ITEM_FLAGS_COUNT];
-#endif
-#if USE_DEXNAV_SEARCH_LEVELS == TRUE
-    u8 dexNavSearchLevels[NUM_SPECIES];
-#endif
-    u8 dexNavChain;
-}; /* max size 1624 bytes */
+};
 
 extern struct SaveBlock3 *gSaveBlock3Ptr;
 
@@ -819,7 +785,8 @@ struct DayCare
 {
     struct DaycareMon mons[DAYCARE_MON_COUNT];
     u32 offspringPersonality;
-    u32 stepCounter;
+    u8 stepCounter;
+    //u8 padding[3];
 };
 
 struct LilycoveLadyQuiz
@@ -1011,14 +978,14 @@ struct ExternalEventFlags
 
 struct SaveBlock1
 {
-    /*0x00*/ struct Coords16 pos;
-    /*0x04*/ struct WarpData location;
+    /*0x00*/ struct Coords16 pos; //Current X,Y position on unnamed map
+    /*0x04*/ struct WarpData location; //Current map
     /*0x0C*/ struct WarpData continueGameWarp;
     /*0x14*/ struct WarpData dynamicWarp;
     /*0x1C*/ struct WarpData lastHealLocation; // used by white-out and teleport
     /*0x24*/ struct WarpData escapeWarp; // used by Dig and Escape Rope
-    /*0x2C*/ u16 savedMusic;
-    /*0x2E*/ u8 weather;
+    /*0x2C*/ u16 savedMusic; //current track playing
+    /*0x2E*/ u8 weather; //current weather
     /*0x2F*/ u8 weatherCycleStage;
     /*0x30*/ u8 flashLevel;
     /*0x31*/ //u8 padding1;
@@ -1026,17 +993,17 @@ struct SaveBlock1
     /*0x34*/ u16 mapView[0x100];
     /*0x234*/ u8 playerPartyCount;
     /*0x235*/ //u8 padding2[3];
-    /*0x238*/ struct Pokemon playerParty[PARTY_SIZE];
-    /*0x490*/ u32 money;
-    /*0x494*/ u16 coins;
+    /*0x238*/ struct Pokemon playerParty[PARTY_SIZE]; //Current 6 pokemon in party
+    /*0x490*/ u32 money; //Current amount of money
+    /*0x494*/ u16 coins; //Current amount of Coins
     /*0x496*/ u16 registeredItem; // registered for use with SELECT button
-    /*0x498*/ struct ItemSlot pcItems[PC_ITEMS_COUNT];
-    /*0x560*/ struct ItemSlot bagPocket_Items[BAG_ITEMS_COUNT];
-    /*0x5D8*/ struct ItemSlot bagPocket_KeyItems[BAG_KEYITEMS_COUNT];
-    /*0x650*/ struct ItemSlot bagPocket_PokeBalls[BAG_POKEBALLS_COUNT];
-    /*0x690*/ struct ItemSlot bagPocket_TMHM[BAG_TMHM_COUNT];
-    /*0x790*/ struct ItemSlot bagPocket_Berries[BAG_BERRIES_COUNT];
-    /*0x848*/ struct Pokeblock pokeblocks[POKEBLOCKS_COUNT];
+    /*0x498*/ struct ItemSlot pcItems[PC_ITEMS_COUNT]; //All the items in the PC
+    /*0x560*/ struct ItemSlot bagPocket_Items[BAG_ITEMS_COUNT]; //All the items in the main bag pocket
+    /*0x5D8*/ struct ItemSlot bagPocket_KeyItems[BAG_KEYITEMS_COUNT]; //All the key items in main bag pocket
+    /*0x650*/ struct ItemSlot bagPocket_PokeBalls[BAG_POKEBALLS_COUNT]; //All the balls in ball pocket
+    /*0x690*/ struct ItemSlot bagPocket_TMHM[BAG_TMHM_COUNT]; //All the TMs/HMs in TM/HM pocket
+    /*0x790*/ struct ItemSlot bagPocket_Berries[BAG_BERRIES_COUNT]; //All berries in berry pocket
+    /*0x848*/ struct Pokeblock pokeblocks[POKEBLOCKS_COUNT]; //All pokeblocks in pokeblock storage thing
 #if FREE_EXTRA_SEEN_FLAGS_SAVEBLOCK1 == FALSE
     /*0x988*/ u8 filler1[0x34]; // Previously Dex Flags, feel free to remove.
 #endif //FREE_EXTRA_SEEN_FLAGS_SAVEBLOCK1

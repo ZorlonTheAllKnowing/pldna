@@ -360,21 +360,20 @@ void BattleArena_AddMindPoints(u8 battler)
 // All moves with power != 0 give 1 point, with the following exceptions:
 //    - Counter, Mirror Coat, and Bide give 0 points
 //    - Fake Out subtracts 1 point
-// All status moves give 0 points, with the following exceptions:
+// All moves with power == 0 give 0 points, with the following exceptions:
 //    - Protect, Detect, and Endure subtract 1 point
-    u32 effect = GetMoveEffect(gCurrentMove);
 
-    if (effect == EFFECT_FIRST_TURN_ONLY
-     || effect == EFFECT_PROTECT
-     || effect == EFFECT_ENDURE)
+    if (gMovesInfo[gCurrentMove].effect == EFFECT_FIRST_TURN_ONLY
+     || gMovesInfo[gCurrentMove].effect == EFFECT_PROTECT
+     || gMovesInfo[gCurrentMove].effect == EFFECT_ENDURE)
     {
         gBattleStruct->arenaMindPoints[battler]--;
     }
-    else if (!IsBattleMoveStatus(gCurrentMove)
-          && effect != EFFECT_COUNTER
-          && effect != EFFECT_MIRROR_COAT
-          && effect != EFFECT_METAL_BURST
-          && effect != EFFECT_BIDE)
+    else if (gMovesInfo[gCurrentMove].power != 0
+          && gMovesInfo[gCurrentMove].effect != EFFECT_COUNTER
+          && gMovesInfo[gCurrentMove].effect != EFFECT_MIRROR_COAT
+          && gMovesInfo[gCurrentMove].effect != EFFECT_METAL_BURST
+          && gMovesInfo[gCurrentMove].effect != EFFECT_BIDE)
     {
         gBattleStruct->arenaMindPoints[battler]++;
     }
@@ -387,25 +386,25 @@ void BattleArena_AddSkillPoints(u8 battler)
     if (gHitMarker & HITMARKER_OBEYS)
     {
         u8 *failedMoveBits = &gBattleStruct->alreadyStatusedMoveAttempt;
-        if (*failedMoveBits & (1u << battler))
+        if (*failedMoveBits & gBitTable[battler])
         {
-            *failedMoveBits &= ~((1u << battler));
+            *failedMoveBits &= ~(gBitTable[battler]);
             skillPoints[battler] -= 2;
         }
-        else if (gBattleStruct->moveResultFlags[gBattlerTarget] & MOVE_RESULT_NO_EFFECT)
+        else if (gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
         {
-            if (!(gBattleStruct->moveResultFlags[gBattlerTarget] & MOVE_RESULT_MISSED) || gBattleCommunication[MISS_TYPE] != B_MSG_PROTECTED)
+            if (!(gMoveResultFlags & MOVE_RESULT_MISSED) || gBattleCommunication[MISS_TYPE] != B_MSG_PROTECTED)
                 skillPoints[battler] -= 2;
         }
-        else if ((gBattleStruct->moveResultFlags[gBattlerTarget] & MOVE_RESULT_SUPER_EFFECTIVE) && (gBattleStruct->moveResultFlags[gBattlerTarget] & MOVE_RESULT_NOT_VERY_EFFECTIVE))
+        else if ((gMoveResultFlags & MOVE_RESULT_SUPER_EFFECTIVE) && (gMoveResultFlags & MOVE_RESULT_NOT_VERY_EFFECTIVE))
         {
             skillPoints[battler] += 1;
         }
-        else if (gBattleStruct->moveResultFlags[gBattlerTarget] & MOVE_RESULT_SUPER_EFFECTIVE)
+        else if (gMoveResultFlags & MOVE_RESULT_SUPER_EFFECTIVE)
         {
             skillPoints[battler] += 2;
         }
-        else if (gBattleStruct->moveResultFlags[gBattlerTarget] & MOVE_RESULT_NOT_VERY_EFFECTIVE)
+        else if (gMoveResultFlags & MOVE_RESULT_NOT_VERY_EFFECTIVE)
         {
             skillPoints[battler] -= 1;
         }
