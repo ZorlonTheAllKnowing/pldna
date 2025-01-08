@@ -41,11 +41,8 @@ struct Weather
             struct Sprite *sandstormSprites2[NUM_SWIRL_SANDSTORM_SPRITES];
         } s2;
     } sprites;
-<<<<<<< HEAD
     u8 darkenedContrastColorMaps[NUM_WEATHER_COLOR_MAPS][32];
     u8 contrastColorMaps[NUM_WEATHER_COLOR_MAPS][32];
-=======
->>>>>>> upstream/master
     s8 colorMapIndex;
     s8 targetColorMapIndex;
     u8 colorMapStepDelay;

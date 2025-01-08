@@ -881,13 +881,7 @@ static void Mailbox_CancelMoveToBag(u8 taskId)
 static void Mailbox_Give(u8 taskId)
 {
     if (CalculatePlayerPartyCount() == 0)
-<<<<<<< HEAD
         Mailbox_NoPokemonForMail(taskId);
-=======
-    {
-        Mailbox_NoPokemonForMail(taskId);
-    }
->>>>>>> upstream/master
     else
     {
         FadeScreen(FADE_TO_BLACK, 0);

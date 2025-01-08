@@ -17,20 +17,12 @@ SINGLE_BATTLE_TEST("Lightning Rod absorbs Electric-type moves and increases the 
             };
             ABILITY_POPUP(opponent, ABILITY_LIGHTNING_ROD);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
-<<<<<<< HEAD
             MESSAGE("Foe Raichu's Sp. Atk rose!");
-=======
-            MESSAGE("The opposing Raichu's Sp. Atk rose!");
->>>>>>> upstream/master
         } else {
             NONE_OF {
                 ABILITY_POPUP(opponent, ABILITY_LIGHTNING_ROD);
                 ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
-<<<<<<< HEAD
                 MESSAGE("Foe Raichu's Sp. Atk rose!");
-=======
-                MESSAGE("The opposing Raichu's Sp. Atk rose!");
->>>>>>> upstream/master
             };
             ANIMATION(ANIM_TYPE_MOVE, MOVE_THUNDERBOLT, player);
             HP_BAR(opponent);
@@ -62,17 +54,10 @@ DOUBLE_BATTLE_TEST("Lightning Rod forces single-target Electric-type moves to ta
             };
             ABILITY_POPUP(opponentLeft, ABILITY_LIGHTNING_ROD);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentLeft);
-<<<<<<< HEAD
             MESSAGE("Foe Raichu's Sp. Atk rose!");
             ABILITY_POPUP(opponentLeft, ABILITY_LIGHTNING_ROD);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentLeft);
             MESSAGE("Foe Raichu's Sp. Atk rose!");
-=======
-            MESSAGE("The opposing Raichu's Sp. Atk rose!");
-            ABILITY_POPUP(opponentLeft, ABILITY_LIGHTNING_ROD);
-            ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentLeft);
-            MESSAGE("The opposing Raichu's Sp. Atk rose!");
->>>>>>> upstream/master
         } else {
             NONE_OF {
                 HP_BAR(opponentRight);

@@ -17,7 +17,6 @@ SINGLE_BATTLE_TEST("Paralysis reduces Speed by 50%")
         if (playerFirst) {
             ONE_OF {
                 MESSAGE("Wobbuffet used Celebrate!");
-<<<<<<< HEAD
                 MESSAGE("Wobbuffet is paralyzed! It can't move!");
             }
             MESSAGE("Foe Wobbuffet used Celebrate!");
@@ -26,16 +25,6 @@ SINGLE_BATTLE_TEST("Paralysis reduces Speed by 50%")
             ONE_OF {
                 MESSAGE("Wobbuffet used Celebrate!");
                 MESSAGE("Wobbuffet is paralyzed! It can't move!");
-=======
-                MESSAGE("Wobbuffet is paralyzed, so it may be unable to move!");
-            }
-            MESSAGE("The opposing Wobbuffet used Celebrate!");
-        } else {
-            MESSAGE("The opposing Wobbuffet used Celebrate!");
-            ONE_OF {
-                MESSAGE("Wobbuffet used Celebrate!");
-                MESSAGE("Wobbuffet is paralyzed, so it may be unable to move!");
->>>>>>> upstream/master
             }
         }
     }
@@ -50,11 +39,7 @@ SINGLE_BATTLE_TEST("Paralysis has a 25% chance of skipping the turn")
     } WHEN {
         TURN { MOVE(player, MOVE_CELEBRATE); }
     } SCENE {
-<<<<<<< HEAD
         MESSAGE("Wobbuffet is paralyzed! It can't move!");
-=======
-        MESSAGE("Wobbuffet couldn't move because it's paralyzed!");
->>>>>>> upstream/master
     }
 }
 

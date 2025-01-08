@@ -10,11 +10,7 @@ SINGLE_BATTLE_TEST("Sturdy prevents OHKO moves")
     } WHEN {
         TURN { MOVE(opponent, MOVE_FISSURE); }
     } SCENE {
-<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet used Fissure!");
-=======
-        MESSAGE("The opposing Wobbuffet used Fissure!");
->>>>>>> upstream/master
         ABILITY_POPUP(player, ABILITY_STURDY);
         MESSAGE("Geodude was protected by Sturdy!");
     } THEN {

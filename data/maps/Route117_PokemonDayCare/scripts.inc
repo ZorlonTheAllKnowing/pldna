@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 1 "data/maps/Route117_PokemonDayCare/scripts.pory"
 
 # 2 "data/maps/Route117_PokemonDayCare/scripts.pory"
@@ -15,13 +14,3 @@ Route117_PokemonDayCare_OnTransition:
 	setflag FLAG_LANDMARK_POKEMON_DAYCARE
 # 8 "data/maps/Route117_PokemonDayCare/scripts.pory"
 	end
-=======
-Route117_PokemonDayCare_MapScripts::
-	map_script MAP_SCRIPT_ON_TRANSITION, Route117_PokemonDayCare_OnTransition
-	.byte 0
-
-Route117_PokemonDayCare_OnTransition:
-	setflag FLAG_LANDMARK_POKEMON_DAYCARE
-	end
-
->>>>>>> upstream/master

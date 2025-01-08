@@ -58,11 +58,7 @@ SINGLE_BATTLE_TEST("Thunder, Ice and Fire Fang cause the opponent to flinch 10% 
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, move, player);
         HP_BAR(opponent);
-<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet flinched!");
-=======
-        MESSAGE("The opposing Wobbuffet flinched and couldn't move!");
->>>>>>> upstream/master
         NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
     }
 }

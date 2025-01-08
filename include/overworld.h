@@ -51,10 +51,6 @@ extern void (*gFieldCallback)(void);
 extern bool8 (*gFieldCallback2)(void);
 extern u8 gLocalLinkPlayerId;
 extern u8 gFieldLinkPlayerCount;
-<<<<<<< HEAD
-=======
-extern bool8 gExitStairsMovementDisabled;
->>>>>>> upstream/master
 
 extern const struct UCoords32 gDirectionToVectors[];
 
@@ -159,15 +155,4 @@ bool32 Overworld_SendKeysToLinkIsRunning(void);
 bool32 IsSendingKeysOverCable(void);
 void ClearLinkPlayerObjectEvents(void);
 
-<<<<<<< HEAD
-=======
-// Item Description Headers
-enum ItemObtainFlags
-{
-    FLAG_GET_ITEM_OBTAINED,
-    FLAG_SET_ITEM_OBTAINED,
-};
-bool8 GetSetItemObtained(u16 item, enum ItemObtainFlags caseId);
-
->>>>>>> upstream/master
 #endif // GUARD_OVERWORLD_H

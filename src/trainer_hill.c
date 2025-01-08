@@ -852,11 +852,7 @@ bool8 GetHillTrainerFlag(u8 objectEventId)
     u32 trainerIndexStart = GetFloorId() * HILL_TRAINERS_PER_FLOOR;
     u8 bitId = gObjectEvents[objectEventId].localId - 1 + trainerIndexStart;
 
-<<<<<<< HEAD
     return gSaveBlock2Ptr->frontier.trainerFlags & gBitTable[bitId];
-=======
-    return gSaveBlock2Ptr->frontier.trainerFlags & (1u << bitId);
->>>>>>> upstream/master
 }
 
 void SetHillTrainerFlag(void)
@@ -868,11 +864,7 @@ void SetHillTrainerFlag(void)
     {
         if (gSaveBlock2Ptr->frontier.trainerIds[i] == gTrainerBattleOpponent_A)
         {
-<<<<<<< HEAD
             gSaveBlock2Ptr->frontier.trainerFlags |= gBitTable[trainerIndexStart + i];
-=======
-            gSaveBlock2Ptr->frontier.trainerFlags |= 1u << (trainerIndexStart + i);
->>>>>>> upstream/master
             break;
         }
     }
@@ -883,11 +875,7 @@ void SetHillTrainerFlag(void)
         {
             if (gSaveBlock2Ptr->frontier.trainerIds[i] == gTrainerBattleOpponent_B)
             {
-<<<<<<< HEAD
                 gSaveBlock2Ptr->frontier.trainerFlags |= gBitTable[trainerIndexStart + i];
-=======
-                gSaveBlock2Ptr->frontier.trainerFlags |= 1u << (trainerIndexStart + i);
->>>>>>> upstream/master
                 break;
             }
         }

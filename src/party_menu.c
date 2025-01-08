@@ -32,11 +32,7 @@
 #include "item.h"
 #include "item_menu.h"
 #include "item_use.h"
-<<<<<<< HEAD
 #include "level_caps.h"
-=======
-#include "caps.h"
->>>>>>> upstream/master
 #include "link.h"
 #include "link_rfu.h"
 #include "mail.h"
@@ -82,10 +78,7 @@
 
 enum {
     MENU_SUMMARY,
-<<<<<<< HEAD
     MENU_EVOLVE,
-=======
->>>>>>> upstream/master
     MENU_SWITCH,
     MENU_CANCEL1,
     MENU_ITEM,
@@ -235,11 +228,8 @@ struct PartyMenuBox
     u8 statusSpriteId;
 };
 
-<<<<<<< HEAD
 //extern struct Evolution gEvolutionTable[][EVOS_PER_MON];
 
-=======
->>>>>>> upstream/master
 // EWRAM vars
 static EWRAM_DATA struct PartyMenuInternal *sPartyMenuInternal = NULL;
 EWRAM_DATA struct PartyMenu gPartyMenu = {0};
@@ -486,10 +476,7 @@ static void ShiftMoveSlot(struct Pokemon *, u8, u8);
 static void BlitBitmapToPartyWindow_LeftColumn(u8, u8, u8, u8, u8, bool8);
 static void BlitBitmapToPartyWindow_RightColumn(u8, u8, u8, u8, u8, bool8);
 static void CursorCb_Summary(u8);
-<<<<<<< HEAD
 static void CursorCb_Evolve(u8 taskId);
-=======
->>>>>>> upstream/master
 static void CursorCb_Switch(u8);
 static void CursorCb_Cancel1(u8);
 static void CursorCb_Item(u8);
@@ -1370,11 +1357,7 @@ static void DrawCancelConfirmButtons(void)
 
 bool8 IsMultiBattle(void)
 {
-<<<<<<< HEAD
     if (gBattleTypeFlags & BATTLE_TYPE_MULTI && gBattleTypeFlags & BATTLE_TYPE_DOUBLE && gMain.inBattle)
-=======
-    if (gBattleTypeFlags & BATTLE_TYPE_MULTI && IsDoubleBattle() && gMain.inBattle)
->>>>>>> upstream/master
         return TRUE;
     else
         return FALSE;
@@ -2759,12 +2742,9 @@ static u8 DisplaySelectionWindow(u8 windowType)
             text = gMovesInfo[sFieldMoves[sPartyMenuInternal->actions[i] - MENU_FIELD_MOVES]].name;
         else
             text = sCursorOptions[sPartyMenuInternal->actions[i]].text;
-<<<<<<< HEAD
         //Check if Action is Evolve. If so, pick the Evolve gold text color reference
         if (sPartyMenuInternal->actions[i] == MENU_EVOLVE)
             fontColorsId = 5;
-=======
->>>>>>> upstream/master
 
         AddTextPrinterParameterized4(sPartyMenuInternal->windowId[0], FONT_NORMAL, cursorDimension, (i * 16) + 1, letterSpacing, 0, sFontColorTable[fontColorsId], 0, text);
     }
@@ -2823,12 +2803,9 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
     sPartyMenuInternal->numActions = 0;
     AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_SUMMARY);
 
-<<<<<<< HEAD
     //I think this function determines if the target species is ready to evolve? -Z
     u16 targetSpecies = GetEvolutionTargetSpecies(&gPlayerParty[gPartyMenu.slotId], EVO_MODE_NORMAL, ITEM_NONE, NULL);
 
-=======
->>>>>>> upstream/master
     // Add field moves to action list
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
@@ -2850,13 +2827,10 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
             AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_MAIL);
         else
             AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_ITEM);
-<<<<<<< HEAD
         //This should add EVOLVE to the menu if there is an available evolution that has been met.
         if (targetSpecies != SPECIES_NONE) 
            AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_EVOLVE);
         
-=======
->>>>>>> upstream/master
     }
     AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_CANCEL1);
 }
@@ -3025,7 +2999,6 @@ static void CB2_ReturnToPartyMenuFromSummaryScreen(void)
     InitPartyMenu(gPartyMenu.menuType, KEEP_PARTY_LAYOUT, gPartyMenu.action, TRUE, PARTY_MSG_DO_WHAT_WITH_MON, Task_TryCreateSelectionWindow, gPartyMenu.exitCallback);
 }
 
-<<<<<<< HEAD
 //I think this should allow for clicking the EVOLVE option to evolve the pokemon
 static void CursorCb_Evolve(u8 taskId)
 {
@@ -3045,8 +3018,6 @@ static void CursorCb_Evolve(u8 taskId)
     }
 }
 
-=======
->>>>>>> upstream/master
 static void CursorCb_Switch(u8 taskId)
 {
     // Reset follower steps when the party leader is changed
@@ -4640,11 +4611,7 @@ static bool8 NotUsingHPEVItemOnShedinja(struct Pokemon *mon, u16 item)
     return TRUE;
 }
 
-<<<<<<< HEAD
 bool32 IsItemFlute(u16 item)
-=======
-static bool32 IsItemFlute(u16 item)
->>>>>>> upstream/master
 {
     if (item == ITEM_BLUE_FLUTE || item == ITEM_RED_FLUTE || item == ITEM_YELLOW_FLUTE)
         return TRUE;
@@ -5433,13 +5400,7 @@ static void Task_LearnNextMoveOrClosePartyMenu(u8 taskId)
     if (IsFanfareTaskInactive() && ((JOY_NEW(A_BUTTON)) || (JOY_NEW(B_BUTTON))))
     {
         if (gPartyMenu.learnMoveState == 1)
-<<<<<<< HEAD
             Task_TryLearningNextMove(taskId);
-=======
-        {
-            Task_TryLearningNextMove(taskId);
-        }
->>>>>>> upstream/master
         else
         {
             if (gPartyMenu.learnMoveState == 2) // never occurs
@@ -6485,21 +6446,13 @@ static void Task_TryItemUseFormChange(u8 taskId)
     case 6:
         if (!IsPartyMenuTextPrinterActive())
         {
-<<<<<<< HEAD
             if (gSpecialVar_ItemId == ITEM_ROTOM_CATALOG) //only for rotom currently
-=======
-            if (gSpecialVar_ItemId == ITEM_ROTOM_CATALOG) //only for Rotom currently
->>>>>>> upstream/master
             {
                 u32 i;
                 for (i = 0; i < ARRAY_COUNT(sRotomFormChangeMoves); i++)
                     DeleteMove(mon, sRotomFormChangeMoves[i]);
 
-<<<<<<< HEAD
                 if (gSpecialVar_0x8000 == MOVE_THUNDER_SHOCK)
-=======
-                if (I_ROTOM_CATALOG_THUNDER_SHOCK < GEN_9 && gSpecialVar_0x8000 == ROTOM_BASE_MOVE)
->>>>>>> upstream/master
                 {
                     if (!DoesMonHaveAnyMoves(mon))
                         FormChangeTeachMove(taskId, gSpecialVar_0x8000, gPartyMenu.slotId);
@@ -6597,66 +6550,42 @@ bool32 TryMultichoiceFormChange(u8 taskId)
 static void CursorCb_CatalogBulb(u8 taskId)
 {
     gSpecialVar_Result = 0;
-<<<<<<< HEAD
     gSpecialVar_0x8000 = MOVE_THUNDER_SHOCK;
-=======
-    gSpecialVar_0x8000 = ROTOM_BASE_MOVE;
->>>>>>> upstream/master
     TryMultichoiceFormChange(taskId);
 }
 
 static void CursorCb_CatalogOven(u8 taskId)
 {
     gSpecialVar_Result = 1;
-<<<<<<< HEAD
     gSpecialVar_0x8000 = MOVE_OVERHEAT;
-=======
-    gSpecialVar_0x8000 = ROTOM_HEAT_MOVE;
->>>>>>> upstream/master
     TryMultichoiceFormChange(taskId);
 }
 
 static void CursorCb_CatalogWashing(u8 taskId)
 {
     gSpecialVar_Result = 2;
-<<<<<<< HEAD
     gSpecialVar_0x8000 = MOVE_HYDRO_PUMP;
-=======
-    gSpecialVar_0x8000 = ROTOM_WASH_MOVE;
->>>>>>> upstream/master
     TryMultichoiceFormChange(taskId);
 }
 
 static void CursorCb_CatalogFridge(u8 taskId)
 {
     gSpecialVar_Result = 3;
-<<<<<<< HEAD
     gSpecialVar_0x8000 = MOVE_BLIZZARD;
-=======
-    gSpecialVar_0x8000 = ROTOM_FROST_MOVE;
->>>>>>> upstream/master
     TryMultichoiceFormChange(taskId);
 }
 
 static void CursorCb_CatalogFan(u8 taskId)
 {
     gSpecialVar_Result = 4;
-<<<<<<< HEAD
     gSpecialVar_0x8000 = MOVE_AIR_SLASH;
-=======
-    gSpecialVar_0x8000 = ROTOM_FAN_MOVE;
->>>>>>> upstream/master
     TryMultichoiceFormChange(taskId);
 }
 
 static void CursorCb_CatalogMower(u8 taskId)
 {
     gSpecialVar_Result = 5;
-<<<<<<< HEAD
     gSpecialVar_0x8000 = MOVE_LEAF_STORM;
-=======
-    gSpecialVar_0x8000 = ROTOM_MOW_MOVE;
->>>>>>> upstream/master
     TryMultichoiceFormChange(taskId);
 }
 

@@ -129,11 +129,7 @@ void SetControllerToWally(u32 battler)
 
 static void WallyBufferRunCommand(u32 battler)
 {
-<<<<<<< HEAD
     if (gBattleControllerExecFlags & gBitTable[battler])
-=======
-    if (gBattleControllerExecFlags & (1u << battler))
->>>>>>> upstream/master
     {
         if (gBattleResources->bufferA[battler][0] < ARRAY_COUNT(sWallyBufferCommands))
             sWallyBufferCommands[gBattleResources->bufferA[battler][0]](battler);
@@ -292,11 +288,7 @@ static void WallyBufferExecCompleted(u32 battler)
     }
     else
     {
-<<<<<<< HEAD
         gBattleControllerExecFlags &= ~gBitTable[battler];
-=======
-        gBattleControllerExecFlags &= ~(1u << battler);
->>>>>>> upstream/master
     }
 }
 

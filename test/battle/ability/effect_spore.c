@@ -19,21 +19,13 @@ SINGLE_BATTLE_TEST("Effect Spore only inflicts status on contact")
         if (gMovesInfo[move].makesContact) {
             ABILITY_POPUP(opponent, ABILITY_EFFECT_SPORE);
             ANIMATION(ANIM_TYPE_STATUS, B_ANIM_STATUS_PSN, player);
-<<<<<<< HEAD
             MESSAGE("Wobbuffet was poisoned by Foe Breloom's Effect Spore!");
-=======
-            MESSAGE("Wobbuffet was poisoned by the opposing Breloom's Effect Spore!");
->>>>>>> upstream/master
             STATUS_ICON(player, poison: TRUE);
         } else {
             NONE_OF {
                 ABILITY_POPUP(opponent, ABILITY_EFFECT_SPORE);
                 ANIMATION(ANIM_TYPE_STATUS, B_ANIM_STATUS_PSN, player);
-<<<<<<< HEAD
                 MESSAGE("Wobbuffet was poisoned by Foe Breloom's Effect Spore!");
-=======
-                MESSAGE("Wobbuffet was poisoned by the opposing Breloom's Effect Spore!");
->>>>>>> upstream/master
                 STATUS_ICON(player, poison: TRUE);
             }
         }
@@ -54,11 +46,7 @@ SINGLE_BATTLE_TEST("Effect Spore causes poison 9% of the time")
     } SCENE {
         ABILITY_POPUP(opponent, ABILITY_EFFECT_SPORE);
         ANIMATION(ANIM_TYPE_STATUS, B_ANIM_STATUS_PSN, player);
-<<<<<<< HEAD
         MESSAGE("Wobbuffet was poisoned by Foe Breloom's Effect Spore!");
-=======
-        MESSAGE("Wobbuffet was poisoned by the opposing Breloom's Effect Spore!");
->>>>>>> upstream/master
         STATUS_ICON(player, poison: TRUE);
     }
 }
@@ -77,11 +65,7 @@ SINGLE_BATTLE_TEST("Effect Spore causes paralysis 10% of the time")
     } SCENE {
         ABILITY_POPUP(opponent, ABILITY_EFFECT_SPORE);
         ANIMATION(ANIM_TYPE_STATUS, B_ANIM_STATUS_PRZ, player);
-<<<<<<< HEAD
         MESSAGE("Foe Breloom's Effect Spore paralyzed Wobbuffet! It may be unable to move!");
-=======
-        MESSAGE("The opposing Breloom's Effect Spore paralyzed Wobbuffet, so it may be unable to move!");
->>>>>>> upstream/master
         STATUS_ICON(player, paralysis: TRUE);
     }
 }
@@ -100,11 +84,7 @@ SINGLE_BATTLE_TEST("Effect Spore causes sleep 11% of the time")
     } SCENE {
         ABILITY_POPUP(opponent, ABILITY_EFFECT_SPORE);
         ANIMATION(ANIM_TYPE_STATUS, B_ANIM_STATUS_SLP, player);
-<<<<<<< HEAD
         MESSAGE("Foe Breloom's Effect Spore made Wobbuffet sleep!");
-=======
-        MESSAGE("The opposing Breloom's Effect Spore made Wobbuffet sleep!");
->>>>>>> upstream/master
         STATUS_ICON(player, sleep: TRUE);
     }
 }

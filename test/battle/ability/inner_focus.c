@@ -20,11 +20,7 @@ SINGLE_BATTLE_TEST("Inner Focus prevents intimidate")
         ABILITY_POPUP(player, ABILITY_INTIMIDATE);
         NONE_OF { ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player); }
         ABILITY_POPUP(opponent, ABILITY_INNER_FOCUS);
-<<<<<<< HEAD
         MESSAGE("Foe Zubat's Inner Focus prevents stat loss!");
-=======
-        MESSAGE("The opposing Zubat's Inner Focus prevents stat loss!");
->>>>>>> upstream/master
         HP_BAR(player, captureDamage: &turnTwoHit);
     } THEN {
         EXPECT_EQ(turnOneHit, turnTwoHit);
@@ -42,11 +38,7 @@ SINGLE_BATTLE_TEST("Inner Focus prevents flinching")
         }
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_FAKE_OUT, player);
-<<<<<<< HEAD
         NONE_OF { MESSAGE("Foe Zubat flinched!"); }
-=======
-        NONE_OF { MESSAGE("The opposing Zubat flinched and couldn't move!"); }
->>>>>>> upstream/master
         ANIMATION(ANIM_TYPE_MOVE, MOVE_TACKLE, opponent);
     }
 }
@@ -60,10 +52,6 @@ SINGLE_BATTLE_TEST("Inner Focus is ignored by Mold Breaker")
         TURN { MOVE(player, MOVE_FAKE_OUT); }
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_FAKE_OUT, player);
-<<<<<<< HEAD
         MESSAGE("Foe Zubat flinched!");
-=======
-        MESSAGE("The opposing Zubat flinched and couldn't move!");
->>>>>>> upstream/master
     }
 }

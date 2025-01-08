@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 1 "data/maps/SootopolisCity_House5/scripts.pory"
 
 # 2 "data/maps/SootopolisCity_House5/scripts.pory"
@@ -39,25 +38,3 @@ SootopolisCity_House5_Text_SootopolisMtPyreConnection:
 SootopolisCity_House5_Text_BrotherUsedToStudySea:
 # 20 "data/maps/SootopolisCity_House5/scripts.pory"
 	.string "My big brother used to study the sea.$"
-=======
-SootopolisCity_House5_MapScripts::
-	.byte 0
-
-SootopolisCity_House5_EventScript_Maniac::
-	msgbox SootopolisCity_House5_Text_SootopolisMtPyreConnection, MSGBOX_NPC
-	end
-
-SootopolisCity_House5_EventScript_Girl::
-	msgbox SootopolisCity_House5_Text_BrotherUsedToStudySea, MSGBOX_NPC
-	end
-
-SootopolisCity_House5_Text_SootopolisMtPyreConnection:
-	.string "There appears to be some connection\n"
-	.string "between SOOTOPOLIS and MT. PYRE.\p"
-	.string "My friends and I did some research on\n"
-	.string "it at the lab where I used to work.$"
-
-SootopolisCity_House5_Text_BrotherUsedToStudySea:
-	.string "My big brother used to study the sea.$"
-
->>>>>>> upstream/master

@@ -344,9 +344,5 @@ bool8 DoesLinkPlayerCountMatchSaved(void);
 void SetCloseLinkCallbackAndType(u16 type);
 bool32 IsSendingKeysToLink(void);
 u32 GetLinkRecvQueueLength(void);
-<<<<<<< HEAD
-=======
-bool32 ShouldCheckForUnionRoom(void);
->>>>>>> upstream/master
 
 #endif // GUARD_LINK_H

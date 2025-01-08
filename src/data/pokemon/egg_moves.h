@@ -99,11 +99,7 @@ static const u16 sRattataEggMoveLearnset[] = {
 };
 
 #if P_ALOLAN_FORMS
-<<<<<<< HEAD
 static const u16 sRattataAlolanEggMoveLearnset[] = {
-=======
-static const u16 sRattataAlolaEggMoveLearnset[] = {
->>>>>>> upstream/master
     MOVE_COUNTER,
     MOVE_FINAL_GAMBIT,
     MOVE_FURY_SWIPES,
@@ -196,11 +192,7 @@ static const u16 sSandshrewEggMoveLearnset[] = {
     MOVE_UNAVAILABLE,
 };
 #if P_ALOLAN_FORMS
-<<<<<<< HEAD
 static const u16 sSandshrewAlolanEggMoveLearnset[] = {
-=======
-static const u16 sSandshrewAlolaEggMoveLearnset[] = {
->>>>>>> upstream/master
     MOVE_AMNESIA,
     MOVE_CHIP_AWAY,
     MOVE_COUNTER,
@@ -297,11 +289,7 @@ static const u16 sVulpixEggMoveLearnset[] = {
     MOVE_UNAVAILABLE,
 };
 #if P_ALOLAN_FORMS
-<<<<<<< HEAD
 static const u16 sVulpixAlolanEggMoveLearnset[] = {
-=======
-static const u16 sVulpixAlolaEggMoveLearnset[] = {
->>>>>>> upstream/master
     MOVE_AGILITY,
     MOVE_CHARM,
     MOVE_DISABLE,
@@ -437,11 +425,7 @@ static const u16 sDiglettEggMoveLearnset[] = {
     MOVE_UNAVAILABLE,
 };
 #if P_ALOLAN_FORMS
-<<<<<<< HEAD
 static const u16 sDiglettAlolanEggMoveLearnset[] = {
-=======
-static const u16 sDiglettAlolaEggMoveLearnset[] = {
->>>>>>> upstream/master
     MOVE_ANCIENT_POWER,
     MOVE_BEAT_UP,
     MOVE_ENDURE,
@@ -476,11 +460,7 @@ static const u16 sMeowthEggMoveLearnset[] = {
     MOVE_UNAVAILABLE,
 };
 #if P_ALOLAN_FORMS
-<<<<<<< HEAD
 static const u16 sMeowthAlolanEggMoveLearnset[] = {
-=======
-static const u16 sMeowthAlolaEggMoveLearnset[] = {
->>>>>>> upstream/master
     MOVE_AMNESIA,
     MOVE_ASSIST,
     MOVE_CHARM,
@@ -497,11 +477,7 @@ static const u16 sMeowthAlolaEggMoveLearnset[] = {
 };
 #endif //P_ALOLAN_FORMS
 #if P_GALARIAN_FORMS
-<<<<<<< HEAD
 static const u16 sMeowthGalarianEggMoveLearnset[] = {
-=======
-static const u16 sMeowthGalarEggMoveLearnset[] = {
->>>>>>> upstream/master
     MOVE_SPITE,
     MOVE_DOUBLE_EDGE,
     MOVE_CURSE,
@@ -686,11 +662,7 @@ static const u16 sGeodudeEggMoveLearnset[] = {
     MOVE_UNAVAILABLE,
 };
 #if P_ALOLAN_FORMS
-<<<<<<< HEAD
 static const u16 sGeodudeAlolanEggMoveLearnset[] = {
-=======
-static const u16 sGeodudeAlolaEggMoveLearnset[] = {
->>>>>>> upstream/master
     MOVE_AUTOTOMIZE,
     MOVE_BLOCK,
     MOVE_COUNTER,
@@ -723,11 +695,7 @@ static const u16 sPonytaEggMoveLearnset[] = {
     MOVE_UNAVAILABLE,
 };
 #if P_GALARIAN_FORMS
-<<<<<<< HEAD
 static const u16 sPonytaGalarianEggMoveLearnset[] = {
-=======
-static const u16 sPonytaGalarEggMoveLearnset[] = {
->>>>>>> upstream/master
     MOVE_THRASH,
     MOVE_DOUBLE_KICK,
     MOVE_HYPNOSIS,
@@ -755,11 +723,7 @@ static const u16 sSlowpokeEggMoveLearnset[] = {
     MOVE_UNAVAILABLE,
 };
 #if P_GALARIAN_FORMS
-<<<<<<< HEAD
 static const u16 sSlowpokeGalarianEggMoveLearnset[] = {
-=======
-static const u16 sSlowpokeGalarEggMoveLearnset[] = {
->>>>>>> upstream/master
     MOVE_BELCH,
     MOVE_BELLY_DRUM,
     MOVE_BLOCK,
@@ -792,11 +756,7 @@ static const u16 sFarfetchdEggMoveLearnset[] = {
     MOVE_UNAVAILABLE,
 };
 #if P_GALARIAN_FORMS
-<<<<<<< HEAD
 static const u16 sFarfetchdGalarianEggMoveLearnset[] = {
-=======
-static const u16 sFarfetchdGalarEggMoveLearnset[] = {
->>>>>>> upstream/master
     MOVE_COUNTER,
     MOVE_QUICK_ATTACK,
     MOVE_FLAIL,
@@ -870,11 +830,7 @@ static const u16 sGrimerEggMoveLearnset[] = {
     MOVE_UNAVAILABLE,
 };
 #if P_ALOLAN_FORMS
-<<<<<<< HEAD
 static const u16 sGrimerAlolanEggMoveLearnset[] = {
-=======
-static const u16 sGrimerAlolaEggMoveLearnset[] = {
->>>>>>> upstream/master
     MOVE_ASSURANCE,
     MOVE_CLEAR_SMOG,
     MOVE_CURSE,
@@ -1245,11 +1201,7 @@ static const u16 sMrMimeEggMoveLearnset[] = {
     MOVE_UNAVAILABLE,
 };
 #if P_GALARIAN_FORMS
-<<<<<<< HEAD
 static const u16 sMrMimeGalarianEggMoveLearnset[] = {
-=======
-static const u16 sMrMimeGalarEggMoveLearnset[] = {
->>>>>>> upstream/master
     MOVE_FAKE_OUT,
     MOVE_CONFUSE_RAY,
     MOVE_POWER_SPLIT,
@@ -1350,31 +1302,19 @@ static const u16 sPinsirEggMoveLearnset[] = {
 
 #if P_FAMILY_TAUROS
 #if P_PALDEAN_FORMS
-<<<<<<< HEAD
 static const u16 sTaurosPaldeanCombatBreedEggMoveLearnset[] = {
-=======
-static const u16 sTaurosPaldeaCombatEggMoveLearnset[] = {
->>>>>>> upstream/master
     MOVE_CURSE,
     MOVE_ENDEAVOR,
     MOVE_UNAVAILABLE,
 };
 
-<<<<<<< HEAD
 static const u16 sTaurosPaldeanBlazeBreedEggMoveLearnset[] = {
-=======
-static const u16 sTaurosPaldeaBlazeEggMoveLearnset[] = {
->>>>>>> upstream/master
     MOVE_CURSE,
     MOVE_ENDEAVOR,
     MOVE_UNAVAILABLE,
 };
 
-<<<<<<< HEAD
 static const u16 sTaurosPaldeanAquaBreedEggMoveLearnset[] = {
-=======
-static const u16 sTaurosPaldeaAquaEggMoveLearnset[] = {
->>>>>>> upstream/master
     MOVE_CURSE,
     MOVE_ENDEAVOR,
     MOVE_UNAVAILABLE,
@@ -1900,11 +1840,7 @@ static const u16 sWooperEggMoveLearnset[] = {
     MOVE_UNAVAILABLE,
 };
 #if P_PALDEAN_FORMS
-<<<<<<< HEAD
 static const u16 sWooperPaldeanEggMoveLearnset[] = {
-=======
-static const u16 sWooperPaldeaEggMoveLearnset[] = {
->>>>>>> upstream/master
     MOVE_ACID_SPRAY,
     MOVE_AFTER_YOU,
     MOVE_ANCIENT_POWER,
@@ -2209,11 +2145,7 @@ static const u16 sCorsolaEggMoveLearnset[] = {
     MOVE_UNAVAILABLE,
 };
 #if P_GALARIAN_FORMS
-<<<<<<< HEAD
 static const u16 sCorsolaGalarianEggMoveLearnset[] = {
-=======
-static const u16 sCorsolaGalarEggMoveLearnset[] = {
->>>>>>> upstream/master
     MOVE_HAZE,
     MOVE_CONFUSE_RAY,
     MOVE_NATURE_POWER,
@@ -2508,11 +2440,7 @@ static const u16 sZigzagoonEggMoveLearnset[] = {
     MOVE_UNAVAILABLE,
 };
 #if P_GALARIAN_FORMS
-<<<<<<< HEAD
 static const u16 sZigzagoonGalarianEggMoveLearnset[] = {
-=======
-static const u16 sZigzagoonGalarEggMoveLearnset[] = {
->>>>>>> upstream/master
     MOVE_PARTING_SHOT,
     MOVE_QUICK_GUARD,
     MOVE_KNOCK_OFF,
@@ -4386,11 +4314,7 @@ static const u16 sDarumakaEggMoveLearnset[] = {
     MOVE_UNAVAILABLE,
 };
 #if P_GALARIAN_FORMS
-<<<<<<< HEAD
 static const u16 sDarumakaGalarianEggMoveLearnset[] = {
-=======
-static const u16 sDarumakaGalarEggMoveLearnset[] = {
->>>>>>> upstream/master
     MOVE_FOCUS_PUNCH,
     MOVE_HAMMER_ARM,
     MOVE_TAKE_DOWN,
@@ -4484,11 +4408,7 @@ static const u16 sYamaskEggMoveLearnset[] = {
     MOVE_UNAVAILABLE,
 };
 #if P_GALARIAN_FORMS
-<<<<<<< HEAD
 static const u16 sYamaskGalarianEggMoveLearnset[] = {
-=======
-static const u16 sYamaskGalarEggMoveLearnset[] = {
->>>>>>> upstream/master
     MOVE_MEMENTO,
     MOVE_UNAVAILABLE,
 };
@@ -4840,11 +4760,7 @@ static const u16 sStunfiskEggMoveLearnset[] = {
     MOVE_UNAVAILABLE,
 };
 #if P_GALARIAN_FORMS
-<<<<<<< HEAD
 static const u16 sStunfiskGalarianEggMoveLearnset[] = {
-=======
-static const u16 sStunfiskGalarEggMoveLearnset[] = {
->>>>>>> upstream/master
     MOVE_BIND,
     MOVE_YAWN,
     MOVE_ASTONISH,
@@ -5939,11 +5855,7 @@ static const u16 sIndeedeeEggMoveLearnset[] = {
     MOVE_UNAVAILABLE,
 };
 
-<<<<<<< HEAD
 static const u16 sIndeedeeFemaleEggMoveLearnset[] = {
-=======
-static const u16 sIndeedeeFEggMoveLearnset[] = {
->>>>>>> upstream/master
     MOVE_PSYCH_UP,
     MOVE_FAKE_OUT,
     MOVE_PSYCHO_SHIFT,

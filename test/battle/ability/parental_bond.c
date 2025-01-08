@@ -94,11 +94,7 @@ DOUBLE_BATTLE_TEST("Parental Bond does not convert multi-target moves into a two
         ANIMATION(ANIM_TYPE_MOVE, MOVE_EARTHQUAKE, playerLeft);
         HP_BAR(opponentLeft);
         MESSAGE("It doesn't affect Pidgey…");
-<<<<<<< HEAD
         MESSAGE("It doesn't affect Foe Pidgey…");
-=======
-        MESSAGE("It doesn't affect the opposing Pidgey…");
->>>>>>> upstream/master
         ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, playerRight);
         ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponentLeft);
         ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponentRight);
@@ -153,11 +149,7 @@ SINGLE_BATTLE_TEST("Parental Bond has no affect on multi hit moves and they stil
         MESSAGE("Kangaskhan has Mega Evolved into Mega Kangaskhan!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_COMET_PUNCH, player);
         ANIMATION(ANIM_TYPE_MOVE, MOVE_COMET_PUNCH, player);
-<<<<<<< HEAD
         MESSAGE("Hit 2 time(s)!");
-=======
-        MESSAGE("The Pokémon was hit 2 time(s)!");
->>>>>>> upstream/master
         ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
     }
     THEN {
@@ -184,11 +176,7 @@ SINGLE_BATTLE_TEST("Parental Bond has no affect on multi hit moves and they stil
         ANIMATION(ANIM_TYPE_MOVE, MOVE_COMET_PUNCH, player);
         ANIMATION(ANIM_TYPE_MOVE, MOVE_COMET_PUNCH, player);
         ANIMATION(ANIM_TYPE_MOVE, MOVE_COMET_PUNCH, player);
-<<<<<<< HEAD
         MESSAGE("Hit 3 time(s)!");
-=======
-        MESSAGE("The Pokémon was hit 3 time(s)!");
->>>>>>> upstream/master
         ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
     }
     THEN {
@@ -216,11 +204,7 @@ SINGLE_BATTLE_TEST("Parental Bond has no affect on multi hit moves and they stil
         ANIMATION(ANIM_TYPE_MOVE, MOVE_COMET_PUNCH, player);
         ANIMATION(ANIM_TYPE_MOVE, MOVE_COMET_PUNCH, player);
         ANIMATION(ANIM_TYPE_MOVE, MOVE_COMET_PUNCH, player);
-<<<<<<< HEAD
         MESSAGE("Hit 4 time(s)!");
-=======
-        MESSAGE("The Pokémon was hit 4 time(s)!");
->>>>>>> upstream/master
         ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
     }
     THEN {
@@ -247,11 +231,7 @@ SINGLE_BATTLE_TEST("Parental Bond has no affect on multi hit moves and they stil
         ANIMATION(ANIM_TYPE_MOVE, MOVE_COMET_PUNCH, player);
         ANIMATION(ANIM_TYPE_MOVE, MOVE_COMET_PUNCH, player);
         NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_COMET_PUNCH, player);
-<<<<<<< HEAD
         MESSAGE("Hit 5 time(s)!");
-=======
-        MESSAGE("The Pokémon was hit 5 time(s)!");
->>>>>>> upstream/master
         ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
     }
     THEN {
@@ -275,15 +255,9 @@ SINGLE_BATTLE_TEST("Parental Bond Smack Down effect triggers after 2nd hit")
         MESSAGE("Kangaskhan has Mega Evolved into Mega Kangaskhan!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_SMACK_DOWN, player);
         HP_BAR(opponent);
-<<<<<<< HEAD
         NOT MESSAGE("Foe Skarmory fell straight down!");
         HP_BAR(opponent);
         MESSAGE("Foe Skarmory fell straight down!");
-=======
-        NOT MESSAGE("The opposing Skarmory fell straight down!");
-        HP_BAR(opponent);
-        MESSAGE("The opposing Skarmory fell straight down!");
->>>>>>> upstream/master
     } THEN {
         EXPECT_EQ(player->species, SPECIES_KANGASKHAN_MEGA);
     }
@@ -303,11 +277,7 @@ SINGLE_BATTLE_TEST("Parental Bond Snore strikes twice while asleep")
         ANIMATION(ANIM_TYPE_MOVE, MOVE_SNORE, player);
         HP_BAR(opponent, captureDamage: &damage[0]);
         HP_BAR(opponent, captureDamage: &damage[1]);
-<<<<<<< HEAD
         MESSAGE("Hit 2 time(s)!");
-=======
-        MESSAGE("The Pokémon was hit 2 time(s)!");
->>>>>>> upstream/master
     } THEN {
         if (B_PARENTAL_BOND_DMG == GEN_6)
             EXPECT_MUL_EQ(damage[0], Q_4_12(0.5), damage[1]);
@@ -329,11 +299,7 @@ SINGLE_BATTLE_TEST("Parental Bond only triggers Dragon Tail's target switch out 
         ANIMATION(ANIM_TYPE_MOVE, MOVE_DRAGON_TAIL, player);
         HP_BAR(opponent);
         HP_BAR(opponent);
-<<<<<<< HEAD
         MESSAGE("Foe Wynaut was dragged out!");
-=======
-        MESSAGE("The opposing Wynaut was dragged out!");
->>>>>>> upstream/master
     }
     THEN {
         EXPECT_EQ(player->species, SPECIES_KANGASKHAN_MEGA);

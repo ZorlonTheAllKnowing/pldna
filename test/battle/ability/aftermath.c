@@ -11,11 +11,7 @@ SINGLE_BATTLE_TEST("Aftermath damages the attacker by 1/4th of its max HP if fai
     } WHEN {
         TURN {MOVE(opponent, MOVE_TACKLE);}
     } SCENE {
-<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet used Tackle!");
-=======
-        MESSAGE("The opposing Wobbuffet used Tackle!");
->>>>>>> upstream/master
         ANIMATION(ANIM_TYPE_MOVE, MOVE_TACKLE, opponent);
         MESSAGE("Voltorb fainted!");
         ABILITY_POPUP(player, ABILITY_AFTERMATH);

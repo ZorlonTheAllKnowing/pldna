@@ -60,19 +60,11 @@ AI_SINGLE_BATTLE_TEST("AI_FLAG_SEQUENCE_SWITCHING: Roar and Dragon Tail still fo
         TURN { MOVE(player, move); }
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, move, player);
-<<<<<<< HEAD
         MESSAGE("Foe Bulbasaur was dragged out!");
     }
 }
 
 AI_SINGLE_BATTLE_TEST("AI_FLAG_SEQUENCE_SWITCHING: AI will always switch into lowest party index after U-Turn, Parting Shot, and Baton Pass")
-=======
-        MESSAGE("The opposing Bulbasaur was dragged out!");
-    }
-}
-
-AI_SINGLE_BATTLE_TEST("AI_FLAG_SEQUENCE_SWITCHING: AI will always switch into lowest party index after U-Turn, Parting Shot, Baton Pass, and Chilly Reception")
->>>>>>> upstream/master
 {
     u32 j, aiSequenceSwitchingFlag = 0, move = MOVE_NONE;
 
@@ -80,10 +72,6 @@ AI_SINGLE_BATTLE_TEST("AI_FLAG_SEQUENCE_SWITCHING: AI will always switch into lo
         MOVE_U_TURN,
         MOVE_PARTING_SHOT,
         MOVE_BATON_PASS,
-<<<<<<< HEAD
-=======
-        MOVE_CHILLY_RECEPTION,
->>>>>>> upstream/master
     };
 
     for (j = 0; j < ARRAY_COUNT(switchMoves); j++)
@@ -96,10 +84,6 @@ AI_SINGLE_BATTLE_TEST("AI_FLAG_SEQUENCE_SWITCHING: AI will always switch into lo
         ASSUME(gMovesInfo[MOVE_U_TURN].effect == EFFECT_HIT_ESCAPE);
         ASSUME(gMovesInfo[MOVE_PARTING_SHOT].effect == EFFECT_PARTING_SHOT);
         ASSUME(gMovesInfo[MOVE_BATON_PASS].effect == EFFECT_BATON_PASS);
-<<<<<<< HEAD
-=======
-        ASSUME(gMovesInfo[MOVE_CHILLY_RECEPTION].effect == EFFECT_CHILLY_RECEPTION);
->>>>>>> upstream/master
         AI_FLAGS(AI_FLAG_CHECK_BAD_MOVE | AI_FLAG_CHECK_VIABILITY | AI_FLAG_TRY_TO_FAINT | aiSequenceSwitchingFlag);
         PLAYER(SPECIES_SWELLOW) { Level (50); }
         OPPONENT(SPECIES_MACHOP) { Level(1); Moves(move); }

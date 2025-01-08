@@ -90,11 +90,7 @@ SINGLE_BATTLE_TEST("Dancer doesn't trigger if the original user flinches")
         TURN { MOVE(opponent, MOVE_FAKE_OUT); MOVE(player, MOVE_DRAGON_DANCE); }
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_FAKE_OUT, opponent);
-<<<<<<< HEAD
         MESSAGE("Wobbuffet flinched!");
-=======
-        MESSAGE("Wobbuffet flinched and couldn't move!");
->>>>>>> upstream/master
         NONE_OF {
             ABILITY_POPUP(opponent, ABILITY_DANCER);
             ANIMATION(ANIM_TYPE_MOVE, MOVE_DRAGON_DANCE, opponent);
@@ -118,22 +114,14 @@ DOUBLE_BATTLE_TEST("Dancer still triggers if another dancer flinches")
         ANIMATION(ANIM_TYPE_MOVE, MOVE_DRAGON_DANCE, playerRight);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, playerRight);
         ABILITY_POPUP(playerLeft, ABILITY_DANCER);
-<<<<<<< HEAD
         MESSAGE("Wobbuffet flinched!");
-=======
-        MESSAGE("Wobbuffet flinched and couldn't move!");
->>>>>>> upstream/master
         NONE_OF {
             MESSAGE("Wobbuffet used Dragon Dance!");
             ANIMATION(ANIM_TYPE_MOVE, MOVE_DRAGON_DANCE, playerLeft);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, playerLeft);
         }
         ABILITY_POPUP(opponentLeft, ABILITY_DANCER);
-<<<<<<< HEAD
         MESSAGE("Foe Oricorio used Dragon Dance!");
-=======
-        MESSAGE("The opposing Oricorio used Dragon Dance!");
->>>>>>> upstream/master
         ANIMATION(ANIM_TYPE_MOVE, MOVE_DRAGON_DANCE, opponentLeft);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentLeft);
     }

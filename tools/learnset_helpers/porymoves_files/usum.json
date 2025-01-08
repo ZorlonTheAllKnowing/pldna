@@ -53477,11 +53477,7 @@
       "MOVE_SNORE"
     ]
   },
-<<<<<<< HEAD
   "WORMADAM_PLANT_CLOAK": {
-=======
-  "WORMADAM_PLANT": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -88200,11 +88196,7 @@
       "MOVE_ZEN_HEADBUTT"
     ]
   },
-<<<<<<< HEAD
   "MEOWSTIC_MALE": {
-=======
-  "MEOWSTIC_M": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -104435,11 +104427,7 @@
       "MOVE_THUNDER_PUNCH"
     ]
   },
-<<<<<<< HEAD
   "RATTATA_ALOLAN": {
-=======
-  "RATTATA_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -104554,11 +104542,7 @@
       "MOVE_ZEN_HEADBUTT"
     ]
   },
-<<<<<<< HEAD
   "RATICATE_ALOLAN": {
-=======
-  "RATICATE_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -104703,11 +104687,7 @@
       "MOVE_ZEN_HEADBUTT"
     ]
   },
-<<<<<<< HEAD
   "RAICHU_ALOLAN": {
-=======
-  "RAICHU_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -104835,11 +104815,7 @@
       "MOVE_THUNDER_PUNCH"
     ]
   },
-<<<<<<< HEAD
   "SANDSHREW_ALOLAN": {
-=======
-  "SANDSHREW_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -104977,11 +104953,7 @@
       "MOVE_THROAT_CHOP"
     ]
   },
-<<<<<<< HEAD
   "SANDSLASH_ALOLAN": {
-=======
-  "SANDSLASH_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -105101,11 +105073,7 @@
       "MOVE_THROAT_CHOP"
     ]
   },
-<<<<<<< HEAD
   "VULPIX_ALOLAN": {
-=======
-  "VULPIX_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -105246,11 +105214,7 @@
       "MOVE_ZEN_HEADBUTT"
     ]
   },
-<<<<<<< HEAD
   "NINETALES_ALOLAN": {
-=======
-  "NINETALES_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -105367,11 +105331,7 @@
       "MOVE_ZEN_HEADBUTT"
     ]
   },
-<<<<<<< HEAD
   "DIGLETT_ALOLAN": {
-=======
-  "DIGLETT_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -105482,11 +105442,7 @@
       "MOVE_STOMPING_TANTRUM"
     ]
   },
-<<<<<<< HEAD
   "DUGTRIO_ALOLAN": {
-=======
-  "DUGTRIO_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -105625,11 +105581,7 @@
       "MOVE_STOMPING_TANTRUM"
     ]
   },
-<<<<<<< HEAD
   "MEOWTH_ALOLAN": {
-=======
-  "MEOWTH_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -105765,11 +105717,7 @@
       "MOVE_WATER_PULSE"
     ]
   },
-<<<<<<< HEAD
   "PERSIAN_ALOLAN": {
-=======
-  "PERSIAN_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -105939,11 +105887,7 @@
       "MOVE_WATER_PULSE"
     ]
   },
-<<<<<<< HEAD
   "GEODUDE_ALOLAN": {
-=======
-  "GEODUDE_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -106074,11 +106018,7 @@
       "MOVE_THUNDER_PUNCH"
     ]
   },
-<<<<<<< HEAD
   "GRAVELER_ALOLAN": {
-=======
-  "GRAVELER_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -106220,11 +106160,7 @@
       "MOVE_THUNDER_PUNCH"
     ]
   },
-<<<<<<< HEAD
   "GOLEM_ALOLAN": {
-=======
-  "GOLEM_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -106383,11 +106319,7 @@
       "MOVE_THUNDER_PUNCH"
     ]
   },
-<<<<<<< HEAD
   "GRIMER_ALOLAN": {
-=======
-  "GRIMER_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -106524,11 +106456,7 @@
       "MOVE_THUNDER_PUNCH"
     ]
   },
-<<<<<<< HEAD
   "MUK_ALOLAN": {
-=======
-  "MUK_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -106689,11 +106617,7 @@
       "MOVE_THUNDER_PUNCH"
     ]
   },
-<<<<<<< HEAD
   "EXEGGUTOR_ALOLAN": {
-=======
-  "EXEGGUTOR_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -106830,11 +106754,7 @@
       "MOVE_ZEN_HEADBUTT"
     ]
   },
-<<<<<<< HEAD
   "MAROWAK_ALOLAN": {
-=======
-  "MAROWAK_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -107431,11 +107351,7 @@
       "MOVE_ZEN_HEADBUTT"
     ]
   },
-<<<<<<< HEAD
   "WORMADAM_SANDY_CLOAK": {
-=======
-  "WORMADAM_SANDY": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -107562,11 +107478,7 @@
       "MOVE_UPROAR"
     ]
   },
-<<<<<<< HEAD
   "WORMADAM_TRASH_CLOAK": {
-=======
-  "WORMADAM_TRASH": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -108610,11 +108522,7 @@
       "MOVE_ZEN_HEADBUTT"
     ]
   },
-<<<<<<< HEAD
   "FLOETTE_ETERNAL_FLOWER": {
-=======
-  "FLOETTE_ETERNAL": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -108726,11 +108634,7 @@
       "MOVE_WORRY_SEED"
     ]
   },
-<<<<<<< HEAD
   "MEOWSTIC_FEMALE": {
-=======
-  "MEOWSTIC_F": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,

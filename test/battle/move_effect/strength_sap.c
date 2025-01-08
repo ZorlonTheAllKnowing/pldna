@@ -22,15 +22,9 @@ SINGLE_BATTLE_TEST("Strength Sap lowers Attack by 1 and restores HP based on tar
         MESSAGE("Wobbuffet used Strength Sap!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_STRENGTH_SAP, player);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
-<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet's Attack fell!");
         HP_BAR(player, captureDamage: &results[i].hp);
         MESSAGE("Foe Wobbuffet had its energy drained!");
-=======
-        MESSAGE("The opposing Wobbuffet's Attack fell!");
-        HP_BAR(player, captureDamage: &results[i].hp);
-        MESSAGE("The opposing Wobbuffet had its energy drained!");
->>>>>>> upstream/master
     } THEN {
         EXPECT_EQ(results[i].hp * -1, atkStat);
     }
@@ -55,17 +49,10 @@ SINGLE_BATTLE_TEST("Strength Sap works exactly the same when attacker is behind 
         MESSAGE("Wobbuffet used Strength Sap!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_STRENGTH_SAP, player);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
-<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet's Attack fell!");
         HP_BAR(player, captureDamage: &results[i].hp);
         NOT MESSAGE("The SUBSTITUTE took damage for Foe Wobbuffet!");
         MESSAGE("Foe Wobbuffet had its energy drained!");
-=======
-        MESSAGE("The opposing Wobbuffet's Attack fell!");
-        HP_BAR(player, captureDamage: &results[i].hp);
-        NOT MESSAGE("The substitute took damage for the opposing Wobbuffet!");
-        MESSAGE("The opposing Wobbuffet had its energy drained!");
->>>>>>> upstream/master
     } THEN {
         EXPECT_EQ(results[i].hp * -1, atkStat);
     }
@@ -110,15 +97,9 @@ SINGLE_BATTLE_TEST("Strength Sap lowers Attack by 1 and restores HP based on tar
         MESSAGE("Wobbuffet used Strength Sap!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_STRENGTH_SAP, player);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
-<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet's Attack fell!");
         HP_BAR(player, captureDamage: &results[i].hp);
         MESSAGE("Foe Wobbuffet had its energy drained!");
-=======
-        MESSAGE("The opposing Wobbuffet's Attack fell!");
-        HP_BAR(player, captureDamage: &results[i].hp);
-        MESSAGE("The opposing Wobbuffet had its energy drained!");
->>>>>>> upstream/master
     } THEN {
         if (statStage < DEFAULT_STAT_STAGE) {
             EXPECT_EQ(results[i].hp * -1, (60 * gStatStageRatios[statStage + 1][0] / gStatStageRatios[statStage + 1][1]));
@@ -152,19 +133,11 @@ SINGLE_BATTLE_TEST("Strength Sap fails if target is at -6 Atk")
         NONE_OF {
             ANIMATION(ANIM_TYPE_MOVE, MOVE_STRENGTH_SAP, player);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
-<<<<<<< HEAD
             MESSAGE("Foe Wobbuffet's Attack fell!");
             HP_BAR(player);
             MESSAGE("Foe Wobbuffet had its energy drained!");
         }
         MESSAGE("Foe Wobbuffet's Attack won't go lower!");
-=======
-            MESSAGE("The opposing Wobbuffet's Attack fell!");
-            HP_BAR(player);
-            MESSAGE("The opposing Wobbuffet had its energy drained!");
-        }
-        MESSAGE("The opposing Wobbuffet's Attack won't go any lower!");
->>>>>>> upstream/master
     }
 }
 
@@ -185,20 +158,13 @@ SINGLE_BATTLE_TEST("Strength Sap restores more HP if Big Root is held", s16 hp)
         MESSAGE("Wobbuffet used Strength Sap!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_STRENGTH_SAP, player);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
-<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet's Attack fell!");
         HP_BAR(player, captureDamage: &results[i].hp);
         MESSAGE("Foe Wobbuffet had its energy drained!");
-=======
-        MESSAGE("The opposing Wobbuffet's Attack fell!");
-        HP_BAR(player, captureDamage: &results[i].hp);
-        MESSAGE("The opposing Wobbuffet had its energy drained!");
->>>>>>> upstream/master
     } FINALLY {
         EXPECT_GT(abs(results[1].hp), abs(results[0].hp));
     }
 }
-<<<<<<< HEAD
 
 SINGLE_BATTLE_TEST("Strength Sap makes attacker lose HP if target's ability is Liquid Ooze")
 {
@@ -230,5 +196,3 @@ SINGLE_BATTLE_TEST("Strength Sap makes attacker lose HP if target's ability is L
         EXPECT_EQ(lostHp, atkStat);
     }
 }
-=======
->>>>>>> upstream/master

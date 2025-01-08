@@ -231,13 +231,7 @@ static void DrawMetatileAt(const struct MapLayout *mapLayout, u16 offset, int x,
     if (metatileId > NUM_METATILES_TOTAL)
         metatileId = 0;
     if (metatileId < NUM_METATILES_IN_PRIMARY)
-<<<<<<< HEAD
         metatiles = mapLayout->primaryTileset->metatiles;
-=======
-    {
-        metatiles = mapLayout->primaryTileset->metatiles;
-    }
->>>>>>> upstream/master
     else
     {
         metatiles = mapLayout->secondaryTileset->metatiles;

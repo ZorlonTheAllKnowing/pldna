@@ -1175,13 +1175,7 @@ static void RfuHandleReceiveCommand(u8 unused)
                 gRfu.numBlocksReceived[i] = 0;
             }
             else
-<<<<<<< HEAD
                 gRfu.numBlocksReceived[i]++;
-=======
-            {
-                gRfu.numBlocksReceived[i]++;
-            }
->>>>>>> upstream/master
         }
     }
 }
@@ -1308,13 +1302,7 @@ bool32 Rfu_InitBlockSend(const u8 *src, size_t size)
     gRfu.sendBlock.count = (size / 12) + r4;
     gRfu.sendBlock.next = 0;
     if (size > BLOCK_BUFFER_SIZE)
-<<<<<<< HEAD
         gRfu.sendBlock.payload = src;
-=======
-    {
-        gRfu.sendBlock.payload = src;
-    }
->>>>>>> upstream/master
     else
     {
         if (src != gBlockSendBuffer)
@@ -1641,14 +1629,9 @@ static bool8 CheckForLeavingGroupMembers(void)
 
             }
             else if (gRfuSlotStatusNI[gRfu.childSlot]->recv.state == SLOT_STATE_RECV_FAILED)
-<<<<<<< HEAD
                 rfu_clearSlot(TYPE_NI_RECV, i);
             {
 
-=======
-            {
-                rfu_clearSlot(TYPE_NI_RECV, i);
->>>>>>> upstream/master
             }
         }
     }
@@ -1794,13 +1777,7 @@ static void Task_PlayerExchange(u8 taskId)
             gTasks[taskId].tState = 101;
         }
         else
-<<<<<<< HEAD
             gTasks[taskId].tState = 2;
-=======
-        {
-            gTasks[taskId].tState = 2;
-        }
->>>>>>> upstream/master
         break;
     case 101:
         if (gSendCmd[0] == 0)
@@ -1821,13 +1798,7 @@ static void Task_PlayerExchange(u8 taskId)
             }
         }
         else
-<<<<<<< HEAD
             gTasks[taskId].tState++;
-=======
-        {
-            gTasks[taskId].tState++;
-        }
->>>>>>> upstream/master
         break;
     case 4:
         if (AreAllPlayersFinishedReceiving())

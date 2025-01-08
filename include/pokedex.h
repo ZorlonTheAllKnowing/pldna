@@ -4,7 +4,6 @@
 extern u8 gUnusedPokedexU8;
 extern void (*gPokedexVBlankCB)(void);
 
-<<<<<<< HEAD
 enum
 {
     DEX_MODE_HOENN,
@@ -19,8 +18,6 @@ enum
     FLAG_SET_CAUGHT
 };
 
-=======
->>>>>>> upstream/master
 void ResetPokedex(void);
 u16 GetNationalPokedexCount(u8);
 u16 GetHoennPokedexCount(u8);

@@ -6,11 +6,7 @@ DOUBLE_BATTLE_TEST("Moxie/Chilling Neigh raises Attack by one stage after direct
     u32 species = 0, ability = 0, abilityPopUp = 0;
     PARAMETRIZE { species = SPECIES_SALAMENCE;         ability = ABILITY_MOXIE;            abilityPopUp = ABILITY_MOXIE;          }
     PARAMETRIZE { species = SPECIES_GLASTRIER;         ability = ABILITY_CHILLING_NEIGH;   abilityPopUp = ABILITY_CHILLING_NEIGH; }
-<<<<<<< HEAD
     PARAMETRIZE { species = SPECIES_CALYREX_ICE_RIDER; ability = ABILITY_AS_ONE_ICE_RIDER; abilityPopUp = ABILITY_CHILLING_NEIGH; }
-=======
-    PARAMETRIZE { species = SPECIES_CALYREX_ICE; ability = ABILITY_AS_ONE_ICE_RIDER; abilityPopUp = ABILITY_CHILLING_NEIGH; }
->>>>>>> upstream/master
     GIVEN {
         ASSUME(gMovesInfo[MOVE_EARTHQUAKE].target == MOVE_TARGET_FOES_AND_ALLY);
         PLAYER(species) { Ability(ability); }
@@ -27,13 +23,8 @@ DOUBLE_BATTLE_TEST("Moxie/Chilling Neigh raises Attack by one stage after direct
         for (i = 0; i < 3; i++) {
             ONE_OF {
                 MESSAGE("Snorunt fainted!");
-<<<<<<< HEAD
                 MESSAGE("Foe Glalie fainted!");
                 MESSAGE("Foe Abra fainted!");
-=======
-                MESSAGE("The opposing Glalie fainted!");
-                MESSAGE("The opposing Abra fainted!");
->>>>>>> upstream/master
             }
             ABILITY_POPUP(playerLeft, abilityPopUp);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, playerLeft);
@@ -54,11 +45,7 @@ DOUBLE_BATTLE_TEST("Moxie/Chilling Neigh does not trigger if Pokemon faint to in
     u32 species = 0, ability = 0, abilityPopUp = 0;
     PARAMETRIZE { species = SPECIES_SALAMENCE;         ability = ABILITY_MOXIE;            abilityPopUp = ABILITY_MOXIE;          }
     PARAMETRIZE { species = SPECIES_GLASTRIER;         ability = ABILITY_CHILLING_NEIGH;   abilityPopUp = ABILITY_CHILLING_NEIGH; }
-<<<<<<< HEAD
     PARAMETRIZE { species = SPECIES_CALYREX_ICE_RIDER; ability = ABILITY_AS_ONE_ICE_RIDER; abilityPopUp = ABILITY_CHILLING_NEIGH; }
-=======
-    PARAMETRIZE { species = SPECIES_CALYREX_ICE; ability = ABILITY_AS_ONE_ICE_RIDER; abilityPopUp = ABILITY_CHILLING_NEIGH; }
->>>>>>> upstream/master
     GIVEN {
         PLAYER(species) { Ability(ability); }
         PLAYER(SPECIES_SNORUNT) { HP(1); Status1(STATUS1_POISON); }
@@ -74,13 +61,8 @@ DOUBLE_BATTLE_TEST("Moxie/Chilling Neigh does not trigger if Pokemon faint to in
         for (i = 0; i < 3; i++) {
             ONE_OF {
                 MESSAGE("Snorunt fainted!");
-<<<<<<< HEAD
                 MESSAGE("Foe Glalie fainted!");
                 MESSAGE("Foe Abra fainted!");
-=======
-                MESSAGE("The opposing Glalie fainted!");
-                MESSAGE("The opposing Abra fainted!");
->>>>>>> upstream/master
             }
             NONE_OF {
                 ABILITY_POPUP(playerLeft, abilityPopUp);
@@ -100,11 +82,7 @@ SINGLE_BATTLE_TEST("Moxie/Chilling Neigh does not trigger when already at maximu
     u32 species = 0, ability = 0, abilityPopUp = 0;
     PARAMETRIZE { species = SPECIES_SALAMENCE;         ability = ABILITY_MOXIE;            abilityPopUp = ABILITY_MOXIE;          }
     PARAMETRIZE { species = SPECIES_GLASTRIER;         ability = ABILITY_CHILLING_NEIGH;   abilityPopUp = ABILITY_CHILLING_NEIGH; }
-<<<<<<< HEAD
     PARAMETRIZE { species = SPECIES_CALYREX_ICE_RIDER; ability = ABILITY_AS_ONE_ICE_RIDER; abilityPopUp = ABILITY_CHILLING_NEIGH; }
-=======
-    PARAMETRIZE { species = SPECIES_CALYREX_ICE; ability = ABILITY_AS_ONE_ICE_RIDER; abilityPopUp = ABILITY_CHILLING_NEIGH; }
->>>>>>> upstream/master
     GIVEN {
         ASSUME(gMovesInfo[MOVE_BELLY_DRUM].effect == EFFECT_BELLY_DRUM);
         PLAYER(species) { Ability(ability); }
@@ -117,7 +95,6 @@ SINGLE_BATTLE_TEST("Moxie/Chilling Neigh does not trigger when already at maximu
         ANIMATION(ANIM_TYPE_MOVE, MOVE_BELLY_DRUM, player);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
         if (species == SPECIES_SALAMENCE)
-<<<<<<< HEAD
             MESSAGE("Salamence cut its own HP and maximized ATTACK!");
         else if (species == SPECIES_GLASTRIER)
             MESSAGE("Glastrier cut its own HP and maximized ATTACK!");
@@ -125,15 +102,6 @@ SINGLE_BATTLE_TEST("Moxie/Chilling Neigh does not trigger when already at maximu
             MESSAGE("Calyrex cut its own HP and maximized ATTACK!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_QUICK_ATTACK, player);
         MESSAGE("Foe Snorunt fainted!");
-=======
-            MESSAGE("Salamence cut its own HP and maximized its Attack!");
-        else if (species == SPECIES_GLASTRIER)
-            MESSAGE("Glastrier cut its own HP and maximized its Attack!");
-        else
-            MESSAGE("Calyrex cut its own HP and maximized its Attack!");
-        ANIMATION(ANIM_TYPE_MOVE, MOVE_QUICK_ATTACK, player);
-        MESSAGE("The opposing Snorunt fainted!");
->>>>>>> upstream/master
         NONE_OF {
             ABILITY_POPUP(player, abilityPopUp);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
@@ -152,11 +120,7 @@ DOUBLE_BATTLE_TEST("Moxie/Chilling Neigh does not increase damage done by the sa
     u32 species = 0, ability = 0, abilityPopUp = 0;
     PARAMETRIZE { species = SPECIES_SALAMENCE;         ability = ABILITY_MOXIE;            abilityPopUp = ABILITY_MOXIE;          }
     PARAMETRIZE { species = SPECIES_GLASTRIER;         ability = ABILITY_CHILLING_NEIGH;   abilityPopUp = ABILITY_CHILLING_NEIGH; }
-<<<<<<< HEAD
     PARAMETRIZE { species = SPECIES_CALYREX_ICE_RIDER; ability = ABILITY_AS_ONE_ICE_RIDER; abilityPopUp = ABILITY_CHILLING_NEIGH; }
-=======
-    PARAMETRIZE { species = SPECIES_CALYREX_ICE;       ability = ABILITY_AS_ONE_ICE_RIDER; abilityPopUp = ABILITY_CHILLING_NEIGH; }
->>>>>>> upstream/master
 
     KNOWN_FAILING; // Requires simultaneous damage implementation
     GIVEN {

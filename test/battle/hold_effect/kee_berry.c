@@ -25,19 +25,11 @@ SINGLE_BATTLE_TEST("Kee Berry raises the holder's Defense by one stage when hit 
         HP_BAR(opponent);
         if (move == MOVE_TACKLE) {
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, opponent);
-<<<<<<< HEAD
             MESSAGE("Using Kee Berry, the Defense of Foe Wobbuffet rose!");
         } else {
             NONE_OF {
                 ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, opponent);
                 MESSAGE("Using Kee Berry, the Defense of Foe Wobbuffet rose!");
-=======
-            MESSAGE("Using Kee Berry, the Defense of the opposing Wobbuffet rose!");
-        } else {
-            NONE_OF {
-                ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, opponent);
-                MESSAGE("Using Kee Berry, the Defense of the opposing Wobbuffet rose!");
->>>>>>> upstream/master
             }
         }
     } THEN {
@@ -57,11 +49,7 @@ SINGLE_BATTLE_TEST("Kee Berry raises the holder's Defense by two stages with Rip
         ANIMATION(ANIM_TYPE_MOVE, MOVE_TACKLE, player);
         HP_BAR(opponent);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, opponent);
-<<<<<<< HEAD
         MESSAGE("Using Kee Berry, the Defense of Foe Applin sharply rose!");
-=======
-        MESSAGE("Using Kee Berry, the Defense of the opposing Applin sharply rose!");
->>>>>>> upstream/master
     } THEN {
         EXPECT_EQ(opponent->statStages[STAT_DEF], DEFAULT_STAT_STAGE + 2);
     }
@@ -85,22 +73,3 @@ SINGLE_BATTLE_TEST("Kee Berry doesn't trigger if the item hold user used a physi
         EXPECT_EQ(player->statStages[STAT_DEF], DEFAULT_STAT_STAGE);
     }
 }
-<<<<<<< HEAD
-=======
-
-DOUBLE_BATTLE_TEST("Kee Berry doesn't trigger if partner was hit")
-{
-    GIVEN {
-        PLAYER(SPECIES_WOBBUFFET);
-        PLAYER(SPECIES_WYNAUT);
-        OPPONENT(SPECIES_WOBBUFFET);
-        OPPONENT(SPECIES_WYNAUT) { Item(ITEM_KEE_BERRY); }
-    } WHEN {
-        TURN { MOVE(playerLeft, MOVE_TACKLE, target: opponentLeft); }
-    } SCENE {
-        NOT ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, opponentRight);
-    } THEN {
-        EXPECT(opponentRight->item == ITEM_KEE_BERRY);
-    }
-}
->>>>>>> upstream/master

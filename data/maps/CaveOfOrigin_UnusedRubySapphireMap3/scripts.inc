@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 1 "data/maps/CaveOfOrigin_UnusedRubySapphireMap3/scripts.pory"
 
 # 2 "data/maps/CaveOfOrigin_UnusedRubySapphireMap3/scripts.pory"
@@ -15,13 +14,3 @@ CaveOfOrigin_UnusedRubySapphireMap3_OnTransition:
 	call_if_set FLAG_UNUSED_RS_LEGENDARY_BATTLE_DONE, CaveOfOrigin_EventScript_DisableTriggers
 # 8 "data/maps/CaveOfOrigin_UnusedRubySapphireMap3/scripts.pory"
 	end
-=======
-CaveOfOrigin_UnusedRubySapphireMap3_MapScripts::
-	map_script MAP_SCRIPT_ON_TRANSITION, CaveOfOrigin_UnusedRubySapphireMap3_OnTransition
-	.byte 0
-
-CaveOfOrigin_UnusedRubySapphireMap3_OnTransition:
-	call_if_set FLAG_UNUSED_RS_LEGENDARY_BATTLE_DONE, CaveOfOrigin_EventScript_DisableTriggers
-	end
-
->>>>>>> upstream/master

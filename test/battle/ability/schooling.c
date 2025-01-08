@@ -25,11 +25,7 @@ SINGLE_BATTLE_TEST("Schooling switches Level 20+ Wishiwashi's form when HP is 25
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_FORM_CHANGE, player);
         }
         MESSAGE("Wishiwashi used Celebrate!");
-<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet used Super Fang!");
-=======
-        MESSAGE("The opposing Wobbuffet used Super Fang!");
->>>>>>> upstream/master
         HP_BAR(player);
         if (level >= 20)
         {
@@ -68,11 +64,7 @@ SINGLE_BATTLE_TEST("Schooling switches Level 20+ Wishiwashi's form when HP is ov
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_FORM_CHANGE, player);
         }
         MESSAGE("Wishiwashi used Celebrate!");
-<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet used Celebrate!");
-=======
-        MESSAGE("The opposing Wobbuffet used Celebrate!");
->>>>>>> upstream/master
     } THEN {
         if (level >= 20 && overQuarterHP)
             EXPECT_EQ(player->species, SPECIES_WISHIWASHI_SCHOOL);
@@ -100,11 +92,7 @@ SINGLE_BATTLE_TEST("Schooling switches Level 20+ Wishiwashi's form when HP is he
         TURN { MOVE(player, MOVE_CELEBRATE); MOVE(opponent, MOVE_HEAL_PULSE); }
     } SCENE {
         MESSAGE("Wishiwashi used Celebrate!");
-<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet used Heal Pulse!");
-=======
-        MESSAGE("The opposing Wobbuffet used Heal Pulse!");
->>>>>>> upstream/master
         HP_BAR(player);
         if (level >= 20)
         {

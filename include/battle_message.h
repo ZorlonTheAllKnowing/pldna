@@ -1,22 +1,12 @@
 #ifndef GUARD_BATTLE_MESSAGE_H
 #define GUARD_BATTLE_MESSAGE_H
 
-<<<<<<< HEAD
-=======
-#include "constants/battle.h"
-
->>>>>>> upstream/master
 // This buffer can hold many different things. Some of the things it can hold
 // that have explicit sizes are listed below to ensure it can contain them.
 #define TEXT_BUFF_ARRAY_COUNT   max(16, \
                                 max(MOVE_NAME_LENGTH + 2, /* +2 to hold the "!" and EOS. */ \
                                 max(POKEMON_NAME_LENGTH + 1, \
                                     ABILITY_NAME_LENGTH + 1)))
-<<<<<<< HEAD
-=======
-#define BATTLE_MSG_MAX_WIDTH    208
-#define BATTLE_MSG_MAX_LINES    2
->>>>>>> upstream/master
 
 // for 0xFD
 #define B_TXT_BUFF1 0x0
@@ -81,7 +71,6 @@
 #define B_TXT_DEF_TEAM2 0x3B // your/the opposing
 // #define B_TXT_SELECTION_NAME 0x3C - removed
 // #define B_TXT_SELECTION_NAME2 0x3D no Illusion check - removed
-<<<<<<< HEAD
 
 // for B_TXT_BUFF1, B_TXT_BUFF2 and B_TXT_BUFF3
 
@@ -96,29 +85,6 @@
 #define B_BUFF_NEGATIVE_FLAVOR          8
 #define B_BUFF_ABILITY                  9
 #define B_BUFF_ITEM                     10
-=======
-#define B_TXT_ATK_NAME_WITH_PREFIX2 0x3E //lowercase
-#define B_TXT_DEF_NAME_WITH_PREFIX2 0x3F //lowercase
-#define B_TXT_EFF_NAME_WITH_PREFIX2 0x40 //lowercase
-#define B_TXT_SCR_ACTIVE_NAME_WITH_PREFIX2 0x41 //lowercase
-#define B_TXT_TRAINER1_NAME_WITH_CLASS 0x42
-#define B_TXT_TRAINER2_NAME_WITH_CLASS 0x43
-#define B_TXT_PARTNER_NAME_WITH_CLASS 0x44
-#define B_TXT_ATK_TRAINER_NAME_WITH_CLASS 0x45
-
-#define B_BUFF_STRING                       0
-#define B_BUFF_NUMBER                       1
-#define B_BUFF_MOVE                         2
-#define B_BUFF_TYPE                         3
-#define B_BUFF_MON_NICK_WITH_PREFIX         4
-#define B_BUFF_STAT                         5
-#define B_BUFF_SPECIES                      6
-#define B_BUFF_MON_NICK                     7
-#define B_BUFF_NEGATIVE_FLAVOR              8
-#define B_BUFF_ABILITY                      9
-#define B_BUFF_ITEM                         10
-#define B_BUFF_MON_NICK_WITH_PREFIX_LOWER   11 // lowercase prefix
->>>>>>> upstream/master
 
 #define B_BUFF_PLACEHOLDER_BEGIN        0xFD
 #define B_BUFF_EOS                      0xFF
@@ -235,18 +201,6 @@
     textVar[4] = B_BUFF_EOS;                                                \
 }
 
-<<<<<<< HEAD
-=======
-#define PREPARE_MON_NICK_WITH_PREFIX_LOWER_BUFFER(textVar, battler, partyId)    \
-{                                                                               \
-    textVar[0] = B_BUFF_PLACEHOLDER_BEGIN;                                      \
-    textVar[1] = B_BUFF_MON_NICK_WITH_PREFIX_LOWER;                             \
-    textVar[2] = battler;                                                       \
-    textVar[3] = partyId;                                                       \
-    textVar[4] = B_BUFF_EOS;                                                    \
-}
-
->>>>>>> upstream/master
 #define PREPARE_MON_NICK_BUFFER(textVar, battler, partyId)      \
 {                                                               \
     textVar[0] = B_BUFF_PLACEHOLDER_BEGIN;                      \
@@ -289,11 +243,7 @@ enum
 
 void BufferStringBattle(u16 stringID, u32 battler);
 u32 BattleStringExpandPlaceholdersToDisplayedString(const u8 *src);
-<<<<<<< HEAD
 u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst);
-=======
-u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst, u32 dstSize);
->>>>>>> upstream/master
 void BattlePutTextOnWindow(const u8 *text, u8 windowId);
 void SetPpNumbersPaletteInMoveSelection(u32 battler);
 u8 GetCurrentPpToMaxPpState(u8 currentPp, u8 maxPp);
@@ -352,12 +302,6 @@ extern const u8 gText_Loss[];
 extern const u8 gText_Draw[];
 extern const u8 gText_StatSharply[];
 extern const u8 gText_StatRose[];
-<<<<<<< HEAD
-=======
-extern const u8 gText_StatFell[];
-extern const u8 gText_drastically[];
-extern const u8 gText_severely[];
->>>>>>> upstream/master
 extern const u8 gText_DefendersStatRose[];
 extern const u8 gText_PkmnGettingPumped[];
 extern const u8 gText_PkmnShroudedInMist[];

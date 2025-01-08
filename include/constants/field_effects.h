@@ -20,13 +20,8 @@
 #define FLDEFF_JUMP_SMALL_SPLASH         16
 #define FLDEFF_LONG_GRASS                17
 #define FLDEFF_JUMP_LONG_GRASS           18
-<<<<<<< HEAD
 #define FLDEFF_SHAKING_GRASS             19
 #define FLDEFF_SHAKING_LONG_GRASS        20
-=======
-#define FLDEFF_UNUSED_GRASS              19
-#define FLDEFF_UNUSED_GRASS_2            20
->>>>>>> upstream/master
 #define FLDEFF_UNUSED_SAND               21
 #define FLDEFF_WATER_SURFACING           22
 #define FLDEFF_BERRY_TREE_GROWTH_SPARKLE 23
@@ -135,11 +130,8 @@
 #define FLDEFF_PAL_TAG_HOF_MONITOR        0x1010
 #define FLDEFF_PAL_TAG_UNKNOWN            0x1011
 
-<<<<<<< HEAD
 #define FLDEFF_ZIG                       73
 #define FLDEFFOBJ_ZIG                    40
 #define FLDEFF_PAL_TAG_ZIG               0x1012
 
-=======
->>>>>>> upstream/master
 #endif // GUARD_FIELD_EFFECT_CONSTANTS_H

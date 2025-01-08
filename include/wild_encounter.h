@@ -3,13 +3,10 @@
 
 #include "constants/wild_encounter.h"
 
-<<<<<<< HEAD
 #define ENCOUNTER_TYPE_LAND     0
 #define ENCOUNTER_TYPE_WATER    1
 #define ENCOUNTER_TYPE_HIDDEN   2   // Get from species
 
-=======
->>>>>>> upstream/master
 struct WildPokemon
 {
     u8 minLevel;
@@ -50,10 +47,7 @@ bool8 UpdateRepelCounter(void);
 bool8 TryDoDoubleWildBattle(void);
 bool8 StandardWildEncounter_Debug(void);
 u32 CalculateChainFishingShinyRolls(void);
-<<<<<<< HEAD
 void tryCreateShakingGrassEncounter(void);
 bool8 ShakingGrassEncounter(void);
-=======
->>>>>>> upstream/master
 
 #endif // GUARD_WILD_ENCOUNTER_H

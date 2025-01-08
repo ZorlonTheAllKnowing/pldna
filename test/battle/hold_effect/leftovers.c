@@ -16,11 +16,7 @@ SINGLE_BATTLE_TEST("Leftovers recovers 1/16th HP at end of turn")
     } SCENE {
         s32 maxHP = GetMonData(&PLAYER_PARTY[0], MON_DATA_MAX_HP);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
-<<<<<<< HEAD
         MESSAGE("Wobbuffet's Leftovers restored its HP a little!");
-=======
-        MESSAGE("Wobbuffet restored a little HP using its Leftovers!");
->>>>>>> upstream/master
         HP_BAR(player, damage: -maxHP / 16);
     }
 }
@@ -35,11 +31,7 @@ SINGLE_BATTLE_TEST("Leftovers does nothing if max HP")
     } SCENE {
         NONE_OF {
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
-<<<<<<< HEAD
             MESSAGE("Wobbuffet's Leftovers restored its HP a little!");
-=======
-            MESSAGE("Wobbuffet restored a little HP using its Leftovers!");
->>>>>>> upstream/master
             HP_BAR(player);
         }
     }
@@ -55,11 +47,7 @@ SINGLE_BATTLE_TEST("Leftovers does nothing if Heal Block applies")
     } SCENE {
         NONE_OF {
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
-<<<<<<< HEAD
             MESSAGE("Wobbuffet's Leftovers restored its HP a little!");
-=======
-            MESSAGE("Wobbuffet restored a little HP using its Leftovers!");
->>>>>>> upstream/master
             HP_BAR(player);
         }
     }

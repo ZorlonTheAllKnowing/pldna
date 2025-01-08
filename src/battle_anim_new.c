@@ -99,10 +99,7 @@ static void SpriteCB_GlacialLance_Step1(struct Sprite* sprite);
 static void SpriteCB_GlacialLance_Step2(struct Sprite* sprite);
 static void SpriteCB_GlacialLance(struct Sprite* sprite);
 static void SpriteCB_TripleArrowKick(struct Sprite* sprite);
-<<<<<<< HEAD
 static void AnimMakingItRain(struct Sprite *sprite);
-=======
->>>>>>> upstream/master
 
 // const data
 // general
@@ -2179,7 +2176,6 @@ const struct SpriteTemplate gSpiritShackleArrowTemplate =
     .anims = gDummySpriteAnimTable,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
-<<<<<<< HEAD
     .callback = AnimSonicBoomProjectile
 };
 
@@ -2192,9 +2188,6 @@ const struct SpriteTemplate gSpiritShackleChainTemplate =
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = AnimThunderWave
-=======
-    .callback = AnimTranslateStinger
->>>>>>> upstream/master
 };
 
 //darkest lariat
@@ -4399,32 +4392,6 @@ const struct SpriteTemplate gSpriteTemplate_FlipTurnBack = {
     .callback = AnimAbsorptionOrb
 };
 
-<<<<<<< HEAD
-=======
-// U-Turn
-const struct SpriteTemplate gUTurnBallSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_SMALL_BUBBLES,
-    .paletteTag = ANIM_TAG_RAZOR_LEAF,
-    .oam = &gOamData_AffineOff_ObjNormal_16x16,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gAffineAnims_ShadowBall,
-    .callback = AnimShadowBall,
-};
-
-const struct SpriteTemplate gUTurnBallBackSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_SMALL_BUBBLES,
-    .paletteTag = ANIM_TAG_RAZOR_LEAF,
-    .oam = &gOamData_AffineOff_ObjNormal_16x16,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gAffineAnims_ShadowBall,
-    .callback = AnimAbsorptionOrb,
-};
-
->>>>>>> upstream/master
 // wicked blow
 static const union AffineAnimCmd sSpriteAffineAnim_DrainPunchFist[] = {
     AFFINEANIMCMD_FRAME(256, 256, 0, 1), //Double sprite size
@@ -7268,7 +7235,6 @@ const struct SpriteTemplate gBitterBladeImpactTemplate =
     .callback = AnimClawSlash
 };
 
-<<<<<<< HEAD
 // Make It Rain
 const struct SpriteTemplate gMakingItRainTemplate =
 {
@@ -7281,8 +7247,6 @@ const struct SpriteTemplate gMakingItRainTemplate =
     .callback = AnimMakingItRain,
 };
 
-=======
->>>>>>> upstream/master
 const struct SpriteTemplate gRedExplosionSpriteTemplate =
 {
     .tileTag = ANIM_TAG_RED_EXPLOSION,
@@ -7316,42 +7280,6 @@ const struct SpriteTemplate gMoonUpSpriteTemplate =
     .callback = AnimWeatherBallUp,
 };
 
-<<<<<<< HEAD
-=======
-const union AnimCmd gSproutAnimCmds[] =
-{
-    ANIMCMD_FRAME(96, 5),
-    ANIMCMD_END,
-};
-
-const union AnimCmd *const gSproutAnimTable[] =
-{
-    gSproutAnimCmds,
-};
-
-const struct SpriteTemplate gSproutGrowSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_SPROUT,
-    .paletteTag = ANIM_TAG_SPROUT,
-    .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gSproutAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimSpriteOnMonPos,
-};
-
-const struct SpriteTemplate gFreezyFrostRisingSpearSpriteTemplate =
-{
-    .tileTag = ANIM_TAG_ICICLE_SPEAR,
-    .paletteTag = ANIM_TAG_ICICLE_SPEAR,
-    .oam = &gOamData_AffineOff_ObjNormal_32x32,
-    .anims = gDummySpriteAnimTable,
-    .images = NULL,
-    .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = SpriteCB_GeyserTarget
-};
-
->>>>>>> upstream/master
 // functions
 //general
 void AnimTask_IsTargetPartner(u8 taskId)
@@ -7368,11 +7296,7 @@ static u8 LoadBattleAnimTarget(u8 arg)
 {
     u8 battler;
 
-<<<<<<< HEAD
     if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
-=======
-    if (IsDoubleBattle())
->>>>>>> upstream/master
     {
         switch (gBattleAnimArgs[arg])
         {
@@ -7403,11 +7327,7 @@ static u8 LoadBattleAnimTarget(u8 arg)
 
 static u8 GetProperCentredCoord(u8 battler, u8 coordType)
 {
-<<<<<<< HEAD
     if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
-=======
-    if (IsDoubleBattle())
->>>>>>> upstream/master
         return (GetBattlerSpriteCoord2(battler, coordType) + GetBattlerSpriteCoord2(BATTLE_PARTNER(battler), coordType)) / 2;
 
     return GetBattlerSpriteCoord(battler, coordType);
@@ -7597,22 +7517,14 @@ static void SpriteCB_SpriteToCentreOfSide(struct Sprite *sprite)
 
         if (gBattleAnimArgs[2] == 0) //Attacker
         {
-<<<<<<< HEAD
             if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
-=======
-            if (IsDoubleBattle())
->>>>>>> upstream/master
                 InitSpritePosToAnimAttackersCentre(sprite, var);
             else
                 InitSpritePosToAnimAttacker(sprite, var);
         }
         else
         {
-<<<<<<< HEAD
             if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
-=======
-            if (IsDoubleBattle())
->>>>>>> upstream/master
                 InitSpritePosToAnimTargetsCentre(sprite, var);
             else
                 InitSpritePosToAnimTarget(sprite, var);
@@ -7696,11 +7608,7 @@ static void SpriteCB_GrowingSuperpower(struct Sprite *sprite)
 
 static void SpriteCB_CentredSpiderWeb(struct Sprite *sprite)
 {
-<<<<<<< HEAD
     if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
-=======
-    if (IsDoubleBattle())
->>>>>>> upstream/master
         InitSpritePosToAnimTargetsCentre(sprite, FALSE);
     else
         InitSpritePosToAnimTarget(sprite, FALSE);
@@ -7714,22 +7622,14 @@ static void SpriteCB_CoreEnforcerHits(struct Sprite *sprite)
 
     if (gBattleAnimArgs[2] == 0)
     {
-<<<<<<< HEAD
         if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
-=======
-        if (IsDoubleBattle())
->>>>>>> upstream/master
             InitSpritePosToAnimAttackersCentre(sprite, FALSE);
         else
             InitSpritePosToAnimAttacker(sprite, FALSE);
     }
     else
     {
-<<<<<<< HEAD
         if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
-=======
-        if (IsDoubleBattle())
->>>>>>> upstream/master
             InitSpritePosToAnimTargetsCentre(sprite, FALSE);
         else
             InitSpritePosToAnimTarget(sprite, FALSE);
@@ -7741,11 +7641,7 @@ static void SpriteCB_CoreEnforcerHits(struct Sprite *sprite)
 
 static void SpriteCB_CoreEnforcerBeam(struct Sprite *sprite)
 {
-<<<<<<< HEAD
     if (!(gBattleTypeFlags & BATTLE_TYPE_DOUBLE))
-=======
-    if (!IsDoubleBattle())
->>>>>>> upstream/master
     {
         AnimSolarBeamBigOrb(sprite);
     }
@@ -8017,22 +7913,14 @@ void SpriteCB_RandomCentredHits(struct Sprite *sprite)
 
     if (gBattleAnimArgs[0] == 0)
     {
-<<<<<<< HEAD
         if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
-=======
-        if (IsDoubleBattle())
->>>>>>> upstream/master
             InitSpritePosToAnimAttackersCentre(sprite, FALSE);
         else
             InitSpritePosToAnimAttacker(sprite, FALSE);
     }
     else
     {
-<<<<<<< HEAD
         if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
-=======
-        if (IsDoubleBattle())
->>>>>>> upstream/master
             InitSpritePosToAnimTargetsCentre(sprite, FALSE);
         else
             InitSpritePosToAnimTarget(sprite, FALSE);
@@ -8337,11 +8225,7 @@ static void SpriteCB_BeamUpStep(struct Sprite *sprite)
 
 static void SpriteCB_CentredElectricity(struct Sprite *sprite)
 {
-<<<<<<< HEAD
     if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
-=======
-    if (IsDoubleBattle())
->>>>>>> upstream/master
         InitSpritePosToAnimTargetsCentre(sprite, FALSE);
     else
         InitSpritePosToAnimTarget(sprite, FALSE);
@@ -9382,7 +9266,6 @@ void AnimTask_StickySyrup(u8 taskId)
     DestroyAnimVisualTask(taskId);
 }
 
-<<<<<<< HEAD
 static void AnimMakingItRain(struct Sprite *sprite)
 {
     if (gBattleAnimArgs[3] != 0)
@@ -9401,14 +9284,4 @@ static void AnimMakingItRain(struct Sprite *sprite)
     StoreSpriteCallbackInData6(sprite, AnimFallingRock_Step);
     sprite->callback = TranslateSpriteInEllipse;
     sprite->callback(sprite);
-=======
-void AnimTask_RandomBool(u8 taskId)
-{
-    if (RandomPercentage(RNG_NONE, 50))
-        gBattleAnimArgs[ARG_RET_ID] = TRUE;
-    else
-        gBattleAnimArgs[ARG_RET_ID] = FALSE;
-
-    DestroyAnimVisualTask(taskId);
->>>>>>> upstream/master
 }

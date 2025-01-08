@@ -34,7 +34,6 @@ struct GMaxMove
 
 static const struct GMaxMove sGMaxMoveTable[] =
 {
-<<<<<<< HEAD
     {SPECIES_VENUSAUR_GIGANTAMAX,                   TYPE_GRASS,      MOVE_G_MAX_VINE_LASH},
     {SPECIES_BLASTOISE_GIGANTAMAX,                  TYPE_WATER,      MOVE_G_MAX_CANNONADE},
     {SPECIES_CHARIZARD_GIGANTAMAX,                  TYPE_FIRE,       MOVE_G_MAX_WILDFIRE},
@@ -69,42 +68,6 @@ static const struct GMaxMove sGMaxMoveTable[] =
     {SPECIES_DURALUDON_GIGANTAMAX,                  TYPE_DRAGON,     MOVE_G_MAX_DEPLETION},
     {SPECIES_URSHIFU_SINGLE_STRIKE_STYLE_GIGANTAMAX,TYPE_DARK,       MOVE_G_MAX_ONE_BLOW},
     {SPECIES_URSHIFU_RAPID_STRIKE_STYLE_GIGANTAMAX, TYPE_WATER,      MOVE_G_MAX_RAPID_FLOW},
-=======
-    {SPECIES_VENUSAUR_GMAX,                   TYPE_GRASS,      MOVE_G_MAX_VINE_LASH},
-    {SPECIES_BLASTOISE_GMAX,                  TYPE_WATER,      MOVE_G_MAX_CANNONADE},
-    {SPECIES_CHARIZARD_GMAX,                  TYPE_FIRE,       MOVE_G_MAX_WILDFIRE},
-    {SPECIES_BUTTERFREE_GMAX,                 TYPE_BUG,        MOVE_G_MAX_BEFUDDLE},
-    {SPECIES_PIKACHU_GMAX,                    TYPE_ELECTRIC,   MOVE_G_MAX_VOLT_CRASH},
-    {SPECIES_MEOWTH_GMAX,                     TYPE_NORMAL,     MOVE_G_MAX_GOLD_RUSH},
-    {SPECIES_MACHAMP_GMAX,                    TYPE_FIGHTING,   MOVE_G_MAX_CHI_STRIKE},
-    {SPECIES_GENGAR_GMAX,                     TYPE_GHOST,      MOVE_G_MAX_TERROR},
-    {SPECIES_KINGLER_GMAX,                    TYPE_WATER,      MOVE_G_MAX_FOAM_BURST},
-    {SPECIES_LAPRAS_GMAX,                     TYPE_ICE,        MOVE_G_MAX_RESONANCE},
-    {SPECIES_EEVEE_GMAX,                      TYPE_NORMAL,     MOVE_G_MAX_CUDDLE},
-    {SPECIES_SNORLAX_GMAX,                    TYPE_NORMAL,     MOVE_G_MAX_REPLENISH},
-    {SPECIES_GARBODOR_GMAX,                   TYPE_POISON,     MOVE_G_MAX_MALODOR},
-    {SPECIES_MELMETAL_GMAX,                   TYPE_STEEL,      MOVE_G_MAX_MELTDOWN},
-    {SPECIES_RILLABOOM_GMAX,                  TYPE_GRASS,      MOVE_G_MAX_DRUM_SOLO},
-    {SPECIES_CINDERACE_GMAX,                  TYPE_FIRE,       MOVE_G_MAX_FIREBALL},
-    {SPECIES_INTELEON_GMAX,                   TYPE_WATER,      MOVE_G_MAX_HYDROSNIPE},
-    {SPECIES_CORVIKNIGHT_GMAX,                TYPE_FLYING,     MOVE_G_MAX_WIND_RAGE},
-    {SPECIES_ORBEETLE_GMAX,                   TYPE_PSYCHIC,    MOVE_G_MAX_GRAVITAS},
-    {SPECIES_DREDNAW_GMAX,                    TYPE_WATER,      MOVE_G_MAX_STONESURGE},
-    {SPECIES_COALOSSAL_GMAX,                  TYPE_ROCK,       MOVE_G_MAX_VOLCALITH},
-    {SPECIES_FLAPPLE_GMAX,                    TYPE_GRASS,      MOVE_G_MAX_TARTNESS},
-    {SPECIES_APPLETUN_GMAX,                   TYPE_GRASS,      MOVE_G_MAX_SWEETNESS},
-    {SPECIES_SANDACONDA_GMAX,                 TYPE_GROUND,     MOVE_G_MAX_SANDBLAST},
-    {SPECIES_TOXTRICITY_AMPED_GMAX,           TYPE_ELECTRIC,   MOVE_G_MAX_STUN_SHOCK},
-    {SPECIES_TOXTRICITY_LOW_KEY_GMAX,         TYPE_ELECTRIC,   MOVE_G_MAX_STUN_SHOCK},
-    {SPECIES_CENTISKORCH_GMAX,                TYPE_FIRE,       MOVE_G_MAX_CENTIFERNO},
-    {SPECIES_HATTERENE_GMAX,                  TYPE_FAIRY,      MOVE_G_MAX_SMITE},
-    {SPECIES_GRIMMSNARL_GMAX,                 TYPE_DARK,       MOVE_G_MAX_SNOOZE},
-    {SPECIES_ALCREMIE_GMAX,                   TYPE_FAIRY,      MOVE_G_MAX_FINALE},
-    {SPECIES_COPPERAJAH_GMAX,                 TYPE_STEEL,      MOVE_G_MAX_STEELSURGE},
-    {SPECIES_DURALUDON_GMAX,                  TYPE_DRAGON,     MOVE_G_MAX_DEPLETION},
-    {SPECIES_URSHIFU_SINGLE_STRIKE_GMAX,TYPE_DARK,       MOVE_G_MAX_ONE_BLOW},
-    {SPECIES_URSHIFU_RAPID_STRIKE_GMAX, TYPE_WATER,      MOVE_G_MAX_RAPID_FLOW},
->>>>>>> upstream/master
 };
 
 // Returns whether a battler can Dynamax.
@@ -160,36 +123,22 @@ bool32 CanDynamax(u32 battler)
 // Returns whether a battler is transformed into a Gigantamax form.
 bool32 IsGigantamaxed(u32 battler)
 {
-<<<<<<< HEAD
     struct Pokemon *mon = &GetSideParty(GetBattlerSide(battler))[gBattlerPartyIndexes[battler]];
-=======
-    struct Pokemon *mon = GetPartyBattlerData(battler);
->>>>>>> upstream/master
     if ((gSpeciesInfo[gBattleMons[battler].species].isGigantamax) && GetMonData(mon, MON_DATA_GIGANTAMAX_FACTOR))
         return TRUE;
     return FALSE;
 }
 
 // Applies the HP Multiplier for Dynamaxed Pokemon and Raid Bosses.
-<<<<<<< HEAD
 void ApplyDynamaxHPMultiplier(u32 battler, struct Pokemon* mon)
-=======
-void ApplyDynamaxHPMultiplier(struct Pokemon* mon)
->>>>>>> upstream/master
 {
     if (GetMonData(mon, MON_DATA_SPECIES) == SPECIES_SHEDINJA)
         return;
     else
     {
-<<<<<<< HEAD
         u32 scale = 150 + 5 * GetMonData(mon, MON_DATA_DYNAMAX_LEVEL);
         u32 hp = (GetMonData(mon, MON_DATA_HP) * scale + 99) / 100;
         u32 maxHP = (GetMonData(mon, MON_DATA_MAX_HP) * scale + 99) / 100;
-=======
-        uq4_12_t multiplier = GetDynamaxLevelHPMultiplier(GetMonData(mon, MON_DATA_DYNAMAX_LEVEL), FALSE);
-        u32 hp = UQ_4_12_TO_INT((GetMonData(mon, MON_DATA_HP) * multiplier) + UQ_4_12_ROUND);
-        u32 maxHP = UQ_4_12_TO_INT((GetMonData(mon, MON_DATA_MAX_HP) * multiplier) + UQ_4_12_ROUND);
->>>>>>> upstream/master
         SetMonData(mon, MON_DATA_HP, &hp);
         SetMonData(mon, MON_DATA_MAX_HP, &maxHP);
     }
@@ -202,14 +151,8 @@ u16 GetNonDynamaxHP(u32 battler)
         return gBattleMons[battler].hp;
     else
     {
-<<<<<<< HEAD
         u16 mult = UQ_4_12(1.0/1.5); // placeholder
         u16 hp = UQ_4_12_TO_INT((gBattleMons[battler].hp * mult) + UQ_4_12_ROUND);
-=======
-        struct Pokemon *mon = GetPartyBattlerData(battler);
-        uq4_12_t mult = GetDynamaxLevelHPMultiplier(GetMonData(mon, MON_DATA_DYNAMAX_LEVEL), TRUE);
-        u32 hp = UQ_4_12_TO_INT((gBattleMons[battler].hp * mult) + UQ_4_12_ROUND);
->>>>>>> upstream/master
         return hp;
     }
 }
@@ -221,14 +164,8 @@ u16 GetNonDynamaxMaxHP(u32 battler)
         return gBattleMons[battler].maxHP;
     else
     {
-<<<<<<< HEAD
         u16 mult = UQ_4_12(1.0/1.5); // placeholder
         u16 maxHP = UQ_4_12_TO_INT((gBattleMons[battler].maxHP * mult) + UQ_4_12_ROUND);
-=======
-        struct Pokemon *mon = GetPartyBattlerData(battler);
-        uq4_12_t mult = GetDynamaxLevelHPMultiplier(GetMonData(mon, MON_DATA_DYNAMAX_LEVEL), TRUE);
-        u32 maxHP = UQ_4_12_TO_INT((gBattleMons[battler].maxHP * mult) + UQ_4_12_ROUND);
->>>>>>> upstream/master
         return maxHP;
     }
 }
@@ -265,11 +202,7 @@ void UndoDynamax(u32 battler)
     if (GetActiveGimmick(battler) == GIMMICK_DYNAMAX)
     {
         struct Pokemon *mon = (side == B_SIDE_PLAYER) ? &gPlayerParty[monId] : &gEnemyParty[monId];
-<<<<<<< HEAD
         u16 mult = UQ_4_12(1.0/1.5); // placeholder
-=======
-        uq4_12_t mult = GetDynamaxLevelHPMultiplier(GetMonData(mon, MON_DATA_DYNAMAX_LEVEL), TRUE);
->>>>>>> upstream/master
         gBattleMons[battler].hp = UQ_4_12_TO_INT((GetMonData(mon, MON_DATA_HP) * mult + 1) + UQ_4_12_ROUND); // round up
         SetMonData(mon, MON_DATA_HP, &gBattleMons[battler].hp);
         CalculateMonStats(mon);
@@ -347,14 +280,7 @@ static u16 GetTypeBasedMaxMove(u32 battler, u32 type)
 // Returns the appropriate Max Move or G-Max Move for a battler to use.
 u16 GetMaxMove(u32 battler, u32 baseMove)
 {
-<<<<<<< HEAD
     u32 move = baseMove;
-=======
-    u32 moveType;
-    SetTypeBeforeUsingMove(baseMove, battler);
-    moveType = GetMoveType(baseMove);
-
->>>>>>> upstream/master
     if (baseMove == MOVE_NONE) // for move display
     {
         return MOVE_NONE;
@@ -365,7 +291,6 @@ u16 GetMaxMove(u32 battler, u32 baseMove)
     }
     else if (gMovesInfo[baseMove].category == DAMAGE_CATEGORY_STATUS)
     {
-<<<<<<< HEAD
         move = MOVE_MAX_GUARD;
     }
     else if (gBattleStruct->dynamicMoveType)
@@ -378,14 +303,6 @@ u16 GetMaxMove(u32 battler, u32 baseMove)
     }
 
     return move;
-=======
-        return MOVE_MAX_GUARD;
-    }
-    else
-    {
-        return GetTypeBasedMaxMove(battler, moveType);
-    }
->>>>>>> upstream/master
 }
 
 // First value is for Fighting, Poison and Multi-Attack. The second is for everything else.
@@ -498,11 +415,7 @@ static u8 GetMaxPowerTier(u32 move)
         case EFFECT_GYRO_BALL:
             return MAX_POWER_TIER_5;
         case EFFECT_MAGNITUDE:
-<<<<<<< HEAD
         case EFFECT_VARY_POWER_BASED_ON_HP:
-=======
-        case EFFECT_POWER_BASED_ON_TARGET_HP:
->>>>>>> upstream/master
             return MAX_POWER_TIER_6;
         case EFFECT_FLAIL:
         case EFFECT_LOW_KICK:
@@ -598,17 +511,10 @@ void BS_UpdateDynamax(void)
 {
     NATIVE_ARGS();
     u32 battler = gBattleScripting.battler;
-<<<<<<< HEAD
     struct Pokemon *mon = &GetSideParty(GetBattlerSide(battler))[gBattlerPartyIndexes[battler]];
 
     if (!IsGigantamaxed(battler)) // RecalcBattlerStats will get called on form change.
         RecalcBattlerStats(battler, mon);
-=======
-    struct Pokemon *mon = GetPartyBattlerData(battler);
-
-    if (!IsGigantamaxed(battler)) // RecalcBattlerStats will get called on form change.
-        RecalcBattlerStats(battler, mon, GetActiveGimmick(battler) == GIMMICK_DYNAMAX);
->>>>>>> upstream/master
 
     UpdateHealthboxAttribute(gHealthboxSpriteIds[battler], mon, HEALTHBOX_ALL);
     gBattlescriptCurrInstr = cmd->nextInstr;

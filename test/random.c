@@ -196,7 +196,6 @@ TEST("RandomElement generates a uniform distribution")
 
 TEST("RandomUniform mul-based faster than mod-based (compile-time)")
 {
-<<<<<<< HEAD
     #if HQ_RANDOM == TRUE
         const u32 expectedMulSum = 6;
         const u32 expectedModSum = 4;
@@ -204,10 +203,6 @@ TEST("RandomUniform mul-based faster than mod-based (compile-time)")
         const u32 expectedMulSum = 3;
         const u32 expectedModSum = 4;
     #endif
-=======
-    const u32 expectedMulSum = 6;
-    const u32 expectedModSum = 4;
->>>>>>> upstream/master
     struct Benchmark mulBenchmark, modBenchmark;
     u32 mulSum = 0, modSum = 0;
 
@@ -239,7 +234,6 @@ TEST("RandomUniform mul-based faster than mod-based (compile-time)")
 
 TEST("RandomUniform mul-based faster than mod-based (run-time)")
 {
-<<<<<<< HEAD
     #if HQ_RANDOM == TRUE
         const u32 expectedMulSum = 289;
         const u32 expectedModSum = 205;
@@ -247,10 +241,6 @@ TEST("RandomUniform mul-based faster than mod-based (run-time)")
         const u32 expectedMulSum = 232;
         const u32 expectedModSum = 249;
     #endif
-=======
-    const u32 expectedMulSum = 289;
-    const u32 expectedModSum = 205;
->>>>>>> upstream/master
     u32 i;
     struct Benchmark mulBenchmark, modBenchmark;
     u32 mulSum = 0, modSum = 0;
@@ -274,10 +264,7 @@ TEST("RandomUniform mul-based faster than mod-based (run-time)")
     EXPECT_EQ(modSum, expectedModSum);
 }
 
-<<<<<<< HEAD
 #if HQ_RANDOM == TRUE
-=======
->>>>>>> upstream/master
 TEST("Thumb and C SFC32 implementations produce the same results")
 {
     u32 thumbSum;
@@ -298,9 +285,5 @@ TEST("Thumb and C SFC32 implementations produce the same results")
     }
 
     EXPECT_EQ(thumbSum, cSum);
-<<<<<<< HEAD
 }
 #endif
-=======
-}
->>>>>>> upstream/master

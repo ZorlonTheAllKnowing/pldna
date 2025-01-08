@@ -57,11 +57,7 @@ SINGLE_BATTLE_TEST("Antidote resets Toxic Counter")
         TURN { ; }
         TURN { USE_ITEM(player, ITEM_ANTIDOTE, partyIndex: 0); }
     } SCENE {
-<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet used Toxic!");
-=======
-        MESSAGE("The opposing Wobbuffet used Toxic!");
->>>>>>> upstream/master
         MESSAGE("Wobbuffet had its status healed!");
     } THEN {
         EXPECT_EQ(player->status1, STATUS1_NONE);

@@ -5,11 +5,7 @@ DOUBLE_BATTLE_TEST("Grim Neigh raises Sp. Attack by one stage after directly cau
 {
     u32 species = 0, ability = 0, abilityPopUp = 0;
     PARAMETRIZE { species = SPECIES_SPECTRIER;            ability = ABILITY_GRIM_NEIGH;          abilityPopUp = ABILITY_GRIM_NEIGH; }
-<<<<<<< HEAD
     PARAMETRIZE { species = SPECIES_CALYREX_SHADOW_RIDER; ability = ABILITY_AS_ONE_SHADOW_RIDER; abilityPopUp = ABILITY_GRIM_NEIGH; }
-=======
-    PARAMETRIZE { species = SPECIES_CALYREX_SHADOW; ability = ABILITY_AS_ONE_SHADOW_RIDER; abilityPopUp = ABILITY_GRIM_NEIGH; }
->>>>>>> upstream/master
     GIVEN {
         ASSUME(gMovesInfo[MOVE_DISCHARGE].target == MOVE_TARGET_FOES_AND_ALLY);
         PLAYER(species) { Ability(ability); }
@@ -26,13 +22,8 @@ DOUBLE_BATTLE_TEST("Grim Neigh raises Sp. Attack by one stage after directly cau
         for (i = 0; i < 3; i++) {
             ONE_OF {
                 MESSAGE("Snorunt fainted!");
-<<<<<<< HEAD
                 MESSAGE("Foe Glalie fainted!");
                 MESSAGE("Foe Abra fainted!");
-=======
-                MESSAGE("The opposing Glalie fainted!");
-                MESSAGE("The opposing Abra fainted!");
->>>>>>> upstream/master
             }
             ABILITY_POPUP(playerLeft, abilityPopUp);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, playerLeft);
@@ -50,11 +41,7 @@ DOUBLE_BATTLE_TEST("Grim Neigh does not trigger if Pokemon faint to indirect dam
 {
     u32 species = 0, ability = 0, abilityPopUp = 0;
     PARAMETRIZE { species = SPECIES_SPECTRIER;            ability = ABILITY_GRIM_NEIGH;          abilityPopUp = ABILITY_GRIM_NEIGH; }
-<<<<<<< HEAD
     PARAMETRIZE { species = SPECIES_CALYREX_SHADOW_RIDER; ability = ABILITY_AS_ONE_SHADOW_RIDER; abilityPopUp = ABILITY_GRIM_NEIGH; }
-=======
-    PARAMETRIZE { species = SPECIES_CALYREX_SHADOW; ability = ABILITY_AS_ONE_SHADOW_RIDER; abilityPopUp = ABILITY_GRIM_NEIGH; }
->>>>>>> upstream/master
     GIVEN {
         PLAYER(species) { Ability(ability); }
         PLAYER(SPECIES_SNORUNT) { HP(1); Status1(STATUS1_POISON); }
@@ -70,13 +57,8 @@ DOUBLE_BATTLE_TEST("Grim Neigh does not trigger if Pokemon faint to indirect dam
         for (i = 0; i < 3; i++) {
             ONE_OF {
                 MESSAGE("Snorunt fainted!");
-<<<<<<< HEAD
                 MESSAGE("Foe Glalie fainted!");
                 MESSAGE("Foe Abra fainted!");
-=======
-                MESSAGE("The opposing Glalie fainted!");
-                MESSAGE("The opposing Abra fainted!");
->>>>>>> upstream/master
             }
             NONE_OF {
                 ABILITY_POPUP(playerLeft, abilityPopUp);
@@ -96,11 +78,7 @@ DOUBLE_BATTLE_TEST("Grim Neigh does not increase damage done by the same move th
     s16 damage[2];
     u32 species = 0, ability = 0, abilityPopUp = 0;
     PARAMETRIZE { species = SPECIES_SPECTRIER;            ability = ABILITY_GRIM_NEIGH;          abilityPopUp = ABILITY_GRIM_NEIGH; }
-<<<<<<< HEAD
     PARAMETRIZE { species = SPECIES_CALYREX_SHADOW_RIDER; ability = ABILITY_AS_ONE_SHADOW_RIDER; abilityPopUp = ABILITY_GRIM_NEIGH; }
-=======
-    PARAMETRIZE { species = SPECIES_CALYREX_SHADOW; ability = ABILITY_AS_ONE_SHADOW_RIDER; abilityPopUp = ABILITY_GRIM_NEIGH; }
->>>>>>> upstream/master
 
     KNOWN_FAILING; // Requires simultaneous damage implementation
     GIVEN {

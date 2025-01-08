@@ -53725,11 +53725,7 @@
       "MOVE_SNORE"
     ]
   },
-<<<<<<< HEAD
   "WORMADAM_PLANT_CLOAK": {
-=======
-  "WORMADAM_PLANT": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -88635,11 +88631,7 @@
       "MOVE_ZEN_HEADBUTT"
     ]
   },
-<<<<<<< HEAD
   "MEOWSTIC_MALE": {
-=======
-  "MEOWSTIC_M": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -94743,11 +94735,7 @@
       "MOVE_ZEN_HEADBUTT"
     ]
   },
-<<<<<<< HEAD
   "WORMADAM_SANDY_CLOAK": {
-=======
-  "WORMADAM_SANDY": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -94852,11 +94840,7 @@
       "MOVE_UPROAR"
     ]
   },
-<<<<<<< HEAD
   "WORMADAM_TRASH_CLOAK": {
-=======
-  "WORMADAM_TRASH": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -95875,11 +95859,7 @@
       "MOVE_ZEN_HEADBUTT"
     ]
   },
-<<<<<<< HEAD
   "FLOETTE_ETERNAL_FLOWER": {
-=======
-  "FLOETTE_ETERNAL": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -95987,11 +95967,7 @@
       "MOVE_WORRY_SEED"
     ]
   },
-<<<<<<< HEAD
   "MEOWSTIC_FEMALE": {
-=======
-  "MEOWSTIC_F": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,

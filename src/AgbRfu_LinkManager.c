@@ -59,13 +59,7 @@ void rfu_LMAN_REQ_sendData(bool8 clockChangeFlag)
             clockChangeFlag = FALSE;
     }
     else
-<<<<<<< HEAD
         lman.parentAck_flag = 0;
-=======
-    {
-        lman.parentAck_flag = 0;
-    }
->>>>>>> upstream/master
     rfu_REQ_sendData(clockChangeFlag);
 }
 

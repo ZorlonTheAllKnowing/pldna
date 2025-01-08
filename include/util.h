@@ -4,10 +4,7 @@
 #include "sprite.h"
 
 extern const u8 gMiscBlank_Gfx[]; // unused in Emerald
-<<<<<<< HEAD
 extern const u32 gBitTable[];
-=======
->>>>>>> upstream/master
 
 u8 CreateInvisibleSpriteWithCallback(void (*)(struct Sprite *));
 void StoreWordInTwoHalfwords(u16 *, u32);

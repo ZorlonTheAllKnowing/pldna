@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 1 "data/maps/ArtisanCave_B1F/scripts.pory"
 
 # 2 "data/maps/ArtisanCave_B1F/scripts.pory"
@@ -15,13 +14,3 @@ ArtisanCave_B1F_OnTransition:
 	setflag FLAG_LANDMARK_ARTISAN_CAVE
 # 8 "data/maps/ArtisanCave_B1F/scripts.pory"
 	end
-=======
-ArtisanCave_B1F_MapScripts::
-	map_script MAP_SCRIPT_ON_TRANSITION, ArtisanCave_B1F_OnTransition
-	.byte 0
-
-ArtisanCave_B1F_OnTransition:
-	setflag FLAG_LANDMARK_ARTISAN_CAVE
-	end
-
->>>>>>> upstream/master

@@ -44067,11 +44067,7 @@
     "EggMoves": [],
     "TutorMoves": []
   },
-<<<<<<< HEAD
   "WORMADAM_PLANT_CLOAK": {
-=======
-  "WORMADAM_PLANT": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -53250,11 +53246,7 @@
     "EggMoves": [],
     "TutorMoves": []
   },
-<<<<<<< HEAD
   "WORMADAM_SANDY_CLOAK": {
-=======
-  "WORMADAM_SANDY": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -53343,11 +53335,7 @@
     "EggMoves": [],
     "TutorMoves": []
   },
-<<<<<<< HEAD
   "WORMADAM_TRASH_CLOAK": {
-=======
-  "WORMADAM_TRASH": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,

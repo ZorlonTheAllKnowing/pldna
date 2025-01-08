@@ -254,11 +254,7 @@
       "y": 8,
       "elevation": 3,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
-<<<<<<< HEAD
       "script": "LittlerootTown_EventScript_NewSign"
-=======
-      "script": "LittlerootTown_EventScript_BrendansHouseSign"
->>>>>>> upstream/master
     },
     {
       "type": "sign",
@@ -267,7 +263,6 @@
       "elevation": 3,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "LittlerootTown_EventScript_MaysHouseSign"
-<<<<<<< HEAD
     },
     {
       "type": "sign",
@@ -276,8 +271,6 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "LittlerootTown_EventScript_NewSign"
-=======
->>>>>>> upstream/master
     }
   ]
 }

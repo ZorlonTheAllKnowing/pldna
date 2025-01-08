@@ -4,7 +4,6 @@
 #include "palette.h"
 #include "constants/rgb.h"
 
-<<<<<<< HEAD
 const u32 gBitTable[] =
 {
     1 << 0,
@@ -41,8 +40,6 @@ const u32 gBitTable[] =
     1 << 31,
 };
 
-=======
->>>>>>> upstream/master
 static const struct SpriteTemplate sInvisibleSpriteTemplate =
 {
     .tileTag = 0,

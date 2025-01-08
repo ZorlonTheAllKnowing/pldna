@@ -76,7 +76,6 @@ SINGLE_BATTLE_TEST("Eject Pack will miss timing to switch out user if Emergency 
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_OVERHEAT, player);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
-<<<<<<< HEAD
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
         MESSAGE("Wobbuffet is switched out with the Eject Pack!");
         ABILITY_POPUP(opponent, ABILITY_EMERGENCY_EXIT);
@@ -86,50 +85,3 @@ SINGLE_BATTLE_TEST("Eject Pack will miss timing to switch out user if Emergency 
         EXPECT(opponent->species == SPECIES_WYNAUT);
     }
 }
-=======
-        NONE_OF {
-            ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
-            MESSAGE("Wobbuffet is switched out with the Eject Pack!");
-        }
-        ABILITY_POPUP(opponent, ABILITY_EMERGENCY_EXIT);
-    } THEN {
-        EXPECT(player->species == SPECIES_WOBBUFFET);
-        EXPECT(opponent->species == SPECIES_WYNAUT);
-    }
-}
-
-SINGLE_BATTLE_TEST("Eject Pack activates once intimidate mon switches in")
-{
-    GIVEN {
-        PLAYER(SPECIES_WOBBUFFET) { Item(ITEM_EJECT_PACK); }
-        PLAYER(SPECIES_WOBBUFFET);
-        OPPONENT(SPECIES_WOBBUFFET);
-        OPPONENT(SPECIES_EKANS) { Ability(ABILITY_INTIMIDATE); }
-    } WHEN {
-        TURN { SWITCH(opponent, 1); SEND_OUT(player, 1); }
-    } SCENE {
-        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
-        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
-        MESSAGE("Wobbuffet is switched out with the Eject Pack!");
-    }
-}
-
-SINGLE_BATTLE_TEST("Eject Pack will not activate if Parting Shot user can switch out")
-{
-    ASSUME(gItemsInfo[ITEM_EJECT_PACK].holdEffect == HOLD_EFFECT_EJECT_PACK);
-    GIVEN {
-        PLAYER(SPECIES_WOBBUFFET) { Item(ITEM_EJECT_PACK); }
-        PLAYER(SPECIES_WOBBUFFET);
-        OPPONENT(SPECIES_WOBBUFFET);
-        OPPONENT(SPECIES_WOBBUFFET);
-    } WHEN {
-        TURN { MOVE(opponent, MOVE_PARTING_SHOT); SEND_OUT(opponent, 1); }
-    } SCENE {
-        ANIMATION(ANIM_TYPE_MOVE, MOVE_PARTING_SHOT, opponent);
-        NONE_OF {
-            ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
-            MESSAGE("Wobbuffet is switched out with the Eject Pack!");
-        }
-    }
-}
->>>>>>> upstream/master

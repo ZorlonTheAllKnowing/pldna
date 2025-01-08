@@ -117,11 +117,7 @@ static const u8 sFontColorTable[][3] =
     {TEXT_COLOR_TRANSPARENT, TEXT_DYNAMIC_COLOR_2,  TEXT_DYNAMIC_COLOR_3},  // Gender symbol
     {TEXT_COLOR_WHITE,       TEXT_COLOR_DARK_GRAY,  TEXT_COLOR_LIGHT_GRAY}, // Selection actions
     {TEXT_COLOR_WHITE,       TEXT_COLOR_BLUE,       TEXT_COLOR_LIGHT_BLUE}, // Field moves
-<<<<<<< HEAD
     {TEXT_COLOR_WHITE,       TEXT_COLOR_LIGHT_RED, 	TEXT_COLOR_LIGHT_GRAY}, // Gold Text
-=======
-    {TEXT_COLOR_TRANSPARENT, TEXT_COLOR_WHITE,      TEXT_COLOR_DARK_GRAY},  // Unused
->>>>>>> upstream/master
 };
 
 static const struct WindowTemplate sSinglePartyMenuWindowTemplate[] =
@@ -697,10 +693,7 @@ struct
 } static const sCursorOptions[MENU_FIELD_MOVES] =
 {
     [MENU_SUMMARY] = {gText_Summary5, CursorCb_Summary},
-<<<<<<< HEAD
     [MENU_EVOLVE] = {gText_Evolve, CursorCb_Evolve},
-=======
->>>>>>> upstream/master
     [MENU_SWITCH] = {gText_Switch2, CursorCb_Switch},
     [MENU_CANCEL1] = {gText_Cancel2, CursorCb_Cancel1},
     [MENU_ITEM] = {gText_Item, CursorCb_Item},
@@ -1148,7 +1141,6 @@ static const u8 *const sUnused_StatStrings[] =
     gText_Speed2
 };
 
-<<<<<<< HEAD
 static const u16 sRotomFormChangeMoves[5] =
 {
     MOVE_HYDRO_PUMP,
@@ -1156,20 +1148,4 @@ static const u16 sRotomFormChangeMoves[5] =
     MOVE_OVERHEAT,
     MOVE_AIR_SLASH,
     MOVE_LEAF_STORM,
-=======
-#define ROTOM_BASE_MOVE  MOVE_THUNDER_SHOCK
-#define ROTOM_HEAT_MOVE  MOVE_OVERHEAT
-#define ROTOM_WASH_MOVE  MOVE_HYDRO_PUMP
-#define ROTOM_FROST_MOVE MOVE_BLIZZARD
-#define ROTOM_FAN_MOVE   MOVE_AIR_SLASH
-#define ROTOM_MOW_MOVE   MOVE_LEAF_STORM
-
-static const u16 sRotomFormChangeMoves[5] =
-{
-    ROTOM_HEAT_MOVE,
-    ROTOM_WASH_MOVE,
-    ROTOM_FROST_MOVE,
-    ROTOM_FAN_MOVE,
-    ROTOM_MOW_MOVE,
->>>>>>> upstream/master
 };

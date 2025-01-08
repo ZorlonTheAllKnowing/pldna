@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 1 "data/maps/SafariZone_Northwest/scripts.pory"
 
 # 2 "data/maps/SafariZone_Northwest/scripts.pory"
@@ -13,12 +12,3 @@ SafariZone_Northwest_EventScript_Man::
 	msgbox SafariZone_Northwest_Text_Man, MSGBOX_NPC
 # 7 "data/maps/SafariZone_Northwest/scripts.pory"
 	end
-=======
-SafariZone_Northwest_MapScripts::
-	.byte 0
-
-SafariZone_Northwest_EventScript_Man::
-	msgbox SafariZone_Northwest_Text_Man, MSGBOX_NPC
-	end
-
->>>>>>> upstream/master

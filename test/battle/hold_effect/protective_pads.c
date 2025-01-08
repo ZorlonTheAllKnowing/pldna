@@ -46,11 +46,7 @@ SINGLE_BATTLE_TEST("Protective Pads doesn't reduce tough claws damage", s16 dama
 SINGLE_BATTLE_TEST("Protective Pads doesn't invalid unseen fist")
 {
     GIVEN {
-<<<<<<< HEAD
         PLAYER(SPECIES_URSHIFU_RAPID_STRIKE_STYLE) { Ability(ABILITY_UNSEEN_FIST); Item(ITEM_PROTECTIVE_PADS); }
-=======
-        PLAYER(SPECIES_URSHIFU_RAPID_STRIKE) { Ability(ABILITY_UNSEEN_FIST); Item(ITEM_PROTECTIVE_PADS); }
->>>>>>> upstream/master
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
         TURN { MOVE(opponent, MOVE_PROTECT); MOVE(player, MOVE_TACKLE); }
@@ -73,11 +69,7 @@ SINGLE_BATTLE_TEST("Protective Pads protects from Rocly Helmet Damage")
         HP_BAR(opponent);
         NONE_OF {
             HP_BAR(player);
-<<<<<<< HEAD
             MESSAGE("Wobbuffet was hurt by Foe Wobbuffet's Rocky Helmet!");
-=======
-            MESSAGE("Wobbuffet was hurt by the opposing Wobbuffet's Rocky Helmet!");
->>>>>>> upstream/master
         }
     }
 }

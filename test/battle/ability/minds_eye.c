@@ -36,11 +36,7 @@ SINGLE_BATTLE_TEST("Mind's Eye doesn't bypass a Ghost-type's Wonder Guard")
             HP_BAR(opponent);
         }
         ABILITY_POPUP(opponent, ABILITY_WONDER_GUARD);
-<<<<<<< HEAD
         MESSAGE("Foe Shedinja avoided damage with Wonder Guard!");
-=======
-        MESSAGE("The opposing Shedinja avoided damage with Wonder Guard!");
->>>>>>> upstream/master
     }
 }
 

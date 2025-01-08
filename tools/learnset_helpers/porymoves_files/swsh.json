@@ -54679,11 +54679,7 @@
       "MOVE_EXPANDING_FORCE"
     ]
   },
-<<<<<<< HEAD
   "MEOWSTIC_MALE": {
-=======
-  "MEOWSTIC_M": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -75054,11 +75050,7 @@
     ],
     "TutorMoves": []
   },
-<<<<<<< HEAD
   "INDEEDEE_MALE": {
-=======
-  "INDEEDEE_M": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -76798,11 +76790,7 @@
       "MOVE_COACHING"
     ]
   },
-<<<<<<< HEAD
   "URSHIFU_SINGLE_STRIKE_STYLE": {
-=======
-  "URSHIFU_SINGLE_STRIKE": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -77600,11 +77588,7 @@
       "MOVE_EXPANDING_FORCE"
     ]
   },
-<<<<<<< HEAD
   "RAICHU_ALOLAN": {
-=======
-  "RAICHU_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -77763,11 +77747,7 @@
     ],
     "TutorMoves": []
   },
-<<<<<<< HEAD
   "SANDSHREW_ALOLAN": {
-=======
-  "SANDSHREW_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -77893,11 +77873,7 @@
       "MOVE_STEEL_BEAM"
     ]
   },
-<<<<<<< HEAD
   "SANDSLASH_ALOLAN": {
-=======
-  "SANDSLASH_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -78046,11 +78022,7 @@
       "MOVE_STEEL_BEAM"
     ]
   },
-<<<<<<< HEAD
   "VULPIX_ALOLAN": {
-=======
-  "VULPIX_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -78163,11 +78135,7 @@
     ],
     "TutorMoves": []
   },
-<<<<<<< HEAD
   "NINETALES_ALOLAN": {
-=======
-  "NINETALES_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -78304,11 +78272,7 @@
     ],
     "TutorMoves": []
   },
-<<<<<<< HEAD
   "DIGLETT_ALOLAN": {
-=======
-  "DIGLETT_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -78412,11 +78376,7 @@
       "MOVE_STEEL_BEAM"
     ]
   },
-<<<<<<< HEAD
   "DUGTRIO_ALOLAN": {
-=======
-  "DUGTRIO_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -78543,11 +78503,7 @@
       "MOVE_STEEL_BEAM"
     ]
   },
-<<<<<<< HEAD
   "MEOWTH_ALOLAN": {
-=======
-  "MEOWTH_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -78655,11 +78611,7 @@
     ],
     "TutorMoves": []
   },
-<<<<<<< HEAD
   "PERSIAN_ALOLAN": {
-=======
-  "PERSIAN_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -78789,11 +78741,7 @@
     ],
     "TutorMoves": []
   },
-<<<<<<< HEAD
   "EXEGGUTOR_ALOLAN": {
-=======
-  "EXEGGUTOR_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -78937,11 +78885,7 @@
       "MOVE_DRACO_METEOR"
     ]
   },
-<<<<<<< HEAD
   "MAROWAK_ALOLAN": {
-=======
-  "MAROWAK_ALOLA": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -79101,11 +79045,7 @@
     ],
     "TutorMoves": []
   },
-<<<<<<< HEAD
   "MEOWTH_GALARIAN": {
-=======
-  "MEOWTH_GALAR": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -79218,11 +79158,7 @@
       "MOVE_LASH_OUT"
     ]
   },
-<<<<<<< HEAD
   "PONYTA_GALARIAN": {
-=======
-  "PONYTA_GALAR": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -79320,11 +79256,7 @@
       "MOVE_EXPANDING_FORCE"
     ]
   },
-<<<<<<< HEAD
   "RAPIDASH_GALARIAN": {
-=======
-  "RAPIDASH_GALAR": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -79453,11 +79385,7 @@
       "MOVE_EXPANDING_FORCE"
     ]
   },
-<<<<<<< HEAD
   "SLOWPOKE_GALARIAN": {
-=======
-  "SLOWPOKE_GALAR": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -79594,11 +79522,7 @@
       "MOVE_EXPANDING_FORCE"
     ]
   },
-<<<<<<< HEAD
   "SLOWBRO_GALARIAN": {
-=======
-  "SLOWBRO_GALAR": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -79766,11 +79690,7 @@
       "MOVE_EXPANDING_FORCE"
     ]
   },
-<<<<<<< HEAD
   "FARFETCHD_GALARIAN": {
-=======
-  "FARFETCHD_GALAR": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -79881,11 +79801,7 @@
       "MOVE_DUAL_WINGBEAT"
     ]
   },
-<<<<<<< HEAD
   "WEEZING_GALARIAN": {
-=======
-  "WEEZING_GALAR": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -80042,11 +79958,7 @@
       "MOVE_MISTY_EXPLOSION"
     ]
   },
-<<<<<<< HEAD
   "MR_MIME_GALARIAN": {
-=======
-  "MR_MIME_GALAR": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -80235,11 +80147,7 @@
       "MOVE_TRIPLE_AXEL"
     ]
   },
-<<<<<<< HEAD
   "ARTICUNO_GALARIAN": {
-=======
-  "ARTICUNO_GALAR": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -80350,11 +80258,7 @@
       "MOVE_EXPANDING_FORCE"
     ]
   },
-<<<<<<< HEAD
   "ZAPDOS_GALARIAN": {
-=======
-  "ZAPDOS_GALAR": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -80469,11 +80373,7 @@
       "MOVE_COACHING"
     ]
   },
-<<<<<<< HEAD
   "MOLTRES_GALARIAN": {
-=======
-  "MOLTRES_GALAR": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -80580,11 +80480,7 @@
       "MOVE_LASH_OUT"
     ]
   },
-<<<<<<< HEAD
   "SLOWKING_GALARIAN": {
-=======
-  "SLOWKING_GALAR": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -80761,11 +80657,7 @@
       "MOVE_EXPANDING_FORCE"
     ]
   },
-<<<<<<< HEAD
   "CORSOLA_GALARIAN": {
-=======
-  "CORSOLA_GALAR": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -80884,11 +80776,7 @@
       "MOVE_METEOR_BEAM"
     ]
   },
-<<<<<<< HEAD
   "ZIGZAGOON_GALARIAN": {
-=======
-  "ZIGZAGOON_GALAR": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -81002,11 +80890,7 @@
       "MOVE_LASH_OUT"
     ]
   },
-<<<<<<< HEAD
   "LINOONE_GALARIAN": {
-=======
-  "LINOONE_GALAR": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -81146,11 +81030,7 @@
       "MOVE_LASH_OUT"
     ]
   },
-<<<<<<< HEAD
   "DARUMAKA_GALARIAN": {
-=======
-  "DARUMAKA_GALAR": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -81267,11 +81147,7 @@
     ],
     "TutorMoves": []
   },
-<<<<<<< HEAD
   "DARMANITAN_GALARIAN": {
-=======
-  "DARMANITAN_GALAR": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -81413,11 +81289,7 @@
       "MOVE_LASH_OUT"
     ]
   },
-<<<<<<< HEAD
   "YAMASK_GALARIAN": {
-=======
-  "YAMASK_GALAR": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -81531,11 +81403,7 @@
       "MOVE_POLTERGEIST"
     ]
   },
-<<<<<<< HEAD
   "STUNFISK_GALARIAN": {
-=======
-  "STUNFISK_GALAR": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -82386,11 +82254,7 @@
       "MOVE_SCALE_SHOT"
     ]
   },
-<<<<<<< HEAD
   "MEOWSTIC_FEMALE": {
-=======
-  "MEOWSTIC_F": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -82975,11 +82839,7 @@
       "MOVE_RISING_VOLTAGE"
     ]
   },
-<<<<<<< HEAD
   "INDEEDEE_FEMALE": {
-=======
-  "INDEEDEE_F": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -83085,11 +82945,7 @@
       "MOVE_EXPANDING_FORCE"
     ]
   },
-<<<<<<< HEAD
   "URSHIFU_RAPID_STRIKE_STYLE": {
-=======
-  "URSHIFU_RAPID_STRIKE": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -83225,11 +83081,7 @@
       "MOVE_COACHING"
     ]
   },
-<<<<<<< HEAD
   "CALYREX_ICE_RIDER": {
-=======
-  "CALYREX_ICE": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -83440,11 +83292,7 @@
       "MOVE_LASH_OUT"
     ]
   },
-<<<<<<< HEAD
   "CALYREX_SHADOW_RIDER": {
-=======
-  "CALYREX_SHADOW": {
->>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,

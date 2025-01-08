@@ -20,11 +20,7 @@ SINGLE_BATTLE_TEST("Population Bomb can hit ten times")
         ANIMATION(ANIM_TYPE_MOVE, MOVE_POPULATION_BOMB, player);
         ANIMATION(ANIM_TYPE_MOVE, MOVE_POPULATION_BOMB, player);
         ANIMATION(ANIM_TYPE_MOVE, MOVE_POPULATION_BOMB, player);
-<<<<<<< HEAD
         MESSAGE("Hit 10 time(s)!");
-=======
-        MESSAGE("The Pokémon was hit 10 time(s)!");
->>>>>>> upstream/master
     }
 }
 

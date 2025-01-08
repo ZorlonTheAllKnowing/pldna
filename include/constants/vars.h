@@ -280,11 +280,7 @@
 #define SPECIAL_VARS_START            0x8000
 // special vars
 // They are commonly used as parameters to commands, or return values from commands.
-<<<<<<< HEAD
 #define VAR_0x8000                    0x8000  //Used to hold which pokemon should generate in shaking grass encounter. -Zorlon
-=======
-#define VAR_0x8000                    0x8000
->>>>>>> upstream/master
 #define VAR_0x8001                    0x8001
 #define VAR_0x8002                    0x8002
 #define VAR_0x8003                    0x8003

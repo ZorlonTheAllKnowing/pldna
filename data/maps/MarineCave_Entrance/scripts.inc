@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 1 "data/maps/MarineCave_Entrance/scripts.pory"
 
 # 2 "data/maps/MarineCave_Entrance/scripts.pory"
@@ -15,13 +14,3 @@ MarineCave_Entrance_OnResume:
 	setdivewarp MAP_UNDERWATER_MARINE_CAVE, 9, 6
 # 8 "data/maps/MarineCave_Entrance/scripts.pory"
 	end
-=======
-MarineCave_Entrance_MapScripts::
-	map_script MAP_SCRIPT_ON_RESUME, MarineCave_Entrance_OnResume
-	.byte 0
-
-MarineCave_Entrance_OnResume:
-	setdivewarp MAP_UNDERWATER_MARINE_CAVE, 9, 6
-	end
-
->>>>>>> upstream/master

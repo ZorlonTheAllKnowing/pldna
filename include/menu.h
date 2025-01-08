@@ -5,15 +5,6 @@
 #include "text.h"
 #include "window.h"
 
-<<<<<<< HEAD
-=======
-#define DLG_WINDOW_PALETTE_NUM 15
-#define DLG_WINDOW_BASE_TILE_NUM 0x200
-#define STD_WINDOW_PALETTE_NUM 14
-#define STD_WINDOW_PALETTE_SIZE PLTT_SIZEOF(10)
-#define STD_WINDOW_BASE_TILE_NUM 0x214
-
->>>>>>> upstream/master
 #define MENU_NOTHING_CHOSEN -2
 #define MENU_B_PRESSED -1
 

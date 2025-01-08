@@ -176,11 +176,6 @@ BerryTree_EventScript_PickBerry::
 	special IncrementDailyPickedBerries
 	special ObjectEventInteractionRemoveBerryTree
 	message BerryTree_Text_PickedTheBerry
-<<<<<<< HEAD
-=======
-	delay 10
-	showberrydescription
->>>>>>> upstream/master
 	playfanfare MUS_OBTAIN_BERRY
 	waitmessage
 	waitfanfare
@@ -188,10 +183,6 @@ BerryTree_EventScript_PickBerry::
 	message BerryTree_Text_PutAwayBerry
 	waitmessage
 	waitbuttonpress
-<<<<<<< HEAD
-=======
-	hideitemdescription
->>>>>>> upstream/master
 	release
 	end
 

@@ -175,11 +175,7 @@ static void InitSinglePlayerBtlControllers(void)
             gBattlerPartyIndexes[3] = 3;
         }
     }
-<<<<<<< HEAD
     else if (!(gBattleTypeFlags & BATTLE_TYPE_DOUBLE))
-=======
-    else if (!IsDoubleBattle())
->>>>>>> upstream/master
     {
         gBattleMainFunc = BeginBattleIntro;
 
@@ -421,11 +417,7 @@ static void InitLinkBtlControllers(void)
     s32 i;
     u8 multiplayerId;
 
-<<<<<<< HEAD
     if (!(gBattleTypeFlags & BATTLE_TYPE_DOUBLE))
-=======
-    if (!IsDoubleBattle())
->>>>>>> upstream/master
     {
         if (gBattleTypeFlags & BATTLE_TYPE_IS_MASTER)
         {
@@ -450,11 +442,7 @@ static void InitLinkBtlControllers(void)
             gBattlersCount = 2;
         }
     }
-<<<<<<< HEAD
     else if (!(gBattleTypeFlags & BATTLE_TYPE_MULTI) && gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
-=======
-    else if (!(gBattleTypeFlags & BATTLE_TYPE_MULTI) && IsDoubleBattle())
->>>>>>> upstream/master
     {
         if (gBattleTypeFlags & BATTLE_TYPE_IS_MASTER)
         {
@@ -863,11 +851,7 @@ void TryReceiveLinkBattleData(void)
         DestroyTask_RfuIdle();
         for (i = 0; i < GetLinkPlayerCount(); i++)
         {
-<<<<<<< HEAD
             if (GetBlockReceivedStatus() & gBitTable[i])
-=======
-            if (GetBlockReceivedStatus() & (1 << (i)))
->>>>>>> upstream/master
             {
                 ResetBlockReceivedFlag(i);
                 recvBuffer = (u8 *)gBlockRecvBuffer[i];
@@ -914,11 +898,7 @@ static void Task_HandleCopyReceivedLinkBuffersData(u8 taskId)
         switch (gLinkBattleRecvBuffer[gTasks[taskId].data[15] + 0])
         {
         case 0:
-<<<<<<< HEAD
             if (gBattleControllerExecFlags & gBitTable[battler])
-=======
-            if (gBattleControllerExecFlags & (1u << battler))
->>>>>>> upstream/master
                 return;
 
             memcpy(gBattleResources->bufferA[battler], &gLinkBattleRecvBuffer[gTasks[taskId].data[15] + LINK_BUFF_DATA], blockSize);
@@ -937,11 +917,7 @@ static void Task_HandleCopyReceivedLinkBuffersData(u8 taskId)
             break;
         case 2:
             var = gLinkBattleRecvBuffer[gTasks[taskId].data[15] + LINK_BUFF_DATA];
-<<<<<<< HEAD
             gBattleControllerExecFlags &= ~(gBitTable[battler] << (var * 4));
-=======
-            gBattleControllerExecFlags &= ~(1u << (battler + var * 4));
->>>>>>> upstream/master
             break;
         }
 
@@ -2566,14 +2542,7 @@ void BtlController_HandleDrawTrainerPic(u32 battler, u32 trainerPicId, bool32 is
         gSprites[gBattlerSpriteIds[battler]].x2 = DISPLAY_WIDTH;
         gSprites[gBattlerSpriteIds[battler]].sSpeedX = -2;
     }
-<<<<<<< HEAD
     gSprites[gBattlerSpriteIds[battler]].callback = SpriteCB_TrainerSlideIn;
-=======
-    if (B_FAST_INTRO_NO_SLIDE || gTestRunnerHeadless)
-        gSprites[gBattlerSpriteIds[battler]].callback = SpriteCB_TrainerSpawn;
-    else
-        gSprites[gBattlerSpriteIds[battler]].callback = SpriteCB_TrainerSlideIn;
->>>>>>> upstream/master
 
     gBattlerControllerFuncs[battler] = Controller_WaitForTrainerPic;
 }

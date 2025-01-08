@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 1 "data/maps/TrainerHill_4F/scripts.pory"
 
 # 2 "data/maps/TrainerHill_4F/scripts.pory"
@@ -9,10 +8,3 @@ TrainerHill_4F_MapScripts::
 	map_script MAP_SCRIPT_ON_FRAME_TABLE, TrainerHill_OnFrame
 # 5 "data/maps/TrainerHill_4F/scripts.pory"
 	.byte 0
-=======
-TrainerHill_4F_MapScripts::
-	map_script MAP_SCRIPT_ON_RESUME, TrainerHill_OnResume
-	map_script MAP_SCRIPT_ON_FRAME_TABLE, TrainerHill_OnFrame
-	.byte 0
-
->>>>>>> upstream/master

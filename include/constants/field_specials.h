@@ -86,17 +86,4 @@
 #define DEOXYS_ROCK_SOLVED     2
 #define DEOXYS_ROCK_COMPLETE   3
 
-<<<<<<< HEAD
-=======
-enum {
-    OPEN_PARTY_SCREEN,
-    NO_PARTY_SCREEN
-};
-
-enum {
-    CURRENT_POSITION,
-    TEMPLATE_POSITION
-};
-
->>>>>>> upstream/master
 #endif // GUARD_CONSTANTS_FIELD_SPECIALS_H

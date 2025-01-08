@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 1 "data/maps/Underwater_Route129/scripts.pory"
 
 # 2 "data/maps/Underwater_Route129/scripts.pory"
@@ -15,13 +14,3 @@ Underwater_Route129_OnResume:
 	call AbnormalWeather_Underwater_SetupEscapeWarp
 # 8 "data/maps/Underwater_Route129/scripts.pory"
 	end
-=======
-Underwater_Route129_MapScripts::
-	map_script MAP_SCRIPT_ON_RESUME, Underwater_Route129_OnResume
-	.byte 0
-
-Underwater_Route129_OnResume:
-	call AbnormalWeather_Underwater_SetupEscapeWarp
-	end
-
->>>>>>> upstream/master

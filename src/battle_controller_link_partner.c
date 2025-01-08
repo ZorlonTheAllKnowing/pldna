@@ -117,11 +117,7 @@ void SetControllerToLinkPartner(u32 battler)
 
 static void LinkPartnerBufferRunCommand(u32 battler)
 {
-<<<<<<< HEAD
     if (gBattleControllerExecFlags & gBitTable[battler])
-=======
-    if (gBattleControllerExecFlags & (1u << battler))
->>>>>>> upstream/master
     {
         if (gBattleResources->bufferA[battler][0] < ARRAY_COUNT(sLinkPartnerBufferCommands))
             sLinkPartnerBufferCommands[gBattleResources->bufferA[battler][0]](battler);
@@ -206,11 +202,7 @@ static void LinkPartnerBufferExecCompleted(u32 battler)
     }
     else
     {
-<<<<<<< HEAD
         gBattleControllerExecFlags &= ~gBitTable[battler];
-=======
-        gBattleControllerExecFlags &= ~(1u << battler);
->>>>>>> upstream/master
     }
 }
 

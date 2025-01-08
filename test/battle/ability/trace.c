@@ -10,11 +10,7 @@ SINGLE_BATTLE_TEST("Trace copies opponents ability")
         TURN { }
     } SCENE {
         ABILITY_POPUP(player, ABILITY_TRACE);
-<<<<<<< HEAD
         MESSAGE("Ralts TRACED Foe Torchic's Blaze!");
-=======
-        MESSAGE("It traced the opposing Torchic's Blaze!");
->>>>>>> upstream/master
     }
 }
 
@@ -28,11 +24,7 @@ SINGLE_BATTLE_TEST("Trace copies opponents ability on switch-in")
         TURN { SWITCH(player, 1); }
     } SCENE {
         ABILITY_POPUP(player, ABILITY_TRACE);
-<<<<<<< HEAD
         MESSAGE("Ralts TRACED Foe Torchic's Blaze!");
-=======
-        MESSAGE("It traced the opposing Torchic's Blaze!");
->>>>>>> upstream/master
     }
 }
 
@@ -48,11 +40,7 @@ SINGLE_BATTLE_TEST("Trace copies opponents ability on switch-in even if opponent
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_MISTY_EXPLOSION);
         ABILITY_POPUP(player, ABILITY_TRACE);
-<<<<<<< HEAD
         MESSAGE("Ralts TRACED Foe Torchic's Blaze!");
-=======
-        MESSAGE("It traced the opposing Torchic's Blaze!");
->>>>>>> upstream/master
     }
 }
 
@@ -73,11 +61,7 @@ DOUBLE_BATTLE_TEST("Trace copies opponents ability randomly")
         TURN { }
     } SCENE {
         ABILITY_POPUP(playerLeft, ABILITY_TRACE);
-<<<<<<< HEAD
         MESSAGE("Ralts TRACED Foe Torchic's Blaze!");
-=======
-        MESSAGE("It traced the opposing Torchic's Blaze!");
->>>>>>> upstream/master
     }
 }
 
@@ -92,11 +76,7 @@ SINGLE_BATTLE_TEST("Trace will copy an opponent's ability whenever it has the ch
     } SCENE {
         // TURN 2
         ABILITY_POPUP(player, ABILITY_TRACE);
-<<<<<<< HEAD
         MESSAGE("Ralts TRACED Foe Torchic's Blaze!");
-=======
-        MESSAGE("It traced the opposing Torchic's Blaze!");
->>>>>>> upstream/master
     }
 }
 

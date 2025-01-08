@@ -5,19 +5,12 @@ MAKER_CODE  := 01
 REVISION    := 0
 KEEP_TEMPS  ?= 0
 
-<<<<<<< HEAD
 # `File name`.gba ('_agbcc' will be appended to the non-modern builds)
 FILE_NAME := pokeemerald
 BUILD_DIR := build
 
 # Builds the ROM using a modern compiler
 MODERN      ?= 1
-=======
-# `File name`.gba
-FILE_NAME := pokeemerald
-BUILD_DIR := build
-
->>>>>>> upstream/master
 # Compares the ROM to a checksum of the original - only makes sense using when non-modern
 COMPARE     ?= 0
 # Executes the Test Runner System that checks that all mechanics work as expected
@@ -26,28 +19,16 @@ TEST         ?= 0
 ANALYZE      ?= 0
 # Count unused warnings as errors. Used by RH-Hideout's repo
 UNUSED_ERROR ?= 0
-<<<<<<< HEAD
 
 ifeq (agbcc,$(MAKECMDGOALS))
   MODERN := 0
 endif
-=======
-# Adds -Og and -g flags, which optimize the build for debugging and include debug info respectively
-DEBUG        ?= 0
-
->>>>>>> upstream/master
 ifeq (compare,$(MAKECMDGOALS))
   COMPARE := 1
 endif
 ifeq (check,$(MAKECMDGOALS))
   TEST := 1
 endif
-<<<<<<< HEAD
-=======
-ifeq (debug,$(MAKECMDGOALS))
-  DEBUG := 1
-endif
->>>>>>> upstream/master
 
 # Default make rule
 all: rom
@@ -77,7 +58,6 @@ ifeq ($(OS),Windows_NT)
   EXE := .exe
 endif
 
-<<<<<<< HEAD
 # use arm-none-eabi-cpp for macOS
 # as macOS's default compiler is clang
 # and clang's preprocessor will warn on \u
@@ -124,29 +104,6 @@ else
   else
     OBJ_DIR := $(MODERN_OBJ_DIR_NAME_TEST)
   endif
-=======
-CPP := $(PREFIX)cpp
-
-ROM_NAME := $(FILE_NAME).gba
-OBJ_DIR_NAME := $(BUILD_DIR)/modern
-OBJ_DIR_NAME_TEST := $(BUILD_DIR)/modern-test
-OBJ_DIR_NAME_DEBUG := $(BUILD_DIR)/modern-debug
-
-ELF_NAME := $(ROM_NAME:.gba=.elf)
-MAP_NAME := $(ROM_NAME:.gba=.map)
-TESTELF = $(ROM_NAME:.gba=-test.elf)
-HEADLESSELF = $(ROM_NAME:.gba=-test-headless.elf)
-
-# Pick our active variables
-ROM := $(ROM_NAME)
-ifeq ($(TEST), 0)
-  OBJ_DIR := $(OBJ_DIR_NAME)
-else
-  OBJ_DIR := $(OBJ_DIR_NAME_TEST)
-endif
-ifeq ($(DEBUG),1)
-  OBJ_DIR := $(OBJ_DIR_NAME_DEBUG)
->>>>>>> upstream/master
 endif
 ifeq ($(TESTELF),$(MAKECMDGOALS))
   TEST := 1
@@ -174,17 +131,12 @@ TEST_BUILDDIR = $(OBJ_DIR)/$(TEST_SUBDIR)
 SHELL := bash -o pipefail
 
 # Set flags for tools
-<<<<<<< HEAD
 ASFLAGS := -mcpu=arm7tdmi --defsym MODERN=$(MODERN)
-=======
-ASFLAGS := -mcpu=arm7tdmi --defsym MODERN=1
->>>>>>> upstream/master
 
 INCLUDE_DIRS := include
 INCLUDE_CPP_ARGS := $(INCLUDE_DIRS:%=-iquote %)
 INCLUDE_SCANINC_ARGS := $(INCLUDE_DIRS:%=-I %)
 
-<<<<<<< HEAD
 O_LEVEL ?= 2
 CPPFLAGS := $(INCLUDE_CPP_ARGS) -Wno-trigraphs -DMODERN=$(MODERN) -DTESTING=$(TEST)
 ifeq ($(MODERN),0)
@@ -214,41 +166,6 @@ endif
 # Enable debug info if set
 ifeq ($(DINFO),1)
   override CFLAGS += -g
-=======
-ifeq ($(DEBUG),1)
-O_LEVEL ?= g
-else
-O_LEVEL ?= 2
-endif
-CPPFLAGS := $(INCLUDE_CPP_ARGS) -Wno-trigraphs -DMODERN=1 -DTESTING=$(TEST)
-ARMCC := $(PREFIX)gcc
-PATH_ARMCC := PATH="$(PATH)" $(ARMCC)
-CC1 := $(shell $(PATH_ARMCC) --print-prog-name=cc1) -quiet
-override CFLAGS += -mthumb -mthumb-interwork -O$(O_LEVEL) -mabi=apcs-gnu -mtune=arm7tdmi -march=armv4t -fno-toplevel-reorder -Wno-pointer-to-int-cast -std=gnu17 -Werror -Wall -Wno-strict-aliasing -Wno-attribute-alias -Woverride-init
-ifeq ($(ANALYZE),1)
-  override CFLAGS += -fanalyzer
-endif
-# Only throw an error for unused elements if its RH-Hideout's repo
-ifeq ($(UNUSED_ERROR),0)
-  ifneq ($(GITHUB_REPOSITORY_OWNER),rh-hideout)
-    override CFLAGS += -Wno-error=unused-variable -Wno-error=unused-const-variable -Wno-error=unused-parameter -Wno-error=unused-function -Wno-error=unused-but-set-parameter -Wno-error=unused-but-set-variable -Wno-error=unused-value -Wno-error=unused-local-typedefs
-  endif
-endif
-LIBPATH := -L "$(dir $(shell $(PATH_ARMCC) -mthumb -print-file-name=libgcc.a))" -L "$(dir $(shell $(PATH_ARMCC) -mthumb -print-file-name=libnosys.a))" -L "$(dir $(shell $(PATH_ARMCC) -mthumb -print-file-name=libc.a))"
-LIB := $(LIBPATH) -lc -lnosys -lgcc -L../../libagbsyscall -lagbsyscall
-# Enable debug info if set
-ifeq ($(DINFO),1)
-  override CFLAGS += -g
-else
-  ifeq ($(DEBUG),1)
-    override CFLAGS += -g
-  endif
-endif
-
-ifeq ($(NOOPT),1)
-override CFLAGS := $(filter-out -O1 -Og -O2,$(CFLAGS))
-override CFLAGS += -O0
->>>>>>> upstream/master
 endif
 
 # Variable filled out in other make files
@@ -264,10 +181,7 @@ RAMSCRGEN    := $(TOOLS_DIR)/ramscrgen/ramscrgen$(EXE)
 FIX          := $(TOOLS_DIR)/gbafix/gbafix$(EXE)
 MAPJSON      := $(TOOLS_DIR)/mapjson/mapjson$(EXE)
 JSONPROC     := $(TOOLS_DIR)/jsonproc/jsonproc$(EXE)
-<<<<<<< HEAD
 SCRIPT    := $(TOOLS_DIR)/poryscript/poryscript$(EXE)
-=======
->>>>>>> upstream/master
 TRAINERPROC  := $(TOOLS_DIR)/trainerproc/trainerproc$(EXE)
 PATCHELF     := $(TOOLS_DIR)/patchelf/patchelf$(EXE)
 ROMTEST      ?= $(shell { command -v mgba-rom-test || command -v $(TOOLS_DIR)/mgba/mgba-rom-test$(EXE); } 2>/dev/null)
@@ -285,13 +199,8 @@ MAKEFLAGS += --no-print-directory
 # Delete files that weren't built properly
 .DELETE_ON_ERROR:
 
-<<<<<<< HEAD
 RULES_NO_SCAN += libagbsyscall clean clean-assets tidy tidymodern tidynonmodern tidycheck generated clean-generated $(TESTELF)
 .PHONY: all rom agbcc modern compare check
-=======
-RULES_NO_SCAN += libagbsyscall clean clean-assets tidy tidymodern tidycheck generated clean-generated $(TESTELF)
-.PHONY: all rom agbcc modern compare check debug
->>>>>>> upstream/master
 .PHONY: $(RULES_NO_SCAN)
 
 infoshell = $(foreach line, $(shell $1 | sed "s/ /__SPACE__/g"), $(info $(subst __SPACE__, ,$(line))))
@@ -361,10 +270,6 @@ $(shell mkdir -p $(SUBDIRS))
 # Pretend rules that are actually flags defer to `make all`
 modern: all
 compare: all
-<<<<<<< HEAD
-=======
-debug: all
->>>>>>> upstream/master
 # Uncomment the next line, and then comment the 4 lines after it to reenable agbcc.
 #agbcc: all
 agbcc:
@@ -413,7 +318,6 @@ clean-assets:
 	find . \( -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -o -iname '*.lz' -o -iname '*.rl' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec rm {} +
 	find $(DATA_ASM_SUBDIR)/maps \( -iname 'connections.inc' -o -iname 'events.inc' -o -iname 'header.inc' \) -exec rm {} +
 
-<<<<<<< HEAD
 tidy: tidynonmodern tidymodern tidycheck
 
 tidynonmodern:
@@ -429,21 +333,6 @@ tidycheck:
 	rm -rf $(MODERN_OBJ_DIR_NAME_TEST)
 	rm -rf $(OBJ_DIR_NAME_TEST)
 
-=======
-tidy: tidymodern tidycheck tidydebug
-
-tidymodern:
-	rm -f $(ROM_NAME) $(ELF_NAME) $(MAP_NAME)
-	rm -rf $(OBJ_DIR_NAME)
-
-tidycheck:
-	rm -f $(TESTELF) $(HEADLESSELF)
-	rm -rf $(OBJ_DIR_NAME_TEST)
-
-tidydebug:
-	rm -rf $(DEBUG_OBJ_DIR_NAME)
-
->>>>>>> upstream/master
 # Other rules
 include graphics_file_rules.mk
 include map_data_rules.mk
@@ -451,11 +340,8 @@ include spritesheet_rules.mk
 include json_data_rules.mk
 include audio_rules.mk
 
-<<<<<<< HEAD
 AUTO_GEN_TARGETS += $(patsubst %.pory,%.inc,$(shell find data/ -type f -name '*.pory'))
 
-=======
->>>>>>> upstream/master
 # NOTE: Tools must have been built prior (FIXME)
 # so you can't really call this rule directly
 generated: $(AUTO_GEN_TARGETS)
@@ -466,10 +352,7 @@ generated: $(AUTO_GEN_TARGETS)
 %.png: ;
 %.pal: ;
 %.aif: ;
-<<<<<<< HEAD
 %.pory: ;
-=======
->>>>>>> upstream/master
 
 %.1bpp:   %.png  ; $(GFX) $< $@
 %.4bpp:   %.png  ; $(GFX) $< $@
@@ -478,10 +361,7 @@ generated: $(AUTO_GEN_TARGETS)
 %.gbapal: %.png  ; $(GFX) $< $@
 %.lz:     %      ; $(GFX) $< $@
 %.rl:     %      ; $(GFX) $< $@
-<<<<<<< HEAD
 data/%.inc: data/%.pory; $(SCRIPT) -i $< -o $@ -fc tools/poryscript/font_config.json -cc tools/poryscript/command_config.json
-=======
->>>>>>> upstream/master
 
 clean-generated:
 	-rm -f $(AUTO_GEN_TARGETS)
@@ -491,7 +371,6 @@ ifeq ($(COMPETITIVE_PARTY_SYNTAX),1)
 %.h: %.party ; $(CPP) $(CPPFLAGS) -traditional-cpp - < $< | $(TRAINERPROC) -o $@ -i $< -
 endif
 
-<<<<<<< HEAD
 ifeq ($(MODERN),0)
 $(C_BUILDDIR)/libc.o: CC1 := $(TOOLS_DIR)/agbcc/bin/old_agbcc$(EXE)
 $(C_BUILDDIR)/libc.o: CFLAGS := -O2
@@ -504,19 +383,12 @@ $(C_BUILDDIR)/record_mixing.o: CFLAGS += -ffreestanding
 $(C_BUILDDIR)/librfu_intr.o: CC1 := $(TOOLS_DIR)/agbcc/bin/agbcc_arm$(EXE)
 $(C_BUILDDIR)/librfu_intr.o: CFLAGS := -O2 -mthumb-interwork -quiet
 else
-=======
->>>>>>> upstream/master
 $(C_BUILDDIR)/librfu_intr.o: CFLAGS := -mthumb-interwork -O2 -mabi=apcs-gnu -mtune=arm7tdmi -march=armv4t -fno-toplevel-reorder -Wno-pointer-to-int-cast
 $(C_BUILDDIR)/berry_crush.o: override CFLAGS += -Wno-address-of-packed-member
 $(C_BUILDDIR)/pokedex_plus_hgss.o: CFLAGS := -mthumb -mthumb-interwork -O2 -mabi=apcs-gnu -mtune=arm7tdmi -march=armv4t -Wno-pointer-to-int-cast -std=gnu17 -Werror -Wall -Wno-strict-aliasing -Wno-attribute-alias -Woverride-init
 # Annoyingly we can't turn this on just for src/data/trainers.h
 $(C_BUILDDIR)/data.o: CFLAGS += -fno-show-column -fno-diagnostics-show-caret
-<<<<<<< HEAD
 endif
-=======
-
-$(TEST_BUILDDIR)/%.o: CFLAGS := -mthumb -mthumb-interwork -O2 -mabi=apcs-gnu -mtune=arm7tdmi -march=armv4t -Wno-pointer-to-int-cast -Werror -Wall -Wno-strict-aliasing -Wno-attribute-alias -Woverride-init
->>>>>>> upstream/master
 
 # Dependency rules (for the *.c & *.s sources to .o files)
 # Have to be explicit or else missing files won't be reported.
@@ -597,7 +469,6 @@ $(DATA_SRC_SUBDIR)/pokemon/teachable_learnsets.h: $(DATA_ASM_BUILDDIR)/event_scr
 	python3 $(TOOLS_DIR)/learnset_helpers/teachable.py
 
 # Linker script
-<<<<<<< HEAD
 ifeq ($(MODERN),0)
 LD_SCRIPT := ld_script.ld
 LD_SCRIPT_DEPS := $(OBJ_DIR)/sym_bss.ld $(OBJ_DIR)/sym_common.ld $(OBJ_DIR)/sym_ewram.ld
@@ -605,24 +476,13 @@ else
 LD_SCRIPT := ld_script_modern.ld
 LD_SCRIPT_DEPS :=
 endif
-=======
-LD_SCRIPT := ld_script_modern.ld
-LD_SCRIPT_DEPS :=
->>>>>>> upstream/master
 
 # Final rules
 
 libagbsyscall:
-<<<<<<< HEAD
 	@$(MAKE) -C libagbsyscall TOOLCHAIN=$(TOOLCHAIN) MODERN=$(MODERN)
 
 # Elf from object files
-=======
-	@$(MAKE) -C libagbsyscall TOOLCHAIN=$(TOOLCHAIN) MODERN=1
-
-# Elf from object files
-LDFLAGS = -Map ../../$(MAP)
->>>>>>> upstream/master
 $(ELF): $(LD_SCRIPT) $(LD_SCRIPT_DEPS) $(OBJS) libagbsyscall
 	@cd $(OBJ_DIR) && $(LD) $(LDFLAGS) -T ../../$< --print-memory-usage -o ../../$@ $(OBJS_REL) $(LIB) | cat
 	@echo "cd $(OBJ_DIR) && $(LD) $(LDFLAGS) -T ../../$< --print-memory-usage -o ../../$@ <objs> <libs> | cat"

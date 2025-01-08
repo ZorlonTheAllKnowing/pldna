@@ -47,12 +47,9 @@
 #include "constants/battle_frontier.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
-<<<<<<< HEAD
 #include "research_pokedex.h"
 
 #include "sample_ui.h"
-=======
->>>>>>> upstream/master
 
 // Menu actions
 enum
@@ -71,10 +68,7 @@ enum
     MENU_ACTION_RETIRE_FRONTIER,
     MENU_ACTION_PYRAMID_BAG,
     MENU_ACTION_DEBUG,
-<<<<<<< HEAD
     MENU_ACTION_SAMPLE_UI,
-=======
->>>>>>> upstream/master
 };
 
 // Save status
@@ -142,10 +136,7 @@ static u8 SaveReturnErrorCallback(void);
 static u8 BattlePyramidConfirmRetireCallback(void);
 static u8 BattlePyramidRetireYesNoCallback(void);
 static u8 BattlePyramidRetireInputCallback(void);
-<<<<<<< HEAD
 static bool8 StartMenuSampleUiCallback(void);
-=======
->>>>>>> upstream/master
 
 // Task callbacks
 static void StartMenuTask(u8 taskId);
@@ -197,10 +188,7 @@ static const struct WindowTemplate sWindowTemplate_PyramidPeak = {
 };
 
 static const u8 sText_MenuDebug[] = _("DEBUG");
-<<<<<<< HEAD
 static const u8 sText_SampleUi[] = _("SAMPLEUI");
-=======
->>>>>>> upstream/master
 
 static const struct MenuAction sStartMenuItems[] =
 {
@@ -218,10 +206,7 @@ static const struct MenuAction sStartMenuItems[] =
     [MENU_ACTION_RETIRE_FRONTIER] = {gText_MenuRetire,  {.u8_void = StartMenuBattlePyramidRetireCallback}},
     [MENU_ACTION_PYRAMID_BAG]     = {gText_MenuBag,     {.u8_void = StartMenuBattlePyramidBagCallback}},
     [MENU_ACTION_DEBUG]           = {sText_MenuDebug,   {.u8_void = StartMenuDebugCallback}},
-<<<<<<< HEAD
     [MENU_ACTION_SAMPLE_UI]       = {sText_SampleUi,    {.u8_void = StartMenuSampleUiCallback}}
-=======
->>>>>>> upstream/master
 };
 
 static const struct BgTemplate sBgTemplates_LinkBattleSave[] =
@@ -363,11 +348,8 @@ static void BuildNormalStartMenu(void)
         AddStartMenuAction(MENU_ACTION_POKENAV);
     }
 
-<<<<<<< HEAD
     AddStartMenuAction(MENU_ACTION_SAMPLE_UI);
 
-=======
->>>>>>> upstream/master
     AddStartMenuAction(MENU_ACTION_PLAYER);
     AddStartMenuAction(MENU_ACTION_SAVE);
     AddStartMenuAction(MENU_ACTION_OPTION);
@@ -811,18 +793,10 @@ static bool8 StartMenuDebugCallback(void)
     RemoveExtraStartMenuWindows();
     HideStartMenuDebug(); // Hide start menu without enabling movement
 
-<<<<<<< HEAD
 #if DEBUG_OVERWORLD_MENU == TRUE
     FreezeObjectEvents();
     Debug_ShowMainMenu();
 #endif
-=======
-    if (DEBUG_OVERWORLD_MENU)
-    {
-        FreezeObjectEvents();
-        Debug_ShowMainMenu();
-    }
->>>>>>> upstream/master
 
 return TRUE;
 }
@@ -1519,7 +1493,6 @@ void AppendToList(u8 *list, u8 *pos, u8 newEntry)
     list[*pos] = newEntry;
     (*pos)++;
 }
-<<<<<<< HEAD
 
 static bool8 StartMenuSampleUiCallback(void)
 {
@@ -1528,5 +1501,3 @@ static bool8 StartMenuSampleUiCallback(void)
     //SetMainCallback2(CB2_OpenPokedex);
     return TRUE;
 }
-=======
->>>>>>> upstream/master

@@ -10,10 +10,7 @@ typedef s32 (*AiScoreFunc)(u32, u32, u32, s32);
 // 0 - 3 are move idx
 #define AI_CHOICE_FLEE 4
 #define AI_CHOICE_WATCH 5
-<<<<<<< HEAD
 #define AI_CHOICE_SWITCH 7
-=======
->>>>>>> upstream/master
 
 // for AI_WhoStrikesFirst
 #define AI_IS_FASTER   1
@@ -99,10 +96,7 @@ typedef s32 (*AiScoreFunc)(u32, u32, u32, s32);
     return score;                   \
 }
 
-<<<<<<< HEAD
 u32 ComputeBattleAiScores(u32 battler);
-=======
->>>>>>> upstream/master
 void BattleAI_SetupItems(void);
 void BattleAI_SetupFlags(void);
 void BattleAI_SetupAIData(u8 defaultScoreMoves, u32 battler);

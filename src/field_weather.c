@@ -5,10 +5,6 @@
 #include "util.h"
 #include "event_object_movement.h"
 #include "field_weather.h"
-<<<<<<< HEAD
-=======
-#include "fieldmap.h"
->>>>>>> upstream/master
 #include "main.h"
 #include "menu.h"
 #include "palette.h"
@@ -48,10 +44,7 @@ struct WeatherCallbacks
 
 // This file's functions.
 static bool8 LightenSpritePaletteInFog(u8);
-<<<<<<< HEAD
 static void BuildColorMaps(void);
-=======
->>>>>>> upstream/master
 static void UpdateWeatherColorMap(void);
 static void ApplyColorMap(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex);
 static void ApplyColorMapWithBlend(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex, u8 blendCoeff, u32 blendColor);
@@ -73,55 +66,6 @@ EWRAM_DATA static u8 ALIGNED(2) sFieldEffectPaletteColorMapTypes[32] = {0};
 
 static const u8 *sPaletteColorMapTypes;
 
-<<<<<<< HEAD
-=======
-static const u8 sDarkenedContrastColorMaps[NUM_WEATHER_COLOR_MAPS][32] =
-{
-    {0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29},
-    {0, 0, 1, 2, 3, 4, 5, 6, 7, 7, 8, 9, 10, 11, 12, 13, 14, 14, 15, 16, 17, 18, 19, 20, 21, 21, 22, 23, 24, 25, 26, 27},
-    {0, 0, 1, 2, 3, 4, 4, 5, 6, 7, 8, 8, 9, 10, 11, 12, 13, 13, 14, 15, 16, 17, 17, 18, 19, 20, 21, 21, 22, 23, 24, 25},
-    {0, 1, 2, 3, 4, 4, 5, 6, 7, 8, 8, 9, 11, 11, 12, 13, 14, 14, 15, 16, 17, 17, 18, 19, 20, 20, 21, 22, 23, 24, 24, 25},
-    {1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 12, 13, 13, 14, 15, 15, 16, 17, 18, 18, 19, 20, 20, 21, 22, 23, 23, 24, 25, 25},
-    {1, 2, 3, 4, 4, 5, 6, 7, 7, 8, 9, 10, 13, 14, 15, 15, 16, 17, 17, 18, 19, 19, 20, 20, 21, 22, 22, 23, 24, 24, 25, 26},
-    {1, 2, 3, 4, 4, 5, 6, 7, 7, 8, 9, 10, 15, 15, 16, 16, 17, 18, 18, 19, 19, 20, 21, 21, 22, 22, 23, 24, 24, 25, 26, 26},
-    {1, 2, 3, 4, 4, 5, 6, 7, 7, 8, 9, 10, 16, 16, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 23, 23, 24, 24, 25, 25, 26, 27},
-    {1, 2, 3, 4, 4, 5, 6, 7, 8, 8, 9, 10, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 26, 26, 27},
-    {1, 2, 3, 4, 4, 5, 6, 7, 8, 8, 9, 10, 19, 19, 19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 24, 25, 25, 26, 26, 27, 27},
-    {1, 2, 3, 4, 4, 5, 6, 7, 8, 8, 9, 10, 20, 20, 21, 21, 22, 22, 22, 23, 23, 24, 24, 24, 25, 25, 26, 26, 26, 27, 27, 28},
-    {1, 2, 3, 4, 4, 5, 6, 7, 8, 8, 9, 10, 21, 22, 22, 22, 23, 23, 23, 24, 24, 24, 25, 25, 25, 26, 26, 27, 27, 27, 28, 28},
-    {1, 2, 3, 4, 4, 5, 6, 7, 8, 8, 9, 10, 23, 23, 23, 23, 24, 24, 24, 25, 25, 25, 26, 26, 26, 26, 27, 27, 27, 28, 28, 28},
-    {1, 2, 3, 4, 4, 5, 6, 7, 8, 8, 9, 10, 24, 24, 24, 25, 25, 25, 25, 26, 26, 26, 26, 27, 27, 27, 27, 28, 28, 28, 28, 29},
-    {1, 2, 3, 4, 4, 5, 6, 7, 8, 8, 9, 10, 25, 25, 26, 26, 26, 26, 26, 27, 27, 27, 27, 27, 28, 28, 28, 28, 28, 29, 29, 29},
-    {1, 2, 3, 4, 4, 5, 6, 7, 8, 8, 9, 10, 27, 27, 27, 27, 27, 27, 27, 28, 28, 28, 28, 28, 28, 28, 29, 29, 29, 29, 29, 29},
-    {1, 2, 3, 4, 4, 5, 6, 7, 8, 8, 9, 10, 28, 28, 28, 28, 28, 28, 28, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 30, 30, 30},
-    {1, 2, 3, 4, 4, 5, 6, 7, 8, 8, 9, 10, 29, 29, 29, 29, 29, 29, 29, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30},
-    {1, 2, 3, 4, 4, 5, 6, 7, 8, 8, 9, 10, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31}
-};
-
-static const u8 sContrastColorMaps[NUM_WEATHER_COLOR_MAPS][32] =
-{
-    {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31},
-    {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31},
-    {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31},
-    {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31},
-    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 11, 14, 15, 16, 17, 17, 18, 19, 20, 21, 22, 23, 24, 24, 25, 26, 27, 28, 29, 30, 31},
-    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17, 18, 18, 19, 20, 21, 22, 22, 23, 24, 25, 26, 26, 27, 28, 29, 30, 31},
-    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 16, 17, 18, 19, 19, 20, 21, 22, 22, 23, 24, 25, 25, 26, 27, 28, 28, 29, 30, 31},
-    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 17, 18, 19, 20, 20, 21, 22, 22, 23, 24, 24, 25, 26, 26, 27, 28, 28, 29, 30, 31},
-    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 19, 19, 20, 21, 21, 22, 22, 23, 24, 24, 25, 26, 26, 27, 27, 28, 29, 29, 30, 31},
-    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 20, 20, 21, 22, 22, 23, 23, 24, 24, 25, 25, 26, 27, 27, 28, 28, 29, 29, 30, 31},
-    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 21, 22, 22, 23, 23, 24, 24, 25, 25, 26, 26, 27, 27, 28, 28, 29, 29, 30, 30, 31},
-    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 22, 23, 23, 24, 24, 24, 25, 25, 26, 26, 27, 27, 27, 28, 28, 29, 29, 30, 30, 31},
-    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 23, 24, 24, 25, 25, 25, 26, 26, 26, 27, 27, 28, 28, 28, 29, 29, 29, 30, 30, 31},
-    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 25, 25, 25, 26, 26, 26, 26, 27, 27, 27, 28, 28, 28, 29, 29, 29, 30, 30, 30, 31},
-    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 26, 26, 26, 27, 27, 27, 27, 28, 28, 28, 28, 29, 29, 29, 29, 30, 30, 30, 30, 31},
-    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 27, 27, 27, 28, 28, 28, 28, 28, 28, 29, 29, 29, 29, 29, 30, 30, 30, 30, 30, 31},
-    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 28, 28, 28, 29, 29, 29, 29, 29, 29, 29, 29, 30, 30, 30, 30, 30, 30, 30, 30, 31},
-    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 29, 29, 29, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 31},
-    {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31}
-};
-
->>>>>>> upstream/master
 // The drought weather effect uses a precalculated color lookup table. Presumably this
 // is because the underlying color shift calculation is slow.
 static const u16 sDroughtWeatherColors[][0x1000] = {
@@ -214,13 +158,7 @@ void StartWeather(void)
     {
         u8 index = AllocSpritePalette(PALTAG_WEATHER);
         CpuCopy32(gFogPalette, &gPlttBufferUnfaded[OBJ_PLTT_ID(index)], PLTT_SIZE_4BPP);
-<<<<<<< HEAD
         BuildColorMaps();
-=======
-
-        sPaletteColorMapTypes = sBasePaletteColorMapTypes;
-
->>>>>>> upstream/master
         gWeatherPtr->contrastColorMapSpritePalIndex = index;
         gWeatherPtr->weatherPicSpritePalIndex = AllocSpritePalette(PALTAG_WEATHER_2);
         gWeatherPtr->rainSpriteCount = 0;
@@ -327,7 +265,6 @@ static u8 None_Finish(void)
     return 0;
 }
 
-<<<<<<< HEAD
 // Builds two tables that contain color maps, used for directly transforming
 // palette colors in weather effects. The colors maps are a spectrum of
 // brightness + contrast mappings. By transitioning between the maps, weather
@@ -405,8 +342,6 @@ static void BuildColorMaps(void)
     }
 }
 
-=======
->>>>>>> upstream/master
 // When the weather is changing, it gradually updates the palettes
 // towards the desired color map.
 static void UpdateWeatherColorMap(void)
@@ -528,13 +463,8 @@ static void ApplyColorMap(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex)
 {
     u16 curPalIndex;
     u16 palOffset;
-<<<<<<< HEAD
     u8 *colorMap;
     u16 i;
-=======
-    const u8 *colorMap;
-    u32 i;
->>>>>>> upstream/master
 
     if (colorMapIndex > 0)
     {
@@ -557,15 +487,9 @@ static void ApplyColorMap(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex)
                 u8 r, g, b;
 
                 if (sPaletteColorMapTypes[curPalIndex] == COLOR_MAP_CONTRAST || curPalIndex - 16 == gWeatherPtr->contrastColorMapSpritePalIndex)
-<<<<<<< HEAD
                     colorMap = gWeatherPtr->contrastColorMaps[colorMapIndex];
                 else
                     colorMap = gWeatherPtr->darkenedContrastColorMaps[colorMapIndex];
-=======
-                    colorMap = sContrastColorMaps[colorMapIndex];
-                else
-                    colorMap = sDarkenedContrastColorMaps[colorMapIndex];
->>>>>>> upstream/master
 
                 for (i = 0; i < 16; i++)
                 {
@@ -620,11 +544,7 @@ static void ApplyColorMapWithBlend(u8 startPalIndex, u8 numPalettes, s8 colorMap
 {
     u16 palOffset;
     u16 curPalIndex;
-<<<<<<< HEAD
     u16 i;
-=======
-    u32 i;
->>>>>>> upstream/master
     struct RGBColor color = *(struct RGBColor *)&blendColor;
     u8 rBlend = color.r;
     u8 gBlend = color.g;
@@ -645,21 +565,12 @@ static void ApplyColorMapWithBlend(u8 startPalIndex, u8 numPalettes, s8 colorMap
         }
         else
         {
-<<<<<<< HEAD
             u8 *colorMap;
 
             if (sPaletteColorMapTypes[curPalIndex] == COLOR_MAP_DARK_CONTRAST)
                 colorMap = gWeatherPtr->darkenedContrastColorMaps[colorMapIndex];
             else
                 colorMap = gWeatherPtr->contrastColorMaps[colorMapIndex];
-=======
-            const u8 *colorMap;
-
-            if (sPaletteColorMapTypes[curPalIndex] == COLOR_MAP_DARK_CONTRAST)
-                colorMap = sDarkenedContrastColorMaps[colorMapIndex];
-            else
-                colorMap = sContrastColorMaps[colorMapIndex];
->>>>>>> upstream/master
 
             for (i = 0; i < 16; i++)
             {

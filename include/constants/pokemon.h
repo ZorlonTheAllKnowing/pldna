@@ -243,7 +243,6 @@
 
 #define F_SUMMARY_SCREEN_FLIP_SPRITE 0x80
 
-<<<<<<< HEAD
 // Evolution types
 #define EVOLUTIONS_END                    0xFFFF // Not an actual evolution, used to mark the end of an evolution array.
 #define EVO_NONE                          0      // Not an actual evolution, used to generate offspring that can't evolve into the specified species, like regional forms.
@@ -309,76 +308,6 @@
 #define EVO_MODE_BATTLE_SPECIAL    5
 #define EVO_MODE_OVERWORLD_SPECIAL 6
 #define EVO_MODE_BATTLE_ONLY       7 // This mode is only used in battles to support Tandemaus' unique requirement
-=======
-#define EVOLUTIONS_END                    0xFFFF // Not an actual evolution, used to mark the end of an evolution array.
-
-enum EvolutionMethods {
-    EVO_NONE,                            // Not an actual evolution, used to generate offspring that can't evolve into the specified species, like regional forms.
-    EVO_FRIENDSHIP,                      // Pokémon levels up with friendship ≥ 220
-    EVO_FRIENDSHIP_DAY,                  // Pokémon levels up during the day with friendship ≥ 220
-    EVO_FRIENDSHIP_NIGHT,                // Pokémon levels up at night with friendship ≥ 220
-    EVO_LEVEL,                           // Pokémon reaches the specified level
-    EVO_TRADE,                           // Pokémon is traded
-    EVO_TRADE_ITEM,                      // Pokémon is traded while it's holding the specified item
-    EVO_ITEM,                            // specified item is used on Pokémon
-    EVO_LEVEL_ATK_GT_DEF,                // Pokémon reaches the specified level with attack > defense
-    EVO_LEVEL_ATK_EQ_DEF,                // Pokémon reaches the specified level with attack = defense
-    EVO_LEVEL_ATK_LT_DEF,                // Pokémon reaches the specified level with attack < defense
-    EVO_LEVEL_SILCOON,                   // Pokémon reaches the specified level with a Silcoon personality value
-    EVO_LEVEL_CASCOON,                   // Pokémon reaches the specified level with a Cascoon personality value
-    EVO_LEVEL_NINJASK,                   // Pokémon reaches the specified level (special value for Ninjask)
-    EVO_LEVEL_SHEDINJA,                  // Pokémon reaches the specified level (special value for Shedinja)
-    EVO_BEAUTY,                          // Pokémon levels up with beauty ≥ specified value
-    EVO_LEVEL_FEMALE,                    // Pokémon reaches the specified level, is female
-    EVO_LEVEL_MALE,                      // Pokémon reaches the specified level, is male
-    EVO_LEVEL_NIGHT,                     // Pokémon reaches the specified level, is night
-    EVO_LEVEL_DAY,                       // Pokémon reaches the specified level, is day
-    EVO_LEVEL_DUSK,                      // Pokémon reaches the specified level, is dusk (5-6 P.M)
-    EVO_ITEM_HOLD_DAY,                   // Pokémon levels up, holds specified item at day
-    EVO_ITEM_HOLD_NIGHT,                 // Pokémon levels up, holds specified item at night
-    EVO_MOVE,                            // Pokémon levels up, knows specified move
-    EVO_FRIENDSHIP_MOVE_TYPE,            // Pokémon levels up with friendship ≥ 220, knows move with specified type
-    EVO_MAPSEC,                          // Pokémon levels up on specified mapsec
-    EVO_ITEM_MALE,                       // specified item is used on a male Pokémon
-    EVO_ITEM_FEMALE,                     // specified item is used on a female Pokémon
-    EVO_LEVEL_RAIN,                      // Pokémon reaches the specified level during rain in the overworld
-    EVO_SPECIFIC_MON_IN_PARTY,           // Pokémon levels up with a specified Pokémon in party
-    EVO_LEVEL_DARK_TYPE_MON_IN_PARTY,    // Pokémon reaches the specified level with a Dark Type Pokémon in party
-    EVO_TRADE_SPECIFIC_MON,              // Pokémon is traded for a specified Pokémon
-    EVO_SPECIFIC_MAP,                    // Pokémon levels up on specified map
-    EVO_LEVEL_NATURE_AMPED,              // Pokémon reaches the specified level, it has a Hardy, Brave, Adamant, Naughty, Docile, Impish, Lax, Hasty, Jolly, Naive, Rash, Sassy, or Quirky nature.
-    EVO_LEVEL_NATURE_LOW_KEY,            // Pokémon reaches the specified level, it has a Lonely, Bold, Relaxed, Timid, Serious, Modest, Mild, Quiet, Bashful, Calm, Gentle, or Careful nature.
-    EVO_CRITICAL_HITS,                   // Pokémon performs specified number of critical hits in one battle
-    EVO_SCRIPT_TRIGGER_DMG,              // Pokémon has specified HP below max, then player interacts trigger
-    EVO_DARK_SCROLL,                     // interacts with Scroll of Darkness
-    EVO_WATER_SCROLL,                    // interacts with Scroll of Waters
-    EVO_ITEM_NIGHT,                      // specified item is used on Pokémon, is night
-    EVO_ITEM_DAY,                        // specified item is used on Pokémon, is day
-    EVO_ITEM_HOLD,                       // Pokémon levels up, holds specified item
-    EVO_LEVEL_FOG,                       // Pokémon reaches the specified level during fog in the overworld
-    EVO_MOVE_TWO_SEGMENT,                // Pokémon levels up, knows specified move, has a personality value with a modulus of 0
-    EVO_MOVE_THREE_SEGMENT,              // Pokémon levels up, knows specified move, has a personality value with a modulus of 1-99
-    EVO_LEVEL_FAMILY_OF_THREE,           // Pokémon reaches the specified level in battle with a personality value with a modulus of 0
-    EVO_LEVEL_FAMILY_OF_FOUR,            // Pokémon reaches the specified level in battle with a personality value with a modulus of 1-99
-    EVO_USE_MOVE_TWENTY_TIMES,           // Pokémon levels up after having used a move for at least 20 times
-    EVO_RECOIL_DAMAGE_MALE,              // Pokémon levels up after having suffered specified amount of non-fainting recoil damage as a male
-    EVO_RECOIL_DAMAGE_FEMALE,            // Pokémon levels up after having suffered specified amount of non-fainting recoil damage as a female
-    EVO_ITEM_COUNT_999,                  // Pokémon levels up after trainer has collected 999 of a specific item
-    EVO_DEFEAT_THREE_WITH_ITEM,          // Pokémon levels up after having defeat 3 Pokémon of the same species holding the specified item
-    EVO_OVERWORLD_STEPS,                 // Pokémon levels up after having taken a specific amount of steps in the overworld
-};
-
-enum EvolutionMode {
-    EVO_MODE_NORMAL,
-    EVO_MODE_CANT_STOP,
-    EVO_MODE_TRADE,
-    EVO_MODE_ITEM_USE,
-    EVO_MODE_ITEM_CHECK,         // If an Everstone is being held, still want to show that the stone *could* be used on that Pokémon to evolve
-    EVO_MODE_BATTLE_SPECIAL,
-    EVO_MODE_OVERWORLD_SPECIAL,
-    EVO_MODE_BATTLE_ONLY,        // This mode is only used in battles to support Tandemaus' unique requirement
-};
->>>>>>> upstream/master
 
 #define MON_PIC_WIDTH 64
 #define MON_PIC_HEIGHT 64
@@ -403,14 +332,6 @@ enum EvolutionMode {
 // Used as a signal for givemon to generate a default ability by personality.
 #define NUM_ABILITY_PERSONALITY 0xFF
 
-<<<<<<< HEAD
 #define LEGENDARY_PERFECT_IV_COUNT 3
-=======
-#if P_LEGENDARY_PERFECT_IVS >= GEN_6
-#define LEGENDARY_PERFECT_IV_COUNT 3
-#else
-#define LEGENDARY_PERFECT_IV_COUNT 0
-#endif
->>>>>>> upstream/master
 
 #endif // GUARD_CONSTANTS_POKEMON_H

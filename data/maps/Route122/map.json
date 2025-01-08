@@ -24,13 +24,9 @@
       "direction": "down"
     }
   ],
-<<<<<<< HEAD
   "object_events": [
 
   ],
-=======
-  "object_events": [],
->>>>>>> upstream/master
   "warp_events": [
     {
       "x": 22,
@@ -40,15 +36,10 @@
       "dest_warp_id": "0"
     }
   ],
-<<<<<<< HEAD
   "coord_events": [
 
   ],
   "bg_events": [
 
   ]
-=======
-  "coord_events": [],
-  "bg_events": []
->>>>>>> upstream/master
 }

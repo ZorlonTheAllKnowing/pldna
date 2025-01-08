@@ -1,10 +1,6 @@
 #include "global.h"
 #include "item.h"
 #include "berry.h"
-<<<<<<< HEAD
-=======
-#include "pokeball.h"
->>>>>>> upstream/master
 #include "string_util.h"
 #include "text.h"
 #include "event_data.h"
@@ -170,19 +166,11 @@ bool8 HasAtLeastOneBerry(void)
 
 bool8 HasAtLeastOnePokeBall(void)
 {
-<<<<<<< HEAD
     u16 i;
 
     for (i = FIRST_BALL; i <= LAST_BALL; i++)
     {
         if (CheckBagHasItem(i, 1) == TRUE)
-=======
-    u16 ballId;
-
-    for (ballId = BALL_STRANGE; ballId < POKEBALL_COUNT; ballId++)
-    {
-        if (CheckBagHasItem(ballId, 1) == TRUE)
->>>>>>> upstream/master
             return TRUE;
     }
     return FALSE;
@@ -928,14 +916,6 @@ u8 ItemId_GetImportance(u16 itemId)
     return gItemsInfo[SanitizeItemId(itemId)].importance;
 }
 
-<<<<<<< HEAD
-=======
-u8 ItemId_GetConsumability(u16 itemId)
-{
-    return !gItemsInfo[SanitizeItemId(itemId)].notConsumed;
-}
-
->>>>>>> upstream/master
 u8 ItemId_GetPocket(u16 itemId)
 {
     return gItemsInfo[SanitizeItemId(itemId)].pocket;
@@ -983,11 +963,7 @@ u8 ItemId_GetBattleUsage(u16 itemId)
         return gItemsInfo[item].battleUsage;
 }
 
-<<<<<<< HEAD
 u8 ItemId_GetSecondaryId(u16 itemId)
-=======
-u32 ItemId_GetSecondaryId(u32 itemId)
->>>>>>> upstream/master
 {
     return gItemsInfo[SanitizeItemId(itemId)].secondaryId;
 }
