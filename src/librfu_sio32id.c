@@ -145,7 +145,13 @@ static void Sio32IDIntr(void)
                 }
             }
             else
+<<<<<<< HEAD
                 gRfuSIO32Id.lastId = regSIODATA32;
+=======
+            {
+                gRfuSIO32Id.lastId = regSIODATA32;
+            }
+>>>>>>> upstream/master
         }
         else
         {

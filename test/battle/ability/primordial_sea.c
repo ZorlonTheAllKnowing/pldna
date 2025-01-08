@@ -3,7 +3,11 @@
 
 ASSUMPTIONS
 {
+<<<<<<< HEAD
     ASSUME(gMovesInfo[MOVE_EMBER].power != 0);
+=======
+    ASSUME(!IS_MOVE_STATUS(MOVE_EMBER));
+>>>>>>> upstream/master
     ASSUME(gMovesInfo[MOVE_EMBER].type == TYPE_FIRE);
 }
 
@@ -16,6 +20,7 @@ SINGLE_BATTLE_TEST("Primordial Sea blocks damaging Fire-type moves")
         TURN { MOVE(opponent, MOVE_EMBER); }
         TURN { MOVE(opponent, MOVE_EMBER); }
     } SCENE {
+<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet used Ember!");
         NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_EMBER, opponent);
         MESSAGE("The Fire-type attack fizzled out\nin the heavy rain!");
@@ -23,6 +28,15 @@ SINGLE_BATTLE_TEST("Primordial Sea blocks damaging Fire-type moves")
         MESSAGE("Foe Wobbuffet used Ember!");
         NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_EMBER, opponent);
         MESSAGE("The Fire-type attack fizzled out\nin the heavy rain!");
+=======
+        MESSAGE("The opposing Wobbuffet used Ember!");
+        NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_EMBER, opponent);
+        MESSAGE("The Fire-type attack fizzled out in the heavy rain!");
+        NOT HP_BAR(player);
+        MESSAGE("The opposing Wobbuffet used Ember!");
+        NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_EMBER, opponent);
+        MESSAGE("The Fire-type attack fizzled out in the heavy rain!");
+>>>>>>> upstream/master
         NOT HP_BAR(player);
     } THEN {
         EXPECT_EQ(player->hp, player->maxHP);
@@ -32,7 +46,11 @@ SINGLE_BATTLE_TEST("Primordial Sea blocks damaging Fire-type moves")
 DOUBLE_BATTLE_TEST("Primordial Sea blocks damaging Fire-type moves and prints the message only once with moves hitting multiple targets")
 {
     GIVEN {
+<<<<<<< HEAD
         ASSUME(gMovesInfo[MOVE_ERUPTION].power != 0);
+=======
+        ASSUME(!IS_MOVE_STATUS(MOVE_ERUPTION));
+>>>>>>> upstream/master
         ASSUME(gMovesInfo[MOVE_ERUPTION].type == TYPE_FIRE);
         ASSUME(gMovesInfo[MOVE_ERUPTION].target == MOVE_TARGET_BOTH);
         PLAYER(SPECIES_KYOGRE) {Item(ITEM_BLUE_ORB); {Speed(5);}}
@@ -42,10 +60,17 @@ DOUBLE_BATTLE_TEST("Primordial Sea blocks damaging Fire-type moves and prints th
     } WHEN {
         TURN { MOVE(opponentLeft, MOVE_ERUPTION); }
     } SCENE {
+<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet used Eruption!");
         NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_ERUPTION, opponentLeft);
         MESSAGE("The Fire-type attack fizzled out\nin the heavy rain!");
         NOT MESSAGE("The Fire-type attack fizzled out\nin the heavy rain!");
+=======
+        MESSAGE("The opposing Wobbuffet used Eruption!");
+        NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_ERUPTION, opponentLeft);
+        MESSAGE("The Fire-type attack fizzled out in the heavy rain!");
+        NOT MESSAGE("The Fire-type attack fizzled out in the heavy rain!");
+>>>>>>> upstream/master
     } THEN {
         EXPECT_EQ(playerLeft->hp, playerLeft->maxHP);
         EXPECT_EQ(playerRight->hp, playerRight->maxHP);
@@ -60,7 +85,12 @@ SINGLE_BATTLE_TEST("Primordial Sea does not block a move if pokemon is asleep an
     } WHEN {
         TURN { MOVE(opponent, MOVE_EMBER); }
     } SCENE {
+<<<<<<< HEAD
         NOT MESSAGE("The Fire-type attack fizzled out\nin the heavy rain!");
         MESSAGE("Foe Wobbuffet is fast asleep.");
+=======
+        NOT MESSAGE("The Fire-type attack fizzled out in the heavy rain!");
+        MESSAGE("The opposing Wobbuffet is fast asleep.");
+>>>>>>> upstream/master
     }
 }

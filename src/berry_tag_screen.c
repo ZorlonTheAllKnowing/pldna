@@ -143,11 +143,20 @@ static const struct WindowTemplate sWindowTemplates[] =
 
 static const u8 *const sBerryFirmnessStrings[] =
 {
+<<<<<<< HEAD
     gBerryFirmnessString_VerySoft,
     gBerryFirmnessString_Soft,
     gBerryFirmnessString_Hard,
     gBerryFirmnessString_VeryHard,
     gBerryFirmnessString_SuperHard
+=======
+    [BERRY_FIRMNESS_UNKNOWN]    = COMPOUND_STRING("???"),
+    [BERRY_FIRMNESS_VERY_SOFT]  = COMPOUND_STRING("Very soft"),
+    [BERRY_FIRMNESS_SOFT]       = COMPOUND_STRING("Soft"),
+    [BERRY_FIRMNESS_HARD]       = COMPOUND_STRING("Hard"),
+    [BERRY_FIRMNESS_VERY_HARD]  = COMPOUND_STRING("Very hard"),
+    [BERRY_FIRMNESS_SUPER_HARD] = COMPOUND_STRING("Super hard")
+>>>>>>> upstream/master
 };
 
 // this file's functions
@@ -172,6 +181,16 @@ static void Task_DisplayAnotherBerry(u8 taskId);
 static void TryChangeDisplayedBerry(u8 taskId, s8 toMove);
 static void HandleBagCursorPositionChange(s8 toMove);
 
+<<<<<<< HEAD
+=======
+static const u8 sText_SizeSlash[] = _("SIZE /");
+static const u8 sText_FirmSlash[] = _("FIRM /");
+static const u8 sText_Var1DotVar2[] = _("{STR_VAR_1}.{STR_VAR_2}”");
+static const u8 sText_NumberVar1Var2[] = _("{NO}{STR_VAR_1} {STR_VAR_2}");
+static const u8 sText_BerryTag[] = _("BERRY TAG");
+static const u8 sText_ThreeMarks[] = _("???");
+
+>>>>>>> upstream/master
 // code
 void DoBerryTagScreen(void)
 {
@@ -386,7 +405,11 @@ static void AddBerryTagTextToBg0(void)
 {
     memcpy(GetBgTilemapBuffer(0), sBerryTag->tilemapBuffers[2], sizeof(sBerryTag->tilemapBuffers[2]));
     FillWindowPixelBuffer(WIN_BERRY_TAG, PIXEL_FILL(15));
+<<<<<<< HEAD
     PrintTextInBerryTagScreen(WIN_BERRY_TAG, gText_BerryTag, GetStringCenterAlignXOffset(FONT_NORMAL, gText_BerryTag, 0x40), 1, 0, 1);
+=======
+    PrintTextInBerryTagScreen(WIN_BERRY_TAG, sText_BerryTag, GetStringCenterAlignXOffset(FONT_NORMAL, sText_BerryTag, 0x40), 1, 0, 1);
+>>>>>>> upstream/master
     PutWindowTilemap(WIN_BERRY_TAG);
     ScheduleBgCopyTilemapToVram(0);
 }
@@ -405,14 +428,22 @@ static void PrintBerryNumberAndName(void)
     const struct Berry *berry = GetBerryInfo(sBerryTag->berryId);
     ConvertIntToDecimalStringN(gStringVar1, sBerryTag->berryId, STR_CONV_MODE_LEADING_ZEROS, 2);
     StringCopy(gStringVar2, berry->name);
+<<<<<<< HEAD
     StringExpandPlaceholders(gStringVar4, gText_NumberVar1Var2);
+=======
+    StringExpandPlaceholders(gStringVar4, sText_NumberVar1Var2);
+>>>>>>> upstream/master
     PrintTextInBerryTagScreen(WIN_BERRY_NAME, gStringVar4, 0, 1, 0, 0);
 }
 
 static void PrintBerrySize(void)
 {
     const struct Berry *berry = GetBerryInfo(sBerryTag->berryId);
+<<<<<<< HEAD
     AddTextPrinterParameterized(WIN_SIZE_FIRM, FONT_NORMAL, gText_SizeSlash, 0, 1, TEXT_SKIP_DRAW, NULL);
+=======
+    AddTextPrinterParameterized(WIN_SIZE_FIRM, FONT_NORMAL, sText_SizeSlash, 0, 1, TEXT_SKIP_DRAW, NULL);
+>>>>>>> upstream/master
     if (berry->size != 0)
     {
         u32 inches, fraction;
@@ -425,23 +456,39 @@ static void PrintBerrySize(void)
 
         ConvertIntToDecimalStringN(gStringVar1, inches, STR_CONV_MODE_LEFT_ALIGN, 2);
         ConvertIntToDecimalStringN(gStringVar2, fraction, STR_CONV_MODE_LEFT_ALIGN, 2);
+<<<<<<< HEAD
         StringExpandPlaceholders(gStringVar4, gText_Var1DotVar2);
+=======
+        StringExpandPlaceholders(gStringVar4, sText_Var1DotVar2);
+>>>>>>> upstream/master
         AddTextPrinterParameterized(WIN_SIZE_FIRM, FONT_NORMAL, gStringVar4, 0x28, 1, 0, NULL);
     }
     else
     {
+<<<<<<< HEAD
         AddTextPrinterParameterized(WIN_SIZE_FIRM, FONT_NORMAL, gText_ThreeMarks, 0x28, 1, 0, NULL);
+=======
+        AddTextPrinterParameterized(WIN_SIZE_FIRM, FONT_NORMAL, sText_ThreeMarks, 0x28, 1, 0, NULL);
+>>>>>>> upstream/master
     }
 }
 
 static void PrintBerryFirmness(void)
 {
     const struct Berry *berry = GetBerryInfo(sBerryTag->berryId);
+<<<<<<< HEAD
     AddTextPrinterParameterized(WIN_SIZE_FIRM, FONT_NORMAL, gText_FirmSlash, 0, 0x11, TEXT_SKIP_DRAW, NULL);
     if (berry->firmness != 0)
         AddTextPrinterParameterized(WIN_SIZE_FIRM, FONT_NORMAL, sBerryFirmnessStrings[berry->firmness - 1], 0x28, 0x11, 0, NULL);
     else
         AddTextPrinterParameterized(WIN_SIZE_FIRM, FONT_NORMAL, gText_ThreeMarks, 0x28, 0x11, 0, NULL);
+=======
+    AddTextPrinterParameterized(WIN_SIZE_FIRM, FONT_NORMAL, sText_FirmSlash, 0, 0x11, TEXT_SKIP_DRAW, NULL);
+    if (berry->firmness != 0)
+        AddTextPrinterParameterized(WIN_SIZE_FIRM, FONT_NORMAL, sBerryFirmnessStrings[berry->firmness], 0x28, 0x11, 0, NULL);
+    else
+        AddTextPrinterParameterized(WIN_SIZE_FIRM, FONT_NORMAL, sText_ThreeMarks, 0x28, 0x11, 0, NULL);
+>>>>>>> upstream/master
 }
 
 static void PrintBerryDescription1(void)

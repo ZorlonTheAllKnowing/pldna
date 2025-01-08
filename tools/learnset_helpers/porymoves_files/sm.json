@@ -48246,7 +48246,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "WORMADAM_PLANT_CLOAK": {
+=======
+  "WORMADAM_PLANT": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -79371,7 +79375,11 @@
     ],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "MEOWSTIC_MALE": {
+=======
+  "MEOWSTIC_M": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -93399,7 +93407,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "RATTATA_ALOLAN": {
+=======
+  "RATTATA_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -93502,7 +93514,11 @@
     ],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "RATICATE_ALOLAN": {
+=======
+  "RATICATE_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -93632,7 +93648,11 @@
     ],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "RAICHU_ALOLAN": {
+=======
+  "RAICHU_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -93741,7 +93761,11 @@
     ],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "SANDSHREW_ALOLAN": {
+=======
+  "SANDSHREW_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -93864,7 +93888,11 @@
     ],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "SANDSLASH_ALOLAN": {
+=======
+  "SANDSLASH_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -93968,7 +93996,11 @@
     ],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "VULPIX_ALOLAN": {
+=======
+  "VULPIX_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -94097,7 +94129,11 @@
     ],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "NINETALES_ALOLAN": {
+=======
+  "NINETALES_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -94200,7 +94236,11 @@
     ],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "DIGLETT_ALOLAN": {
+=======
+  "DIGLETT_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -94304,7 +94344,11 @@
     ],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "DUGTRIO_ALOLAN": {
+=======
+  "DUGTRIO_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -94436,7 +94480,11 @@
     ],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "MEOWTH_ALOLAN": {
+=======
+  "MEOWTH_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -94555,7 +94603,11 @@
     ],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "PERSIAN_ALOLAN": {
+=======
+  "PERSIAN_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -94708,7 +94760,11 @@
     ],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "GEODUDE_ALOLAN": {
+=======
+  "GEODUDE_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -94827,7 +94883,11 @@
     ],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "GRAVELER_ALOLAN": {
+=======
+  "GRAVELER_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -94954,7 +95014,11 @@
     ],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "GOLEM_ALOLAN": {
+=======
+  "GOLEM_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -95097,7 +95161,11 @@
     ],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "GRIMER_ALOLAN": {
+=======
+  "GRIMER_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -95221,7 +95289,11 @@
     ],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "MUK_ALOLAN": {
+=======
+  "MUK_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -95366,7 +95438,11 @@
     ],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "EXEGGUTOR_ALOLAN": {
+=======
+  "EXEGGUTOR_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -95484,7 +95560,11 @@
       "MOVE_DRACO_METEOR"
     ]
   },
+<<<<<<< HEAD
   "MAROWAK_ALOLAN": {
+=======
+  "MAROWAK_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -95978,7 +96058,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "WORMADAM_SANDY_CLOAK": {
+=======
+  "WORMADAM_SANDY": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -96093,7 +96177,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "WORMADAM_TRASH_CLOAK": {
+=======
+  "WORMADAM_TRASH": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -97019,7 +97107,11 @@
       "MOVE_DRACO_METEOR"
     ]
   },
+<<<<<<< HEAD
   "FLOETTE_ETERNAL_FLOWER": {
+=======
+  "FLOETTE_ETERNAL": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -97117,7 +97209,11 @@
     ],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "MEOWSTIC_FEMALE": {
+=======
+  "MEOWSTIC_F": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,

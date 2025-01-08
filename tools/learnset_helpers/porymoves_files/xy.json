@@ -47960,7 +47960,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "WORMADAM_PLANT_CLOAK": {
+=======
+  "WORMADAM_PLANT": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -79310,7 +79314,11 @@
     ],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "MEOWSTIC_MALE": {
+=======
+  "MEOWSTIC_M": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -84805,7 +84813,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "WORMADAM_SANDY_CLOAK": {
+=======
+  "WORMADAM_SANDY": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -84899,7 +84911,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "WORMADAM_TRASH_CLOAK": {
+=======
+  "WORMADAM_TRASH": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -85811,7 +85827,11 @@
       "MOVE_DRACO_METEOR"
     ]
   },
+<<<<<<< HEAD
   "FLOETTE_ETERNAL_FLOWER": {
+=======
+  "FLOETTE_ETERNAL": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -85906,7 +85926,11 @@
     ],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "MEOWSTIC_FEMALE": {
+=======
+  "MEOWSTIC_F": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,

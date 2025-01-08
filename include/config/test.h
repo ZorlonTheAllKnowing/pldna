@@ -1,6 +1,7 @@
 #ifndef GUARD_CONFIG_TEST_H
 #define GUARD_CONFIG_TEST_H
 
+<<<<<<< HEAD
 #undef B_EXPANDED_MOVE_NAMES
 #define B_EXPANDED_MOVE_NAMES TRUE
 #undef I_EXPANDED_ITEM_NAMES
@@ -9,6 +10,10 @@
 #define POKEMON_NAME_LENGTH 12
 #undef B_EXPANDED_TYPE_NAMES
 #define B_EXPANDED_TYPE_NAMES TRUE
+=======
+#undef POKEMON_NAME_LENGTH
+#define POKEMON_NAME_LENGTH 12
+>>>>>>> upstream/master
 
 #undef P_MEGA_EVOLUTIONS
 #define P_MEGA_EVOLUTIONS                TRUE

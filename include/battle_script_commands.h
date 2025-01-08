@@ -57,6 +57,11 @@ bool32 IsMoveNotAllowedInSkyBattles(u32 move);
 bool32 DoSwitchInAbilities(u32 battlerId);
 u8 GetFirstFaintedPartyIndex(u8 battlerId);
 bool32 IsMoveAffectedByParentalBond(u32 move, u32 battler);
+<<<<<<< HEAD
+=======
+void SaveBattlerTarget(u32 battler);
+void SaveBattlerAttacker(u32 battler);
+>>>>>>> upstream/master
 
 extern void (* const gBattleScriptingCommandsTable[])(void);
 extern const struct StatFractions gAccuracyStageRatios[];

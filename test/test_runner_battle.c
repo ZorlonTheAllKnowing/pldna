@@ -35,13 +35,17 @@
 #define STATE gBattleTestRunnerState
 #define DATA gBattleTestRunnerState->data
 
+<<<<<<< HEAD
 #if HQ_RANDOM == TRUE
+=======
+>>>>>>> upstream/master
 #define RNG_SEED_DEFAULT {0, 0, 0, 0}
 static inline bool32 RngSeedNotDefault(const rng_value_t *seed)
 {
     return (seed->a | seed->b | seed->c | seed->ctr) != 0;
 
 }
+<<<<<<< HEAD
 #else
 #define RNG_SEED_DEFAULT 0x00000000
 static inline bool32 RngSeedNotDefault(const rng_value_t *seed)
@@ -49,6 +53,8 @@ static inline bool32 RngSeedNotDefault(const rng_value_t *seed)
     return *seed != RNG_SEED_DEFAULT;
 }
 #endif
+=======
+>>>>>>> upstream/master
 #undef Q_4_12
 #define Q_4_12(n) (s32)((n) * 4096)
 
@@ -168,6 +174,10 @@ static void BattleTest_SetUp(void *data)
 {
     const struct BattleTest *test = data;
     memset(STATE, 0, sizeof(*STATE));
+<<<<<<< HEAD
+=======
+    TestInitConfigData();
+>>>>>>> upstream/master
     InvokeTestFunction(test);
     STATE->parameters = STATE->parametersCount;
     if (STATE->parametersCount == 0 && test->resultsSize > 0)
@@ -775,7 +785,11 @@ static u32 CountAiExpectMoves(struct ExpectedAIAction *expectedAction, u32 battl
     u32 i, countExpected = 0;
     for (i = 0; i < MAX_MON_MOVES; i++)
     {
+<<<<<<< HEAD
         if (gBitTable[i] & expectedAction->moveSlots)
+=======
+        if ((1u << i) & expectedAction->moveSlots)
+>>>>>>> upstream/master
         {
             if (printLog)
                 PrintAiMoveLog(battlerId, i, gBattleMons[battlerId].moves[i], gBattleStruct->aiFinalScore[battlerId][expectedAction->target][i]);
@@ -794,6 +808,11 @@ void TestRunner_Battle_CheckChosenMove(u32 battlerId, u32 moveId, u32 target)
     if (!expectedAction->actionSet)
         return;
 
+<<<<<<< HEAD
+=======
+    DATA.trial.lastActionTurn = gBattleResults.battleTurnCounter;
+
+>>>>>>> upstream/master
     if (!expectedAction->pass)
     {
         u32 i, expectedMoveId = 0, countExpected;
@@ -807,7 +826,11 @@ void TestRunner_Battle_CheckChosenMove(u32 battlerId, u32 moveId, u32 target)
 
         for (i = 0; i < MAX_MON_MOVES; i++)
         {
+<<<<<<< HEAD
             if (gBitTable[i] & expectedAction->moveSlots)
+=======
+            if ((1u << i) & expectedAction->moveSlots)
+>>>>>>> upstream/master
             {
                 expectedMoveId = gBattleMons[battlerId].moves[i];
                 if (!expectedAction->notMove)
@@ -863,6 +886,11 @@ void TestRunner_Battle_CheckSwitch(u32 battlerId, u32 partyIndex)
     if (!expectedAction->actionSet)
         return;
 
+<<<<<<< HEAD
+=======
+    DATA.trial.lastActionTurn = gBattleResults.battleTurnCounter;
+
+>>>>>>> upstream/master
     if (!expectedAction->pass)
     {
         if (expectedAction->type != B_ACTION_SWITCH)
@@ -923,8 +951,13 @@ static void CheckIfMaxScoreEqualExpectMove(u32 battlerId, s32 target, struct Exp
         // We expect move 'i', but it has the same best score as another move that we didn't expect.
         if (scores[i] == scores[bestScoreId]
             && !aiAction->notMove
+<<<<<<< HEAD
             && (aiAction->moveSlots & gBitTable[i])
             && !(aiAction->moveSlots & gBitTable[bestScoreId]))
+=======
+            && (aiAction->moveSlots & (1u << i))
+            && !(aiAction->moveSlots & (1u << bestScoreId)))
+>>>>>>> upstream/master
         {
             Test_ExitWithResult(TEST_RESULT_FAIL, SourceLine(0), ":L%s:%d: EXPECT_MOVE %S has the same best score(%d) as not expected MOVE %S", filename,
                                 aiAction->sourceLine, GetMoveName(moves[i]), scores[i], GetMoveName(moves[bestScoreId]));
@@ -932,8 +965,13 @@ static void CheckIfMaxScoreEqualExpectMove(u32 battlerId, s32 target, struct Exp
         // We DO NOT expect move 'i', but it has the same best score as another move.
         if (scores[i] == scores[bestScoreId]
             && aiAction->notMove
+<<<<<<< HEAD
             && (aiAction->moveSlots & gBitTable[i])
             && !(aiAction->moveSlots & gBitTable[bestScoreId]))
+=======
+            && (aiAction->moveSlots & (1u << i))
+            && !(aiAction->moveSlots & (1u << bestScoreId)))
+>>>>>>> upstream/master
         {
             Test_ExitWithResult(TEST_RESULT_FAIL, SourceLine(0), ":L%s:%d: NOT_EXPECT_MOVE %S has the same best score(%d) as MOVE %S", filename,
                                 aiAction->sourceLine, GetMoveName(moves[i]), scores[i], GetMoveName(moves[bestScoreId]));
@@ -946,9 +984,15 @@ static void PrintAiMoveLog(u32 battlerId, u32 moveSlot, u32 moveId, s32 totalSco
     s32 i, scoreFromLogs = 0;
 
     if (!DATA.logAI) return;
+<<<<<<< HEAD
     if (DATA.aiLogPrintedForMove[battlerId] & gBitTable[moveSlot]) return;
 
     DATA.aiLogPrintedForMove[battlerId] |= gBitTable[moveSlot];
+=======
+    if (DATA.aiLogPrintedForMove[battlerId] & (1u << moveSlot)) return;
+
+    DATA.aiLogPrintedForMove[battlerId] |= 1u << moveSlot;
+>>>>>>> upstream/master
     Test_MgbaPrintf("Score Log for move %S:\n", GetMoveName(moveId));
     for (i = 0; i < MAX_AI_LOG_LINES; i++)
     {
@@ -1164,6 +1208,10 @@ static s32 TryMessage(s32 i, s32 n, const u8 *string)
                 switch (string[j])
                 {
                 case CHAR_SPACE:
+<<<<<<< HEAD
+=======
+                case CHAR_NBSP:
+>>>>>>> upstream/master
                 case CHAR_PROMPT_SCROLL:
                 case CHAR_PROMPT_CLEAR:
                 case CHAR_NEWLINE:
@@ -1364,6 +1412,7 @@ static void CB2_BattleTest_NextParameter(void)
 
 static inline rng_value_t MakeRngValue(const u16 seed)
 {
+<<<<<<< HEAD
     #if HQ_RANDOM == TRUE
         int i;
         rng_value_t result = {0, 0, seed, 1};
@@ -1375,6 +1424,15 @@ static inline rng_value_t MakeRngValue(const u16 seed)
     #else
         return ISO_RANDOMIZE1(seed);
     #endif
+=======
+    int i;
+    rng_value_t result = {0, 0, seed, 1};
+    for (i = 0; i < 16; i++)
+    {
+            _SFC32_Next(&result);
+    }
+    return result;
+>>>>>>> upstream/master
 }
 
 static void CB2_BattleTest_NextTrial(void)
@@ -1424,6 +1482,10 @@ static void BattleTest_TearDown(void *data)
     // Free resources that aren't cleaned up when the battle was
     // aborted unexpectedly.
     ClearFlagAfterTest();
+<<<<<<< HEAD
+=======
+    TestFreeConfigData();
+>>>>>>> upstream/master
     if (STATE->tearDownBattle)
         TearDownBattle();
 }
@@ -1520,6 +1582,15 @@ void SetFlagForTest(u32 sourceLine, u16 flagId)
     FlagSet(flagId);
 }
 
+<<<<<<< HEAD
+=======
+void TestSetConfig(u32 sourceLine, enum GenConfigTag configTag, u32 value)
+{
+    INVALID_IF(!STATE->runGiven, "WITH_CONFIG outside of GIVEN");
+    SetGenConfig(configTag, value);
+}
+
+>>>>>>> upstream/master
 void ClearFlagAfterTest(void)
 {
     if (DATA.flagId != 0)
@@ -2252,7 +2323,11 @@ static void TryMarkExpectMove(u32 sourceLine, struct BattlePokemon *battler, str
 
     id = DATA.expectedAiActionIndex[battlerId];
     DATA.expectedAiActions[battlerId][id].type = B_ACTION_USE_MOVE;
+<<<<<<< HEAD
     DATA.expectedAiActions[battlerId][id].moveSlots |= gBitTable[moveSlot];
+=======
+    DATA.expectedAiActions[battlerId][id].moveSlots |= 1 << moveSlot;
+>>>>>>> upstream/master
     DATA.expectedAiActions[battlerId][id].target = target;
     DATA.expectedAiActions[battlerId][id].explicitTarget = ctx->explicitTarget;
     DATA.expectedAiActions[battlerId][id].sourceLine = sourceLine;

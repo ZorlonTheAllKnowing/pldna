@@ -16,6 +16,10 @@ void FieldCB_ReturnToFieldWirelessLink(void);
 void FieldCB_DefaultWarpExit(void);
 void FieldCB_WarpExitFadeFromBlack(void);
 void FieldCB_WarpExitFadeFromWhite(void);
+<<<<<<< HEAD
+=======
+void FieldCB_RushInjuredPokemonToCenter(void);
+>>>>>>> upstream/master
 bool8 FieldCB_ReturnToFieldOpenStartMenu(void);
 void ReturnToFieldOpenStartMenu(void);
 void FieldCB_ReturnToFieldNoScript(void);
@@ -41,5 +45,10 @@ void DoOrbEffect(void);
 void FadeOutOrbEffect(void);
 void WriteFlashScanlineEffectBuffer(u8 flashLevel);
 bool8 IsPlayerStandingStill(void);
+<<<<<<< HEAD
+=======
+void DoStairWarp(u16 metatileBehavior, u16 delay);
+bool32 IsDirectionalStairWarpMetatileBehavior(u16 metatileBehavior, u8 playerDirection);
+>>>>>>> upstream/master
 
 #endif // GUARD_FIELD_SCREEN_EFFECT_H

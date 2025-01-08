@@ -3294,6 +3294,12 @@ void InitUnionRoom(void)
 {
     struct WirelessLink_URoom *data;
 
+<<<<<<< HEAD
+=======
+    if (!ShouldCheckForUnionRoom())
+        return;
+
+>>>>>>> upstream/master
     sUnionRoomPlayerName[0] = EOS;
     CreateTask(Task_InitUnionRoom, 0);
     sWirelessLinkMain.uRoom = sWirelessLinkMain.uRoom; // Needed to match.
@@ -3377,6 +3383,12 @@ static void Task_InitUnionRoom(u8 taskId)
 
 bool16 BufferUnionRoomPlayerName(void)
 {
+<<<<<<< HEAD
+=======
+    if (!ShouldCheckForUnionRoom())
+        return FALSE;
+
+>>>>>>> upstream/master
     if (sUnionRoomPlayerName[0] != EOS)
     {
         StringCopy(gStringVar1, sUnionRoomPlayerName);

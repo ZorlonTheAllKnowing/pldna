@@ -6,7 +6,11 @@ SINGLE_BATTLE_TEST("Pastel Veil prevents Poison Sting poison")
     GIVEN {
         ASSUME(MoveHasAdditionalEffect(MOVE_POISON_STING, MOVE_EFFECT_POISON) == TRUE);
         PLAYER(SPECIES_WOBBUFFET);
+<<<<<<< HEAD
         OPPONENT(SPECIES_PONYTA_GALARIAN) { Ability(ABILITY_PASTEL_VEIL); }
+=======
+        OPPONENT(SPECIES_PONYTA_GALAR) { Ability(ABILITY_PASTEL_VEIL); }
+>>>>>>> upstream/master
     } WHEN {
         TURN { MOVE(player, MOVE_POISON_STING); }
     } SCENE {
@@ -21,7 +25,11 @@ DOUBLE_BATTLE_TEST("Pastel Veil prevents Poison Sting poison on partner")
         ASSUME(MoveHasAdditionalEffect(MOVE_POISON_STING, MOVE_EFFECT_POISON) == TRUE);
         PLAYER(SPECIES_WOBBUFFET);
         PLAYER(SPECIES_WYNAUT);
+<<<<<<< HEAD
         OPPONENT(SPECIES_PONYTA_GALARIAN) { Ability(ABILITY_PASTEL_VEIL); }
+=======
+        OPPONENT(SPECIES_PONYTA_GALAR) { Ability(ABILITY_PASTEL_VEIL); }
+>>>>>>> upstream/master
         OPPONENT(SPECIES_WYNAUT);
     } WHEN {
         TURN { MOVE(playerLeft, MOVE_POISON_STING, target: opponentRight); }
@@ -37,14 +45,22 @@ SINGLE_BATTLE_TEST("Pastel Veil immediately cures Mold Breaker poison")
     GIVEN {
         ASSUME(gMovesInfo[MOVE_TOXIC].effect == EFFECT_TOXIC);
         PLAYER(SPECIES_PINSIR) { Ability(ABILITY_MOLD_BREAKER); }
+<<<<<<< HEAD
         OPPONENT(SPECIES_PONYTA_GALARIAN) { Ability(ABILITY_PASTEL_VEIL); }
+=======
+        OPPONENT(SPECIES_PONYTA_GALAR) { Ability(ABILITY_PASTEL_VEIL); }
+>>>>>>> upstream/master
     } WHEN {
         TURN { MOVE(player, MOVE_TOXIC); MOVE(opponent, MOVE_TACKLE); }
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_TOXIC, player);
         STATUS_ICON(opponent, badPoison: TRUE);
         ABILITY_POPUP(opponent, ABILITY_PASTEL_VEIL);
+<<<<<<< HEAD
         MESSAGE("Foe Ponyta's Pastel Veil cured its poison problem!");
+=======
+        MESSAGE("The opposing Ponyta's Pastel Veil cured its poison problem!");
+>>>>>>> upstream/master
         STATUS_ICON(opponent, none: TRUE);
         ANIMATION(ANIM_TYPE_MOVE, MOVE_TACKLE, opponent);
     }
@@ -56,7 +72,11 @@ DOUBLE_BATTLE_TEST("Pastel Veil does not cure Mold Breaker poison on partner")
         ASSUME(gMovesInfo[MOVE_TOXIC].effect == EFFECT_TOXIC);
         PLAYER(SPECIES_PINSIR) { Ability(ABILITY_MOLD_BREAKER); }
         PLAYER(SPECIES_WYNAUT);
+<<<<<<< HEAD
         OPPONENT(SPECIES_PONYTA_GALARIAN) { Ability(ABILITY_PASTEL_VEIL); }
+=======
+        OPPONENT(SPECIES_PONYTA_GALAR) { Ability(ABILITY_PASTEL_VEIL); }
+>>>>>>> upstream/master
         OPPONENT(SPECIES_WYNAUT);
     } WHEN {
         TURN { MOVE(playerLeft, MOVE_TOXIC, target: opponentRight); }
@@ -72,13 +92,21 @@ SINGLE_BATTLE_TEST("Pastel Veil prevents Toxic bad poison")
     GIVEN {
         ASSUME(gMovesInfo[MOVE_TOXIC].effect == EFFECT_TOXIC);
         PLAYER(SPECIES_WOBBUFFET);
+<<<<<<< HEAD
         OPPONENT(SPECIES_PONYTA_GALARIAN) { Ability(ABILITY_PASTEL_VEIL); }
+=======
+        OPPONENT(SPECIES_PONYTA_GALAR) { Ability(ABILITY_PASTEL_VEIL); }
+>>>>>>> upstream/master
     } WHEN {
         TURN { MOVE(player, MOVE_TOXIC); }
     } SCENE {
         MESSAGE("Wobbuffet used Toxic!");
         ABILITY_POPUP(opponent, ABILITY_PASTEL_VEIL);
+<<<<<<< HEAD
         MESSAGE("Foe Ponyta is protected by a pastel veil!");
+=======
+        MESSAGE("The opposing Ponyta is protected by a pastel veil!");
+>>>>>>> upstream/master
         NOT STATUS_ICON(opponent, badPoison: TRUE);
     }
 }
@@ -89,14 +117,22 @@ DOUBLE_BATTLE_TEST("Pastel Veil prevents Toxic bad poison on partner")
         ASSUME(gMovesInfo[MOVE_TOXIC].effect == EFFECT_TOXIC);
         PLAYER(SPECIES_WOBBUFFET);
         PLAYER(SPECIES_WYNAUT);
+<<<<<<< HEAD
         OPPONENT(SPECIES_PONYTA_GALARIAN) { Ability(ABILITY_PASTEL_VEIL); }
+=======
+        OPPONENT(SPECIES_PONYTA_GALAR) { Ability(ABILITY_PASTEL_VEIL); }
+>>>>>>> upstream/master
         OPPONENT(SPECIES_WYNAUT);
     } WHEN {
         TURN { MOVE(playerLeft, MOVE_TOXIC, target: opponentRight); }
     } SCENE {
         MESSAGE("Wobbuffet used Toxic!");
         ABILITY_POPUP(opponentLeft, ABILITY_PASTEL_VEIL);
+<<<<<<< HEAD
         MESSAGE("Foe Wynaut is protected by a pastel veil!");
+=======
+        MESSAGE("The opposing Wynaut is protected by a pastel veil!");
+>>>>>>> upstream/master
         NOT STATUS_ICON(opponentRight, badPoison: TRUE);
     }
 }
@@ -107,7 +143,11 @@ SINGLE_BATTLE_TEST("Pastel Veil prevents Toxic Spikes poison")
         ASSUME(gMovesInfo[MOVE_TOXIC_SPIKES].effect == EFFECT_TOXIC_SPIKES);
         PLAYER(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WOBBUFFET);
+<<<<<<< HEAD
         OPPONENT(SPECIES_PONYTA_GALARIAN) { Ability(ABILITY_PASTEL_VEIL); }
+=======
+        OPPONENT(SPECIES_PONYTA_GALAR) { Ability(ABILITY_PASTEL_VEIL); }
+>>>>>>> upstream/master
     } WHEN {
         TURN { MOVE(player, MOVE_TOXIC_SPIKES); }
         TURN { SWITCH(opponent, 1); }
@@ -123,7 +163,11 @@ DOUBLE_BATTLE_TEST("Pastel Veil prevents Toxic Spikes poison on partner")
         ASSUME(gMovesInfo[MOVE_TOXIC_SPIKES].effect == EFFECT_TOXIC_SPIKES);
         PLAYER(SPECIES_WOBBUFFET);
         PLAYER(SPECIES_WYNAUT);
+<<<<<<< HEAD
         OPPONENT(SPECIES_PONYTA_GALARIAN) { Ability(ABILITY_PASTEL_VEIL); }
+=======
+        OPPONENT(SPECIES_PONYTA_GALAR) { Ability(ABILITY_PASTEL_VEIL); }
+>>>>>>> upstream/master
         OPPONENT(SPECIES_WOBBUFFET);
         OPPONENT(SPECIES_WYNAUT);
     } WHEN {
@@ -141,13 +185,21 @@ DOUBLE_BATTLE_TEST("Pastel Veil cures partner's poison on initial switch in")
         PLAYER(SPECIES_WOBBUFFET);
         PLAYER(SPECIES_WYNAUT);
         OPPONENT(SPECIES_WOBBUFFET) { Status1(STATUS1_POISON); }
+<<<<<<< HEAD
         OPPONENT(SPECIES_PONYTA_GALARIAN) { Ability(ABILITY_PASTEL_VEIL); }
+=======
+        OPPONENT(SPECIES_PONYTA_GALAR) { Ability(ABILITY_PASTEL_VEIL); }
+>>>>>>> upstream/master
     } WHEN {
         TURN {}
     } SCENE {
         MESSAGE("2 sent out Wobbuffet and Ponyta!");
         ABILITY_POPUP(opponentRight, ABILITY_PASTEL_VEIL);
+<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet was cured of its poisoning!");
+=======
+        MESSAGE("The opposing Wobbuffet was cured of its poisoning!");
+>>>>>>> upstream/master
         STATUS_ICON(opponentLeft, none: TRUE);
     }
 }
@@ -159,13 +211,21 @@ DOUBLE_BATTLE_TEST("Pastel Veil cures partner's poison on switch in")
         PLAYER(SPECIES_WYNAUT);
         OPPONENT(SPECIES_WOBBUFFET) { Status1(STATUS1_POISON); }
         OPPONENT(SPECIES_WYNAUT);
+<<<<<<< HEAD
         OPPONENT(SPECIES_PONYTA_GALARIAN) { Ability(ABILITY_PASTEL_VEIL); }
+=======
+        OPPONENT(SPECIES_PONYTA_GALAR) { Ability(ABILITY_PASTEL_VEIL); }
+>>>>>>> upstream/master
     } WHEN {
         TURN { SWITCH(opponentRight, 2); }
     } SCENE {
         MESSAGE("2 sent out Ponyta!");
         ABILITY_POPUP(opponentRight, ABILITY_PASTEL_VEIL);
+<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet was cured of its poisoning!");
+=======
+        MESSAGE("The opposing Wobbuffet was cured of its poisoning!");
+>>>>>>> upstream/master
         STATUS_ICON(opponentLeft, none: TRUE);
     }
 }

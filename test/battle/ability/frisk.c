@@ -29,9 +29,15 @@ SINGLE_BATTLE_TEST("Frisk triggers in a Single Battle")
         TURN { ; }
     } SCENE {
         ABILITY_POPUP(player, ABILITY_FRISK);
+<<<<<<< HEAD
         MESSAGE("Furret frisked Foe Sentret and found its Potion!");
         ABILITY_POPUP(opponent, ABILITY_FRISK);
         MESSAGE("Foe Sentret frisked Furret and found its Potion!");
+=======
+        MESSAGE("Furret frisked the opposing Sentret and found its Potion!");
+        ABILITY_POPUP(opponent, ABILITY_FRISK);
+        MESSAGE("The opposing Sentret frisked Furret and found its Potion!");
+>>>>>>> upstream/master
     }
 }
 
@@ -42,7 +48,11 @@ DOUBLE_BATTLE_TEST("Frisk triggers for player in a Double Battle after switching
     PARAMETRIZE { target = playerRight; }
 
     GIVEN {
+<<<<<<< HEAD
         ASSUME(gMovesInfo[MOVE_POUND].power != 0);
+=======
+        ASSUME(!IS_MOVE_STATUS(MOVE_POUND));
+>>>>>>> upstream/master
         PLAYER(SPECIES_WOBBUFFET) { HP(1); }
         PLAYER(SPECIES_WOBBUFFET) { HP(1); }
         PLAYER(SPECIES_FURRET) { Ability(ABILITY_FRISK); };
@@ -51,10 +61,17 @@ DOUBLE_BATTLE_TEST("Frisk triggers for player in a Double Battle after switching
     } WHEN {
         TURN { MOVE(opponentLeft, MOVE_POUND, target: target); SEND_OUT(target, 2); }
     } SCENE {
+<<<<<<< HEAD
         MESSAGE("Foe Wynaut used Pound!");
         MESSAGE("Wobbuffet fainted!");
         ABILITY_POPUP(target, ABILITY_FRISK);
         MESSAGE("Furret frisked Foe Wynaut and found its Potion!");
+=======
+        MESSAGE("The opposing Wynaut used Pound!");
+        MESSAGE("Wobbuffet fainted!");
+        ABILITY_POPUP(target, ABILITY_FRISK);
+        MESSAGE("Furret frisked the opposing Wynaut and found its Potion!");
+>>>>>>> upstream/master
     }
 }
 
@@ -65,7 +82,11 @@ DOUBLE_BATTLE_TEST("Frisk triggers for opponent in a Double Battle after switchi
     PARAMETRIZE { target = opponentRight; }
 
     GIVEN {
+<<<<<<< HEAD
         ASSUME(gMovesInfo[MOVE_POUND].power != 0);
+=======
+        ASSUME(!IS_MOVE_STATUS(MOVE_POUND));
+>>>>>>> upstream/master
         PLAYER(SPECIES_WYNAUT) { Item(ITEM_POTION); }
         PLAYER(SPECIES_WYNAUT);
         OPPONENT(SPECIES_WOBBUFFET) { HP(1); }
@@ -75,8 +96,14 @@ DOUBLE_BATTLE_TEST("Frisk triggers for opponent in a Double Battle after switchi
         TURN { MOVE(playerLeft, MOVE_POUND, target: target); SEND_OUT(target, 2); }
     } SCENE {
         MESSAGE("Wynaut used Pound!");
+<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet fainted!");
         ABILITY_POPUP(target, ABILITY_FRISK);
         MESSAGE("Foe Furret frisked Wynaut and found its Potion!");
+=======
+        MESSAGE("The opposing Wobbuffet fainted!");
+        ABILITY_POPUP(target, ABILITY_FRISK);
+        MESSAGE("The opposing Furret frisked Wynaut and found its Potion!");
+>>>>>>> upstream/master
     }
 }

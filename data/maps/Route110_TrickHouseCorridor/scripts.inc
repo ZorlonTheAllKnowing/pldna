@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 1 "data/maps/Route110_TrickHouseCorridor/scripts.pory"
 
 # 2 "data/maps/Route110_TrickHouseCorridor/scripts.pory"
@@ -14,3 +15,13 @@ Route110_TrickHouseCorridor_OnTransition:
 	setvar VAR_TRICK_HOUSE_ENTER_FROM_CORRIDOR, 1
 # 8 "data/maps/Route110_TrickHouseCorridor/scripts.pory"
 	end
+=======
+Route110_TrickHouseCorridor_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, Route110_TrickHouseCorridor_OnTransition
+	.byte 0
+
+Route110_TrickHouseCorridor_OnTransition:
+	setvar VAR_TRICK_HOUSE_ENTER_FROM_CORRIDOR, 1
+	end
+
+>>>>>>> upstream/master

@@ -132,7 +132,11 @@ void SetControllerToOpponent(u32 battler)
 
 static void OpponentBufferRunCommand(u32 battler)
 {
+<<<<<<< HEAD
     if (gBattleControllerExecFlags & gBitTable[battler])
+=======
+    if (gBattleControllerExecFlags & (1u << battler))
+>>>>>>> upstream/master
     {
         if (gBattleResources->bufferA[battler][0] < ARRAY_COUNT(sOpponentBufferCommands))
             sOpponentBufferCommands[gBattleResources->bufferA[battler][0]](battler);
@@ -185,7 +189,13 @@ static void Intro_WaitForShinyAnimAndHealthbox(u32 battler)
                 FreeSpritePaletteByTag(ANIM_TAG_GOLD_STARS);
             }
             else
+<<<<<<< HEAD
                 return;
+=======
+            {
+                return;
+            }
+>>>>>>> upstream/master
         }
         else if (gBattleSpritesDataPtr->healthBoxesData[battler].finishedShinyMonAnim)
         {
@@ -198,6 +208,7 @@ static void Intro_WaitForShinyAnimAndHealthbox(u32 battler)
                     FreeSpritePaletteByTag(ANIM_TAG_GOLD_STARS);
                 }
                 else
+<<<<<<< HEAD
                     return;
             }
                 gBattleSpritesDataPtr->healthBoxesData[battler].triedShinyMonAnim = FALSE;
@@ -205,12 +216,41 @@ static void Intro_WaitForShinyAnimAndHealthbox(u32 battler)
         }
         else
             return;
+=======
+                {
+                    return;
+                }
+            }
+            gBattleSpritesDataPtr->healthBoxesData[battler].triedShinyMonAnim = FALSE;
+            gBattleSpritesDataPtr->healthBoxesData[battler].finishedShinyMonAnim = FALSE;
+        }
+        else
+        {
+            return;
+        }
+>>>>>>> upstream/master
 
         gBattleSpritesDataPtr->healthBoxesData[battler].introEndDelay = 3;
         gBattlerControllerFuncs[battler] = Intro_DelayAndEnd;
     }
 }
 
+<<<<<<< HEAD
+=======
+static void TrySetBattlerShadowSpriteCallback(u32 battler)
+{
+    if (gSprites[gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdPrimary].callback == SpriteCallbackDummy)
+    {
+        if (B_ENEMY_MON_SHADOW_STYLE <= GEN_3
+            || P_GBA_STYLE_SPECIES_GFX == TRUE
+            || gSprites[gBattleSpritesDataPtr->healthBoxesData[battler].shadowSpriteIdSecondary].callback == SpriteCallbackDummy)
+        {
+            SetBattlerShadowSpriteCallback(battler, GetMonData(&gEnemyParty[gBattlerPartyIndexes[battler]], MON_DATA_SPECIES));
+        }
+    }
+}
+
+>>>>>>> upstream/master
 static void Intro_TryShinyAnimShowHealthbox(u32 battler)
 {
     bool32 bgmRestored = FALSE;
@@ -261,7 +301,13 @@ static void Intro_TryShinyAnimShowHealthbox(u32 battler)
                     m4aMPlayContinue(&gMPlayInfo_BGM);
             }
             else
+<<<<<<< HEAD
                 m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, 0x100);
+=======
+            {
+                m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, 0x100);
+            }
+>>>>>>> upstream/master
         }
         gBattleSpritesDataPtr->healthBoxesData[battler].bgmRestored = TRUE;
         bgmRestored = TRUE;
@@ -269,26 +315,49 @@ static void Intro_TryShinyAnimShowHealthbox(u32 battler)
 
     if (!twoMons || (twoMons && gBattleTypeFlags & BATTLE_TYPE_MULTI && !BATTLE_TWO_VS_ONE_OPPONENT))
     {
+<<<<<<< HEAD
         if (gSprites[gBattleControllerData[battler]].callback == SpriteCallbackDummy
             && gSprites[gBattlerSpriteIds[battler]].callback == SpriteCallbackDummy)
         {
             battlerAnimsDone = TRUE;
+=======
+        if (gSprites[gBattleControllerData[battler]].callback == SpriteCallbackDummy)
+        {
+            TrySetBattlerShadowSpriteCallback(battler);
+            if (gSprites[gBattlerSpriteIds[battler]].callback == SpriteCallbackDummy)
+            {
+                battlerAnimsDone = TRUE;
+            }
+>>>>>>> upstream/master
         }
     }
     else
     {
         if (gSprites[gBattleControllerData[battler]].callback == SpriteCallbackDummy
+<<<<<<< HEAD
             && gSprites[gBattlerSpriteIds[battler]].callback == SpriteCallbackDummy
             && gSprites[gBattleControllerData[BATTLE_PARTNER(battler)]].callback == SpriteCallbackDummy
             && gSprites[gBattlerSpriteIds[BATTLE_PARTNER(battler)]].callback == SpriteCallbackDummy)
         {
             battlerAnimsDone = TRUE;
+=======
+            && gSprites[gBattleControllerData[BATTLE_PARTNER(battler)]].callback == SpriteCallbackDummy)
+        {
+            TrySetBattlerShadowSpriteCallback(battler);
+            TrySetBattlerShadowSpriteCallback(BATTLE_PARTNER(battler));
+            if (gSprites[gBattlerSpriteIds[battler]].callback == SpriteCallbackDummy
+                && gSprites[gBattlerSpriteIds[BATTLE_PARTNER(battler)]].callback == SpriteCallbackDummy)
+            {
+                battlerAnimsDone = TRUE;
+            }
+>>>>>>> upstream/master
         }
     }
 
     if (bgmRestored && battlerAnimsDone)
     {
         if (twoMons && (!(gBattleTypeFlags & BATTLE_TYPE_MULTI) || BATTLE_TWO_VS_ONE_OPPONENT))
+<<<<<<< HEAD
         {
             DestroySprite(&gSprites[gBattleControllerData[BATTLE_PARTNER(battler)]]);
             SetBattlerShadowSpriteCallback(BATTLE_PARTNER(battler), GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_PARTNER(battler)]], MON_DATA_SPECIES));
@@ -296,6 +365,11 @@ static void Intro_TryShinyAnimShowHealthbox(u32 battler)
 
         DestroySprite(&gSprites[gBattleControllerData[battler]]);
         SetBattlerShadowSpriteCallback(battler, GetMonData(&gEnemyParty[gBattlerPartyIndexes[battler]], MON_DATA_SPECIES));
+=======
+            DestroySprite(&gSprites[gBattleControllerData[BATTLE_PARTNER(battler)]]);
+
+        DestroySprite(&gSprites[gBattleControllerData[battler]]);
+>>>>>>> upstream/master
         gBattleSpritesDataPtr->animationData->introAnimActive = FALSE;
         gBattleSpritesDataPtr->healthBoxesData[battler].bgmRestored = FALSE;
         gBattleSpritesDataPtr->healthBoxesData[battler].healthboxSlideInStarted = FALSE;
@@ -390,7 +464,11 @@ static void OpponentBufferExecCompleted(u32 battler)
     }
     else
     {
+<<<<<<< HEAD
         gBattleControllerExecFlags &= ~gBitTable[battler];
+=======
+        gBattleControllerExecFlags &= ~(1u << battler);
+>>>>>>> upstream/master
     }
 }
 
@@ -535,9 +613,12 @@ static void OpponentHandleChooseMove(u32 battler)
             case AI_CHOICE_FLEE:
                 BtlController_EmitTwoReturnValues(battler, BUFFER_B, B_ACTION_RUN, 0);
                 break;
+<<<<<<< HEAD
             case AI_CHOICE_SWITCH:
                 BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, 0xFFFF);
                 break;
+=======
+>>>>>>> upstream/master
             case 6:
                 BtlController_EmitTwoReturnValues(battler, BUFFER_B, 15, gBattlerTarget);
                 break;
@@ -549,7 +630,11 @@ static void OpponentHandleChooseMove(u32 battler)
                     if (GetBattlerMoveTargetType(battler, chosenMove) & MOVE_TARGET_BOTH)
                     {
                         gBattlerTarget = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
+<<<<<<< HEAD
                         if (gAbsentBattlerFlags & gBitTable[gBattlerTarget])
+=======
+                        if (gAbsentBattlerFlags & (1u << gBattlerTarget))
+>>>>>>> upstream/master
                             gBattlerTarget = GetBattlerAtPosition(B_POSITION_PLAYER_RIGHT);
                     }
                     // If opponent can and should use a gimmick (considering trainer data), do it
@@ -581,7 +666,11 @@ static void OpponentHandleChooseMove(u32 battler)
 
         if (GetBattlerMoveTargetType(battler, move) & (MOVE_TARGET_USER_OR_SELECTED | MOVE_TARGET_USER))
             BtlController_EmitTwoReturnValues(battler, BUFFER_B, 10, (chosenMoveId) | (battler << 8));
+<<<<<<< HEAD
         else if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
+=======
+        else if (IsDoubleBattle())
+>>>>>>> upstream/master
         {
             do {
                 target = GetBattlerAtPosition(Random() & 2);
@@ -635,6 +724,25 @@ static void OpponentHandleChooseItem(u32 battler)
     OpponentBufferExecCompleted(battler);
 }
 
+<<<<<<< HEAD
+=======
+static inline bool32 IsAcePokemon(u32 chosenMonId, u32 pokemonInBattle, u32 battler)
+{
+    return AI_THINKING_STRUCT->aiFlags[battler] & AI_FLAG_ACE_POKEMON
+        && (chosenMonId == CalculateEnemyPartyCountInSide(battler) - 1)
+        && CountAIAliveNonEggMonsExcept(PARTY_SIZE) != pokemonInBattle;
+}
+
+static inline bool32 IsDoubleAcePokemon(u32 chosenMonId, u32 pokemonInBattle, u32 battler)
+{
+    return AI_THINKING_STRUCT->aiFlags[battler] & AI_FLAG_DOUBLE_ACE_POKEMON
+        && (chosenMonId == CalculateEnemyPartyCountInSide(battler) - 1)
+        && (chosenMonId == CalculateEnemyPartyCountInSide(battler) - 2)
+        && CountAIAliveNonEggMonsExcept(PARTY_SIZE) != pokemonInBattle
+        && CountAIAliveNonEggMonsExcept(PARTY_SIZE-1) != pokemonInBattle;
+}
+
+>>>>>>> upstream/master
 static void OpponentHandleChoosePokemon(u32 battler)
 {
     s32 chosenMonId;
@@ -646,14 +754,22 @@ static void OpponentHandleChoosePokemon(u32 battler)
         chosenMonId = gSelectedMonPartyId = GetFirstFaintedPartyIndex(battler);
     }
     // Switching out
+<<<<<<< HEAD
     else if (*(gBattleStruct->AI_monToSwitchIntoId + battler) == PARTY_SIZE)
+=======
+    else if (gBattleStruct->AI_monToSwitchIntoId[battler] == PARTY_SIZE)
+>>>>>>> upstream/master
     {
         chosenMonId = GetMostSuitableMonToSwitchInto(battler, TRUE);
         if (chosenMonId == PARTY_SIZE)
         {
             s32 battler1, battler2, firstId, lastId;
 
+<<<<<<< HEAD
             if (!(gBattleTypeFlags & BATTLE_TYPE_DOUBLE))
+=======
+            if (!IsDoubleBattle())
+>>>>>>> upstream/master
             {
                 battler2 = battler1 = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
             }
@@ -665,6 +781,7 @@ static void OpponentHandleChoosePokemon(u32 battler)
             }
 
             GetAIPartyIndexes(battler, &firstId, &lastId);
+<<<<<<< HEAD
 
             for (chosenMonId = (lastId-1); chosenMonId >= firstId; chosenMonId--)
             {
@@ -686,13 +803,37 @@ static void OpponentHandleChoosePokemon(u32 battler)
         chosenMonId = *(gBattleStruct->AI_monToSwitchIntoId + battler);
         *(gBattleStruct->AI_monToSwitchIntoId + battler) = PARTY_SIZE;
         *(gBattleStruct->monToSwitchIntoId + battler) = chosenMonId;
+=======
+            for (chosenMonId = (lastId-1); chosenMonId >= firstId; chosenMonId--)
+            {
+                if (!IsValidForBattle(&gEnemyParty[chosenMonId])
+                 || chosenMonId == gBattlerPartyIndexes[battler1]
+                 || chosenMonId == gBattlerPartyIndexes[battler2])
+                    continue;
+
+                if (!IsAcePokemon(chosenMonId, pokemonInBattle, battler)
+                 && !IsDoubleAcePokemon(chosenMonId, pokemonInBattle, battler))
+                    break;
+            }
+        }
+        gBattleStruct->monToSwitchIntoId[battler] = chosenMonId;
+    }
+    else
+    {
+        chosenMonId = gBattleStruct->AI_monToSwitchIntoId[battler];
+        gBattleStruct->AI_monToSwitchIntoId[battler] = PARTY_SIZE;
+        gBattleStruct->monToSwitchIntoId[battler] = chosenMonId;
+>>>>>>> upstream/master
     }
     #if TESTING
     TestRunner_Battle_CheckSwitch(battler, chosenMonId);
     #endif // TESTING
     BtlController_EmitChosenMonReturnValue(battler, BUFFER_B, chosenMonId, NULL);
     OpponentBufferExecCompleted(battler);
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/master
 }
 
 static u8 CountAIAliveNonEggMonsExcept(u8 slotToIgnore)

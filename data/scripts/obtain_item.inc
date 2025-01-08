@@ -2,6 +2,10 @@
 .set AMOUNT, VAR_0x8001
 
 Std_ObtainItem::
+<<<<<<< HEAD
+=======
+	copyvar VAR_0x8006, ITEMID
+>>>>>>> upstream/master
 	additem ITEMID, AMOUNT
 	copyvar VAR_0x8007, VAR_RESULT
 	call EventScript_ObtainItemMessage
@@ -58,8 +62,16 @@ EventScript_ObtainedItem::
 EventScript_ObtainedItemMessage:
 	message gText_ObtainedTheItem
 EventScript_ContinueObtainedItem:
+<<<<<<< HEAD
 	waitfanfare
 	msgbox gText_PutItemInPocket, MSGBOX_DEFAULT
+=======
+	delay 10
+	showitemdescription
+	waitfanfare
+	msgbox gText_PutItemInPocket, MSGBOX_DEFAULT
+	hideitemdescription
+>>>>>>> upstream/master
 	setvar VAR_RESULT, TRUE
 	return
 
@@ -103,6 +115,10 @@ Std_FindItem::
 	lock
 	faceplayer
 	waitse
+<<<<<<< HEAD
+=======
+	copyvar VAR_0x8006, ITEMID
+>>>>>>> upstream/master
 	copyvar VAR_0x8004, ITEMID
 	copyvar VAR_0x8005, AMOUNT
 	checkitemspace ITEMID, AMOUNT
@@ -118,20 +134,37 @@ Std_FindItem::
 EventScript_PickUpItem::
 	removeobject VAR_LAST_TALKED
 	additem VAR_0x8004, VAR_0x8005
+<<<<<<< HEAD
+=======
+	copyvar VAR_0x8006 VAR_0x8004
+>>>>>>> upstream/master
 	specialvar VAR_RESULT, BufferTMHMMoveName
 	copyvar VAR_0x8008, VAR_RESULT
 	call_if_eq VAR_0x8008, TRUE, EventScript_FoundTMHM
 	call_if_eq VAR_0x8008, FALSE, EventScript_FoundItem
+<<<<<<< HEAD
+=======
+	delay 10
+	showitemdescription
+>>>>>>> upstream/master
 	waitfanfare
 	waitmessage
 	bufferitemnameplural STR_VAR_2, VAR_0x8004, VAR_0x8005
 	pyramid_inchallenge
 	goto_if_eq VAR_RESULT, TRUE, EventScript_PutBattlePyramidItemInBag
 	msgbox gText_PutItemInPocket, MSGBOX_DEFAULT
+<<<<<<< HEAD
+=======
+	hideitemdescription
+>>>>>>> upstream/master
 	return
 
 EventScript_PutBattlePyramidItemInBag::
 	msgbox gText_PlayerPutItemInBag, MSGBOX_DEFAULT
+<<<<<<< HEAD
+=======
+	hideitemdescription
+>>>>>>> upstream/master
 	return
 
 EventScript_FoundTMHM::
@@ -165,6 +198,10 @@ EventScript_NoRoomToPickUpItem::
 EventScript_HiddenItemScript::
 	lockall
 	waitse
+<<<<<<< HEAD
+=======
+	copyvar VAR_0x8006, VAR_0x8005
+>>>>>>> upstream/master
 	additem VAR_0x8005
 	copyvar VAR_0x8007, VAR_RESULT
 	bufferitemnameplural STR_VAR_2, VAR_0x8005, 1
@@ -194,11 +231,20 @@ EventScript_FoundHiddenItem::
 	end
 
 EventScript_PutHiddenItemInPocket::
+<<<<<<< HEAD
+=======
+	delay 10
+	showitemdescription
+>>>>>>> upstream/master
 	waitmessage
 	waitfanfare
 	bufferitemnameplural STR_VAR_2, VAR_0x8004, 1
 	copyvar VAR_0x8004, VAR_0x8008
 	msgbox gText_PutItemInPocket, MSGBOX_DEFAULT
+<<<<<<< HEAD
+=======
+	hideitemdescription
+>>>>>>> upstream/master
 	special TryPutTreasureInvestigatorsOnAir
 	special SetHiddenItemFlag
 	releaseall

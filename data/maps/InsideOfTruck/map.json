@@ -12,7 +12,11 @@
   "allow_running": false,
   "show_map_name": false,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+<<<<<<< HEAD
   "connections": 0,
+=======
+  "connections": null,
+>>>>>>> upstream/master
   "object_events": [
     {
       "graphics_id": "OBJ_EVENT_GFX_MOVING_BOX",
@@ -109,6 +113,17 @@
   "bg_events": [
     {
       "type": "sign",
+<<<<<<< HEAD
+=======
+      "x": 1,
+      "y": 0,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "InsideOfTruck_EventScript_MovingBox"
+    },
+    {
+      "type": "sign",
+>>>>>>> upstream/master
       "x": 3,
       "y": 4,
       "elevation": 0,
@@ -117,11 +132,34 @@
     },
     {
       "type": "sign",
+<<<<<<< HEAD
+=======
+      "x": 2,
+      "y": 3,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "InsideOfTruck_EventScript_MovingBox"
+    },
+    {
+      "type": "sign",
+>>>>>>> upstream/master
       "x": 0,
       "y": 1,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+<<<<<<< HEAD
       "script": "InsodeOfTruck_Text_GarbageSign"
+=======
+      "script": "InsideOfTruck_EventScript_MovingBox"
+    },
+    {
+      "type": "sign",
+      "x": 0,
+      "y": 2,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "InsideOfTruck_EventScript_MovingBox"
+>>>>>>> upstream/master
     }
   ]
 }

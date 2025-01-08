@@ -102,6 +102,9 @@ void MoveDeleterForgetMove(void);
 void BufferMoveDeleterNicknameAndMove(void);
 void GetNumMovesSelectedMonHas(void);
 void MoveDeleterChooseMoveToForget(void);
+<<<<<<< HEAD
 bool32 IsItemFlute(u16 item);
+=======
+>>>>>>> upstream/master
 
 #endif // GUARD_PARTY_MENU_H

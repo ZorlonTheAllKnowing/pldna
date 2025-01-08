@@ -6,6 +6,10 @@ void FreeBattleSpritesData(void);
 u16 ChooseMoveAndTargetInBattlePalace(u32 battler);
 void SpriteCB_WaitForBattlerBallReleaseAnim(struct Sprite *sprite);
 void SpriteCB_TrainerSlideIn(struct Sprite *sprite);
+<<<<<<< HEAD
+=======
+void SpriteCB_TrainerSpawn(struct Sprite *sprite);
+>>>>>>> upstream/master
 void InitAndLaunchChosenStatusAnimation(u32 battler, bool32 isStatus2, u32 status);
 bool8 TryHandleLaunchBattleTableAnimation(u8 activeBattlerId, u8 attacker, u8 target, u8 tableId, u16 argument);
 void InitAndLaunchSpecialAnimation(u8 activeBattlerId, u8 attacker, u8 target, u8 tableId);

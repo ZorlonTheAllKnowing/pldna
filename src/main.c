@@ -34,6 +34,10 @@ static void IntrDummy(void);
 
 // Defined in the linker script so that the test build can override it.
 extern void gInitialMainCB2(void);
+<<<<<<< HEAD
+=======
+extern void CB2_FlashNotDetectedScreen(void);
+>>>>>>> upstream/master
 
 const u8 gGameVersion = GAME_VERSION;
 
@@ -114,7 +118,11 @@ void AgbMain()
     gSoftResetDisabled = FALSE;
 
     if (gFlashMemoryPresent != TRUE)
+<<<<<<< HEAD
         SetMainCallback2(NULL);
+=======
+        SetMainCallback2((SAVE_TYPE_ERROR_SCREEN) ? CB2_FlashNotDetectedScreen : NULL);
+>>>>>>> upstream/master
 
     gLinkTransferringData = FALSE;
 
@@ -205,12 +213,18 @@ void SetMainCallback2(MainCallback callback)
 
 void StartTimer1(void)
 {
+<<<<<<< HEAD
     if (HQ_RANDOM)
     {
         REG_TM2CNT_L = 0;
         REG_TM2CNT_H = TIMER_ENABLE | TIMER_COUNTUP;
     }
 
+=======
+
+    REG_TM2CNT_L = 0;
+    REG_TM2CNT_H = TIMER_ENABLE | TIMER_COUNTUP;
+>>>>>>> upstream/master
     REG_TM1CNT_H = TIMER_ENABLE;
 }
 
@@ -218,6 +232,7 @@ void SeedRngAndSetTrainerId(void)
 {
     u32 val;
 
+<<<<<<< HEAD
     if (HQ_RANDOM)
     {
         REG_TM1CNT_H = 0;
@@ -236,6 +251,14 @@ void SeedRngAndSetTrainerId(void)
         REG_TM1CNT_H = 0;
         sTrainerId = val;
     }
+=======
+    REG_TM1CNT_H = 0;
+    REG_TM2CNT_H = 0;
+    val = ((u32)REG_TM2CNT_L) << 16;
+    val |= REG_TM1CNT_L;
+    SeedRng(val);
+    sTrainerId = Random();
+>>>>>>> upstream/master
 }
 
 u16 GetGeneratedTrainerIdLower(void)
@@ -254,6 +277,7 @@ void EnableVCountIntrAtLine150(void)
 #ifdef BUGFIX
 static void SeedRngWithRtc(void)
 {
+<<<<<<< HEAD
     #if HQ_RANDOM == FALSE
         u32 seed = RtcGetMinuteCount();
         seed = (seed >> 16) ^ (seed & 0xFFFF);
@@ -270,6 +294,18 @@ static void SeedRngWithRtc(void)
         SeedRng(seconds);
         #undef BCD8
     #endif
+=======
+    #define BCD8(x) ((((x) >> 4) & 0xF) * 10 + ((x) & 0xF))
+    u32 seconds;
+    struct SiiRtcInfo rtc;
+    RtcGetInfo(&rtc);
+    seconds =
+        ((HOURS_PER_DAY * RtcGetDayCount(&rtc) + BCD8(rtc.hour))
+        * MINUTES_PER_HOUR + BCD8(rtc.minute))
+        * SECONDS_PER_MINUTE + BCD8(rtc.second);
+    SeedRng(seconds);
+    #undef BCD8
+>>>>>>> upstream/master
 }
 #endif
 

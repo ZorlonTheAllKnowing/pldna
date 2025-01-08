@@ -77,7 +77,11 @@ SINGLE_BATTLE_TEST("Steel Beam causes the user & the target to faint when below 
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_STEEL_BEAM, player);
         HP_BAR(opponent, hp: 0);
+<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet fainted!");
+=======
+        MESSAGE("The opposing Wobbuffet fainted!");
+>>>>>>> upstream/master
         HP_BAR(player, hp: 0);
         MESSAGE("Wobbuffet fainted!");
     }
@@ -143,7 +147,11 @@ SINGLE_BATTLE_TEST("Steel Beam is not blocked by Damp")
         HP_BAR(player, damage: 200);
         NONE_OF {
             ABILITY_POPUP(opponent, ABILITY_DAMP);
+<<<<<<< HEAD
             MESSAGE("Foe Golduck's Damp prevents Wobbuffet from using Steel Beam!");
+=======
+            MESSAGE("The opposing Golduck's Damp prevents Wobbuffet from using Steel Beam!");
+>>>>>>> upstream/master
         }
     }
 }

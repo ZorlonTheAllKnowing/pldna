@@ -553,6 +553,10 @@ gSpecials::
 	def_special Script_GetChosenMonDefensiveEVs
 	def_special Script_GetChosenMonOffensiveIVs
 	def_special Script_GetChosenMonDefensiveIVs
+<<<<<<< HEAD
 	
 	@ added by me
 	@ def_special GetCurrentWeather
+=======
+	def_special UseBlankMessageToCancelPokemonPic
+>>>>>>> upstream/master

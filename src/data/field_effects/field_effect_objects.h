@@ -1336,6 +1336,7 @@ const struct SpriteTemplate gFieldEffectObjectTemplate_Rayquaza = {
 };
 
 static const struct SpritePalette sSpritePalette_Unused = {gObjectEventPal_Npc3, FLDEFF_PAL_TAG_UNKNOWN};
+<<<<<<< HEAD
 
 static const struct SpriteFrameImage sPicTable_Zig[] = {
     overworld_frame(gFieldEffectObjectPic_Zig, 2, 2, 0),
@@ -1385,3 +1386,5 @@ const struct SpriteTemplate gFieldEffectObjectTemplate_Zig = {
 };
 
 const struct SpritePalette gSpritePalette_Zig = {gFieldEffectPal_Zig, FLDEFF_PAL_TAG_ZIG};
+=======
+>>>>>>> upstream/master

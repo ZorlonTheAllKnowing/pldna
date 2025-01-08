@@ -49,6 +49,20 @@ struct FrontierBrainMon
     u16 moves[MAX_MON_MOVES];
 };
 
+<<<<<<< HEAD
+=======
+struct FrontierBrain
+{
+    u16 trainerId;
+    u8 objEventGfx;
+    u8 isFemale;
+    const u8 *lostTexts[2];
+    const u8 *wonTexts[2];
+    u16 battledBit[2];
+    u8 streakAppearances[4];
+};
+
+>>>>>>> upstream/master
 // This file's functions.
 static void GetChallengeStatus(void);
 static void GetFrontierData(void);
@@ -83,6 +97,7 @@ static void ShowPyramidResultsWindow(void);
 static void ShowLinkContestResultsWindow(void);
 static void CopyFrontierBrainText(bool8 playerWonText);
 
+<<<<<<< HEAD
 // const rom data
 static const u8 sFrontierBrainStreakAppearances[NUM_FRONTIER_FACILITIES][4] =
 {
@@ -93,6 +108,160 @@ static const u8 sFrontierBrainStreakAppearances[NUM_FRONTIER_FACILITIES][4] =
     [FRONTIER_FACILITY_FACTORY] = {21,  42, 21, 1},
     [FRONTIER_FACILITY_PIKE]    = {28, 140, 56, 1},
     [FRONTIER_FACILITY_PYRAMID] = {21,  70, 35, 0},
+=======
+// battledBit: Flags to change the conversation when the Frontier Brain is encountered for a battle
+// First bit is has battled them before and not won yet, second bit is has battled them and won (obtained a Symbol)
+const struct FrontierBrain gFrontierBrainInfo[NUM_FRONTIER_FACILITIES] =
+{
+    [FRONTIER_FACILITY_TOWER] =
+    {
+        .trainerId = TRAINER_ANABEL,
+        .objEventGfx = OBJ_EVENT_GFX_ANABEL,
+        .isFemale = TRUE,
+        .lostTexts = {
+            COMPOUND_STRING("Okay, I understand…"), //Silver
+            COMPOUND_STRING("Thank you…")           //Gold
+        },
+        .wonTexts = {
+            COMPOUND_STRING("It's very disappointing…"), //Silver
+            COMPOUND_STRING("I'm terribly sorry…")       //Gold
+        },
+        .battledBit = {1 << 0, 1 << 1},
+        .streakAppearances = {35, 70, 35, 1},
+    },
+    [FRONTIER_FACILITY_DOME] =
+    {
+        .trainerId = TRAINER_TUCKER,
+        .objEventGfx = OBJ_EVENT_GFX_TUCKER,
+        .isFemale = FALSE,
+        .lostTexts = {
+            COMPOUND_STRING(
+                "Grr…\n"
+                "What the…"),        //Silver
+            COMPOUND_STRING(
+                "Ahahaha!\n"
+                "You're inspiring!") //Gold
+        },
+        .wonTexts = {
+            COMPOUND_STRING(
+                "Ahahaha! Aren't you embarrassed?\n"
+                "Everyone's watching!"),                              //Silver
+            COMPOUND_STRING("My DOME ACE title isn't just for show!") //Gold
+        },
+        .battledBit = {1 << 2, 1 << 3},
+        .streakAppearances = {1, 2, 5, 0},
+    },
+    [FRONTIER_FACILITY_PALACE] =
+    {
+        .trainerId = TRAINER_SPENSER,
+        .objEventGfx = OBJ_EVENT_GFX_SPENSER,
+        .isFemale = FALSE,
+        .lostTexts = {
+            COMPOUND_STRING(
+                "Ah…\n"
+                "Now this is something else…"), //Silver
+            COMPOUND_STRING(
+                "Gwah!\n"
+                "Hahahaha!")                    //Gold
+        },
+        .wonTexts = {
+            COMPOUND_STRING(
+                "Your POKéMON are wimpy because\n"
+                "you're wimpy as a TRAINER!"),           //Silver
+            COMPOUND_STRING(
+                "Gwahahaha!\n"
+                "My brethren, we have nothing to fear!") //Gold
+        },
+        .battledBit = {1 << 4, 1 << 5},
+        .streakAppearances = {21, 42, 21, 1},
+    },
+    [FRONTIER_FACILITY_ARENA] =
+    {
+        .trainerId = TRAINER_GRETA,
+        .objEventGfx = OBJ_EVENT_GFX_GRETA,
+        .isFemale = TRUE,
+        .lostTexts = {
+            COMPOUND_STRING(
+                "No way!\n"
+                "Good job!"),        //Silver
+            COMPOUND_STRING(
+                "Huh?\n"
+                "Are you serious?!") //Gold
+        },
+        .wonTexts = {
+            COMPOUND_STRING(
+                "Oh, come on!\n"
+                "You have to try harder than that!"), //Silver
+            COMPOUND_STRING(
+                "Heheh!\n"
+                "What did you expect?")               //Gold
+        },
+        .battledBit = {1 << 6, 1 << 7},
+        .streakAppearances = {28, 56, 28, 1},
+    },
+    [FRONTIER_FACILITY_FACTORY] =
+    {
+        .trainerId = TRAINER_NOLAND,
+        .objEventGfx = OBJ_EVENT_GFX_NOLAND,
+        .isFemale = FALSE,
+        .lostTexts = {
+            COMPOUND_STRING(
+                "Good job!\n"
+                "You know what you're doing!"),    //Silver
+            COMPOUND_STRING("What happened here?") //Gold
+        },
+        .wonTexts = {
+            COMPOUND_STRING(
+                "Way to work!\n"
+                "That was a good lesson, eh?"), //Silver
+            COMPOUND_STRING(
+                "Hey, hey, hey!\n"
+                "You're finished already?")     //Gold
+        },
+        .battledBit = {1 << 8, 1 << 9},
+        .streakAppearances = {21, 42, 21, 1},
+    },
+    [FRONTIER_FACILITY_PIKE] =
+    {
+        .trainerId = TRAINER_LUCY,
+        .objEventGfx = OBJ_EVENT_GFX_LUCY,
+        .isFemale = TRUE,
+        .lostTexts = {
+            COMPOUND_STRING("Urk…"), //Silver
+            COMPOUND_STRING("Darn!") //Gold
+        },
+        .wonTexts = {
+            COMPOUND_STRING("Humph…"), //Silver
+            COMPOUND_STRING("Hah!")    //Gold
+        },
+        .battledBit = {1 << 10, 1 << 11},
+        .streakAppearances = {28, 140, 56, 1},
+    },
+    [FRONTIER_FACILITY_PYRAMID] =
+    {
+        .trainerId = TRAINER_BRANDON,
+        .objEventGfx = OBJ_EVENT_GFX_BRANDON,
+        .isFemale = FALSE,
+        .lostTexts = {
+            COMPOUND_STRING(
+                "That's it! You've done great!\n"
+                "You've worked hard for this!"), //Silver
+            COMPOUND_STRING(
+                "That's it! You've done it!\n"
+                "You kept working for this!")    //Gold
+        },
+        .wonTexts = {
+            COMPOUND_STRING(
+                "Hey! What's wrong with you!\n"
+                "Let's see some effort! Get up!"),       //Silver
+            COMPOUND_STRING(
+                "Hey! Don't you give up now!\n"
+                "Get up! Don't lose faith in yourself!") //Gold
+        },
+        .battledBit = {1 << 12, 1 << 13},
+        .streakAppearances = {21, 70, 35, 0},
+    },
+>>>>>>> upstream/master
 };
 
 static const struct FrontierBrainMon sFrontierBrainsMons[][2][FRONTIER_PARTY_SIZE] =
@@ -537,6 +706,7 @@ static const u8 sBattlePointAwards[NUM_FRONTIER_FACILITIES][FRONTIER_MODE_COUNT]
     },
 };
 
+<<<<<<< HEAD
 
 // Flags to change the conversation when the Frontier Brain is encountered for a battle
 // First bit is has battled them before and not won yet, second bit is has battled them and won (obtained a Symbol)
@@ -551,6 +721,8 @@ static const u16 sBattledBrainBitFlags[NUM_FRONTIER_FACILITIES][2] =
     [FRONTIER_FACILITY_PYRAMID] = {1 << 12, 1 << 13},
 };
 
+=======
+>>>>>>> upstream/master
 static void (* const sFrontierUtilFuncs[])(void) =
 {
     [FRONTIER_UTIL_FUNC_GET_STATUS]            = GetChallengeStatus,
@@ -611,6 +783,7 @@ static const struct WindowTemplate sRankingHallRecordsWindowTemplate =
     .baseBlock = 1
 };
 
+<<<<<<< HEAD
 // Second field - whether the character is female.
 static const u8 sFrontierBrainObjEventGfx[NUM_FRONTIER_FACILITIES][2] =
 {
@@ -623,6 +796,8 @@ static const u8 sFrontierBrainObjEventGfx[NUM_FRONTIER_FACILITIES][2] =
     [FRONTIER_FACILITY_PYRAMID] = {OBJ_EVENT_GFX_BRANDON, FALSE},
 };
 
+=======
+>>>>>>> upstream/master
 static const u8 *const sRecordsWindowChallengeTexts[][2] =
 {
     [RANKING_HALL_TOWER_SINGLES] = {gText_BattleTower2,  gText_FacilitySingle},
@@ -657,6 +832,7 @@ static const u8 *const sHallFacilityToRecordsText[] =
     [RANKING_HALL_TOWER_LINK]    = gText_FrontierFacilityWinStreak,
 };
 
+<<<<<<< HEAD
 static const u16 sFrontierBrainTrainerIds[NUM_FRONTIER_FACILITIES] =
 {
     [FRONTIER_FACILITY_TOWER]   = TRAINER_ANABEL,
@@ -724,6 +900,8 @@ static const u8 *const *const sFrontierBrainPlayerWonTexts[] =
     sFrontierBrainPlayerWonGoldTexts,
 };
 
+=======
+>>>>>>> upstream/master
 // code
 void CallFrontierUtilFunc(void)
 {
@@ -785,7 +963,11 @@ static void GetFrontierData(void)
         gSpecialVar_Result = gSaveBlock2Ptr->frontier.disableRecordBattle;
         break;
     case FRONTIER_DATA_HEARD_BRAIN_SPEECH:
+<<<<<<< HEAD
         gSpecialVar_Result = gSaveBlock2Ptr->frontier.battledBrainFlags & sBattledBrainBitFlags[facility][hasSymbol];
+=======
+        gSpecialVar_Result = gSaveBlock2Ptr->frontier.battledBrainFlags & gFrontierBrainInfo[facility].battledBit[hasSymbol];
+>>>>>>> upstream/master
         break;
     }
 }
@@ -820,7 +1002,11 @@ static void SetFrontierData(void)
         gSaveBlock2Ptr->frontier.disableRecordBattle = gSpecialVar_0x8006;
         break;
     case FRONTIER_DATA_HEARD_BRAIN_SPEECH:
+<<<<<<< HEAD
         gSaveBlock2Ptr->frontier.battledBrainFlags |= sBattledBrainBitFlags[facility][hasSymbol];
+=======
+        gSaveBlock2Ptr->frontier.battledBrainFlags |= gFrontierBrainInfo[facility].battledBit[hasSymbol];
+>>>>>>> upstream/master
         break;
     }
 }
@@ -1600,7 +1786,11 @@ u8 GetFrontierBrainStatus(void)
     s32 facility = VarGet(VAR_FRONTIER_FACILITY);
     s32 battleMode = VarGet(VAR_FRONTIER_BATTLE_MODE);
     u16 winStreakNoModifier = GetCurrentFacilityWinStreak();
+<<<<<<< HEAD
     s32 winStreak = winStreakNoModifier + sFrontierBrainStreakAppearances[facility][3];
+=======
+    s32 winStreak = winStreakNoModifier + gFrontierBrainInfo[facility].streakAppearances[3];
+>>>>>>> upstream/master
     s32 symbolsCount;
 
     if (battleMode != FRONTIER_MODE_SINGLES)
@@ -1612,13 +1802,18 @@ u8 GetFrontierBrainStatus(void)
     // Missing a symbol
     case 0:
     case 1:
+<<<<<<< HEAD
         if (winStreak == sFrontierBrainStreakAppearances[facility][symbolsCount])
+=======
+        if (winStreak == gFrontierBrainInfo[facility].streakAppearances[symbolsCount])
+>>>>>>> upstream/master
             status = symbolsCount + 1; // FRONTIER_BRAIN_SILVER and FRONTIER_BRAIN_GOLD
         break;
     // Already received both symbols
     case 2:
     default:
         // Silver streak is reached
+<<<<<<< HEAD
         if (winStreak == sFrontierBrainStreakAppearances[facility][0])
             status = FRONTIER_BRAIN_STREAK;
         // Gold streak is reached
@@ -1626,6 +1821,15 @@ u8 GetFrontierBrainStatus(void)
             status = FRONTIER_BRAIN_STREAK_LONG;
         // Some increment of the gold streak is reached
         else if (winStreak > sFrontierBrainStreakAppearances[facility][1] && (winStreak - sFrontierBrainStreakAppearances[facility][1]) % sFrontierBrainStreakAppearances[facility][2] == 0)
+=======
+        if (winStreak == gFrontierBrainInfo[facility].streakAppearances[0])
+            status = FRONTIER_BRAIN_STREAK;
+        // Gold streak is reached
+        else if (winStreak == gFrontierBrainInfo[facility].streakAppearances[1])
+            status = FRONTIER_BRAIN_STREAK_LONG;
+        // Some increment of the gold streak is reached
+        else if (winStreak > gFrontierBrainInfo[facility].streakAppearances[1] && (winStreak - gFrontierBrainInfo[facility].streakAppearances[1]) % gFrontierBrainInfo[facility].streakAppearances[2] == 0)
+>>>>>>> upstream/master
             status = FRONTIER_BRAIN_STREAK_LONG;
         break;
     }
@@ -2396,7 +2600,11 @@ u8 GetFrontierBrainTrainerPicIndex(void)
     else
         facility = VarGet(VAR_FRONTIER_FACILITY);
 
+<<<<<<< HEAD
     return GetTrainerPicFromId(sFrontierBrainTrainerIds[facility]);
+=======
+    return GetTrainerPicFromId(gFrontierBrainInfo[facility].trainerId);
+>>>>>>> upstream/master
 }
 
 u8 GetFrontierBrainTrainerClass(void)
@@ -2408,7 +2616,11 @@ u8 GetFrontierBrainTrainerClass(void)
     else
         facility = VarGet(VAR_FRONTIER_FACILITY);
 
+<<<<<<< HEAD
     return GetTrainerClassFromId(sFrontierBrainTrainerIds[facility]);
+=======
+    return GetTrainerClassFromId(gFrontierBrainInfo[facility].trainerId);
+>>>>>>> upstream/master
 }
 
 void CopyFrontierBrainTrainerName(u8 *dst)
@@ -2422,7 +2634,11 @@ void CopyFrontierBrainTrainerName(u8 *dst)
     else
         facility = VarGet(VAR_FRONTIER_FACILITY);
 
+<<<<<<< HEAD
     trainerName = GetTrainerNameFromId(sFrontierBrainTrainerIds[facility]);
+=======
+    trainerName = GetTrainerNameFromId(gFrontierBrainInfo[facility].trainerId);
+>>>>>>> upstream/master
     for (i = 0; i < PLAYER_NAME_LENGTH; i++)
         dst[i] = trainerName[i];
 
@@ -2432,13 +2648,21 @@ void CopyFrontierBrainTrainerName(u8 *dst)
 bool8 IsFrontierBrainFemale(void)
 {
     s32 facility = VarGet(VAR_FRONTIER_FACILITY);
+<<<<<<< HEAD
     return sFrontierBrainObjEventGfx[facility][1];
+=======
+    return gFrontierBrainInfo[facility].isFemale;
+>>>>>>> upstream/master
 }
 
 void SetFrontierBrainObjEventGfx_2(void)
 {
     s32 facility = VarGet(VAR_FRONTIER_FACILITY);
+<<<<<<< HEAD
     VarSet(VAR_OBJ_GFX_ID_0, sFrontierBrainObjEventGfx[facility][0]);
+=======
+    VarSet(VAR_OBJ_GFX_ID_0, gFrontierBrainInfo[facility].objEventGfx);
+>>>>>>> upstream/master
 }
 
 #define FRONTIER_BRAIN_OTID 61226
@@ -2505,7 +2729,11 @@ u16 GetFrontierBrainMonSpecies(u8 monId)
 void SetFrontierBrainObjEventGfx(u8 facility)
 {
     gTrainerBattleOpponent_A = TRAINER_FRONTIER_BRAIN;
+<<<<<<< HEAD
     VarSet(VAR_OBJ_GFX_ID_0, sFrontierBrainObjEventGfx[facility][0]);
+=======
+    VarSet(VAR_OBJ_GFX_ID_0, gFrontierBrainInfo[facility].objEventGfx);
+>>>>>>> upstream/master
 }
 
 u16 GetFrontierBrainMonMove(u8 monId, u8 moveSlotId)
@@ -2540,12 +2768,21 @@ s32 GetFronterBrainSymbol(void)
     if (symbol == 2)
     {
         u16 winStreak = GetCurrentFacilityWinStreak();
+<<<<<<< HEAD
         if (winStreak + sFrontierBrainStreakAppearances[facility][3] == sFrontierBrainStreakAppearances[facility][0])
             symbol = 0;
         else if (winStreak + sFrontierBrainStreakAppearances[facility][3] == sFrontierBrainStreakAppearances[facility][1])
             symbol = 1;
         else if (winStreak + sFrontierBrainStreakAppearances[facility][3] > sFrontierBrainStreakAppearances[facility][1]
                  && (winStreak + sFrontierBrainStreakAppearances[facility][3] - sFrontierBrainStreakAppearances[facility][1]) % sFrontierBrainStreakAppearances[facility][2] == 0)
+=======
+        if (winStreak + gFrontierBrainInfo[facility].streakAppearances[3] == gFrontierBrainInfo[facility].streakAppearances[0])
+            symbol = 0;
+        else if (winStreak + gFrontierBrainInfo[facility].streakAppearances[3] == gFrontierBrainInfo[facility].streakAppearances[1])
+            symbol = 1;
+        else if (winStreak + gFrontierBrainInfo[facility].streakAppearances[3] > gFrontierBrainInfo[facility].streakAppearances[1]
+                 && (winStreak + gFrontierBrainInfo[facility].streakAppearances[3] - gFrontierBrainInfo[facility].streakAppearances[1]) % gFrontierBrainInfo[facility].streakAppearances[2] == 0)
+>>>>>>> upstream/master
             symbol = 1;
     }
     return symbol;
@@ -2571,10 +2808,17 @@ static void CopyFrontierBrainText(bool8 playerWonText)
     switch (playerWonText)
     {
     case FALSE:
+<<<<<<< HEAD
         StringCopy(gStringVar4, sFrontierBrainPlayerLostTexts[symbol][facility]);
         break;
     case TRUE:
         StringCopy(gStringVar4, sFrontierBrainPlayerWonTexts[symbol][facility]);
+=======
+        StringCopy(gStringVar4, gFrontierBrainInfo[facility].wonTexts[symbol]);
+        break;
+    case TRUE:
+        StringCopy(gStringVar4, gFrontierBrainInfo[facility].lostTexts[symbol]);
+>>>>>>> upstream/master
         break;
     }
 }

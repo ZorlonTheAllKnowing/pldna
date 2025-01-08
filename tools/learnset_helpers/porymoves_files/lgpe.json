@@ -11337,7 +11337,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "RATTATA_ALOLAN": {
+=======
+  "RATTATA_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -11401,7 +11405,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "RATICATE_ALOLAN": {
+=======
+  "RATICATE_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -11491,7 +11499,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "RAICHU_ALOLAN": {
+=======
+  "RAICHU_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -11554,7 +11566,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "SANDSHREW_ALOLAN": {
+=======
+  "SANDSHREW_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -11625,7 +11641,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "SANDSLASH_ALOLAN": {
+=======
+  "SANDSLASH_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -11674,7 +11694,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "VULPIX_ALOLAN": {
+=======
+  "VULPIX_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -11737,7 +11761,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "NINETALES_ALOLAN": {
+=======
+  "NINETALES_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -11787,7 +11815,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "DIGLETT_ALOLAN": {
+=======
+  "DIGLETT_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -11848,7 +11880,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "DUGTRIO_ALOLAN": {
+=======
+  "DUGTRIO_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -11935,7 +11971,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "MEOWTH_ALOLAN": {
+=======
+  "MEOWTH_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -12017,7 +12057,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "PERSIAN_ALOLAN": {
+=======
+  "PERSIAN_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -12116,7 +12160,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "GEODUDE_ALOLAN": {
+=======
+  "GEODUDE_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -12194,7 +12242,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "GRAVELER_ALOLAN": {
+=======
+  "GRAVELER_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -12280,7 +12332,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "GOLEM_ALOLAN": {
+=======
+  "GOLEM_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -12371,7 +12427,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "GRIMER_ALOLAN": {
+=======
+  "GRIMER_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -12440,7 +12500,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "MUK_ALOLAN": {
+=======
+  "MUK_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -12529,7 +12593,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "EXEGGUTOR_ALOLAN": {
+=======
+  "EXEGGUTOR_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -12594,7 +12662,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "MAROWAK_ALOLAN": {
+=======
+  "MAROWAK_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,

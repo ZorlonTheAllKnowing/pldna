@@ -522,7 +522,11 @@ SINGLE_BATTLE_TEST("(Z-MOVE) 10,000,000 Volt Thunderbolt has an increased critic
     GIVEN {
         ASSUME(B_CRIT_CHANCE >= GEN_6);
         ASSUME(gMovesInfo[MOVE_10_000_000_VOLT_THUNDERBOLT].criticalHitStage == 2);
+<<<<<<< HEAD
         PLAYER(SPECIES_PIKACHU_PARTNER_CAP) { Item(ITEM_PIKASHUNIUM_Z); }
+=======
+        PLAYER(SPECIES_PIKACHU_PARTNER) { Item(ITEM_PIKASHUNIUM_Z); }
+>>>>>>> upstream/master
         OPPONENT(SPECIES_WOBBUFFET);
     } WHEN {
         TURN { MOVE(player, MOVE_THUNDERBOLT, gimmick: GIMMICK_Z_MOVE); }
@@ -597,7 +601,11 @@ SINGLE_BATTLE_TEST("(Z-MOVE) Splintered Stormshards removes terrain")
     } SCENE {
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_ZMOVE_ACTIVATE, player);
         ANIMATION(ANIM_TYPE_MOVE, MOVE_SPLINTERED_STORMSHARDS, player);
+<<<<<<< HEAD
         MESSAGE("The weirdness disappeared from the battlefield.");
+=======
+        MESSAGE("The weirdness disappeared from the battlefield!");
+>>>>>>> upstream/master
         ANIMATION(ANIM_TYPE_MOVE, MOVE_QUICK_ATTACK, player);
         HP_BAR(opponent);
     }

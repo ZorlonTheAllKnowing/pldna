@@ -10,11 +10,20 @@ SINGLE_BATTLE_TEST("Speed Boost gradually boosts Speed")
         TURN { MOVE(player, MOVE_CELEBRATE); MOVE(opponent, MOVE_CELEBRATE); }
         TURN { MOVE(player, MOVE_CELEBRATE); MOVE(opponent, MOVE_CELEBRATE); }
     } SCENE {
+<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet used Celebrate!");
         MESSAGE("Torchic used Celebrate!");
         ABILITY_POPUP(player, ABILITY_SPEED_BOOST);
         MESSAGE("Torchic's Speed Boost raised its SPEED!");
         MESSAGE("Torchic used Celebrate!");
         MESSAGE("Foe Wobbuffet used Celebrate!");
+=======
+        MESSAGE("The opposing Wobbuffet used Celebrate!");
+        MESSAGE("Torchic used Celebrate!");
+        ABILITY_POPUP(player, ABILITY_SPEED_BOOST);
+        MESSAGE("Torchic's Speed Boost raised its Speed!");
+        MESSAGE("Torchic used Celebrate!");
+        MESSAGE("The opposing Wobbuffet used Celebrate!");
+>>>>>>> upstream/master
     }
 }

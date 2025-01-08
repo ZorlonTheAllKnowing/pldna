@@ -22,7 +22,11 @@ SINGLE_BATTLE_TEST("Charm lowers Attack by 2 stages", s16 damage)
         if (lowerAttack) {
             ANIMATION(ANIM_TYPE_MOVE, MOVE_CHARM, player);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
+<<<<<<< HEAD
             MESSAGE("Foe Wobbuffet's Attack harshly fell!");
+=======
+            MESSAGE("The opposing Wobbuffet's Attack harshly fell!");
+>>>>>>> upstream/master
         }
         ANIMATION(ANIM_TYPE_MOVE, MOVE_TACKLE, opponent);
         HP_BAR(player, captureDamage: &results[i].damage);

@@ -22,9 +22,15 @@ DOUBLE_BATTLE_TEST("Beak Blast's charging message is shown before other moves ar
 
         MESSAGE("Wobbuffet used Celebrate!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, playerRight);
+<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet used Celebrate!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponentRight);
         MESSAGE("Foe Wobbuffet used Celebrate!");
+=======
+        MESSAGE("The opposing Wobbuffet used Celebrate!");
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponentRight);
+        MESSAGE("The opposing Wobbuffet used Celebrate!");
+>>>>>>> upstream/master
         ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponentLeft);
 
         MESSAGE("Wynaut used Beak Blast!");
@@ -51,6 +57,7 @@ DOUBLE_BATTLE_TEST("Beak Blast burns all who make contact with the pokemon")
         MESSAGE("Wobbuffet used Celebrate!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, playerRight);
 
+<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet used Tackle!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_TACKLE, opponentLeft);
         HP_BAR(playerLeft);
@@ -63,6 +70,20 @@ DOUBLE_BATTLE_TEST("Beak Blast burns all who make contact with the pokemon")
         HP_BAR(playerLeft);
         ANIMATION(ANIM_TYPE_STATUS, B_ANIM_STATUS_BRN, opponentRight);
         MESSAGE("Foe Wobbuffet was burned!");
+=======
+        MESSAGE("The opposing Wobbuffet used Tackle!");
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_TACKLE, opponentLeft);
+        HP_BAR(playerLeft);
+        ANIMATION(ANIM_TYPE_STATUS, B_ANIM_STATUS_BRN, opponentLeft);
+        MESSAGE("The opposing Wobbuffet was burned!");
+        STATUS_ICON(opponentLeft, burn: TRUE);
+
+        MESSAGE("The opposing Wobbuffet used Tackle!");
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_TACKLE, opponentRight);
+        HP_BAR(playerLeft);
+        ANIMATION(ANIM_TYPE_STATUS, B_ANIM_STATUS_BRN, opponentRight);
+        MESSAGE("The opposing Wobbuffet was burned!");
+>>>>>>> upstream/master
         STATUS_ICON(opponentRight, burn: TRUE);
 
         MESSAGE("Wynaut used Beak Blast!");
@@ -95,13 +116,21 @@ SINGLE_BATTLE_TEST("Beak Blast burns only when contact moves are used")
 
         if (burn) {
             ANIMATION(ANIM_TYPE_STATUS, B_ANIM_STATUS_BRN, opponent);
+<<<<<<< HEAD
             MESSAGE("Foe Wobbuffet was burned!");
+=======
+            MESSAGE("The opposing Wobbuffet was burned!");
+>>>>>>> upstream/master
             STATUS_ICON(opponent, burn: TRUE);
         }
         else {
             NONE_OF {
                 ANIMATION(ANIM_TYPE_STATUS, B_ANIM_STATUS_BRN, opponent);
+<<<<<<< HEAD
                 MESSAGE("Foe Wobbuffet was burned!");
+=======
+                MESSAGE("The opposing Wobbuffet was burned!");
+>>>>>>> upstream/master
                 STATUS_ICON(opponent, burn: TRUE);
             }
         }
@@ -113,4 +142,8 @@ SINGLE_BATTLE_TEST("Beak Blast burns only when contact moves are used")
 }
 
 TO_DO_BATTLE_TEST("Beak Blast's charging message is shown regardless if it would've missed");
+<<<<<<< HEAD
+=======
+TO_DO_BATTLE_TEST("Beak Blast fails if it's forced by Encore after choosing a different move");
+>>>>>>> upstream/master
 TO_DO_BATTLE_TEST("Bulletproof is immune to Beak Blast but not to the burn it causes");

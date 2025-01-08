@@ -41,7 +41,11 @@
  *           TURN { MOVE(player, MOVE_STUN_SPORE); } // 3.
  *       } SCENE {
  *           ANIMATION(ANIM_TYPE_MOVE, MOVE_STUN_SPORE, player);
+<<<<<<< HEAD
  *           MESSAGE("Foe Wobbuffet is paralyzed! It may be unable to move!"); // 4
+=======
+ *           MESSAGE("The opposing Wobbuffet is paralyzed, so it may be unable to move!"); // 4
+>>>>>>> upstream/master
  *           STATUS_ICON(opponent, paralysis: TRUE); // 4.
  *       }
  *   }
@@ -95,7 +99,11 @@
  *           TURN { MOVE(player, MOVE_STUN_SPORE); } // 3.
  *       } SCENE {
  *           NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_STUN_SPORE, player); // 4.
+<<<<<<< HEAD
  *           MESSAGE("It doesn't affect Foe Oddish…"); // 5.
+=======
+ *           MESSAGE("It doesn't affect the opposing Oddish…"); // 5.
+>>>>>>> upstream/master
  *       }
  *   }
  *
@@ -256,7 +264,11 @@
  *         } WHEN {
  *             TURN { MOVE(player, MOVE_CELEBRATE); }
  *         } SCENE {
+<<<<<<< HEAD
  *             MESSAGE("Wobbuffet is paralyzed! It can't move!");
+=======
+ *             MESSAGE("Wobbuffet is paralyzed, so it may be unable to move!");
+>>>>>>> upstream/master
  *         }
  *     }
  * All BattleRandom calls involving tag will return the same number, so
@@ -287,6 +299,19 @@
  *     GIVEN {
  *         FLAG_SET(FLAG_SYS_EXAMPLE_FLAG);
  *
+<<<<<<< HEAD
+=======
+ * WITH_CONFIG(configTag, value)
+ * Runs the test with a specified config override. `configTag` must be
+ * of `enum GenConfigTag`
+ * Example:
+ *     GIVEN {
+ *         WITH_CONFIG(GEN_CONFIG_GALE_WINGS, GEN_6);
+ *     }
+ * The `value` may be inferred from a local variable, e.g. set by
+ * PARAMETRIZE.
+ *
+>>>>>>> upstream/master
  * PLAYER(species) and OPPONENT(species)
  * Adds the species to the player's or opponent's party respectively.
  * The Pokémon can be further customized with the following functions:
@@ -413,7 +438,11 @@
  * Spaces in pattern match newlines (\n, \l, and \p) in the message.
  * Often used to check that a battler took its turn but it failed, e.g.:
  *     MESSAGE("Wobbuffet used Dream Eater!");
+<<<<<<< HEAD
  *     MESSAGE("Foe Wobbuffet wasn't affected!");
+=======
+ *     MESSAGE("The opposing Wobbuffet wasn't affected!");
+>>>>>>> upstream/master
  *
  * STATUS_ICON(battler, status1 | none: | sleep: | poison: | burn: | freeze: | paralysis:, badPoison:)
  * Causes the test to fail if the battler's status is not changed to the
@@ -432,7 +461,11 @@
  * following command succeeds.
  *     // Our Wobbuffet does not Celebrate before the foe's.
  *     NOT MESSAGE("Wobbuffet used Celebrate!");
+<<<<<<< HEAD
  *     MESSAGE("Foe Wobbuffet used Celebrate!");
+=======
+ *     MESSAGE("The opposing Wobbuffet used Celebrate!");
+>>>>>>> upstream/master
  * WARNING: NOT is an alias of NONE_OF, so it behaves surprisingly when
  *          applied to multiple commands wrapped in braces.
  *
@@ -440,7 +473,11 @@
  * Causes the test to fail unless one of the SCENE commands succeeds.
  *     ONE_OF {
  *         MESSAGE("Wobbuffet used Celebrate!");
+<<<<<<< HEAD
  *         MESSAGE("Wobbuffet is paralyzed! It can't move!");
+=======
+ *         MESSAGE("Wobbuffet is paralyzed, so it may be unable to move!");
+>>>>>>> upstream/master
  *     }
  *
  * NONE_OF
@@ -449,9 +486,15 @@
  *     // Our Wobbuffet does not move before the foe's.
  *     NONE_OF {
  *         MESSAGE("Wobbuffet used Celebrate!");
+<<<<<<< HEAD
  *         MESSAGE("Wobbuffet is paralyzed! It can't move!");
  *     }
  *     MESSAGE("Foe Wobbuffet used Celebrate!");
+=======
+ *         MESSAGE("Wobbuffet is paralyzed, so it may be unable to move!");
+ *     }
+ *     MESSAGE("The opposing Wobbuffet used Celebrate!");
+>>>>>>> upstream/master
  *
  * PLAYER_PARTY and OPPONENT_PARTY
  * Refer to the party members defined in GIVEN, e.g.:
@@ -488,6 +531,10 @@
 #include "battle.h"
 #include "battle_anim.h"
 #include "data.h"
+<<<<<<< HEAD
+=======
+#include "generational_changes.h"
+>>>>>>> upstream/master
 #include "item.h"
 #include "random.h"
 #include "recorded_battle.h"
@@ -742,7 +789,11 @@ extern struct BattleTestRunnerState *const gBattleTestRunnerState;
 /* Test */
 
 #define TO_DO_BATTLE_TEST(_name) \
+<<<<<<< HEAD
     TEST("TODO: " _name) \
+=======
+    TEST(_name) \
+>>>>>>> upstream/master
     { \
         TO_DO; \
     }
@@ -750,7 +801,11 @@ extern struct BattleTestRunnerState *const gBattleTestRunnerState;
 #define BATTLE_TEST_ARGS_SINGLE(_name, _type, ...) \
     struct CAT(Result, __LINE__) { RECURSIVELY(R_FOR_EACH(APPEND_SEMICOLON, __VA_ARGS__)) }; \
     static void CAT(Test, __LINE__)(struct CAT(Result, __LINE__) *, const u32, struct BattlePokemon *, struct BattlePokemon *); \
+<<<<<<< HEAD
     __attribute__((section(".tests"))) static const struct Test CAT(sTest, __LINE__) = \
+=======
+    __attribute__((section(".tests"), used)) static const struct Test CAT(sTest, __LINE__) = \
+>>>>>>> upstream/master
     { \
         .name = _name, \
         .filename = __FILE__, \
@@ -768,7 +823,11 @@ extern struct BattleTestRunnerState *const gBattleTestRunnerState;
 #define BATTLE_TEST_ARGS_DOUBLE(_name, _type, ...) \
     struct CAT(Result, __LINE__) { RECURSIVELY(R_FOR_EACH(APPEND_SEMICOLON, __VA_ARGS__)) }; \
     static void CAT(Test, __LINE__)(struct CAT(Result, __LINE__) *, const u32, struct BattlePokemon *, struct BattlePokemon *, struct BattlePokemon *, struct BattlePokemon *); \
+<<<<<<< HEAD
     __attribute__((section(".tests"))) static const struct Test CAT(sTest, __LINE__) = \
+=======
+    __attribute__((section(".tests"), used)) static const struct Test CAT(sTest, __LINE__) = \
+>>>>>>> upstream/master
     { \
         .name = _name, \
         .filename = __FILE__, \
@@ -822,6 +881,10 @@ struct moveWithPP {
 #define AI_LOG AILogScores(__LINE__)
 
 #define FLAG_SET(flagId) SetFlagForTest(__LINE__, flagId)
+<<<<<<< HEAD
+=======
+#define WITH_CONFIG(configTag, value) TestSetConfig(__LINE__, configTag, value)
+>>>>>>> upstream/master
 
 #define PLAYER(species) for (OpenPokemon(__LINE__, B_SIDE_PLAYER, species); gBattleTestRunnerState->data.currentMon; ClosePokemon(__LINE__))
 #define OPPONENT(species) for (OpenPokemon(__LINE__, B_SIDE_OPPONENT, species); gBattleTestRunnerState->data.currentMon; ClosePokemon(__LINE__))
@@ -855,6 +918,10 @@ struct moveWithPP {
 #define Shadow(isShadow) Shadow_(__LINE__, shadow)
 
 void SetFlagForTest(u32 sourceLine, u16 flagId);
+<<<<<<< HEAD
+=======
+void TestSetConfig(u32 sourceLine, enum GenConfigTag configTag, u32 value);
+>>>>>>> upstream/master
 void ClearFlagAfterTest(void);
 void OpenPokemon(u32 sourceLine, u32 side, u32 species);
 void ClosePokemon(u32 sourceLine);
@@ -1019,11 +1086,19 @@ void SendOut(u32 sourceLine, struct BattlePokemon *, u32 partyIndex);
                                      MESSAGE(name ", good! Come back!");          \
                                  }
 
+<<<<<<< HEAD
 #define SEND_IN_MESSAGE(name)    ONE_OF {                                            \
                                      MESSAGE("Go! " name "!");                       \
                                      MESSAGE("Do it! " name "!");                    \
                                      MESSAGE("Go for it, " name "!");                \
                                      MESSAGE("Your foe's weak! Get 'em, " name "!"); \
+=======
+#define SEND_IN_MESSAGE(name)    ONE_OF {                                                   \
+                                     MESSAGE("Go! " name "!");                              \
+                                     MESSAGE("You're in charge, " name "!");                \
+                                     MESSAGE("Go for it, " name "!");                       \
+                                     MESSAGE("Your opponent's weak! Get 'em, " name "!");   \
+>>>>>>> upstream/master
                                  }
 
 enum QueueGroupType

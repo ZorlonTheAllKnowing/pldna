@@ -14,7 +14,11 @@ SINGLE_BATTLE_TEST("Toxic Chain inflicts bad poison when attacking")
     } SCENE {
         ABILITY_POPUP(player, ABILITY_TOXIC_CHAIN);
         ANIMATION(ANIM_TYPE_STATUS, B_ANIM_STATUS_PSN, opponent);
+<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet is badly poisoned!");
+=======
+        MESSAGE("The opposing Wobbuffet was badly poisoned!");
+>>>>>>> upstream/master
         STATUS_ICON(opponent, badPoison: TRUE);
     } THEN {
         EXPECT(opponent->status1 & STATUS1_TOXIC_POISON);
@@ -35,13 +39,21 @@ SINGLE_BATTLE_TEST("Toxic Chain inflicts bad poison on any hit of a multi-hit mo
     } SCENE {
         ABILITY_POPUP(player, ABILITY_TOXIC_CHAIN);
         ANIMATION(ANIM_TYPE_STATUS, B_ANIM_STATUS_PSN, opponent);
+<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet is badly poisoned!");
+=======
+        MESSAGE("The opposing Wobbuffet was badly poisoned!");
+>>>>>>> upstream/master
         STATUS_ICON(opponent, badPoison: TRUE);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, opponent);
         STATUS_ICON(opponent, badPoison: FALSE);
         ABILITY_POPUP(player, ABILITY_TOXIC_CHAIN);
         ANIMATION(ANIM_TYPE_STATUS, B_ANIM_STATUS_PSN, opponent);
+<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet is badly poisoned!");
+=======
+        MESSAGE("The opposing Wobbuffet was badly poisoned!");
+>>>>>>> upstream/master
         STATUS_ICON(opponent, badPoison: TRUE);
     } THEN {
         EXPECT(opponent->status1 & STATUS1_TOXIC_POISON);
@@ -64,12 +76,20 @@ DOUBLE_BATTLE_TEST("Toxic Chain can inflict bad poison on both foes")
         HP_BAR(opponentLeft);
         ABILITY_POPUP(playerLeft, ABILITY_TOXIC_CHAIN);
         ANIMATION(ANIM_TYPE_STATUS, B_ANIM_STATUS_PSN, opponentLeft);
+<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet is badly poisoned!");
+=======
+        MESSAGE("The opposing Wobbuffet was badly poisoned!");
+>>>>>>> upstream/master
         STATUS_ICON(opponentLeft, badPoison: TRUE);
         HP_BAR(opponentRight);
         ABILITY_POPUP(playerLeft, ABILITY_TOXIC_CHAIN);
         ANIMATION(ANIM_TYPE_STATUS, B_ANIM_STATUS_PSN, opponentRight);
+<<<<<<< HEAD
         MESSAGE("Foe Wynaut is badly poisoned!");
+=======
+        MESSAGE("The opposing Wynaut was badly poisoned!");
+>>>>>>> upstream/master
         STATUS_ICON(opponentRight, badPoison: TRUE);
     } THEN {
         EXPECT(opponentLeft->status1 & STATUS1_TOXIC_POISON);
@@ -97,14 +117,23 @@ SINGLE_BATTLE_TEST("Toxic Chain makes Lum/Pecha Berry trigger before being knock
     } SCENE {
         ABILITY_POPUP(player, ABILITY_TOXIC_CHAIN);
         ANIMATION(ANIM_TYPE_STATUS, B_ANIM_STATUS_PSN, opponent);
+<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet is badly poisoned!");
+=======
+        MESSAGE("The opposing Wobbuffet was badly poisoned!");
+>>>>>>> upstream/master
         STATUS_ICON(opponent, badPoison: TRUE);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, opponent);
         STATUS_ICON(opponent, badPoison: FALSE);
         NONE_OF {
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_ITEM_KNOCKOFF);
+<<<<<<< HEAD
             MESSAGE("Okidogi knocked off Foe Wobbuffet's Pecha Berry!");
             MESSAGE("Okidogi knocked off Foe Wobbuffet's Lum Berry!");
+=======
+            MESSAGE("Okidogi knocked off the opposing Wobbuffet's Pecha Berry!");
+            MESSAGE("Okidogi knocked off the opposing Wobbuffet's Lum Berry!");
+>>>>>>> upstream/master
         }
     } THEN {
         EXPECT(opponent->status1 == 0);

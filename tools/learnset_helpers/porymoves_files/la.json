@@ -8433,7 +8433,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "WORMADAM_PLANT_CLOAK": {
+=======
+  "WORMADAM_PLANT": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -14495,7 +14499,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "MEOWSTIC_MALE": {
+=======
+  "MEOWSTIC_M": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
@@ -16049,7 +16057,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "INDEEDEE_MALE": {
+=======
+  "INDEEDEE_M": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
@@ -16161,7 +16173,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "URSHIFU_SINGLE_STRIKE_STYLE": {
+=======
+  "URSHIFU_SINGLE_STRIKE": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
@@ -16630,21 +16646,33 @@
       "MOVE_ZEN_HEADBUTT"
     ]
   },
+<<<<<<< HEAD
   "RATTATA_ALOLAN": {
+=======
+  "RATTATA_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "RATICATE_ALOLAN": {
+=======
+  "RATICATE_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "RAICHU_ALOLAN": {
+=======
+  "RAICHU_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -16699,21 +16727,33 @@
       "MOVE_WILD_CHARGE"
     ]
   },
+<<<<<<< HEAD
   "SANDSHREW_ALOLAN": {
+=======
+  "SANDSHREW_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "SANDSLASH_ALOLAN": {
+=======
+  "SANDSLASH_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "VULPIX_ALOLAN": {
+=======
+  "VULPIX_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -16765,7 +16805,11 @@
       "MOVE_ZEN_HEADBUTT"
     ]
   },
+<<<<<<< HEAD
   "NINETALES_ALOLAN": {
+=======
+  "NINETALES_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -16820,35 +16864,55 @@
       "MOVE_ZEN_HEADBUTT"
     ]
   },
+<<<<<<< HEAD
   "DIGLETT_ALOLAN": {
+=======
+  "DIGLETT_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "DUGTRIO_ALOLAN": {
+=======
+  "DUGTRIO_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "MEOWTH_ALOLAN": {
+=======
+  "MEOWTH_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "PERSIAN_ALOLAN": {
+=======
+  "PERSIAN_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "GEODUDE_ALOLAN": {
+=======
+  "GEODUDE_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -16903,7 +16967,11 @@
       "MOVE_THUNDER_PUNCH"
     ]
   },
+<<<<<<< HEAD
   "GRAVELER_ALOLAN": {
+=======
+  "GRAVELER_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -16958,7 +17026,11 @@
       "MOVE_THUNDER_PUNCH"
     ]
   },
+<<<<<<< HEAD
   "GOLEM_ALOLAN": {
+=======
+  "GOLEM_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -17020,42 +17092,66 @@
       "MOVE_THUNDER_PUNCH"
     ]
   },
+<<<<<<< HEAD
   "GRIMER_ALOLAN": {
+=======
+  "GRIMER_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "MUK_ALOLAN": {
+=======
+  "MUK_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "EXEGGUTOR_ALOLAN": {
+=======
+  "EXEGGUTOR_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "MAROWAK_ALOLAN": {
+=======
+  "MAROWAK_ALOLA": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "MEOWTH_GALARIAN": {
+=======
+  "MEOWTH_GALAR": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "PONYTA_GALARIAN": {
+=======
+  "PONYTA_GALAR": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -17103,7 +17199,11 @@
       "MOVE_WILD_CHARGE"
     ]
   },
+<<<<<<< HEAD
   "RAPIDASH_GALARIAN": {
+=======
+  "RAPIDASH_GALAR": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -17155,105 +17255,165 @@
       "MOVE_WILD_CHARGE"
     ]
   },
+<<<<<<< HEAD
   "SLOWPOKE_GALARIAN": {
+=======
+  "SLOWPOKE_GALAR": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "SLOWBRO_GALARIAN": {
+=======
+  "SLOWBRO_GALAR": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "FARFETCHD_GALARIAN": {
+=======
+  "FARFETCHD_GALAR": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "WEEZING_GALARIAN": {
+=======
+  "WEEZING_GALAR": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "ARTICUNO_GALARIAN": {
+=======
+  "ARTICUNO_GALAR": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "ZAPDOS_GALARIAN": {
+=======
+  "ZAPDOS_GALAR": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "MOLTRES_GALARIAN": {
+=======
+  "MOLTRES_GALAR": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "SLOWKING_GALARIAN": {
+=======
+  "SLOWKING_GALAR": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "CORSOLA_GALARIAN": {
+=======
+  "CORSOLA_GALAR": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "ZIGZAGOON_GALARIAN": {
+=======
+  "ZIGZAGOON_GALAR": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "LINOONE_GALARIAN": {
+=======
+  "LINOONE_GALAR": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "DARUMAKA_GALARIAN": {
+=======
+  "DARUMAKA_GALAR": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "DARMANITAN_GALARIAN": {
+=======
+  "DARMANITAN_GALAR": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "YAMASK_GALARIAN": {
+=======
+  "YAMASK_GALAR": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "STUNFISK_GALARIAN": {
+=======
+  "STUNFISK_GALAR": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
@@ -17281,7 +17441,11 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "WORMADAM_SANDY_CLOAK": {
+=======
+  "WORMADAM_SANDY": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -17326,7 +17490,11 @@
       "MOVE_STEALTH_ROCK"
     ]
   },
+<<<<<<< HEAD
   "WORMADAM_TRASH_CLOAK": {
+=======
+  "WORMADAM_TRASH": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -17661,14 +17829,22 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "FLOETTE_ETERNAL_FLOWER": {
+=======
+  "FLOETTE_ETERNAL": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "MEOWSTIC_FEMALE": {
+=======
+  "MEOWSTIC_F": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
@@ -17703,35 +17879,55 @@
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "INDEEDEE_FEMALE": {
+=======
+  "INDEEDEE_F": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "URSHIFU_RAPID_STRIKE_STYLE": {
+=======
+  "URSHIFU_RAPID_STRIKE": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "CALYREX_ICE_RIDER": {
+=======
+  "CALYREX_ICE": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "CALYREX_SHADOW_RIDER": {
+=======
+  "CALYREX_SHADOW": {
+>>>>>>> upstream/master
     "LevelMoves": [],
     "PreEvoMoves": [],
     "TMMoves": [],
     "EggMoves": [],
     "TutorMoves": []
   },
+<<<<<<< HEAD
   "GROWLITHE_HISUIAN": {
+=======
+  "GROWLITHE_HISUI": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -17784,7 +17980,11 @@
       "MOVE_WILD_CHARGE"
     ]
   },
+<<<<<<< HEAD
   "ARCANINE_HISUIAN": {
+=======
+  "ARCANINE_HISUI": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -17847,7 +18047,11 @@
       "MOVE_WILD_CHARGE"
     ]
   },
+<<<<<<< HEAD
   "VOLTORB_HISUIAN": {
+=======
+  "VOLTORB_HISUI": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -17896,7 +18100,11 @@
       "MOVE_WILD_CHARGE"
     ]
   },
+<<<<<<< HEAD
   "ELECTRODE_HISUIAN": {
+=======
+  "ELECTRODE_HISUI": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -17951,7 +18159,11 @@
       "MOVE_WILD_CHARGE"
     ]
   },
+<<<<<<< HEAD
   "TYPHLOSION_HISUIAN": {
+=======
+  "TYPHLOSION_HISUI": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -18019,7 +18231,11 @@
       "MOVE_WILD_CHARGE"
     ]
   },
+<<<<<<< HEAD
   "QWILFISH_HISUIAN": {
+=======
+  "QWILFISH_HISUI": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -18080,7 +18296,11 @@
       "MOVE_WATER_PULSE"
     ]
   },
+<<<<<<< HEAD
   "SNEASEL_HISUIAN": {
+=======
+  "SNEASEL_HISUI": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -18132,7 +18352,11 @@
       "MOVE_X_SCISSOR"
     ]
   },
+<<<<<<< HEAD
   "SAMUROTT_HISUIAN": {
+=======
+  "SAMUROTT_HISUI": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -18198,7 +18422,11 @@
       "MOVE_X_SCISSOR"
     ]
   },
+<<<<<<< HEAD
   "LILLIGANT_HISUIAN": {
+=======
+  "LILLIGANT_HISUI": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -18318,7 +18546,11 @@
       "MOVE_ZEN_HEADBUTT"
     ]
   },
+<<<<<<< HEAD
   "ZORUA_HISUIAN": {
+=======
+  "ZORUA_HISUI": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -18364,7 +18596,11 @@
       "MOVE_SWIFT"
     ]
   },
+<<<<<<< HEAD
   "ZOROARK_HISUIAN": {
+=======
+  "ZOROARK_HISUI": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -18423,7 +18659,11 @@
       "MOVE_SWIFT"
     ]
   },
+<<<<<<< HEAD
   "BRAVIARY_HISUIAN": {
+=======
+  "BRAVIARY_HISUI": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -18487,7 +18727,11 @@
       "MOVE_ZEN_HEADBUTT"
     ]
   },
+<<<<<<< HEAD
   "SLIGGOO_HISUIAN": {
+=======
+  "SLIGGOO_HISUI": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -18539,7 +18783,11 @@
       "MOVE_WATER_PULSE"
     ]
   },
+<<<<<<< HEAD
   "GOODRA_HISUIAN": {
+=======
+  "GOODRA_HISUI": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 1,
@@ -18598,7 +18846,11 @@
       "MOVE_WATER_PULSE"
     ]
   },
+<<<<<<< HEAD
   "AVALUGG_HISUIAN": {
+=======
+  "AVALUGG_HISUI": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,
@@ -18669,7 +18921,11 @@
       "MOVE_WATER_PULSE"
     ]
   },
+<<<<<<< HEAD
   "DECIDUEYE_HISUIAN": {
+=======
+  "DECIDUEYE_HISUI": {
+>>>>>>> upstream/master
     "LevelMoves": [
       {
         "Level": 0,

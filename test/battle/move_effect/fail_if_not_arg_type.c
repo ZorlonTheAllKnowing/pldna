@@ -70,7 +70,11 @@ SINGLE_BATTLE_TEST("Double Shock user loses its Electric-type")
         TURN { MOVE(player, MOVE_DOUBLE_SHOCK); }
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_DOUBLE_SHOCK, player);
+<<<<<<< HEAD
         MESSAGE("Pikachu used up all of its electricity!");
+=======
+        MESSAGE("Pikachu used up all its electricity!");
+>>>>>>> upstream/master
         MESSAGE("Pikachu used Double Shock!");
         MESSAGE("But it failed!");
     }
@@ -107,6 +111,10 @@ SINGLE_BATTLE_TEST("Double Shock user loses its Electric-type if enemy faints")
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_DOUBLE_SHOCK, player);
         HP_BAR(opponent, hp: 0);
+<<<<<<< HEAD
         MESSAGE("Pikachu used up all of its electricity!");
+=======
+        MESSAGE("Pikachu used up all its electricity!");
+>>>>>>> upstream/master
     }
 }

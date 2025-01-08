@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 1 "data/maps/CaveOfOrigin_1F/scripts.pory"
 
 # 2 "data/maps/CaveOfOrigin_1F/scripts.pory"
@@ -13,4 +14,12 @@ CaveOfOrigin_1F_OnTransition:
 # 7 "data/maps/CaveOfOrigin_1F/scripts.pory"
 	call_if_set FLAG_UNUSED_RS_LEGENDARY_BATTLE_DONE, CaveOfOrigin_EventScript_DisableTriggers
 # 8 "data/maps/CaveOfOrigin_1F/scripts.pory"
+=======
+CaveOfOrigin_1F_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, CaveOfOrigin_1F_OnTransition
+	.byte 0
+
+CaveOfOrigin_1F_OnTransition:
+	call_if_set FLAG_UNUSED_RS_LEGENDARY_BATTLE_DONE, CaveOfOrigin_EventScript_DisableTriggers
+>>>>>>> upstream/master
 	end

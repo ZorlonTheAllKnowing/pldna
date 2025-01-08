@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 1 "data/maps/SkyPillar_Entrance/scripts.pory"
 
 # 2 "data/maps/SkyPillar_Entrance/scripts.pory"
@@ -14,3 +15,13 @@ SkyPillar_Entrance_OnTransition:
 	setflag FLAG_LANDMARK_SKY_PILLAR
 # 8 "data/maps/SkyPillar_Entrance/scripts.pory"
 	end
+=======
+SkyPillar_Entrance_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, SkyPillar_Entrance_OnTransition
+	.byte 0
+
+SkyPillar_Entrance_OnTransition:
+	setflag FLAG_LANDMARK_SKY_PILLAR
+	end
+
+>>>>>>> upstream/master

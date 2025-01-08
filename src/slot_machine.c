@@ -2324,7 +2324,13 @@ static bool8 ReelTask_MoveToStop(struct Task *task)
     memcpy(reelStopShocks, sReelStopShocks, sizeof(sReelStopShocks));
     reelPixelPos = sSlotMachine->reelPixelOffsets[task->tReelId] % REEL_SYMBOL_HEIGHT;
     if (reelPixelPos != 0)
+<<<<<<< HEAD
         reelPixelPos = AdvanceSlotReelToNextSymbol(task->tReelId, sSlotMachine->reelSpeed);
+=======
+    {
+        reelPixelPos = AdvanceSlotReelToNextSymbol(task->tReelId, sSlotMachine->reelSpeed);
+    }
+>>>>>>> upstream/master
     else if (sSlotMachine->reelExtraTurns[task->tReelId])
     {
         sSlotMachine->reelExtraTurns[task->tReelId]--;

@@ -18,10 +18,17 @@ SINGLE_BATTLE_TEST("Psychic Noise blocks healing moves for 2 turns")
         TURN { MOVE(opponent, MOVE_RECOVER); }
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_PSYCHIC_NOISE, player);
+<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet was prevented from healing!");
         MESSAGE("Foe Wobbuffet was prevented from healing!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_STRUGGLE, opponent);
         MESSAGE("Foe Wobbuffet's Heal Block wore off!");
+=======
+        MESSAGE("The opposing Wobbuffet was prevented from healing!");
+        MESSAGE("The opposing Wobbuffet was prevented from healing!");
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_STRUGGLE, opponent);
+        MESSAGE("The opposing Wobbuffet's Heal Block wore off!");
+>>>>>>> upstream/master
         ANIMATION(ANIM_TYPE_MOVE, MOVE_RECOVER, opponent);
     }
 }
@@ -35,7 +42,11 @@ SINGLE_BATTLE_TEST("Psychic Noise is blocked by Soundproof")
         TURN { MOVE(player, MOVE_PSYCHIC_NOISE); MOVE(opponent, MOVE_RECOVER); }
     } SCENE {
         ABILITY_POPUP(opponent, ABILITY_SOUNDPROOF);
+<<<<<<< HEAD
         MESSAGE("Foe Voltorb's Soundproof blocks Psychic Noise!");
+=======
+        MESSAGE("The opposing Voltorb's Soundproof blocks Psychic Noise!");
+>>>>>>> upstream/master
         ANIMATION(ANIM_TYPE_MOVE, MOVE_RECOVER, opponent);
     }
 }
@@ -50,7 +61,11 @@ SINGLE_BATTLE_TEST("Psychic Noise heal block effect is blocked by Aroma Veil")
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_PSYCHIC_NOISE, player);
         ABILITY_POPUP(opponent, ABILITY_AROMA_VEIL);
+<<<<<<< HEAD
         MESSAGE("Foe Milcery is protected by an aromatic veil!");
+=======
+        MESSAGE("The opposing Milcery is protected by an aromatic veil!");
+>>>>>>> upstream/master
         ANIMATION(ANIM_TYPE_MOVE, MOVE_RECOVER, opponent);
     }
 }
@@ -67,7 +82,11 @@ DOUBLE_BATTLE_TEST("Psychic Noise heal block effect is blocked by partners Aroma
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_PSYCHIC_NOISE, playerLeft);
         ABILITY_POPUP(opponentRight, ABILITY_AROMA_VEIL);
+<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet is protected by an aromatic veil!");
+=======
+        MESSAGE("The opposing Wobbuffet is protected by an aromatic veil!");
+>>>>>>> upstream/master
         ANIMATION(ANIM_TYPE_MOVE, MOVE_RECOVER, opponentLeft);
     }
 }

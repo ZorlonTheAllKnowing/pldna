@@ -14,6 +14,10 @@ extern const u16 gTextWindowFrame1_Pal[];
 
 const struct TilesPal *GetWindowFrameTilesPal(u8 id);
 void LoadMessageBoxGfx(u8 windowId, u16 destOffset, u8 palOffset);
+<<<<<<< HEAD
+=======
+void LoadSignBoxGfx(u8 windowId, u16 destOffset, u8 palOffset);
+>>>>>>> upstream/master
 void LoadWindowGfx(u8 windowId, u8 frameId, u16 destOffset, u8 palOffset);
 void LoadUserWindowBorderGfx(u8 windowId, u16 destOffset, u8 palOffset);
 void LoadUserWindowBorderGfx_(u8 windowId, u16 destOffset, u8 palOffset);
@@ -23,5 +27,9 @@ void DrawTextBorderInner(u8 windowId, u16 tileNum, u8 palNum);
 void rbox_fill_rectangle(u8 windowId);
 const u16 *GetTextWindowPalette(u8 id);
 const u16 *GetOverworldTextboxPalettePtr(void);
+<<<<<<< HEAD
+=======
+void LoadSignPostWindowFrameGfx(void);
+>>>>>>> upstream/master
 
 #endif // GUARD_TEXT_WINDOW_H

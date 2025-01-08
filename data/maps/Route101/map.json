@@ -104,9 +104,13 @@
       "flag": "FLAG_HIDE_ROUTE_101_BOY"
     }
   ],
+<<<<<<< HEAD
   "warp_events": [
 
   ],
+=======
+  "warp_events": [],
+>>>>>>> upstream/master
   "coord_events": [
     {
       "type": "trigger",

@@ -21,14 +21,22 @@ DOUBLE_BATTLE_TEST("Defiant sharply raises player's Attack after Intimidate")
         //1st mon Intimidate
         ABILITY_POPUP(opponentLeft, ABILITY_INTIMIDATE);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, playerLeft);
+<<<<<<< HEAD
         MESSAGE("Foe Gyarados's Intimidate cuts Mankey's attack!");
+=======
+        MESSAGE("The opposing Gyarados's Intimidate cuts Mankey's Attack!");
+>>>>>>> upstream/master
         if (abilityLeft == ABILITY_DEFIANT) {
             ABILITY_POPUP(playerLeft, ABILITY_DEFIANT);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, playerLeft);
             MESSAGE("Mankey's Attack sharply rose!");
         }
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, playerRight);
+<<<<<<< HEAD
         MESSAGE("Foe Gyarados's Intimidate cuts Primeape's attack!");
+=======
+        MESSAGE("The opposing Gyarados's Intimidate cuts Primeape's Attack!");
+>>>>>>> upstream/master
         if (abilityRight == ABILITY_DEFIANT) {
             ABILITY_POPUP(playerRight, ABILITY_DEFIANT);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, playerRight);
@@ -38,14 +46,22 @@ DOUBLE_BATTLE_TEST("Defiant sharply raises player's Attack after Intimidate")
         //2nd mon Intimidate
         ABILITY_POPUP(opponentRight, ABILITY_INTIMIDATE);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, playerLeft);
+<<<<<<< HEAD
         MESSAGE("Foe Arbok's Intimidate cuts Mankey's attack!");
+=======
+        MESSAGE("The opposing Arbok's Intimidate cuts Mankey's Attack!");
+>>>>>>> upstream/master
         if (abilityLeft == ABILITY_DEFIANT) {
             ABILITY_POPUP(playerLeft, ABILITY_DEFIANT);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, playerLeft);
             MESSAGE("Mankey's Attack sharply rose!");
         }
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, playerRight);
+<<<<<<< HEAD
         MESSAGE("Foe Arbok's Intimidate cuts Primeape's attack!");
+=======
+        MESSAGE("The opposing Arbok's Intimidate cuts Primeape's Attack!");
+>>>>>>> upstream/master
         if (abilityRight == ABILITY_DEFIANT) {
             ABILITY_POPUP(playerRight, ABILITY_DEFIANT);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, playerRight);
@@ -79,6 +95,7 @@ DOUBLE_BATTLE_TEST("Defiant sharply raises opponent's Attack after Intimidate")
         //1st mon Intimidate
         ABILITY_POPUP(playerLeft, ABILITY_INTIMIDATE);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentLeft);
+<<<<<<< HEAD
         MESSAGE("Gyarados's Intimidate cuts Foe Mankey's attack!");
         if (abilityLeft == ABILITY_DEFIANT) {
             ABILITY_POPUP(opponentLeft, ABILITY_DEFIANT);
@@ -91,11 +108,26 @@ DOUBLE_BATTLE_TEST("Defiant sharply raises opponent's Attack after Intimidate")
             ABILITY_POPUP(opponentRight, ABILITY_DEFIANT);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentRight);
             MESSAGE("Foe Primeape's Attack sharply rose!");
+=======
+        MESSAGE("Gyarados's Intimidate cuts the opposing Mankey's Attack!");
+        if (abilityLeft == ABILITY_DEFIANT) {
+            ABILITY_POPUP(opponentLeft, ABILITY_DEFIANT);
+            ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentLeft);
+            MESSAGE("The opposing Mankey's Attack sharply rose!");
+        }
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentRight);
+        MESSAGE("Gyarados's Intimidate cuts the opposing Primeape's Attack!");
+        if (abilityRight == ABILITY_DEFIANT) {
+            ABILITY_POPUP(opponentRight, ABILITY_DEFIANT);
+            ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentRight);
+            MESSAGE("The opposing Primeape's Attack sharply rose!");
+>>>>>>> upstream/master
         }
 
         //2nd mon Intimidate
         ABILITY_POPUP(playerRight, ABILITY_INTIMIDATE);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentLeft);
+<<<<<<< HEAD
         MESSAGE("Arbok's Intimidate cuts Foe Mankey's attack!");
         if (abilityLeft == ABILITY_DEFIANT) {
             ABILITY_POPUP(opponentLeft, ABILITY_DEFIANT);
@@ -108,6 +140,20 @@ DOUBLE_BATTLE_TEST("Defiant sharply raises opponent's Attack after Intimidate")
             ABILITY_POPUP(opponentRight, ABILITY_DEFIANT);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentRight);
             MESSAGE("Foe Primeape's Attack sharply rose!");
+=======
+        MESSAGE("Arbok's Intimidate cuts the opposing Mankey's Attack!");
+        if (abilityLeft == ABILITY_DEFIANT) {
+            ABILITY_POPUP(opponentLeft, ABILITY_DEFIANT);
+            ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentLeft);
+            MESSAGE("The opposing Mankey's Attack sharply rose!");
+        }
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentRight);
+        MESSAGE("Arbok's Intimidate cuts the opposing Primeape's Attack!");
+        if (abilityRight == ABILITY_DEFIANT) {
+            ABILITY_POPUP(opponentRight, ABILITY_DEFIANT);
+            ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentRight);
+            MESSAGE("The opposing Primeape's Attack sharply rose!");
+>>>>>>> upstream/master
         }
     } FINALLY {
         // -2 from Intimidates and +4 from Defiants gets +2 total
@@ -129,7 +175,11 @@ SINGLE_BATTLE_TEST("Defiant activates after Sticky Web lowers Speed")
         ANIMATION(ANIM_TYPE_MOVE, MOVE_STICKY_WEB, opponent);
         // Switch-in - Sticky Web activates
         SEND_IN_MESSAGE("Mankey");
+<<<<<<< HEAD
         MESSAGE("Mankey was caught in a Sticky Web!");
+=======
+        MESSAGE("Mankey was caught in a sticky web!");
+>>>>>>> upstream/master
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
         MESSAGE("Mankey's Speed fell!");
         // Defiant activates
@@ -153,7 +203,11 @@ SINGLE_BATTLE_TEST("Defiant doesn't activate after Sticky Web lowers Speed if Co
         ANIMATION(ANIM_TYPE_MOVE, MOVE_COURT_CHANGE, opponent);
         // Switch-in - Sticky Web activates
         SEND_IN_MESSAGE("Mankey");
+<<<<<<< HEAD
         MESSAGE("Mankey was caught in a Sticky Web!");
+=======
+        MESSAGE("Mankey was caught in a sticky web!");
+>>>>>>> upstream/master
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
         MESSAGE("Mankey's Speed fell!");
         // Defiant doesn't activate
@@ -180,7 +234,11 @@ SINGLE_BATTLE_TEST("Defiant correctly activates after Sticky Web lowers Speed if
         ANIMATION(ANIM_TYPE_MOVE, MOVE_COURT_CHANGE, opponent);
         // Switch-in - Sticky Web activates
         SEND_IN_MESSAGE("Mankey");
+<<<<<<< HEAD
         MESSAGE("Mankey was caught in a Sticky Web!");
+=======
+        MESSAGE("Mankey was caught in a sticky web!");
+>>>>>>> upstream/master
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, player);
         MESSAGE("Mankey's Speed fell!");
         // Defiant doesn't activate
@@ -225,7 +283,11 @@ DOUBLE_BATTLE_TEST("Defiant is activated by Cotton Down for non-ally pokemon")
         MESSAGE("Mankey's Attack sharply rose!");
 
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentRight);
+<<<<<<< HEAD
         MESSAGE("Foe Mankey's Speed fell!");
+=======
+        MESSAGE("The opposing Mankey's Speed fell!");
+>>>>>>> upstream/master
     } THEN {
         EXPECT_EQ(playerLeft->statStages[STAT_SPEED], DEFAULT_STAT_STAGE - 1);
         EXPECT_EQ(playerRight->statStages[STAT_SPEED], DEFAULT_STAT_STAGE - 1);
@@ -257,11 +319,19 @@ SINGLE_BATTLE_TEST("Defiant activates before White Herb")
 
         if (move == MOVE_LEER) {
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
+<<<<<<< HEAD
             MESSAGE("Mankey's White Herb restored its status!");
         } else {
             NONE_OF {
                 ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
                 MESSAGE("Mankey's White Herb restored its status!");
+=======
+            MESSAGE("Mankey returned its stats to normal using its White Herb!");
+        } else {
+            NONE_OF {
+                ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
+                MESSAGE("Mankey returned its stats to normal using its White Herb!");
+>>>>>>> upstream/master
             }
         }
     } THEN {

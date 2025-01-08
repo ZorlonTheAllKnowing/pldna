@@ -1,6 +1,7 @@
 #include "global.h"
 #include "test/battle.h"
 
+<<<<<<< HEAD
 SINGLE_BATTLE_TEST("Gale Wings only grants priority at full HP")
 {
     u16 hp;
@@ -8,18 +9,38 @@ SINGLE_BATTLE_TEST("Gale Wings only grants priority at full HP")
     PARAMETRIZE { hp = 99; }
     GIVEN {
         ASSUME(B_GALE_WINGS >= GEN_7);
+=======
+SINGLE_BATTLE_TEST("Gale Wings only grants priority at full HP (Gen 7+)")
+{
+    u32 hp, config;
+    PARAMETRIZE { hp = 100; config = GEN_7; }
+    PARAMETRIZE { hp = 99;  config = GEN_7; }
+    PARAMETRIZE { hp = 100; config = GEN_6; }
+    PARAMETRIZE { hp = 99;  config = GEN_6; }
+    GIVEN {
+        WITH_CONFIG(GEN_CONFIG_GALE_WINGS, config);
+>>>>>>> upstream/master
         ASSUME(gMovesInfo[MOVE_AERIAL_ACE].type == TYPE_FLYING);
         PLAYER(SPECIES_TALONFLAME) { Ability(ABILITY_GALE_WINGS); HP(hp); MaxHP(100); Speed(1);}
         OPPONENT(SPECIES_WOBBUFFET) { Speed(100);};
     } WHEN {
         TURN { MOVE(player, MOVE_AERIAL_ACE); }
     } SCENE {
+<<<<<<< HEAD
         if (hp == 100) {
             MESSAGE("Talonflame used Aerial Ace!");
             MESSAGE("Foe Wobbuffet used Celebrate!");
         }
         else {
             MESSAGE("Foe Wobbuffet used Celebrate!");
+=======
+        if (hp == 100 || config <= GEN_6) {
+            MESSAGE("Talonflame used Aerial Ace!");
+            MESSAGE("The opposing Wobbuffet used Celebrate!");
+        }
+        else {
+            MESSAGE("The opposing Wobbuffet used Celebrate!");
+>>>>>>> upstream/master
             MESSAGE("Talonflame used Aerial Ace!");
         }
     }
@@ -31,7 +52,10 @@ SINGLE_BATTLE_TEST("Gale Wings only grants priority to Flying-type moves")
     PARAMETRIZE { move = MOVE_AERIAL_ACE; }
     PARAMETRIZE { move = MOVE_FLARE_BLITZ; }
     GIVEN {
+<<<<<<< HEAD
         ASSUME(B_GALE_WINGS >= GEN_7);
+=======
+>>>>>>> upstream/master
         ASSUME(gMovesInfo[MOVE_AERIAL_ACE].type == TYPE_FLYING);
         ASSUME(gMovesInfo[MOVE_FLARE_BLITZ].type == TYPE_FIRE);
         PLAYER(SPECIES_TALONFLAME) { Ability(ABILITY_GALE_WINGS); HP(100); MaxHP(100); Speed(1);}
@@ -41,10 +65,17 @@ SINGLE_BATTLE_TEST("Gale Wings only grants priority to Flying-type moves")
     } SCENE {
         if (move == MOVE_AERIAL_ACE) {
             MESSAGE("Talonflame used Aerial Ace!");
+<<<<<<< HEAD
             MESSAGE("Foe Wobbuffet used Celebrate!");
         }
         else {
             MESSAGE("Foe Wobbuffet used Celebrate!");
+=======
+            MESSAGE("The opposing Wobbuffet used Celebrate!");
+        }
+        else {
+            MESSAGE("The opposing Wobbuffet used Celebrate!");
+>>>>>>> upstream/master
             MESSAGE("Talonflame used Flare Blitz!");
         }
     }
@@ -58,7 +89,10 @@ SINGLE_BATTLE_TEST("Gale Wings doesn't increase priority of Flying-type Natural 
     PARAMETRIZE { move = MOVE_JUDGMENT; heldItem = ITEM_SKY_PLATE; }
     PARAMETRIZE { move = MOVE_HIDDEN_POWER; heldItem = ITEM_NONE; }
     GIVEN {
+<<<<<<< HEAD
         ASSUME(B_GALE_WINGS >= GEN_7);
+=======
+>>>>>>> upstream/master
         ASSUME(gMovesInfo[MOVE_NATURAL_GIFT].effect == EFFECT_NATURAL_GIFT);
         ASSUME(gMovesInfo[MOVE_JUDGMENT].effect == EFFECT_CHANGE_TYPE_ON_ITEM);
         // IV combinations sourced from https://www.smogon.com/forums/threads/hidden-power-iv-combinations.78083/
@@ -74,6 +108,7 @@ SINGLE_BATTLE_TEST("Gale Wings doesn't increase priority of Flying-type Natural 
     } SCENE {
             MESSAGE("Wobbuffet used Celebrate!");
         if (move == MOVE_NATURAL_GIFT) {
+<<<<<<< HEAD
             MESSAGE("Foe Talonflame used Natural Gift!");
         }
         else if (move == MOVE_JUDGMENT) {
@@ -84,6 +119,18 @@ SINGLE_BATTLE_TEST("Gale Wings doesn't increase priority of Flying-type Natural 
         }
         else {
             MESSAGE("Foe Talonflame used Tera Blast!");
+=======
+            MESSAGE("The opposing Talonflame used Natural Gift!");
+        }
+        else if (move == MOVE_JUDGMENT) {
+            MESSAGE("The opposing Talonflame used Judgment!");
+        }
+        else if (move == MOVE_HIDDEN_POWER) {
+            MESSAGE("The opposing Talonflame used Hidden Power!");
+        }
+        else {
+            MESSAGE("The opposing Talonflame used Tera Blast!");
+>>>>>>> upstream/master
         }
     }
 }

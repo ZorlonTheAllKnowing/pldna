@@ -21,7 +21,11 @@ SINGLE_BATTLE_TEST("Substitute creates a Substitute at the cost of 1/4 users max
         maxHP = GetMonData(&gPlayerParty[0], MON_DATA_HP);
         ANIMATION(ANIM_TYPE_MOVE, MOVE_SUBSTITUTE, player);
         HP_BAR(player, captureDamage: &costHP);
+<<<<<<< HEAD
         MESSAGE("Wobbuffet made a SUBSTITUTE!");
+=======
+        MESSAGE("Wobbuffet put in a substitute!");
+>>>>>>> upstream/master
     }THEN {
         EXPECT_EQ(maxHP / 4, costHP);
     }
@@ -36,7 +40,11 @@ SINGLE_BATTLE_TEST("Substitute fails if the user doesn't have enough HP")
     } WHEN {
         TURN { MOVE(player, MOVE_SUBSTITUTE); }
     } SCENE {
+<<<<<<< HEAD
         MESSAGE("It was too weak to make a SUBSTITUTE!");
+=======
+        MESSAGE("But it does not have enough HP left to make a substitute!");
+>>>>>>> upstream/master
     }
 }
 
@@ -51,7 +59,11 @@ SINGLE_BATTLE_TEST("Substitute's HP cost can trigger a berry")
         TURN { MOVE(player, MOVE_SUBSTITUTE); }
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_SUBSTITUTE, player);
+<<<<<<< HEAD
         MESSAGE("Wobbuffet's Sitrus Berry restored health!");
+=======
+        MESSAGE("Wobbuffet restored its health using its Sitrus Berry!");
+>>>>>>> upstream/master
     }
 }
 
@@ -64,7 +76,11 @@ SINGLE_BATTLE_TEST("Substitute's HP cost doesn't trigger effects that trigger on
         TURN { MOVE(player, MOVE_SUBSTITUTE); }
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_SUBSTITUTE, player);
+<<<<<<< HEAD
         MESSAGE("Wobbuffet made a SUBSTITUTE!");
+=======
+        MESSAGE("Wobbuffet put in a substitute!");
+>>>>>>> upstream/master
         NOT MESSAGE("Wobbuffet's Air Balloon popped!");
     }
 }

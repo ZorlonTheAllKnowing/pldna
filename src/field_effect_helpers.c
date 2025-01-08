@@ -1015,7 +1015,11 @@ void UpdateHotSpringsWaterFieldEffect(struct Sprite *sprite)
 #undef sPrevX
 #undef sPrevY
 
+<<<<<<< HEAD
 u32 FldEff_ShakingGrass(void)
+=======
+u32 FldEff_UnusedGrass(void)
+>>>>>>> upstream/master
 {
     u8 spriteId;
 
@@ -1026,6 +1030,7 @@ u32 FldEff_ShakingGrass(void)
         struct Sprite *sprite = &gSprites[spriteId];
         sprite->coordOffsetEnabled = TRUE;
         sprite->oam.priority = gFieldEffectArguments[3];
+<<<<<<< HEAD
         sprite->sWaitFldEff = FLDEFF_SHAKING_GRASS;
     }
     
@@ -1033,6 +1038,14 @@ u32 FldEff_ShakingGrass(void)
 }
 
 u32 FldEff_ShakingGrass2(void)
+=======
+        sprite->sWaitFldEff = FLDEFF_UNUSED_GRASS;
+    }
+    return 0;
+}
+
+u32 FldEff_UnusedGrass2(void)
+>>>>>>> upstream/master
 {
     u8 spriteId;
 
@@ -1043,10 +1056,16 @@ u32 FldEff_ShakingGrass2(void)
         struct Sprite *sprite = &gSprites[spriteId];
         sprite->coordOffsetEnabled = TRUE;
         sprite->oam.priority = gFieldEffectArguments[3];
+<<<<<<< HEAD
         sprite->sWaitFldEff = FLDEFF_SHAKING_LONG_GRASS;
     }
     
     return spriteId;
+=======
+        sprite->sWaitFldEff = FLDEFF_UNUSED_GRASS_2;
+    }
+    return 0;
+>>>>>>> upstream/master
 }
 
 u32 FldEff_UnusedSand(void)
@@ -1892,6 +1911,7 @@ static const s8 sFigure8YOffsets[FIGURE_8_LENGTH] = {
     -1,  0, -1, -1,  0, -1, -1,  0,
     -1, -1, -1, -1, -1, -1, -1, -2,
 };
+<<<<<<< HEAD
 
 u32 FldEff_Zig(void)
 {
@@ -1908,3 +1928,5 @@ u32 FldEff_Zig(void)
     }
     return 0;
 }
+=======
+>>>>>>> upstream/master

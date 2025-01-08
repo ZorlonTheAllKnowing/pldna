@@ -9,9 +9,12 @@
 
 #define TAG_SMOKESCREEN 55019
 
+<<<<<<< HEAD
 #define PALTAG_SHADOW 55039
 #define GFXTAG_SHADOW 55129
 
+=======
+>>>>>>> upstream/master
 static void SpriteCB_SmokescreenImpactMain(struct Sprite *);
 static void SpriteCB_SmokescreenImpact(struct Sprite *);
 
@@ -95,6 +98,7 @@ static const struct SpriteTemplate sSmokescreenImpactSpriteTemplate =
     .callback = SpriteCB_SmokescreenImpact
 };
 
+<<<<<<< HEAD
 const struct CompressedSpriteSheet gSpriteSheet_EnemyShadow =
 {
     .data = gEnemyMonShadow_Gfx, .size = 0x80, .tag = GFXTAG_SHADOW
@@ -128,6 +132,8 @@ const struct SpriteTemplate gSpriteTemplate_EnemyShadow =
     .callback = SpriteCB_SetInvisible
 };
 
+=======
+>>>>>>> upstream/master
 #define sActiveSprites data[0]
 #define sPersist       data[1]
 

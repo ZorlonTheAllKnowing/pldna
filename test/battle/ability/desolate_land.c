@@ -3,7 +3,11 @@
 
 ASSUMPTIONS
 {
+<<<<<<< HEAD
     ASSUME(gMovesInfo[MOVE_WATER_GUN].power != 0);
+=======
+    ASSUME(!IS_MOVE_STATUS(MOVE_WATER_GUN));
+>>>>>>> upstream/master
     ASSUME(gMovesInfo[MOVE_WATER_GUN].type == TYPE_WATER);
 }
 
@@ -16,6 +20,7 @@ SINGLE_BATTLE_TEST("Desolate Land blocks damaging Water-type moves")
         TURN { MOVE(opponent, MOVE_WATER_GUN); }
         TURN { MOVE(opponent, MOVE_WATER_GUN); }
     } SCENE {
+<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet used Water Gun!");
         NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_WATER_GUN, opponent);
         MESSAGE("The Water-type attack evaporated in the harsh sunlight!");
@@ -23,6 +28,15 @@ SINGLE_BATTLE_TEST("Desolate Land blocks damaging Water-type moves")
         MESSAGE("Foe Wobbuffet used Water Gun!");
         NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_WATER_GUN, opponent);
         MESSAGE("The Water-type attack evaporated in the harsh sunlight!");
+=======
+        MESSAGE("The opposing Wobbuffet used Water Gun!");
+        NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_WATER_GUN, opponent);
+        MESSAGE("The Water-type attack evaporated in the extremely harsh sunlight!");
+        NOT HP_BAR(player);
+        MESSAGE("The opposing Wobbuffet used Water Gun!");
+        NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_WATER_GUN, opponent);
+        MESSAGE("The Water-type attack evaporated in the extremely harsh sunlight!");
+>>>>>>> upstream/master
         NOT HP_BAR(player);
     } THEN {
         EXPECT_EQ(player->hp, player->maxHP);
@@ -32,7 +46,11 @@ SINGLE_BATTLE_TEST("Desolate Land blocks damaging Water-type moves")
 DOUBLE_BATTLE_TEST("Desolate Land blocks damaging Water-type moves and prints the message only once with moves hitting multiple targets")
 {
     GIVEN {
+<<<<<<< HEAD
         ASSUME(gMovesInfo[MOVE_SURF].power != 0);
+=======
+        ASSUME(!IS_MOVE_STATUS(MOVE_SURF));
+>>>>>>> upstream/master
         ASSUME(gMovesInfo[MOVE_SURF].type == TYPE_WATER);
         ASSUME(gMovesInfo[MOVE_SURF].target == MOVE_TARGET_FOES_AND_ALLY);
         PLAYER(SPECIES_GROUDON) {Item(ITEM_RED_ORB); {Speed(5);}}
@@ -42,10 +60,17 @@ DOUBLE_BATTLE_TEST("Desolate Land blocks damaging Water-type moves and prints th
     } WHEN {
         TURN { MOVE(opponentLeft, MOVE_SURF); }
     } SCENE {
+<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet used Surf!");
         NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_SURF, opponentLeft);
         MESSAGE("The Water-type attack evaporated in the harsh sunlight!");
         NOT MESSAGE("The Water-type attack evaporated in the harsh sunlight!");
+=======
+        MESSAGE("The opposing Wobbuffet used Surf!");
+        NOT ANIMATION(ANIM_TYPE_MOVE, MOVE_SURF, opponentLeft);
+        MESSAGE("The Water-type attack evaporated in the extremely harsh sunlight!");
+        NOT MESSAGE("The Water-type attack evaporated in the extremely harsh sunlight!");
+>>>>>>> upstream/master
     } THEN {
         EXPECT_EQ(playerLeft->hp, playerLeft->maxHP);
         EXPECT_EQ(playerRight->hp, playerRight->maxHP);
@@ -61,7 +86,12 @@ SINGLE_BATTLE_TEST("Desolate Land does not block a move if pokemon is asleep and
     } WHEN {
         TURN { MOVE(opponent, MOVE_WATER_GUN); }
     } SCENE {
+<<<<<<< HEAD
         NOT MESSAGE("The Water-type attack evaporated in the harsh sunlight!");
         MESSAGE("Foe Wobbuffet is fast asleep.");
+=======
+        NOT MESSAGE("The Water-type attack evaporated in the extremely harsh sunlight!");
+        MESSAGE("The opposing Wobbuffet is fast asleep.");
+>>>>>>> upstream/master
     }
 }

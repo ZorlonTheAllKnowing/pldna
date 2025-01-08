@@ -30,7 +30,11 @@ void ActivateTera(u32 battler)
     if (B_FLAG_TERA_ORB_CHARGED != 0
         && (B_FLAG_TERA_ORB_NO_COST == 0 || !FlagGet(B_FLAG_TERA_ORB_NO_COST))
         && side == B_SIDE_PLAYER
+<<<<<<< HEAD
         && !(gBattleTypeFlags & BATTLE_TYPE_DOUBLE && !IsPartnerMonFromSameTrainer(battler)))
+=======
+        && !(IsDoubleBattle() && !IsPartnerMonFromSameTrainer(battler)))
+>>>>>>> upstream/master
     {
         FlagClear(B_FLAG_TERA_ORB_CHARGED);
     }
@@ -114,14 +118,22 @@ u32 GetBattlerTeraType(u32 battler)
 void ExpendTypeStellarBoost(u32 battler, u32 type)
 {
     if (type < 32 && gBattleMons[battler].species != SPECIES_TERAPAGOS_STELLAR) // avoid OOB access
+<<<<<<< HEAD
         gBattleStruct->stellarBoostFlags[GetBattlerSide(battler)] |= gBitTable[type];
+=======
+        gBattleStruct->stellarBoostFlags[GetBattlerSide(battler)] |= 1u << type;
+>>>>>>> upstream/master
 }
 
 // Checks whether a type's Stellar boost has been expended.
 bool32 IsTypeStellarBoosted(u32 battler, u32 type)
 {
     if (type < 32) // avoid OOB access
+<<<<<<< HEAD
         return !(gBattleStruct->stellarBoostFlags[GetBattlerSide(battler)] & gBitTable[type]);
+=======
+        return !(gBattleStruct->stellarBoostFlags[GetBattlerSide(battler)] & (1u << type));
+>>>>>>> upstream/master
     else
         return FALSE;
 }

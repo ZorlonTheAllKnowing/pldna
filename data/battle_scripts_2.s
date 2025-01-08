@@ -25,6 +25,10 @@ gBattlescriptsForUsingItem::
 	.4byte BattleScript_ItemRestoreHP                @ EFFECT_ITEM_REVIVE
 	.4byte BattleScript_ItemRestorePP                @ EFFECT_ITEM_RESTORE_PP
 	.4byte BattleScript_ItemIncreaseAllStats         @ EFFECT_ITEM_INCREASE_ALL_STATS
+<<<<<<< HEAD
+=======
+	.4byte BattleScript_UsePokeFlute                 @ EFFECT_ITEM_USE_POKE_FLUTE
+>>>>>>> upstream/master
 
 	.align 2
 gBattlescriptsForSafariActions::
@@ -110,6 +114,28 @@ BattleScript_ItemIncreaseStat::
 	waitmessage B_WAIT_TIME_LONG
 	end
 
+<<<<<<< HEAD
+=======
+BattleScript_UsePokeFlute::
+	checkpokeflute
+	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 1, BattleScript_PokeFluteWakeUp
+	printstring STRINGID_POKEFLUTECATCHY
+	waitmessage B_WAIT_TIME_LONG
+	goto BattleScript_PokeFluteEnd
+
+BattleScript_PokeFluteWakeUp::
+	printstring STRINGID_POKEFLUTE
+	waitmessage B_WAIT_TIME_LONG
+	fanfare MUS_RG_POKE_FLUTE
+	waitfanfare
+	printstring STRINGID_MONHEARINGFLUTEAWOKE
+	waitmessage B_WAIT_TIME_LONG
+	updatestatusicon BS_PLAYER2
+	waitstate
+BattleScript_PokeFluteEnd::
+	finishaction
+
+>>>>>>> upstream/master
 BattleScript_ItemSetMist::
 	call BattleScript_UseItemMessage
 	setmist

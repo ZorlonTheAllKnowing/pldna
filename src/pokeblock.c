@@ -130,6 +130,14 @@ static void ReturnToPokeblockCaseOnField(void);
 static void CreateTossPokeblockYesNoMenu(u8);
 static void TossPokeblock(u8);
 
+<<<<<<< HEAD
+=======
+static const u8 sText_StowCase[] = _("Stow CASE.");
+static const u8 sText_LvVar1[] = _("{LV}{STR_VAR_1}");
+static const u8 sText_ThrowAwayVar1[] = _("Throw away this\n{STR_VAR_1}?");
+static const u8 sText_Var1ThrownAway[] = _("The {STR_VAR_1}\nwas thrown away.");
+
+>>>>>>> upstream/master
 EWRAM_DATA static struct PokeblockSavedData sSavedPokeblockData = {0};
 EWRAM_DATA static struct PokeblockMenuStruct *sPokeblockMenu = NULL;
 
@@ -197,6 +205,7 @@ static const struct BgTemplate sBgTemplatesForPokeblockMenu[] =
 const u8 *const gPokeblockNames[] =
 {
     [PBLOCK_CLR_NONE]      = NULL,
+<<<<<<< HEAD
     [PBLOCK_CLR_RED]       = gText_RedPokeblock,
     [PBLOCK_CLR_BLUE]      = gText_BluePokeblock,
     [PBLOCK_CLR_PINK]      = gText_PinkPokeblock,
@@ -211,6 +220,22 @@ const u8 *const gPokeblockNames[] =
     [PBLOCK_CLR_BLACK]     = gText_BlackPokeblock,
     [PBLOCK_CLR_WHITE]     = gText_WhitePokeblock,
     [PBLOCK_CLR_GOLD]      = gText_GoldPokeblock
+=======
+    [PBLOCK_CLR_RED]       = COMPOUND_STRING("RED {POKEBLOCK}"),
+    [PBLOCK_CLR_BLUE]      = COMPOUND_STRING("BLUE {POKEBLOCK}"),
+    [PBLOCK_CLR_PINK]      = COMPOUND_STRING("PINK {POKEBLOCK}"),
+    [PBLOCK_CLR_GREEN]     = COMPOUND_STRING("GREEN {POKEBLOCK}"),
+    [PBLOCK_CLR_YELLOW]    = COMPOUND_STRING("YELLOW {POKEBLOCK}"),
+    [PBLOCK_CLR_PURPLE]    = COMPOUND_STRING("PURPLE {POKEBLOCK}"),
+    [PBLOCK_CLR_INDIGO]    = COMPOUND_STRING("INDIGO {POKEBLOCK}"),
+    [PBLOCK_CLR_BROWN]     = COMPOUND_STRING("BROWN {POKEBLOCK}"),
+    [PBLOCK_CLR_LITE_BLUE] = COMPOUND_STRING("LITEBLUE {POKEBLOCK}"),
+    [PBLOCK_CLR_OLIVE]     = COMPOUND_STRING("OLIVE {POKEBLOCK}"),
+    [PBLOCK_CLR_GRAY]      = COMPOUND_STRING("GRAY {POKEBLOCK}"),
+    [PBLOCK_CLR_BLACK]     = COMPOUND_STRING("BLACK {POKEBLOCK}"),
+    [PBLOCK_CLR_WHITE]     = COMPOUND_STRING("WHITE {POKEBLOCK}"),
+    [PBLOCK_CLR_GOLD]      = COMPOUND_STRING("GOLD {POKEBLOCK}")
+>>>>>>> upstream/master
 };
 
 static const struct MenuAction sPokeblockMenuActions[] =
@@ -702,11 +727,19 @@ static void DrawPokeblockMenuTitleText(void)
     const u8 *itemName = ItemId_GetName(ITEM_POKEBLOCK_CASE);
     PrintOnPokeblockWindow(WIN_TITLE, itemName, GetStringCenterAlignXOffset(FONT_NORMAL, itemName, 0x48));
 
+<<<<<<< HEAD
     PrintOnPokeblockWindow(WIN_SPICY,  gText_Spicy, 0);
     PrintOnPokeblockWindow(WIN_DRY,    gText_Dry, 0);
     PrintOnPokeblockWindow(WIN_SWEET,  gText_Sweet, 0);
     PrintOnPokeblockWindow(WIN_BITTER, gText_Bitter, 0);
     PrintOnPokeblockWindow(WIN_SOUR,   gText_Sour, 0);
+=======
+    PrintOnPokeblockWindow(WIN_SPICY,  COMPOUND_STRING("SPICY"),  0);
+    PrintOnPokeblockWindow(WIN_DRY,    COMPOUND_STRING("DRY"),    0);
+    PrintOnPokeblockWindow(WIN_SWEET,  COMPOUND_STRING("SWEET"),  0);
+    PrintOnPokeblockWindow(WIN_BITTER, COMPOUND_STRING("BITTER"), 0);
+    PrintOnPokeblockWindow(WIN_SOUR,   COMPOUND_STRING("SOUR"),   0);
+>>>>>>> upstream/master
 
     for (i = 0; i < WIN_ACTIONS_TALL; i++)
         PutWindowTilemap(i);
@@ -723,7 +756,11 @@ static void UpdatePokeblockList(void)
         sPokeblockMenu->items[i].id = i;
     }
 
+<<<<<<< HEAD
     StringCopy(sPokeblockMenu->menuItemsStrings[i], gText_StowCase);
+=======
+    StringCopy(sPokeblockMenu->menuItemsStrings[i], sText_StowCase);
+>>>>>>> upstream/master
     sPokeblockMenu->items[i].name = sPokeblockMenu->menuItemsStrings[i];
     sPokeblockMenu->items[i].id = LIST_CANCEL;
 
@@ -744,7 +781,11 @@ static void PutPokeblockListMenuString(u8 *dst, u16 pkblId)
     *(txtPtr++) = CHAR_BLOCK_1;
 
     ConvertIntToDecimalStringN(gStringVar1, GetHighestPokeblocksFlavorLevel(pkblock), STR_CONV_MODE_LEFT_ALIGN, 3);
+<<<<<<< HEAD
     StringExpandPlaceholders(txtPtr, gText_LvVar1);
+=======
+    StringExpandPlaceholders(txtPtr, sText_LvVar1);
+>>>>>>> upstream/master
 }
 
 static void MovePokeblockMenuCursor(s32 pkblId, bool8 onInit, struct ListMenu *list)
@@ -1203,7 +1244,11 @@ static void PokeblockAction_Toss(u8 taskId)
 
     ClearStdWindowAndFrameToTransparent(tWindowId, FALSE);
     StringCopy(gStringVar1, gPokeblockNames[gSaveBlock1Ptr->pokeblocks[gSpecialVar_ItemId].color]);
+<<<<<<< HEAD
     StringExpandPlaceholders(gStringVar4, gText_ThrowAwayVar1);
+=======
+    StringExpandPlaceholders(gStringVar4, sText_ThrowAwayVar1);
+>>>>>>> upstream/master
     DisplayMessageAndContinueTask(taskId, WIN_TOSS_MSG, 10, 13, FONT_NORMAL, GetPlayerTextSpeedDelay(), gStringVar4, CreateTossPokeblockYesNoMenu);
 }
 
@@ -1214,7 +1259,11 @@ static void CreateTossPokeblockYesNoMenu(u8 taskId)
 
 static void TossedPokeblockMessage(u8 taskId)
 {
+<<<<<<< HEAD
     StringExpandPlaceholders(gStringVar4, gText_Var1ThrownAway);
+=======
+    StringExpandPlaceholders(gStringVar4, sText_Var1ThrownAway);
+>>>>>>> upstream/master
     DisplayMessageAndContinueTask(taskId, WIN_TOSS_MSG, 10, 13, FONT_NORMAL, GetPlayerTextSpeedDelay(), gStringVar4, TossPokeblock);
 }
 

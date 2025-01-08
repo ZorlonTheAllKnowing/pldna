@@ -16,7 +16,11 @@ SINGLE_BATTLE_TEST("Intrepid Sword raises Attack by one stage")
     } SCENE {
         ABILITY_POPUP(opponent, ABILITY_INTREPID_SWORD);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
+<<<<<<< HEAD
         MESSAGE("Foe Zacian's Intrepid Sword raised its Attack!");
+=======
+        MESSAGE("The opposing Zacian's Intrepid Sword raised its Attack!");
+>>>>>>> upstream/master
     } THEN {
         EXPECT_EQ(opponent->statStages[STAT_ATK], DEFAULT_STAT_STAGE + 1);
     }
@@ -34,11 +38,19 @@ SINGLE_BATTLE_TEST("Intrepid Sword raises Attack by one stage only once per batt
     } SCENE {
         ABILITY_POPUP(opponent, ABILITY_INTREPID_SWORD);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
+<<<<<<< HEAD
         MESSAGE("Foe Zacian's Intrepid Sword raised its Attack!");
         NONE_OF {
             ABILITY_POPUP(opponent, ABILITY_INTREPID_SWORD);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
             MESSAGE("Foe Zacian's Intrepid Sword raised its Attack!");
+=======
+        MESSAGE("The opposing Zacian's Intrepid Sword raised its Attack!");
+        NONE_OF {
+            ABILITY_POPUP(opponent, ABILITY_INTREPID_SWORD);
+            ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
+            MESSAGE("The opposing Zacian's Intrepid Sword raised its Attack!");
+>>>>>>> upstream/master
         }
     } THEN {
         EXPECT_EQ(opponent->statStages[STAT_ATK], DEFAULT_STAT_STAGE);
@@ -55,12 +67,21 @@ SINGLE_BATTLE_TEST("Intrepid Sword activates when it's no longer effected by Neu
         TURN { SWITCH(player, 1); }
     } SCENE {
         ABILITY_POPUP(player, ABILITY_NEUTRALIZING_GAS);
+<<<<<<< HEAD
         MESSAGE("Neutralizing Gas filled the area!");
         SWITCH_OUT_MESSAGE("Weezing");
         MESSAGE("The effects of Neutralizing Gas wore off!");
         ABILITY_POPUP(opponent, ABILITY_INTREPID_SWORD);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
         MESSAGE("Foe Zacian's Intrepid Sword raised its Attack!");
+=======
+        MESSAGE("Neutralizing gas filled the area!");
+        SWITCH_OUT_MESSAGE("Weezing");
+        MESSAGE("The effects of the neutralizing gas wore off!");
+        ABILITY_POPUP(opponent, ABILITY_INTREPID_SWORD);
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
+        MESSAGE("The opposing Zacian's Intrepid Sword raised its Attack!");
+>>>>>>> upstream/master
     }
 }
 
@@ -77,7 +98,11 @@ SINGLE_BATTLE_TEST("Intrepid Sword and Dauntless Shield both can be Skill Swappe
     } SCENE {
         ABILITY_POPUP(opponent, ABILITY_INTREPID_SWORD);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
+<<<<<<< HEAD
         MESSAGE("Foe Zacian's Intrepid Sword raised its Attack!");
+=======
+        MESSAGE("The opposing Zacian's Intrepid Sword raised its Attack!");
+>>>>>>> upstream/master
 
         ANIMATION(ANIM_TYPE_MOVE, MOVE_SKILL_SWAP, player);
         ABILITY_POPUP(player, ABILITY_INTREPID_SWORD);
@@ -86,7 +111,11 @@ SINGLE_BATTLE_TEST("Intrepid Sword and Dauntless Shield both can be Skill Swappe
 
         ABILITY_POPUP(opponent, ABILITY_DAUNTLESS_SHIELD);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
+<<<<<<< HEAD
         MESSAGE("Foe Zamazenta's Dauntless Shield raised its Defense!");
+=======
+        MESSAGE("The opposing Zamazenta's Dauntless Shield raised its Defense!");
+>>>>>>> upstream/master
 
         ANIMATION(ANIM_TYPE_MOVE, MOVE_SKILL_SWAP, player);
         ABILITY_POPUP(player, ABILITY_DAUNTLESS_SHIELD);

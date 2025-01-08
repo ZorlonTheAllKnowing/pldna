@@ -8,7 +8,10 @@
 COMMON_DATA rng_value_t gRngValue = {0};
 COMMON_DATA rng_value_t gRng2Value = {0};
 
+<<<<<<< HEAD
 #if HQ_RANDOM == TRUE
+=======
+>>>>>>> upstream/master
 
 EWRAM_DATA static volatile bool8 sRngLoopUnlocked;
 
@@ -112,6 +115,7 @@ void AdvanceRandom(void)
 
 #define LOOP_RANDOM ((u16)(_SFC32_Next(state) >> 16))
 
+<<<<<<< HEAD
 #else
 EWRAM_DATA static u32 sRandCount = 0;
 
@@ -145,6 +149,8 @@ u16 Random2(void)
 
 #endif
 
+=======
+>>>>>>> upstream/master
 #define SHUFFLE_IMPL \
     u32 tmp; \
     LOOP_RANDOM_START; \

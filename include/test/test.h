@@ -83,7 +83,11 @@ s32 Test_MgbaPrintf(const char *fmt, ...);
 
 #define TEST(_name) \
     static void CAT(Test, __LINE__)(void); \
+<<<<<<< HEAD
     __attribute__((section(".tests"))) static const struct Test CAT(sTest, __LINE__) = \
+=======
+    __attribute__((section(".tests"), used)) static const struct Test CAT(sTest, __LINE__) = \
+>>>>>>> upstream/master
     { \
         .name = _name, \
         .filename = __FILE__, \
@@ -95,7 +99,11 @@ s32 Test_MgbaPrintf(const char *fmt, ...);
 
 #define ASSUMPTIONS \
     static void Assumptions(void); \
+<<<<<<< HEAD
     __attribute__((section(".tests"))) static const struct Test sAssumptions = \
+=======
+    __attribute__((section(".tests"), used)) static const struct Test sAssumptions = \
+>>>>>>> upstream/master
     { \
         .name = "ASSUMPTIONS: " __FILE__, \
         .filename = __FILE__, \

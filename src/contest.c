@@ -949,6 +949,7 @@ static const struct CompressedSpriteSheet sSpriteSheets_ContestantsTurnBlinkEffe
     }
 };
 
+<<<<<<< HEAD
 // Yup this is super dangerous but that's how it is here
 static const struct SpritePalette sSpritePalettes_ContestantsTurnBlinkEffect[CONTESTANT_COUNT] =
 {
@@ -966,6 +967,24 @@ static const struct SpritePalette sSpritePalettes_ContestantsTurnBlinkEffect[CON
     },
     {
         .data = (u16 *)(gHeap + 0x1A104),
+=======
+static const struct SpritePalette sSpritePalettes_ContestantsTurnBlinkEffect[CONTESTANT_COUNT] =
+{
+    {
+        .data = eContestTempSave.cachedWindowPalettes[5],
+        .tag = TAG_BLINK_EFFECT_CONTESTANT0
+    },
+    {
+        .data = eContestTempSave.cachedWindowPalettes[6],
+        .tag = TAG_BLINK_EFFECT_CONTESTANT1
+    },
+    {
+        .data = eContestTempSave.cachedWindowPalettes[7],
+        .tag = TAG_BLINK_EFFECT_CONTESTANT2
+    },
+    {
+        .data = eContestTempSave.cachedWindowPalettes[8],
+>>>>>>> upstream/master
         .tag = TAG_BLINK_EFFECT_CONTESTANT3
     }
 };
@@ -2768,7 +2787,13 @@ static void Task_EndAppeals(u8 taskId)
     CalculateFinalScores();
     ContestClearGeneralTextWindow();
     if (!(gLinkContestFlags & LINK_CONTEST_FLAG_IS_LINK))
+<<<<<<< HEAD
         BravoTrainerPokemonProfile_BeforeInterview1(eContestantStatus[gContestPlayerMonIndex].prevMove);
+=======
+    {
+        BravoTrainerPokemonProfile_BeforeInterview1(eContestantStatus[gContestPlayerMonIndex].prevMove);
+    }
+>>>>>>> upstream/master
     else
     {
         CalculateContestLiveUpdateData();

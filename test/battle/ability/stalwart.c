@@ -43,7 +43,11 @@ DOUBLE_BATTLE_TEST("Stalwart stops Lightning Rod and Storm Drain from redirectin
             NONE_OF {
                 ABILITY_POPUP(opponentLeft, ability);
                 ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponentLeft);
+<<<<<<< HEAD
                 MESSAGE("Foe Raichu's Sp. Atk rose!");
+=======
+                MESSAGE("The opposing Raichu's Sp. Atk rose!");
+>>>>>>> upstream/master
             }
         } else {
             HP_BAR(opponentRight);

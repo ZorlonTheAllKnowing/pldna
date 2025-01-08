@@ -20,7 +20,11 @@ SINGLE_BATTLE_TEST("Dragon Tail switches the target with a random non-fainted re
         TURN { MOVE(player, MOVE_DRAGON_TAIL); }
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_DRAGON_TAIL, player);
+<<<<<<< HEAD
         MESSAGE("Foe Bulbasaur was dragged out!");
+=======
+        MESSAGE("The opposing Bulbasaur was dragged out!");
+>>>>>>> upstream/master
     }
 }
 
@@ -39,7 +43,11 @@ DOUBLE_BATTLE_TEST("Dragon Tail switches the target with a random non-battler, n
         TURN { MOVE(playerLeft, MOVE_DRAGON_TAIL, target: opponentRight); }
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_DRAGON_TAIL, playerLeft);
+<<<<<<< HEAD
         MESSAGE("Foe Bulbasaur was dragged out!");
+=======
+        MESSAGE("The opposing Bulbasaur was dragged out!");
+>>>>>>> upstream/master
     }
 }
 

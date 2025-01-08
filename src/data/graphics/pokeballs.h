@@ -1,3 +1,9 @@
+<<<<<<< HEAD
+=======
+const u32 gBallGfx_Strange[] = INCBIN_U32("graphics/balls/strange.4bpp.lz");
+const u32 gBallPal_Strange[] = INCBIN_U32("graphics/balls/strange.gbapal.lz");
+
+>>>>>>> upstream/master
 const u32 gBallGfx_Poke[] = INCBIN_U32("graphics/balls/poke.4bpp.lz");
 const u32 gBallPal_Poke[] = INCBIN_U32("graphics/balls/poke.gbapal.lz");
 

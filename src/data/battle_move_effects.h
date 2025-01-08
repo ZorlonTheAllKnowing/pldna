@@ -24,7 +24,11 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
 
     [EFFECT_ABSORB] =
     {
+<<<<<<< HEAD
         .battleScript = BattleScript_EffectAbsorb,
+=======
+        .battleScript = BattleScript_EffectHit,
+>>>>>>> upstream/master
         .battleTvScore = 4,
     },
 
@@ -1011,7 +1015,11 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleTvScore = 1,
     },
 
+<<<<<<< HEAD
     [EFFECT_ERUPTION] =
+=======
+    [EFFECT_POWER_BASED_ON_USER_HP] =
+>>>>>>> upstream/master
     {
         .battleScript = BattleScript_EffectHit,
         .battleTvScore = 1,
@@ -1144,7 +1152,11 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .encourageEncore = TRUE,
     },
 
+<<<<<<< HEAD
     [EFFECT_VARY_POWER_BASED_ON_HP] =
+=======
+    [EFFECT_POWER_BASED_ON_TARGET_HP] =
+>>>>>>> upstream/master
     {
         .battleScript = BattleScript_EffectHit,
         .battleTvScore = 0, // TODO: Assign points
@@ -1811,12 +1823,15 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleTvScore = 0, // TODO: Assign points
     },
 
+<<<<<<< HEAD
     [EFFECT_EERIE_SPELL] =
     {
         .battleScript = BattleScript_EffectEerieSpell,
         .battleTvScore = 0, // TODO: Assign points
     },
 
+=======
+>>>>>>> upstream/master
     [EFFECT_JUNGLE_HEALING] =
     {
         .battleScript = BattleScript_EffectJungleHealing,
@@ -1880,6 +1895,7 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleTvScore = 0, // TODO: Assign points
     },
 
+<<<<<<< HEAD
     [EFFECT_GLITZY_GLOW] =
     {
         .battleScript = BattleScript_EffectGlitzyGlow,
@@ -1904,18 +1920,23 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleTvScore = 0, // TODO: Assign points
     },
 
+=======
+>>>>>>> upstream/master
     [EFFECT_SPARKLY_SWIRL] =
     {
         .battleScript = BattleScript_EffectSparklySwirl,
         .battleTvScore = 0, // TODO: Assign points
     },
 
+<<<<<<< HEAD
     [EFFECT_PLASMA_FISTS] =
     {
         .battleScript = BattleScript_EffectPlasmaFists,
         .battleTvScore = 0, // TODO: Assign points
     },
 
+=======
+>>>>>>> upstream/master
     [EFFECT_HYPERSPACE_FURY] =
     {
         .battleScript = BattleScript_EffectHyperspaceFury,
@@ -2113,12 +2134,15 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleTvScore = 0, // TODO: Assign points
     },
 
+<<<<<<< HEAD
     [EFFECT_SALT_CURE] =
     {
         .battleScript = BattleScript_EffectSaltCure,
         .battleTvScore = 0, // TODO: Assign points
     },
 
+=======
+>>>>>>> upstream/master
     [EFFECT_CHILLY_RECEPTION] =
     {
         .battleScript = BattleScript_EffectChillyReception,
@@ -2255,4 +2279,13 @@ const struct BattleMoveEffect gBattleMoveEffects[NUM_BATTLE_MOVE_EFFECTS] =
         .battleScript = BattleScript_EffectHit,
         .battleTvScore = 0, // TODO: Assign points
     },
+<<<<<<< HEAD
+=======
+
+    [EFFECT_ORDER_UP] =
+    {
+        .battleScript = BattleScript_EffectHit,
+        .battleTvScore = 0, // TODO: Assign points
+    },
+>>>>>>> upstream/master
 };

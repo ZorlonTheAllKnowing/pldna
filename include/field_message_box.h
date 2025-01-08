@@ -19,4 +19,9 @@ u8 GetFieldMessageBoxMode(void);
 void StopFieldMessage(void);
 void InitFieldMessageBox(void);
 
+<<<<<<< HEAD
+=======
+extern u8 gWalkAwayFromSignpostTimer;
+
+>>>>>>> upstream/master
 #endif // GUARD_FIELD_MESSAGE_BOX_H

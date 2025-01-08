@@ -17,7 +17,11 @@ SINGLE_BATTLE_TEST("Axe Kick confuses the target")
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_AXE_KICK, player);
         ANIMATION(ANIM_TYPE_STATUS, B_ANIM_STATUS_CONFUSION, opponent);
+<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet became confused!");
+=======
+        MESSAGE("The opposing Wobbuffet became confused!");
+>>>>>>> upstream/master
     }
 }
 
@@ -31,8 +35,13 @@ SINGLE_BATTLE_TEST("Axe Kick deals damage half the hp to user if def battler pro
     } SCENE {
         s32 maxHP = GetMonData(&PLAYER_PARTY[0], MON_DATA_MAX_HP);
         ANIMATION(ANIM_TYPE_MOVE, MOVE_PROTECT, opponent);
+<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet protected itself!");
         MESSAGE("Foe Wobbuffet protected itself!");
+=======
+        MESSAGE("The opposing Wobbuffet protected itself!");
+        MESSAGE("The opposing Wobbuffet protected itself!");
+>>>>>>> upstream/master
         MESSAGE("Wobbuffet kept going and crashed!");
         HP_BAR(player, hp: maxHP / 2);
     }

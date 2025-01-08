@@ -25,8 +25,13 @@ gFieldEffectScriptPointers::
 	.4byte gFieldEffectScript_JumpSmallSplash           @ FLDEFF_JUMP_SMALL_SPLASH
 	.4byte gFieldEffectScript_LongGrass                 @ FLDEFF_LONG_GRASS
 	.4byte gFieldEffectScript_JumpLongGrass             @ FLDEFF_JUMP_LONG_GRASS
+<<<<<<< HEAD
 	.4byte gFieldEffectScript_ShakingGrass              @ FLDEFF_SHAKING_GRASS
 	.4byte gFieldEffectScript_ShakingGrass2             @ FLDEFF_SHAKING_LONG_GRASS
+=======
+	.4byte gFieldEffectScript_UnusedGrass               @ FLDEFF_UNUSED_GRASS
+	.4byte gFieldEffectScript_UnusedGrass2              @ FLDEFF_UNUSED_GRASS_2
+>>>>>>> upstream/master
 	.4byte gFieldEffectScript_UnusedSand                @ FLDEFF_UNUSED_SAND
 	.4byte gFieldEffectScript_WaterSurfacing            @ FLDEFF_WATER_SURFACING
 	.4byte gFieldEffectScript_BerryTreeGrowthSparkle    @ FLDEFF_BERRY_TREE_GROWTH_SPARKLE
@@ -79,7 +84,10 @@ gFieldEffectScriptPointers::
 	.4byte gFieldEffectScript_TracksSlither             @ FLDEFF_TRACKS_SLITHER
 	.4byte gFieldEffectScript_TracksBug                 @ FLDEFF_TRACKS_BUG
 	.4byte gFieldEffectScript_TracksSpot                @ FLDEFF_TRACKS_SPOT
+<<<<<<< HEAD
 	.4byte gFieldEffectScript_Zig            			@ FLDEFF_ZIG
+=======
+>>>>>>> upstream/master
 
 gFieldEffectScript_ExclamationMarkIcon1::
 	field_eff_callnative FldEff_ExclamationMarkIcon
@@ -157,12 +165,21 @@ gFieldEffectScript_JumpLongGrass::
 	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect1, FldEff_JumpLongGrass
 	field_eff_end
 
+<<<<<<< HEAD
 gFieldEffectScript_ShakingGrass::
 	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect1, FldEff_ShakingGrass
 	field_eff_end
 
 gFieldEffectScript_ShakingGrass2::
 	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect1, FldEff_ShakingGrass2
+=======
+gFieldEffectScript_UnusedGrass::
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect1, FldEff_UnusedGrass
+	field_eff_end
+
+gFieldEffectScript_UnusedGrass2::
+	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect1, FldEff_UnusedGrass2
+>>>>>>> upstream/master
 	field_eff_end
 
 gFieldEffectScript_UnusedSand::
@@ -375,7 +392,10 @@ gFieldEffectScript_TracksSpot::
 gFieldEffectScript_TracksSlither::
 	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, FldEff_TracksSlither
 	field_eff_end
+<<<<<<< HEAD
 
 gFieldEffectScript_Zig::
 	field_eff_loadfadedpal_callnative gSpritePalette_Zig, FldEff_Zig
 	field_eff_end
+=======
+>>>>>>> upstream/master

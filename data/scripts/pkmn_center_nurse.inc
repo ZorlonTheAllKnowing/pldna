@@ -36,6 +36,14 @@ EventScript_PkmnCenterNurse_TakeAndHealPkmn::
 	applymovement VAR_0x800B, Movement_PkmnCenterNurse_Turn @ Changed from Common_Movement_WalkInPlaceFasterLeft to force the follower to enter their Poké Ball
 	waitmovement 0
 	dofieldeffect FLDEFF_POKECENTER_HEAL
+<<<<<<< HEAD
+=======
+.if OW_UNION_DISABLE_CHECK == FALSE && OW_FLAG_MOVE_UNION_ROOM_CHECK != 0
+	setflag OW_FLAG_MOVE_UNION_ROOM_CHECK
+	call CableClub_OnResume
+	clearflag OW_FLAG_MOVE_UNION_ROOM_CHECK
+.endif
+>>>>>>> upstream/master
 	waitfieldeffect FLDEFF_POKECENTER_HEAL
 	applymovement VAR_0x800B, Common_Movement_WalkInPlaceFasterDown
 	waitmovement 0

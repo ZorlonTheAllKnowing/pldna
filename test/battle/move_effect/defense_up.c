@@ -6,7 +6,11 @@ ASSUMPTIONS
     ASSUME(gMovesInfo[MOVE_HARDEN].effect == EFFECT_DEFENSE_UP);
 }
 
+<<<<<<< HEAD
 SINGLE_BATTLE_TEST("Harden raises Defense", s16 damage)
+=======
+SINGLE_BATTLE_TEST("Harden raises Defense by 1 stage", s16 damage)
+>>>>>>> upstream/master
 {
     bool32 raiseDefense;
     PARAMETRIZE { raiseDefense = FALSE; }

@@ -30,9 +30,12 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 
+<<<<<<< HEAD
 //I THINK this is almost entirely unused with the HGSS flag turned on.
 //For now, I'll try to ignore it.
 
+=======
+>>>>>>> upstream/master
 enum
 {
     PAGE_MAIN,
@@ -104,6 +107,7 @@ enum {
     WIN_VU_METER,
 };
 
+<<<<<<< HEAD
 enum {
     UNSEEN,
     SEEN,
@@ -114,6 +118,8 @@ enum {
     MASTERED,
 };
 
+=======
+>>>>>>> upstream/master
 // For scrolling search parameter
 #define MAX_SEARCH_PARAM_ON_SCREEN   6
 #define MAX_SEARCH_PARAM_CURSOR_POS  (MAX_SEARCH_PARAM_ON_SCREEN - 1)
@@ -875,7 +881,11 @@ static const struct WindowTemplate sPokemonList_WindowTemplate[] =
 static const u8 sText_No0000[] = _("{NO}0000");
 static const u8 sText_No000[] = _("{NO}000");
 static const u8 sCaughtBall_Gfx[] = INCBIN_U8("graphics/pokedex/caught_ball.4bpp");
+<<<<<<< HEAD
 static const u8 sText_SingleSpace[] = _("----------");
+=======
+static const u8 sText_TenDashes[] = _("----------");
+>>>>>>> upstream/master
 
 ALIGNED(4) static const u8 sExpandedPlaceholder_PokedexDescription[] = _("");
 
@@ -2429,7 +2439,13 @@ static void CreateMonListEntry(u8 position, u16 b, u16 ignored)
         if (vOffset >= LIST_SCROLL_STEP)
             vOffset -= LIST_SCROLL_STEP;
         if (entryNum < 0 || entryNum >= NATIONAL_DEX_COUNT || sPokedexView->pokedexList[entryNum].dexNum == 0xFFFF)
+<<<<<<< HEAD
             ClearMonListEntry(17, vOffset * 2, ignored);
+=======
+        {
+            ClearMonListEntry(17, vOffset * 2, ignored);
+        }
+>>>>>>> upstream/master
         else
         {
             ClearMonListEntry(17, vOffset * 2, ignored);
@@ -2488,7 +2504,11 @@ static u8 CreateMonName(u16 num, u8 left, u8 top)
     if (num)
         str = GetSpeciesName(num);
     else
+<<<<<<< HEAD
         str = sText_SingleSpace;
+=======
+        str = sText_TenDashes;
+>>>>>>> upstream/master
     PrintMonName(0, FONT_NARROW, str, left, top);
     return StringLength(str);
 }
@@ -2724,7 +2744,13 @@ static bool8 TryDoInfoScreenScroll(void)
         }
 
         if (sPokedexView->selectedPokemon == selectedPokemon)
+<<<<<<< HEAD
             return FALSE;
+=======
+        {
+            return FALSE;
+        }
+>>>>>>> upstream/master
         else
         {
             sPokedexView->selectedPokemon = selectedPokemon;
@@ -2747,7 +2773,13 @@ static bool8 TryDoInfoScreenScroll(void)
         }
 
         if (sPokedexView->selectedPokemon == selectedPokemon)
+<<<<<<< HEAD
             return FALSE;
+=======
+        {
+            return FALSE;
+        }
+>>>>>>> upstream/master
         else
         {
             sPokedexView->selectedPokemon = selectedPokemon;

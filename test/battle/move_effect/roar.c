@@ -19,7 +19,11 @@ SINGLE_BATTLE_TEST("Roar switches the target with a random non-fainted replaceme
         TURN { MOVE(player, MOVE_ROAR); }
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_ROAR, player);
+<<<<<<< HEAD
         MESSAGE("Foe Bulbasaur was dragged out!");
+=======
+        MESSAGE("The opposing Bulbasaur was dragged out!");
+>>>>>>> upstream/master
     }
 }
 
@@ -38,7 +42,11 @@ DOUBLE_BATTLE_TEST("Roar switches the target with a random non-battler, non-fain
         TURN { MOVE(playerLeft, MOVE_ROAR, target: opponentRight); }
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_ROAR, playerLeft);
+<<<<<<< HEAD
         MESSAGE("Foe Bulbasaur was dragged out!");
+=======
+        MESSAGE("The opposing Bulbasaur was dragged out!");
+>>>>>>> upstream/master
     }
 }
 

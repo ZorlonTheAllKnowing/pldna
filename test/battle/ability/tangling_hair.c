@@ -27,7 +27,11 @@ SINGLE_BATTLE_TEST("Tangling Hair drops opposing mon's speed if ability user got
         if (move == MOVE_TACKLE) {
             ABILITY_POPUP(player, ABILITY_TANGLING_HAIR);
             ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
+<<<<<<< HEAD
             MESSAGE("Foe Wynaut's Speed fell!");
+=======
+            MESSAGE("The opposing Wynaut's Speed fell!");
+>>>>>>> upstream/master
         }
     }
 }
@@ -44,9 +48,15 @@ SINGLE_BATTLE_TEST("Tangling Hair does not cause Rocky Helmet miss activation")
         ANIMATION(ANIM_TYPE_MOVE, MOVE_TACKLE, opponent);
         ABILITY_POPUP(player, ABILITY_TANGLING_HAIR);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
+<<<<<<< HEAD
         MESSAGE("Foe Wynaut's Speed fell!");
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
         MESSAGE("Foe Wynaut was hurt by Dugtrio's Rocky Helmet!");
+=======
+        MESSAGE("The opposing Wynaut's Speed fell!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
+        MESSAGE("The opposing Wynaut was hurt by Dugtrio's Rocky Helmet!");
+>>>>>>> upstream/master
     }
 }
 
@@ -61,10 +71,18 @@ SINGLE_BATTLE_TEST("Tangling Hair Speed stat drop triggers defiant and keeps ori
         ANIMATION(ANIM_TYPE_MOVE, MOVE_TACKLE, opponent);
         ABILITY_POPUP(player, ABILITY_TANGLING_HAIR);
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_STATS_CHANGE, opponent);
+<<<<<<< HEAD
         MESSAGE("Foe Pawniard's Speed fell!");
         ABILITY_POPUP(opponent, ABILITY_DEFIANT);
         MESSAGE("Foe Pawniard's Attack sharply rose!");
         ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
         MESSAGE("Foe Pawniard was hurt by Dugtrio's Rocky Helmet!");
+=======
+        MESSAGE("The opposing Pawniard's Speed fell!");
+        ABILITY_POPUP(opponent, ABILITY_DEFIANT);
+        MESSAGE("The opposing Pawniard's Attack sharply rose!");
+        ANIMATION(ANIM_TYPE_GENERAL, B_ANIM_HELD_ITEM_EFFECT, player);
+        MESSAGE("The opposing Pawniard was hurt by Dugtrio's Rocky Helmet!");
+>>>>>>> upstream/master
     }
 }

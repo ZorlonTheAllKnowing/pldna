@@ -16,7 +16,11 @@ SINGLE_BATTLE_TEST("Pay Day Scatters coins around after it hits - singles")
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_PAY_DAY, player);
         HP_BAR(opponent);
+<<<<<<< HEAD
         MESSAGE("Coins scattered everywhere!");
+=======
+        MESSAGE("Coins were scattered everywhere!");
+>>>>>>> upstream/master
     }
 }
 
@@ -32,6 +36,10 @@ DOUBLE_BATTLE_TEST("Pay Day Scatters coins around after it hits - doubles")
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_PAY_DAY, playerLeft);
         HP_BAR(opponentLeft);
+<<<<<<< HEAD
         MESSAGE("Coins scattered everywhere!");
+=======
+        MESSAGE("Coins were scattered everywhere!");
+>>>>>>> upstream/master
     }
 }

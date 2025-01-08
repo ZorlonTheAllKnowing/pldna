@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 1 "data/maps/AbandonedShip_Underwater2/scripts.pory"
 
 # 2 "data/maps/AbandonedShip_Underwater2/scripts.pory"
@@ -14,3 +15,13 @@ AbandonedShip_Underwater2_OnResume:
 	setdivewarp MAP_ABANDONED_SHIP_ROOMS_B1F, 13, 7
 # 8 "data/maps/AbandonedShip_Underwater2/scripts.pory"
 	end
+=======
+AbandonedShip_Underwater2_MapScripts::
+	map_script MAP_SCRIPT_ON_RESUME, AbandonedShip_Underwater2_OnResume
+	.byte 0
+
+AbandonedShip_Underwater2_OnResume:
+	setdivewarp MAP_ABANDONED_SHIP_ROOMS_B1F, 13, 7
+	end
+
+>>>>>>> upstream/master

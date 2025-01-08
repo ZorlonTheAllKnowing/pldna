@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 1 "data/maps/SafariZone_Northeast/scripts.pory"
 
 # 2 "data/maps/SafariZone_Northeast/scripts.pory"
@@ -7,4 +8,9 @@ SafariZone_Northeast_MapScripts::
 # 4 "data/maps/SafariZone_Northeast/scripts.pory"
 
 # 5 "data/maps/SafariZone_Northeast/scripts.pory"
+=======
+SafariZone_Northeast_MapScripts::
+	.byte 0
+
+>>>>>>> upstream/master
 @ Event scripts for SafariZone_Northeast are in SafariZone_South/scripts.inc

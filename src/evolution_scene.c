@@ -545,19 +545,27 @@ static void CB2_TradeEvolutionSceneUpdate(void)
 static void CreateShedinja(u16 preEvoSpecies, struct Pokemon *mon)
 {
     u32 data = 0;
+<<<<<<< HEAD
     #if P_SHEDINJA_BALL >= GEN_4
         u16 ball = ITEM_POKE_BALL;
     #endif
+=======
+    u16 ball = ITEM_POKE_BALL;
+>>>>>>> upstream/master
     const struct Evolution *evolutions = GetSpeciesEvolutions(preEvoSpecies);
 
     if (evolutions == NULL)
         return;
 
+<<<<<<< HEAD
     if (evolutions[0].method == EVO_LEVEL_NINJASK && gPlayerPartyCount < PARTY_SIZE
     #if P_SHEDINJA_BALL >= GEN_4
         && (CheckBagHasItem(ball, 1))
     #endif
     )
+=======
+    if (evolutions[0].method == EVO_LEVEL_NINJASK && gPlayerPartyCount < PARTY_SIZE && (P_SHEDINJA_BALL < GEN_4 || CheckBagHasItem(ball, 1)))
+>>>>>>> upstream/master
     {
         s32 i;
         struct Pokemon *shedinja = &gPlayerParty[gPlayerPartyCount];
@@ -567,10 +575,18 @@ static void CreateShedinja(u16 preEvoSpecies, struct Pokemon *mon)
         SetMonData(&gPlayerParty[gPlayerPartyCount], MON_DATA_NICKNAME, GetSpeciesName(evolutions[1].targetSpecies));
         SetMonData(&gPlayerParty[gPlayerPartyCount], MON_DATA_HELD_ITEM, &data);
         SetMonData(&gPlayerParty[gPlayerPartyCount], MON_DATA_MARKINGS, &data);
+<<<<<<< HEAD
     #if P_SHEDINJA_BALL >= GEN_4
         SetMonData(&gPlayerParty[gPlayerPartyCount], MON_DATA_POKEBALL, &ball);
         RemoveBagItem(ball, 1);
     #endif
+=======
+        if (P_SHEDINJA_BALL >= GEN_4)
+        {
+            SetMonData(&gPlayerParty[gPlayerPartyCount], MON_DATA_POKEBALL, &ball);
+            RemoveBagItem(ball, 1);
+        }
+>>>>>>> upstream/master
 
         for (i = MON_DATA_COOL_RIBBON; i < MON_DATA_COOL_RIBBON + CONTEST_CATEGORIES_COUNT; i++)
             SetMonData(&gPlayerParty[gPlayerPartyCount], i, &data);
@@ -867,7 +883,11 @@ static void Task_EvolutionScene(u8 taskId)
         {
             BufferMoveToLearnIntoBattleTextBuff2();
             PlayFanfare(MUS_LEVEL_UP);
+<<<<<<< HEAD
             BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_PKMNLEARNEDMOVE - BATTLESTRINGS_TABLE_START]);
+=======
+            BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_PKMNLEARNEDMOVE]);
+>>>>>>> upstream/master
             BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MSG);
             gTasks[taskId].tLearnsFirstMove = 0x40; // re-used as a counter
             gTasks[taskId].tState++;
@@ -885,7 +905,11 @@ static void Task_EvolutionScene(u8 taskId)
             {
                 // "{mon} is trying to learn {move}"
                 BufferMoveToLearnIntoBattleTextBuff2();
+<<<<<<< HEAD
                 BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_TRYTOLEARNMOVE1 - BATTLESTRINGS_TABLE_START]);
+=======
+                BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_TRYTOLEARNMOVE1]);
+>>>>>>> upstream/master
                 BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MSG);
                 gTasks[taskId].tLearnMoveState++;
             }
@@ -894,7 +918,11 @@ static void Task_EvolutionScene(u8 taskId)
             if (!IsTextPrinterActive(0) && !IsSEPlaying())
             {
                 // "But, {mon} can't learn more than four moves"
+<<<<<<< HEAD
                 BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_TRYTOLEARNMOVE2 - BATTLESTRINGS_TABLE_START]);
+=======
+                BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_TRYTOLEARNMOVE2]);
+>>>>>>> upstream/master
                 BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MSG);
                 gTasks[taskId].tLearnMoveState++;
             }
@@ -903,7 +931,11 @@ static void Task_EvolutionScene(u8 taskId)
             if (!IsTextPrinterActive(0) && !IsSEPlaying())
             {
                 // "Delete a move to make room for {move}?"
+<<<<<<< HEAD
                 BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_TRYTOLEARNMOVE3 - BATTLESTRINGS_TABLE_START]);
+=======
+                BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_TRYTOLEARNMOVE3]);
+>>>>>>> upstream/master
                 BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MSG);
                 gTasks[taskId].tLearnMoveYesState = MVSTATE_SHOW_MOVE_SELECT;
                 gTasks[taskId].tLearnMoveNoState = MVSTATE_ASK_CANCEL;
@@ -991,7 +1023,11 @@ static void Task_EvolutionScene(u8 taskId)
                     if (IsMoveHM(move))
                     {
                         // Can't forget HMs
+<<<<<<< HEAD
                         BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_HMMOVESCANTBEFORGOTTEN - BATTLESTRINGS_TABLE_START]);
+=======
+                        BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_HMMOVESCANTBEFORGOTTEN]);
+>>>>>>> upstream/master
                         BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MSG);
                         gTasks[taskId].tLearnMoveState = MVSTATE_RETRY_AFTER_HM;
                     }
@@ -1008,14 +1044,22 @@ static void Task_EvolutionScene(u8 taskId)
             }
             break;
         case MVSTATE_FORGET_MSG_1:
+<<<<<<< HEAD
             BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_123POOF - BATTLESTRINGS_TABLE_START]);
+=======
+            BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_123POOF]);
+>>>>>>> upstream/master
             BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MSG);
             gTasks[taskId].tLearnMoveState++;
             break;
         case MVSTATE_FORGET_MSG_2:
             if (!IsTextPrinterActive(0) && !IsSEPlaying())
             {
+<<<<<<< HEAD
                 BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_PKMNFORGOTMOVE - BATTLESTRINGS_TABLE_START]);
+=======
+                BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_PKMNFORGOTMOVE]);
+>>>>>>> upstream/master
                 BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MSG);
                 gTasks[taskId].tLearnMoveState++;
             }
@@ -1023,20 +1067,32 @@ static void Task_EvolutionScene(u8 taskId)
         case MVSTATE_LEARNED_MOVE:
             if (!IsTextPrinterActive(0) && !IsSEPlaying())
             {
+<<<<<<< HEAD
                 BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_ANDELLIPSIS - BATTLESTRINGS_TABLE_START]);
+=======
+                BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_ANDELLIPSIS]);
+>>>>>>> upstream/master
                 BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MSG);
                 gTasks[taskId].tState = EVOSTATE_LEARNED_MOVE;
             }
             break;
         case MVSTATE_ASK_CANCEL:
+<<<<<<< HEAD
             BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_STOPLEARNINGMOVE - BATTLESTRINGS_TABLE_START]);
+=======
+            BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_STOPLEARNINGMOVE]);
+>>>>>>> upstream/master
             BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MSG);
             gTasks[taskId].tLearnMoveYesState = MVSTATE_CANCEL;
             gTasks[taskId].tLearnMoveNoState = MVSTATE_INTRO_MSG_1;
             gTasks[taskId].tLearnMoveState = MVSTATE_PRINT_YES_NO;
             break;
         case MVSTATE_CANCEL:
+<<<<<<< HEAD
             BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_DIDNOTLEARNMOVE - BATTLESTRINGS_TABLE_START]);
+=======
+            BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_DIDNOTLEARNMOVE]);
+>>>>>>> upstream/master
             BattlePutTextOnWindow(gDisplayedStringBattle, B_WIN_MSG);
             gTasks[taskId].tState = EVOSTATE_TRY_LEARN_MOVE;
             break;
@@ -1270,7 +1326,11 @@ static void Task_TradeEvolutionScene(u8 taskId)
         {
             BufferMoveToLearnIntoBattleTextBuff2();
             PlayFanfare(MUS_LEVEL_UP);
+<<<<<<< HEAD
             BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_PKMNLEARNEDMOVE - BATTLESTRINGS_TABLE_START]);
+=======
+            BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_PKMNLEARNEDMOVE]);
+>>>>>>> upstream/master
             DrawTextOnTradeWindow(0, gDisplayedStringBattle, 1);
             gTasks[taskId].tLearnsFirstMove = 0x40; // re-used as a counter
             gTasks[taskId].tState++;
@@ -1288,7 +1348,11 @@ static void Task_TradeEvolutionScene(u8 taskId)
             {
                 // "{mon} is trying to learn {move}"
                 BufferMoveToLearnIntoBattleTextBuff2();
+<<<<<<< HEAD
                 BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_TRYTOLEARNMOVE1 - BATTLESTRINGS_TABLE_START]);
+=======
+                BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_TRYTOLEARNMOVE1]);
+>>>>>>> upstream/master
                 DrawTextOnTradeWindow(0, gDisplayedStringBattle, 1);
                 gTasks[taskId].tLearnMoveState++;
             }
@@ -1297,7 +1361,11 @@ static void Task_TradeEvolutionScene(u8 taskId)
             if (!IsTextPrinterActive(0) && !IsSEPlaying())
             {
                 // "But, {mon} can't learn more than four moves"
+<<<<<<< HEAD
                 BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_TRYTOLEARNMOVE2 - BATTLESTRINGS_TABLE_START]);
+=======
+                BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_TRYTOLEARNMOVE2]);
+>>>>>>> upstream/master
                 DrawTextOnTradeWindow(0, gDisplayedStringBattle, 1);
                 gTasks[taskId].tLearnMoveState++;
             }
@@ -1306,7 +1374,11 @@ static void Task_TradeEvolutionScene(u8 taskId)
             if (!IsTextPrinterActive(0) && !IsSEPlaying())
             {
                 // "Delete a move to make room for {move}?"
+<<<<<<< HEAD
                 BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_TRYTOLEARNMOVE3 - BATTLESTRINGS_TABLE_START]);
+=======
+                BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_TRYTOLEARNMOVE3]);
+>>>>>>> upstream/master
                 DrawTextOnTradeWindow(0, gDisplayedStringBattle, 1);
                 gTasks[taskId].tLearnMoveYesState = T_MVSTATE_SHOW_MOVE_SELECT;
                 gTasks[taskId].tLearnMoveNoState = T_MVSTATE_ASK_CANCEL;
@@ -1327,7 +1399,11 @@ static void Task_TradeEvolutionScene(u8 taskId)
             {
             case 0: // YES
                 sEvoCursorPos = 0;
+<<<<<<< HEAD
                 BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_EMPTYSTRING3 - BATTLESTRINGS_TABLE_START]);
+=======
+                BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_EMPTYSTRING3]);
+>>>>>>> upstream/master
                 DrawTextOnTradeWindow(0, gDisplayedStringBattle, 1);
                 gTasks[taskId].tLearnMoveState = gTasks[taskId].tLearnMoveYesState;
                 if (gTasks[taskId].tLearnMoveState == T_MVSTATE_SHOW_MOVE_SELECT)
@@ -1336,7 +1412,11 @@ static void Task_TradeEvolutionScene(u8 taskId)
             case 1: // NO
             case MENU_B_PRESSED:
                 sEvoCursorPos = 1;
+<<<<<<< HEAD
                 BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_EMPTYSTRING3 - BATTLESTRINGS_TABLE_START]);
+=======
+                BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_EMPTYSTRING3]);
+>>>>>>> upstream/master
                 DrawTextOnTradeWindow(0, gDisplayedStringBattle, 1);
                 gTasks[taskId].tLearnMoveState = gTasks[taskId].tLearnMoveNoState;
                 break;
@@ -1375,7 +1455,11 @@ static void Task_TradeEvolutionScene(u8 taskId)
                     if (IsMoveHM(move))
                     {
                         // Can't forget HMs
+<<<<<<< HEAD
                         BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_HMMOVESCANTBEFORGOTTEN - BATTLESTRINGS_TABLE_START]);
+=======
+                        BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_HMMOVESCANTBEFORGOTTEN]);
+>>>>>>> upstream/master
                         DrawTextOnTradeWindow(0, gDisplayedStringBattle, 1);
                         gTasks[taskId].tLearnMoveState = T_MVSTATE_RETRY_AFTER_HM;
                     }
@@ -1386,7 +1470,11 @@ static void Task_TradeEvolutionScene(u8 taskId)
 
                         RemoveMonPPBonus(mon, var);
                         SetMonMoveSlot(mon, gMoveToLearn, var);
+<<<<<<< HEAD
                         BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_123POOF - BATTLESTRINGS_TABLE_START]);
+=======
+                        BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_123POOF]);
+>>>>>>> upstream/master
                         DrawTextOnTradeWindow(0, gDisplayedStringBattle, 1);
                         gTasks[taskId].tLearnMoveState++;
                     }
@@ -1396,7 +1484,11 @@ static void Task_TradeEvolutionScene(u8 taskId)
         case T_MVSTATE_FORGET_MSG:
             if (!IsTextPrinterActive(0) && !IsSEPlaying())
             {
+<<<<<<< HEAD
                 BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_PKMNFORGOTMOVE - BATTLESTRINGS_TABLE_START]);
+=======
+                BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_PKMNFORGOTMOVE]);
+>>>>>>> upstream/master
                 DrawTextOnTradeWindow(0, gDisplayedStringBattle, 1);
                 gTasks[taskId].tLearnMoveState++;
             }
@@ -1404,20 +1496,32 @@ static void Task_TradeEvolutionScene(u8 taskId)
         case T_MVSTATE_LEARNED_MOVE:
             if (!IsTextPrinterActive(0) && !IsSEPlaying())
             {
+<<<<<<< HEAD
                 BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_ANDELLIPSIS - BATTLESTRINGS_TABLE_START]);
+=======
+                BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_ANDELLIPSIS]);
+>>>>>>> upstream/master
                 DrawTextOnTradeWindow(0, gDisplayedStringBattle, 1);
                 gTasks[taskId].tState = T_EVOSTATE_LEARNED_MOVE;
             }
             break;
         case T_MVSTATE_ASK_CANCEL:
+<<<<<<< HEAD
             BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_STOPLEARNINGMOVE - BATTLESTRINGS_TABLE_START]);
+=======
+            BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_STOPLEARNINGMOVE]);
+>>>>>>> upstream/master
             DrawTextOnTradeWindow(0, gDisplayedStringBattle, 1);
             gTasks[taskId].tLearnMoveYesState = T_MVSTATE_CANCEL;
             gTasks[taskId].tLearnMoveNoState = T_MVSTATE_INTRO_MSG_1;
             gTasks[taskId].tLearnMoveState = T_MVSTATE_PRINT_YES_NO;
             break;
         case T_MVSTATE_CANCEL:
+<<<<<<< HEAD
             BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_DIDNOTLEARNMOVE - BATTLESTRINGS_TABLE_START]);
+=======
+            BattleStringExpandPlaceholdersToDisplayedString(gBattleStringsTable[STRINGID_DIDNOTLEARNMOVE]);
+>>>>>>> upstream/master
             DrawTextOnTradeWindow(0, gDisplayedStringBattle, 1);
             gTasks[taskId].tState = T_EVOSTATE_TRY_LEARN_MOVE;
             break;

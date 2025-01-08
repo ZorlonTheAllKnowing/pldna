@@ -3,6 +3,7 @@
 
 ASSUMPTIONS
 {
+<<<<<<< HEAD
     ASSUME(gMovesInfo[MOVE_THUNDERBOLT].power != 0);
     ASSUME(gMovesInfo[MOVE_THUNDERBOLT].type == TYPE_ELECTRIC);
     ASSUME(gMovesInfo[MOVE_TACKLE].power != 0);
@@ -10,6 +11,15 @@ ASSUMPTIONS
     ASSUME(gMovesInfo[MOVE_AIR_CUTTER].target == MOVE_TARGET_BOTH);
     ASSUME(gMovesInfo[MOVE_AIR_CUTTER].windMove == TRUE);
     ASSUME(gMovesInfo[MOVE_PETAL_BLIZZARD].power != 0);
+=======
+    ASSUME(!IS_MOVE_STATUS(MOVE_THUNDERBOLT));
+    ASSUME(gMovesInfo[MOVE_THUNDERBOLT].type == TYPE_ELECTRIC);
+    ASSUME(!IS_MOVE_STATUS(MOVE_TACKLE));
+    ASSUME(!IS_MOVE_STATUS(MOVE_AIR_CUTTER));
+    ASSUME(gMovesInfo[MOVE_AIR_CUTTER].target == MOVE_TARGET_BOTH);
+    ASSUME(gMovesInfo[MOVE_AIR_CUTTER].windMove == TRUE);
+    ASSUME(!IS_MOVE_STATUS(MOVE_PETAL_BLIZZARD));
+>>>>>>> upstream/master
     ASSUME(gMovesInfo[MOVE_PETAL_BLIZZARD].target == MOVE_TARGET_FOES_AND_ALLY);
     ASSUME(gMovesInfo[MOVE_PETAL_BLIZZARD].windMove == TRUE);
     ASSUME(gMovesInfo[MOVE_TACKLE].windMove == FALSE);
@@ -82,7 +92,11 @@ SINGLE_BATTLE_TEST("Wind Power sets up Charge for opponent when hit by a wind mo
         HP_BAR(opponent);
         if (move == MOVE_AIR_CUTTER) {
             ABILITY_POPUP(opponent, ABILITY_WIND_POWER);
+<<<<<<< HEAD
             MESSAGE("Being hit by Air Cutter charged Foe Wattrel with power!");
+=======
+            MESSAGE("Being hit by Air Cutter charged the opposing Wattrel with power!");
+>>>>>>> upstream/master
         }
 
         ANIMATION(ANIM_TYPE_MOVE, MOVE_THUNDERBOLT, opponent);
@@ -92,7 +106,11 @@ SINGLE_BATTLE_TEST("Wind Power sets up Charge for opponent when hit by a wind mo
         HP_BAR(opponent);
         if (move == MOVE_AIR_CUTTER) {
             ABILITY_POPUP(opponent, ABILITY_WIND_POWER);
+<<<<<<< HEAD
             MESSAGE("Being hit by Air Cutter charged Foe Wattrel with power!");
+=======
+            MESSAGE("Being hit by Air Cutter charged the opposing Wattrel with power!");
+>>>>>>> upstream/master
         }
     }
     THEN {
@@ -205,10 +223,17 @@ DOUBLE_BATTLE_TEST("Wind Power activates correctly when Tailwind is used")
             ANIMATION(ANIM_TYPE_MOVE, MOVE_TAILWIND, opponentLeft);
 
             ABILITY_POPUP(opponentLeft, ABILITY_WIND_POWER);
+<<<<<<< HEAD
             MESSAGE("Being hit by Tailwind charged Foe Wattrel with power!");
 
             ABILITY_POPUP(opponentRight, ABILITY_WIND_POWER);
             MESSAGE("Being hit by Tailwind charged Foe Wattrel with power!");
+=======
+            MESSAGE("Being hit by Tailwind charged the opposing Wattrel with power!");
+
+            ABILITY_POPUP(opponentRight, ABILITY_WIND_POWER);
+            MESSAGE("Being hit by Tailwind charged the opposing Wattrel with power!");
+>>>>>>> upstream/master
         }
         else {
             ANIMATION(ANIM_TYPE_MOVE, MOVE_TAILWIND, playerLeft);

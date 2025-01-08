@@ -2,6 +2,10 @@
 #define GUARD_RECORDED_BATTLE_H
 
 #include "constants/battle.h"
+<<<<<<< HEAD
+=======
+#include "link.h"
+>>>>>>> upstream/master
 #include "random.h"
 
 #define BATTLER_RECORD_SIZE 664
@@ -10,6 +14,7 @@ struct RecordedBattleSave
 {
     struct Pokemon playerParty[PARTY_SIZE];
     struct Pokemon opponentParty[PARTY_SIZE];
+<<<<<<< HEAD
     u8 playersName[MAX_BATTLERS_COUNT][PLAYER_NAME_LENGTH + 1];
     u8 playersGender[MAX_BATTLERS_COUNT];
     u32 playersTrainerId[MAX_BATTLERS_COUNT];
@@ -17,6 +22,15 @@ struct RecordedBattleSave
     rng_value_t rngSeed;
     u32 battleFlags;
     u8 playersBattlers[MAX_BATTLERS_COUNT];
+=======
+    u8 playersName[MAX_LINK_PLAYERS][PLAYER_NAME_LENGTH + 1];
+    u8 playersGender[MAX_LINK_PLAYERS];
+    u32 playersTrainerId[MAX_LINK_PLAYERS];
+    u8 playersLanguage[MAX_LINK_PLAYERS];
+    rng_value_t rngSeed;
+    u32 battleFlags;
+    u8 playersBattlers[MAX_LINK_PLAYERS];
+>>>>>>> upstream/master
     u16 opponentA;
     u16 opponentB;
     u16 partnerId;

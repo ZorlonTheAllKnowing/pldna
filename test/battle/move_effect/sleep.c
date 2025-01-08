@@ -24,15 +24,26 @@ SINGLE_BATTLE_TEST("Hypnosis inflicts 1-3 turns of sleep")
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_HYPNOSIS, player);
         ANIMATION(ANIM_TYPE_STATUS, B_ANIM_STATUS_SLP, opponent);
+<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet fell asleep!");
+=======
+        MESSAGE("The opposing Wobbuffet fell asleep!");
+>>>>>>> upstream/master
         STATUS_ICON(opponent, sleep: TRUE);
         for (count = 0; count < turns; ++count)
         {
             if (count < turns - 1)
+<<<<<<< HEAD
                 MESSAGE("Foe Wobbuffet is fast asleep.");
             ANIMATION(ANIM_TYPE_STATUS, B_ANIM_STATUS_SLP, opponent);
         }
         MESSAGE("Foe Wobbuffet woke up!");
+=======
+                MESSAGE("The opposing Wobbuffet is fast asleep.");
+            ANIMATION(ANIM_TYPE_STATUS, B_ANIM_STATUS_SLP, opponent);
+        }
+        MESSAGE("The opposing Wobbuffet woke up!");
+>>>>>>> upstream/master
         STATUS_ICON(opponent, none: TRUE);
     }
 }

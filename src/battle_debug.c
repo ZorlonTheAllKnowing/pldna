@@ -2269,6 +2269,7 @@ static void UpdateMonData(struct BattleDebugMenu *data)
     {
         if (data->battlerWasChanged[i])
         {
+<<<<<<< HEAD
             struct Pokemon *mon;
             struct BattlePokemon *battleMon = &gBattleMons[i];
 
@@ -2277,6 +2278,11 @@ static void UpdateMonData(struct BattleDebugMenu *data)
             else
                 mon = &gEnemyParty[gBattlerPartyIndexes[i]];
 
+=======
+            struct Pokemon *mon = GetPartyBattlerData(i);
+            struct BattlePokemon *battleMon = &gBattleMons[i];
+
+>>>>>>> upstream/master
             SetMonData(mon, MON_DATA_HELD_ITEM, &battleMon->item);
             SetMonData(mon, MON_DATA_STATUS, &battleMon->status1);
             SetMonData(mon, MON_DATA_HP, &battleMon->hp);

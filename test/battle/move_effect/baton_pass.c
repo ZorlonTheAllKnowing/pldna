@@ -19,7 +19,11 @@ SINGLE_BATTLE_TEST("Baton Pass used after Memento works correctly")
     } SCENE {
         MESSAGE("Wobbuffet used Memento!");
         MESSAGE("Wobbuffet fainted!");
+<<<<<<< HEAD
         MESSAGE("Foe Wynaut used Baton Pass!");
+=======
+        MESSAGE("The opposing Wynaut used Baton Pass!");
+>>>>>>> upstream/master
         MESSAGE("2 sent out Caterpie!");
         MESSAGE("Go! Wobbuffet!");
     }
@@ -39,9 +43,12 @@ TO_DO_BATTLE_TEST("Baton Pass doesn't pass ability changes");
 //
 TO_DO_BATTLE_TEST("Baton Pass passes confusion status");                                                    // test/battle/status2/confusion.c
 
+<<<<<<< HEAD
 TO_DO_BATTLE_TEST("Baton Pass passes Cursed status");                                                       // test/battle/move_effect/curse.c
 TO_DO_BATTLE_TEST("Baton Pass doesn't pass Disable's effect");                                              // test/battle/move_effect/disable.c
 TO_DO_BATTLE_TEST("Baton Pass passes Dragon Cheer's effect");                                               // test/battle/move_effect/dragon_cheer.c
+=======
+>>>>>>> upstream/master
 TO_DO_BATTLE_TEST("Baton Pass passes Fairy lock's escape prevention effect");                               // test/battle/move_effect/fairy_lock.c
 TO_DO_BATTLE_TEST("Baton Pass passes Focus Energy's effect");                                               // test/battle/move_effect/focus_energy.c
 TO_DO_BATTLE_TEST("Baton Pass passes Heal Block's effect");                                                 // test/battle/move_effect/heal_block.c

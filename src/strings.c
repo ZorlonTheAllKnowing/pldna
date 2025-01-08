@@ -20,6 +20,7 @@ const u8 gText_ExpandedPlaceholder_Brendan[] = _("BRENDAN");
 const u8 gText_ExpandedPlaceholder_May[] = _("MAY");
 const u8 gText_EggNickname[] = _("EGG");
 const u8 gText_Pokemon[] = _("POKéMON");
+<<<<<<< HEAD
 const u8 gText_ProfBirchMatchCallName[] = _("PROF. BIRCH");
 const u8 gText_MainMenuNewGame[] = _("NEW GAME");
 const u8 gText_MainMenuContinue[] = _("CONTINUE");
@@ -36,6 +37,8 @@ const u8 gText_SaveFileCorrupted[] = _("The save file is corrupted. The\npreviou
 const u8 gText_SaveFileErased[] = _("The save file has been erased\ndue to corruption or damage.");
 const u8 gJPText_No1MSubCircuit[] = _("1Mサブきばんが ささっていません！");
 const u8 gText_BatteryRunDry[] = _("The internal battery has run dry.\nThe game can be played.\pHowever, clock-based events will\nno longer occur.");
+=======
+>>>>>>> upstream/master
 const u8 gText_Player[] = _("PLAYER"); // Unused
 const u8 gText_Pokedex[] = _("POKéDEX"); // Unused
 const u8 gText_Time[] = _("TIME");
@@ -55,6 +58,7 @@ ALIGNED(4) const u8 gText_NextBack[] = _("{A_BUTTON}NEXT {B_BUTTON}BACK"); // Un
 ALIGNED(4) const u8 gText_PickNextCancel[] = _("{DPAD_UPDOWN}PICK {A_BUTTON}NEXT {B_BUTTON}CANCEL");
 ALIGNED(4) const u8 gText_PickCancel[] = _("{DPAD_UPDOWN}PICK {A_BUTTON}{B_BUTTON}CANCEL");
 ALIGNED(4) const u8 gText_AButtonExit[] = _("{A_BUTTON}EXIT");
+<<<<<<< HEAD
 const u8 gText_BirchBoy[] = _("BOY");
 const u8 gText_BirchGirl[] = _("GIRL");
 const u8 gText_DefaultNameStu[] = _("STU");
@@ -97,6 +101,8 @@ const u8 gText_DefaultNameLillie[] = _("LILLIE");
 const u8 gText_DefaultNameTerra[] = _("TERRA");
 const u8 gText_DefaultNameLucy[] = _("LUCY");
 const u8 gText_DefaultNameHalie[] = _("HALIE");
+=======
+>>>>>>> upstream/master
 const u8 gText_ThisIsAPokemon[] = _("This is what we call a “POKéMON.”{PAUSE 96}\p");
 const u8 gText_5MarksPokemon[] = _("????? POKéMON");
 const u8 gText_UnkHeight[] = _("{CLEAR_TO 0x0C}??'??”");
@@ -199,7 +205,10 @@ const u8 gText_Store[] = _("STORE");
 const u8 gMenuText_Check[] = _("CHECK");
 const u8 gText_None[] = _("NONE");
 const u8 gMenuText_Deselect[] = _("DESELECT");
+<<<<<<< HEAD
 const u8 gText_ThreeMarks[] = _("???");
+=======
+>>>>>>> upstream/master
 const u8 gText_FiveMarks[] = _("?????");
 const u8 gText_Slash[] = _("/");
 const u8 gText_OneDash[] = _("-");
@@ -255,6 +264,12 @@ const u8 gText_TheBattle[] = _("the battle");
 const u8 gText_ThePokemonList[] = _("the POKéMON LIST");
 const u8 gText_TheShop[] = _("the shop");
 const u8 gText_ThePC[] = _("the PC");
+<<<<<<< HEAD
+=======
+const u8 gText_PlayedPokeFluteCatchy[] = _("Played the POKé FLUTE.\pNow, that's a catchy tune!{PAUSE_UNTIL_PRESS}");
+const u8 gText_PlayedPokeFlute[] = _("Played the POKé FLUTE.");
+const u8 gText_PokeFluteAwakenedMon[] = _("The POKé FLUTE awakened sleeping\nPOKéMON.{PAUSE_UNTIL_PRESS}");
+>>>>>>> upstream/master
 
 const u8 *const gBagMenu_ReturnToStrings[] =
 {
@@ -282,6 +297,7 @@ const u8 *const gPyramidBagMenu_ReturnToStrings[] =
 };
 
 const u8 gText_ReturnToVar1[] = _("Return to\n{STR_VAR_1}.");
+<<<<<<< HEAD
 const u8 gText_ItemsPocket[] = _("ITEMS");
 const u8 gText_PokeBallsPocket[] = _("POKé BALLS");
 const u8 gText_TMHMPocket[] = _("TMs & HMs");
@@ -295,10 +311,21 @@ const u8 *const gPocketNamesStringsTable[] =
     [TMHM_POCKET]  = gText_TMHMPocket,
     [BERRIES_POCKET] = gText_BerriesPocket,
     [KEYITEMS_POCKET] = gText_KeyItemsPocket
+=======
+
+const u8 *const gPocketNamesStringsTable[] =
+{
+    [ITEMS_POCKET] =    COMPOUND_STRING("ITEMS"),
+    [BALLS_POCKET] =    COMPOUND_STRING("POKé BALLS"),
+    [TMHM_POCKET]  =    COMPOUND_STRING("TMs & HMs"),
+    [BERRIES_POCKET] =  COMPOUND_STRING("BERRIES"),
+    [KEYITEMS_POCKET] = COMPOUND_STRING("KEY ITEMS")
+>>>>>>> upstream/master
 };
 
 const u8 gText_NumberItem_TMBerry[] = _("{NO}{STR_VAR_1}{CLEAR 0x07}{STR_VAR_2}");
 const u8 gText_NumberItem_HM[] = _("{CLEAR_TO 0x11}{STR_VAR_1}{CLEAR 0x05}{STR_VAR_2}");
+<<<<<<< HEAD
 const u8 gText_SizeSlash[] = _("SIZE /");
 const u8 gText_FirmSlash[] = _("FIRM /");
 const u8 gText_Var1DotVar2[] = _("{STR_VAR_1}.{STR_VAR_2}”");
@@ -340,6 +367,9 @@ const u8 gText_Var1ThrownAway[] = _("The {STR_VAR_1}\nwas thrown away.");
 const u8 gText_Var1AteTheVar2[] = _("{STR_VAR_1} ate the\n{STR_VAR_2}.{PAUSE_UNTIL_PRESS}");
 const u8 gText_Var1HappilyAteVar2[] = _("{STR_VAR_1} happily ate the\n{STR_VAR_2}.{PAUSE_UNTIL_PRESS}");
 const u8 gText_Var1DisdainfullyAteVar2[] = _("{STR_VAR_1} disdainfully ate the\n{STR_VAR_2}.{PAUSE_UNTIL_PRESS}");
+=======
+
+>>>>>>> upstream/master
 const u8 gText_ShopBuy[] = _("BUY");
 const u8 gText_ShopSell[] = _("SELL");
 const u8 gText_ShopQuit[] = _("QUIT");
@@ -872,6 +902,7 @@ const u8 gText_MtPyre[] = _("MT. PYRE");
 const u8 gText_SkyPillar[] = _("SKY PILLAR");
 const u8 gText_DontRemember[] = _("Don't remember");
 const u8 gText_Exit[] = _("EXIT");
+<<<<<<< HEAD
 const u8 gText_ExitFromBox[] = _("Exit from the BOX?");
 const u8 gText_WhatDoYouWantToDo[] = _("What do you want to do?");
 const u8 gText_PleasePickATheme[] = _("Please pick a theme.");
@@ -1005,6 +1036,14 @@ const u8 gText_Check[] = _("CHECK");
 const u8 gText_Cancel6[] = _("CANCEL");
 const u8 gText_NumberIndex[] = _("No. {DYNAMIC 0}");
 const u8 gText_RibbonsF700[] = _("RIBBONS {DYNAMIC 0}");
+=======
+const u8 gText_YourPartysFull[] = _("Your party's full!{PAUSE_UNTIL_PRESS}");
+const u8 gText_NatureSlash[] = _("NATURE/");
+const u8 gText_InParty[] = _("IN PARTY");
+const u8 gText_PokemonMaleLv[] = _("{DYNAMIC 0}{COLOR_HIGHLIGHT_SHADOW LIGHT_RED WHITE GREEN}♂{COLOR_HIGHLIGHT_SHADOW DARK_GRAY WHITE LIGHT_GRAY}/{LV}{DYNAMIC 1}"); // Unused
+const u8 gText_PokemonFemaleLv[] = _("{DYNAMIC 0}{COLOR_HIGHLIGHT_SHADOW LIGHT_GREEN WHITE BLUE}♀{COLOR_HIGHLIGHT_SHADOW DARK_GRAY WHITE LIGHT_GRAY}/{LV}{DYNAMIC 1}"); // Unused
+const u8 gText_PokemonNoGenderLv[] = _("{DYNAMIC 0}/{LV}{DYNAMIC 1}"); // Unused
+>>>>>>> upstream/master
 const u8 gText_PokemonMaleLv2[] = _("{DYNAMIC 0}{COLOR_HIGHLIGHT_SHADOW LIGHT_RED WHITE GREEN}♂{COLOR_HIGHLIGHT_SHADOW DARK_GRAY WHITE LIGHT_GRAY}/{LV}{DYNAMIC 1}{DYNAMIC 2}"); // Unused
 const u8 gText_PokemonFemaleLv2[] = _("{DYNAMIC 0}{COLOR_HIGHLIGHT_SHADOW LIGHT_GREEN WHITE BLUE}♀{COLOR_HIGHLIGHT_SHADOW DARK_GRAY WHITE LIGHT_GRAY}/{LV}{DYNAMIC 1}{DYNAMIC 2}"); // Unused
 const u8 gText_PokemonNoGenderLv2[] = _("{DYNAMIC 0}/{LV}{DYNAMIC 1}{DYNAMIC 2}"); // Unused
@@ -1295,6 +1334,7 @@ const u8 gText_Sorry[] = _("SORRY");
 const u8 gText_YaySmileEmoji[] = _("YAY{EMOJI_BIGSMILE}");
 const u8 gText_ThankYou[] = _("THANK YOU");
 const u8 gText_ByeBye[] = _("BYE-BYE!");
+<<<<<<< HEAD
 const u8 gText_MatchCallSteven_Strategy[] = _("Attack the weak points!");
 const u8 gText_MatchCallSteven_Pokemon[] = _("Ultimate STEEL POKéMON.");
 const u8 gText_MatchCallSteven_Intro1_BeforeMeteorFallsBattle[] = _("I'd climb even waterfalls");
@@ -1309,6 +1349,10 @@ const u8 gText_MatchCallMay_Strategy[] = _("I'm not so good at battles.");
 const u8 gText_MatchCallMay_Pokemon[] = _("I'll use any POKéMON!");
 const u8 gText_MatchCallMay_Intro1[] = _("My POKéMON and I help");
 const u8 gText_MatchCallMay_Intro2[] = _("my father's research.");
+=======
+const u8 gText_PlayerScurriedToCenter[] = _("{PLAYER} scurried to a POKéMON CENTER,\nprotecting the exhausted and fainted\nPOKéMON from further harm…\p");
+const u8 gText_PlayerScurriedBackHome[] = _("{PLAYER} scurried back home, protecting\nthe exhausted and fainted POKéMON from\nfurther harm…\p");
+>>>>>>> upstream/master
 const u8 gText_HatchedFromEgg[] = _("{STR_VAR_1} hatched from the EGG!");
 const u8 gText_NicknameHatchPrompt[] = _("Would you like to nickname the newly\nhatched {STR_VAR_1}?");
 ALIGNED(4) const u8 gText_ReadyPickBerry[] = _("Are you ready to BERRY-CRUSH?\nPlease pick a BERRY for use.\p");
@@ -1376,10 +1420,13 @@ const u8 gText_BattleArenaDesc[] = _("Win battles with teamed-up POKéMON!\nYour
 const u8 gText_BattleFactoryDesc[] = _("Aim for victory using rental POKéMON!\nYour knowledge will be tested.");
 const u8 gText_BattlePikeDesc[] = _("Select one of three paths to battle!\nYour luck will be tested.");
 const u8 gText_BattlePyramidDesc[] = _("Aim for the top with exploration!\nYour bravery will be tested.");
+<<<<<<< HEAD
 const u8 gText_ContinueMenuPlayer[] = _("PLAYER");
 const u8 gText_ContinueMenuTime[] = _("TIME");
 const u8 gText_ContinueMenuPokedex[] = _("POKéDEX");
 const u8 gText_ContinueMenuBadges[] = _("BADGES");
+=======
+>>>>>>> upstream/master
 const u8 gText_Powder[] = _("POWDER");
 const u8 gText_BerryPickingRecords[] = _("DODRIO BERRY-PICKING RECORDS");
 const u8 gText_BerriesPicked[] = _("BERRIES picked:");
@@ -1608,7 +1655,10 @@ const u8 gText_BoxName[] = _("BOX NAME?");
 const u8 gText_PkmnsNickname[] = _("{STR_VAR_1}'s nickname?");
 const u8 gText_TellHimTheWords[] = _("Tell him the words.");
 const u8 gText_MoveOkBack[] = _("{DPAD_NONE}MOVE  {A_BUTTON}OK  {B_BUTTON}BACK");
+<<<<<<< HEAD
 const u8 gText_CallCantBeMadeHere[] = _("A call can't be made from here.");
+=======
+>>>>>>> upstream/master
 const u8 gText_RentalPkmn2[] = _("RENTAL POKéMON");
 const u8 gText_SelectFirstPkmn[] = _("Select the first POKéMON.");
 const u8 gText_SelectSecondPkmn[] = _("Select the second POKéMON.");
@@ -1779,6 +1829,7 @@ const u8 gText_ClearingData[] = _("Clearing data…\nPlease wait.");
 const u8 gText_IsThisTheCorrectTime[] = _("Is this the correct time?");
 const u8 gText_Confirm3[] = _("CONFIRM");
 const u8 gText_Cancel4[] = _("CANCEL");
+<<<<<<< HEAD
 const u8 gText_MrStoneMatchCallDesc[] = _("DEVON PRES");
 const u8 gText_MrStoneMatchCallName[] = _("MR. STONE");
 const u8 gText_StevenMatchCallDesc[] = _("HARD AS ROCK");
@@ -1801,6 +1852,8 @@ const u8 gText_JuanMatchCallDesc[] = _("DANDY CHARM");
 const u8 gText_EliteFourMatchCallDesc[] = _("ELITE FOUR");
 const u8 gText_ChampionMatchCallDesc[] = _("CHAMPION");
 const u8 gText_ProfBirchMatchCallDesc[] = _("{PKMN} PROF.");
+=======
+>>>>>>> upstream/master
 const u8 gText_CommStandbyAwaitingOtherPlayer[] = _("Communication standby…\nAwaiting another player to choose.");
 const u8 gText_BattleWasRefused[] = _("The battle was refused.{PAUSE 60}");
 const u8 gText_RefusedBattle[] = _("Refused the battle.{PAUSE 60}");
@@ -1834,7 +1887,12 @@ const u8 gText_Fertilize[] = _("FERTILIZE");
 const u8 gText_PlantBerry[] = _("PLANT BERRY");
 const u8 gText_AM[] = _("AM");
 const u8 gText_PM[] = _("PM");
+<<<<<<< HEAD
 
 //Added by Zorlon
 //String for Party Menu's Evolve option
 const u8 gText_Evolve[] = _("EVOLVE");
+=======
+const u8 gText_Relearn[] = _("{START_BUTTON} RELEARN"); // future note: don't decap this, because it mimics the summary screen BG graphics which will not get decapped
+const u8 gText_Rename[] = _("RENAME");
+>>>>>>> upstream/master

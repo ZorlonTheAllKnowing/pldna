@@ -102,7 +102,11 @@ SINGLE_BATTLE_TEST("Reflect Type does not affect Pokémon with no types")
         ANIMATION(ANIM_TYPE_MOVE, MOVE_BURN_UP, player);
         HP_BAR(opponent);
         MESSAGE("Arcanine burned itself out!");
+<<<<<<< HEAD
         MESSAGE("Foe Poliwrath used Reflect Type!");
+=======
+        MESSAGE("The opposing Poliwrath used Reflect Type!");
+>>>>>>> upstream/master
         MESSAGE("But it failed!");
     }
 }
@@ -121,7 +125,11 @@ SINGLE_BATTLE_TEST("Reflect Type copies a target's dual types")
     } SCENE {
         MESSAGE("Arcanine used Reflect Type!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_REFLECT_TYPE, player);
+<<<<<<< HEAD
         MESSAGE("Arcanine's type changed to match the Foe Poliwrath's!");
+=======
+        MESSAGE("Arcanine became the same type as the opposing Poliwrath!");
+>>>>>>> upstream/master
     } THEN {
         EXPECT_EQ(player->types[0], TYPE_WATER);
         EXPECT_EQ(player->types[1], TYPE_FIGHTING);
@@ -143,7 +151,11 @@ SINGLE_BATTLE_TEST("Reflect Type copies a target's pure type")
     } SCENE {
         MESSAGE("Arcanine used Reflect Type!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_REFLECT_TYPE, player);
+<<<<<<< HEAD
         MESSAGE("Arcanine's type changed to match the Foe Sudowoodo's!");
+=======
+        MESSAGE("Arcanine became the same type as the opposing Sudowoodo!");
+>>>>>>> upstream/master
     } THEN {
         EXPECT_EQ(player->types[0], TYPE_ROCK);
         EXPECT_EQ(player->types[1], TYPE_ROCK);
@@ -166,6 +178,7 @@ SINGLE_BATTLE_TEST("Reflect Type defaults to Normal type for the user's types[0]
         TURN { MOVE(player, MOVE_REFLECT_TYPE); }
     } SCENE {
         // Turn 1
+<<<<<<< HEAD
         MESSAGE("Foe Arcanine used Burn Up!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_BURN_UP, opponent);
         HP_BAR(player);
@@ -178,6 +191,20 @@ SINGLE_BATTLE_TEST("Reflect Type defaults to Normal type for the user's types[0]
         MESSAGE("Wobbuffet used Reflect Type!");
         ANIMATION(ANIM_TYPE_MOVE, MOVE_REFLECT_TYPE, player);
         MESSAGE("Wobbuffet's type changed to match the Foe Arcanine's!");
+=======
+        MESSAGE("The opposing Arcanine used Burn Up!");
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_BURN_UP, opponent);
+        HP_BAR(player);
+        MESSAGE("The opposing Arcanine burned itself out!");
+        // Turn 2
+        MESSAGE("Wobbuffet used Forest's Curse!");
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_FORESTS_CURSE, player);
+        MESSAGE("Grass type was added to the opposing Arcanine!");
+        // Turn 3
+        MESSAGE("Wobbuffet used Reflect Type!");
+        ANIMATION(ANIM_TYPE_MOVE, MOVE_REFLECT_TYPE, player);
+        MESSAGE("Wobbuffet became the same type as the opposing Arcanine!");
+>>>>>>> upstream/master
     } THEN {
         EXPECT_EQ(player->types[0], TYPE_NORMAL);
         EXPECT_EQ(player->types[1], TYPE_NORMAL);

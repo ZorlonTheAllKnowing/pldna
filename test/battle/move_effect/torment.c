@@ -16,7 +16,11 @@ SINGLE_BATTLE_TEST("Torment prevents consecutive move uses")
         TURN { MOVE(opponent, MOVE_SPLASH, allowed: FALSE); MOVE(opponent, MOVE_CELEBRATE); }
     } SCENE {
         ANIMATION(ANIM_TYPE_MOVE, MOVE_TORMENT, player);
+<<<<<<< HEAD
         MESSAGE("Foe Wobbuffet was subjected to torment!");
+=======
+        MESSAGE("The opposing Wobbuffet was subjected to torment!");
+>>>>>>> upstream/master
         ANIMATION(ANIM_TYPE_MOVE, MOVE_SPLASH, opponent);
         ANIMATION(ANIM_TYPE_MOVE, MOVE_CELEBRATE, opponent);
     }

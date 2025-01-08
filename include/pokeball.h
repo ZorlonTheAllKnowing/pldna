@@ -1,6 +1,7 @@
 #ifndef GUARD_POKEBALL_H
 #define GUARD_POKEBALL_H
 
+<<<<<<< HEAD
 enum
 {
     BALL_POKE,
@@ -30,6 +31,38 @@ enum
     BALL_PARK,
     BALL_BEAST,
     BALL_CHERISH,
+=======
+enum PokeBall
+{
+    BALL_STRANGE = 0,
+    BALL_POKE = 1,
+    BALL_GREAT = 2,
+    BALL_ULTRA = 3,
+    BALL_MASTER = 4,
+    BALL_PREMIER = 5,
+    BALL_HEAL = 6,
+    BALL_NET = 7,
+    BALL_NEST = 8,
+    BALL_DIVE = 9,
+    BALL_DUSK = 10,
+    BALL_TIMER = 11,
+    BALL_QUICK = 12,
+    BALL_REPEAT = 13,
+    BALL_LUXURY = 14,
+    BALL_LEVEL = 15,
+    BALL_LURE = 16,
+    BALL_MOON = 17,
+    BALL_FRIEND = 18,
+    BALL_LOVE = 19,
+    BALL_FAST = 20,
+    BALL_HEAVY = 21,
+    BALL_DREAM = 22,
+    BALL_SAFARI = 23,
+    BALL_SPORT = 24,
+    BALL_PARK = 25,
+    BALL_BEAST = 26,
+    BALL_CHERISH = 27,
+>>>>>>> upstream/master
     POKEBALL_COUNT
 };
 
@@ -56,5 +89,9 @@ void StartHealthboxSlideIn(u8 battler);
 void DoHitAnimHealthboxEffect(u8 battler);
 void LoadBallGfx(u8 ballId);
 void FreeBallGfx(u8 ballId);
+<<<<<<< HEAD
+=======
+enum PokeBall ItemIdToBallId(u32 ballItem);
+>>>>>>> upstream/master
 
 #endif // GUARD_POKEBALL_H

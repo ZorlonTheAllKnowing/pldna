@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 1 "data/maps/MirageTower_1F/scripts.pory"
 
 # 2 "data/maps/MirageTower_1F/scripts.pory"
@@ -18,3 +19,15 @@ MirageTower_1F_OnTransition:
 	setflag FLAG_LANDMARK_MIRAGE_TOWER
 # 10 "data/maps/MirageTower_1F/scripts.pory"
 	end
+=======
+MirageTower_1F_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, MirageTower_1F_OnTransition
+	.byte 0
+
+MirageTower_1F_OnTransition:
+	setflag FLAG_ENTERED_MIRAGE_TOWER
+	setflag FLAG_FORCE_MIRAGE_TOWER_VISIBLE
+	setflag FLAG_LANDMARK_MIRAGE_TOWER
+	end
+
+>>>>>>> upstream/master

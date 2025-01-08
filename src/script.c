@@ -5,6 +5,10 @@
 #include "util.h"
 #include "constants/event_objects.h"
 #include "constants/map_scripts.h"
+<<<<<<< HEAD
+=======
+#include "field_message_box.h"
+>>>>>>> upstream/master
 
 #define RAM_SCRIPT_MAGIC 51
 
@@ -26,6 +30,11 @@ static u8 sGlobalScriptContextStatus;
 static struct ScriptContext sGlobalScriptContext;
 static struct ScriptContext sImmediateScriptContext;
 static bool8 sLockFieldControls;
+<<<<<<< HEAD
+=======
+EWRAM_DATA u8 gMsgIsSignPost = FALSE;
+EWRAM_DATA u8 gMsgBoxIsCancelable = FALSE;
+>>>>>>> upstream/master
 
 extern ScrCmdFunc gScriptCmdTable[];
 extern ScrCmdFunc gScriptCmdTableEnd[];
