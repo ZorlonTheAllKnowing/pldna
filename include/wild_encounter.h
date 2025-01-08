@@ -3,10 +3,6 @@
 
 #include "constants/wild_encounter.h"
 
-#define ENCOUNTER_TYPE_LAND     0
-#define ENCOUNTER_TYPE_WATER    1
-#define ENCOUNTER_TYPE_HIDDEN   2   // Get from species
-
 struct WildPokemon
 {
     u8 minLevel;
@@ -27,6 +23,7 @@ struct WildPokemonHeader
     const struct WildPokemonInfo *landMonsInfo;
     const struct WildPokemonInfo *waterMonsInfo;
     const struct WildPokemonInfo *rockSmashMonsInfo;
+    const struct WildPokemonInfo *hiddenMonsInfo;
     const struct WildPokemonInfo *fishingMonsInfo;
 };
 
@@ -47,7 +44,11 @@ bool8 UpdateRepelCounter(void);
 bool8 TryDoDoubleWildBattle(void);
 bool8 StandardWildEncounter_Debug(void);
 u32 CalculateChainFishingShinyRolls(void);
-void tryCreateShakingGrassEncounter(void);
-bool8 ShakingGrassEncounter(void);
+void CreateWildMon(u16 species, u8 level);
+u16 GetCurrentMapWildMonHeaderId(void);
+u8 ChooseWildMonIndex_Land(void);
+u8 ChooseWildMonIndex_WaterRock(void);
+u8 ChooseHiddenMonIndex(void);
+bool32 MapHasNoEncounterData(void);
 
 #endif // GUARD_WILD_ENCOUNTER_H

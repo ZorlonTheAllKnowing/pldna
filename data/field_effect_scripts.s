@@ -27,7 +27,7 @@ gFieldEffectScriptPointers::
 	.4byte gFieldEffectScript_JumpLongGrass             @ FLDEFF_JUMP_LONG_GRASS
 	.4byte gFieldEffectScript_ShakingGrass              @ FLDEFF_SHAKING_GRASS
 	.4byte gFieldEffectScript_ShakingGrass2             @ FLDEFF_SHAKING_LONG_GRASS
-	.4byte gFieldEffectScript_UnusedSand                @ FLDEFF_UNUSED_SAND
+	.4byte gFieldEffectScript_UnusedSand                @ FLDEFF_SAND_HOLE
 	.4byte gFieldEffectScript_WaterSurfacing            @ FLDEFF_WATER_SURFACING
 	.4byte gFieldEffectScript_BerryTreeGrowthSparkle    @ FLDEFF_BERRY_TREE_GROWTH_SPARKLE
 	.4byte gFieldEffectScript_DeepSandFootprints        @ FLDEFF_DEEP_SAND_FOOTPRINTS
@@ -79,8 +79,8 @@ gFieldEffectScriptPointers::
 	.4byte gFieldEffectScript_TracksSlither             @ FLDEFF_TRACKS_SLITHER
 	.4byte gFieldEffectScript_TracksBug                 @ FLDEFF_TRACKS_BUG
 	.4byte gFieldEffectScript_TracksSpot                @ FLDEFF_TRACKS_SPOT
-	.4byte gFieldEffectScript_Zig            			@ FLDEFF_ZIG
-
+	.4byte gFieldEffectScript_CaveDust                  @ FLDEFF_CAVE_DUST
+    
 gFieldEffectScript_ExclamationMarkIcon1::
 	field_eff_callnative FldEff_ExclamationMarkIcon
 	field_eff_end
@@ -376,6 +376,6 @@ gFieldEffectScript_TracksSlither::
 	field_eff_loadfadedpal_callnative gSpritePalette_GeneralFieldEffect0, FldEff_TracksSlither
 	field_eff_end
 
-gFieldEffectScript_Zig::
-	field_eff_loadfadedpal_callnative gSpritePalette_Zig, FldEff_Zig
+gFieldEffectScript_CaveDust::
+	field_eff_loadfadedpal_callnative gSpritePalette_CaveDust FldEff_CaveDust
 	field_eff_end

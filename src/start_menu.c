@@ -44,12 +44,11 @@
 #include "trainer_card.h"
 #include "window.h"
 #include "union_room.h"
+#include "dexnav.h"
+#include "wild_encounter.h"
 #include "constants/battle_frontier.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
-#include "research_pokedex.h"
-
-#include "sample_ui.h"
 
 // Menu actions
 enum
@@ -68,7 +67,7 @@ enum
     MENU_ACTION_RETIRE_FRONTIER,
     MENU_ACTION_PYRAMID_BAG,
     MENU_ACTION_DEBUG,
-    MENU_ACTION_SAMPLE_UI,
+    MENU_ACTION_DEXNAV,
 };
 
 // Save status
@@ -110,6 +109,7 @@ static bool8 StartMenuLinkModePlayerNameCallback(void);
 static bool8 StartMenuBattlePyramidRetireCallback(void);
 static bool8 StartMenuBattlePyramidBagCallback(void);
 static bool8 StartMenuDebugCallback(void);
+static bool8 StartMenuDexNavCallback(void);
 
 // Menu callbacks
 static bool8 SaveStartCallback(void);
@@ -136,7 +136,6 @@ static u8 SaveReturnErrorCallback(void);
 static u8 BattlePyramidConfirmRetireCallback(void);
 static u8 BattlePyramidRetireYesNoCallback(void);
 static u8 BattlePyramidRetireInputCallback(void);
-static bool8 StartMenuSampleUiCallback(void);
 
 // Task callbacks
 static void StartMenuTask(u8 taskId);
@@ -188,7 +187,6 @@ static const struct WindowTemplate sWindowTemplate_PyramidPeak = {
 };
 
 static const u8 sText_MenuDebug[] = _("DEBUG");
-static const u8 sText_SampleUi[] = _("SAMPLEUI");
 
 static const struct MenuAction sStartMenuItems[] =
 {
@@ -206,7 +204,7 @@ static const struct MenuAction sStartMenuItems[] =
     [MENU_ACTION_RETIRE_FRONTIER] = {gText_MenuRetire,  {.u8_void = StartMenuBattlePyramidRetireCallback}},
     [MENU_ACTION_PYRAMID_BAG]     = {gText_MenuBag,     {.u8_void = StartMenuBattlePyramidBagCallback}},
     [MENU_ACTION_DEBUG]           = {sText_MenuDebug,   {.u8_void = StartMenuDebugCallback}},
-    [MENU_ACTION_SAMPLE_UI]       = {sText_SampleUi,    {.u8_void = StartMenuSampleUiCallback}}
+    [MENU_ACTION_DEXNAV]          = {gText_MenuDexNav,  {.u8_void = StartMenuDexNavCallback}},
 };
 
 static const struct BgTemplate sBgTemplates_LinkBattleSave[] =
@@ -331,24 +329,20 @@ static void AddStartMenuAction(u8 action)
 }
 
 static void BuildNormalStartMenu(void)
-{
+{ 
     if (FlagGet(FLAG_SYS_POKEDEX_GET) == TRUE)
-    {
         AddStartMenuAction(MENU_ACTION_POKEDEX);
-    }
+    
+    if (FLAG_SYS_DEXNAV_GET != 0 && FlagGet(FLAG_SYS_DEXNAV_GET))
+        AddStartMenuAction(MENU_ACTION_DEXNAV);
+    
     if (FlagGet(FLAG_SYS_POKEMON_GET) == TRUE)
-    {
         AddStartMenuAction(MENU_ACTION_POKEMON);
-    }
 
     AddStartMenuAction(MENU_ACTION_BAG);
 
     if (FlagGet(FLAG_SYS_POKENAV_GET) == TRUE)
-    {
         AddStartMenuAction(MENU_ACTION_POKENAV);
-    }
-
-    AddStartMenuAction(MENU_ACTION_SAMPLE_UI);
 
     AddStartMenuAction(MENU_ACTION_PLAYER);
     AddStartMenuAction(MENU_ACTION_SAVE);
@@ -647,7 +641,10 @@ static bool8 HandleStartMenuInput(void)
             if (GetNationalPokedexCount(FLAG_GET_SEEN) == 0)
                 return FALSE;
         }
-
+        if (sCurrentStartMenuActions[sStartMenuCursorPos] == MENU_ACTION_DEXNAV
+          && MapHasNoEncounterData())
+            return FALSE;
+        
         gMenuCallback = sStartMenuItems[sCurrentStartMenuActions[sStartMenuCursorPos]].func.u8_void;
 
         if (gMenuCallback != StartMenuSaveCallback
@@ -672,7 +669,7 @@ static bool8 HandleStartMenuInput(void)
     return FALSE;
 }
 
-static bool8 StartMenuPokedexCallback(void)
+bool8 StartMenuPokedexCallback(void)
 {
     if (!gPaletteFade.active)
     {
@@ -793,10 +790,11 @@ static bool8 StartMenuDebugCallback(void)
     RemoveExtraStartMenuWindows();
     HideStartMenuDebug(); // Hide start menu without enabling movement
 
-#if DEBUG_OVERWORLD_MENU == TRUE
-    FreezeObjectEvents();
-    Debug_ShowMainMenu();
-#endif
+    if (DEBUG_OVERWORLD_MENU)
+    {
+        FreezeObjectEvents();
+        Debug_ShowMainMenu();
+    }
 
 return TRUE;
 }
@@ -1494,10 +1492,8 @@ void AppendToList(u8 *list, u8 *pos, u8 newEntry)
     (*pos)++;
 }
 
-static bool8 StartMenuSampleUiCallback(void)
+static bool8 StartMenuDexNavCallback(void)
 {
-    // Change which version of the UI is launched by changing which task is called from here
-    CreateTask(Task_StartResearchPokedex_FromOverworldMenu, 0);
-    //SetMainCallback2(CB2_OpenPokedex);
+    CreateTask(Task_OpenDexNavFromStartMenu, 0);
     return TRUE;
 }

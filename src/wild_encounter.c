@@ -23,15 +23,8 @@
 #include "constants/items.h"
 #include "constants/layouts.h"
 #include "constants/weather.h"
-#include "constants/field_effects.h"
-#include "field_weather.h"
-#include "pokedex.h"
-#include "constants/metatile_labels.h"
-#include "field_effect_helpers.h"
-#include "field_effect.h"
 
 extern const u8 EventScript_SprayWoreOff[];
-extern const u8 SpawnShakingGrass[];
 
 #define MAX_ENCOUNTER_RATE 2880
 
@@ -79,31 +72,6 @@ EWRAM_DATA u8 gChainFishingDexNavStreak = 0;
 #include "data/wild_encounters.h"
 
 static const struct WildPokemon sWildFeebas = {20, 25, SPECIES_FEEBAS};
-
-// The struct that holds the data for a ShakingGrass type encounter
-// Used to create overworld encounters for pokemon that have a higher research level.
-struct staticEncounter {
-    u16 species;
-    u16 move[MAX_MON_MOVES];
-    u16 heldItem;
-    u8 abilityNum;
-    u8 monLevel;
-    u8 environment;
-    s16 tilex;
-    s16 tiley;
-    u8 fldEffSpriteId;
-    u8 fldEffId;
-};
-
-// Creates a list of three static encounters.
-// This list should take the pokemon that would generate randomly, and instead save them here
-// to be accessed in a ShakingGrass or overworld encounter.
-struct staticEncounter staticEncounters[3];
-
-u32 currentShakingGrassSpriteID;
-s32 currentShakingGrassX;
-s32 currentShakingGrassY;
-u16 currentShakingGrassSpecies;
 
 static const u16 sRoute119WaterTileData[] =
 {
@@ -218,9 +186,7 @@ static void FeebasSeedRng(u16 seed)
 }
 
 // LAND_WILD_COUNT
-// Takes the encounter table (check it out in PoryMap) and picks which Pokemon from that table
-// will be encountered. Odds based on that table.
-static u8 ChooseWildMonIndex_Land(void)
+u8 ChooseWildMonIndex_Land(void)
 {
     u8 wildMonIndex = 0;
     bool8 swap = FALSE;
@@ -248,41 +214,8 @@ static u8 ChooseWildMonIndex_Land(void)
         wildMonIndex = 9;
     else if (rand >= ENCOUNTER_CHANCE_LAND_MONS_SLOT_9 && rand < ENCOUNTER_CHANCE_LAND_MONS_SLOT_10)
         wildMonIndex = 10;
-    else if (rand >= ENCOUNTER_CHANCE_LAND_MONS_SLOT_10 && rand < ENCOUNTER_CHANCE_LAND_MONS_SLOT_11)
+    else
         wildMonIndex = 11;
-    else if (rand >= ENCOUNTER_CHANCE_LAND_MONS_SLOT_11 && rand < ENCOUNTER_CHANCE_LAND_MONS_SLOT_12)
-        wildMonIndex = 12;
-    else if (rand >= ENCOUNTER_CHANCE_LAND_MONS_SLOT_12 && rand < ENCOUNTER_CHANCE_LAND_MONS_SLOT_13)
-        wildMonIndex = 13;
-    else if (rand >= ENCOUNTER_CHANCE_LAND_MONS_SLOT_13 && rand < ENCOUNTER_CHANCE_LAND_MONS_SLOT_14)
-        wildMonIndex = 14;
-    else if (rand >= ENCOUNTER_CHANCE_LAND_MONS_SLOT_14 && rand < ENCOUNTER_CHANCE_LAND_MONS_SLOT_15)
-        wildMonIndex = 15;
-    else if (rand >= ENCOUNTER_CHANCE_LAND_MONS_SLOT_15 && rand < ENCOUNTER_CHANCE_LAND_MONS_SLOT_16)
-        wildMonIndex = 16;
-    else if (rand >= ENCOUNTER_CHANCE_LAND_MONS_SLOT_16 && rand < ENCOUNTER_CHANCE_LAND_MONS_SLOT_17)
-        wildMonIndex = 17;
-    else if (rand >= ENCOUNTER_CHANCE_LAND_MONS_SLOT_17 && rand < ENCOUNTER_CHANCE_LAND_MONS_SLOT_18)
-        wildMonIndex = 18;
-    else if (rand >= ENCOUNTER_CHANCE_LAND_MONS_SLOT_18 && rand < ENCOUNTER_CHANCE_LAND_MONS_SLOT_19)
-        wildMonIndex = 19;
-    else if (rand >= ENCOUNTER_CHANCE_LAND_MONS_SLOT_19 && rand < ENCOUNTER_CHANCE_LAND_MONS_SLOT_20)
-        wildMonIndex = 20;
-    else if (rand >= ENCOUNTER_CHANCE_LAND_MONS_SLOT_20 && rand < ENCOUNTER_CHANCE_LAND_MONS_SLOT_21)
-        wildMonIndex = 21;
-    else if (rand >= ENCOUNTER_CHANCE_LAND_MONS_SLOT_21 && rand < ENCOUNTER_CHANCE_LAND_MONS_SLOT_22)
-        wildMonIndex = 22;
-    else if (rand >= ENCOUNTER_CHANCE_LAND_MONS_SLOT_22 && rand < ENCOUNTER_CHANCE_LAND_MONS_SLOT_23)
-        wildMonIndex = 23;
-    else if (rand >= ENCOUNTER_CHANCE_LAND_MONS_SLOT_23 && rand < ENCOUNTER_CHANCE_LAND_MONS_SLOT_24)
-        wildMonIndex = 24;
-    else if (rand >= ENCOUNTER_CHANCE_LAND_MONS_SLOT_24 && rand < ENCOUNTER_CHANCE_LAND_MONS_SLOT_25)
-        wildMonIndex = 25;
-    else if (rand >= ENCOUNTER_CHANCE_LAND_MONS_SLOT_25 && rand < ENCOUNTER_CHANCE_LAND_MONS_SLOT_26)
-        wildMonIndex = 26;
-    else 
-        wildMonIndex = 27;
-    
 
     if (LURE_STEP_COUNT != 0 && (Random() % 10 < 2))
         swap = TRUE;
@@ -294,7 +227,7 @@ static u8 ChooseWildMonIndex_Land(void)
 }
 
 // ROCK_WILD_COUNT / WATER_WILD_COUNT
-static u8 ChooseWildMonIndex_WaterRock(void)
+u8 ChooseWildMonIndex_WaterRock(void)
 {
     u8 wildMonIndex = 0;
     bool8 swap = FALSE;
@@ -372,8 +305,6 @@ static u8 ChooseWildMonIndex_Fishing(u8 rod)
     return wildMonIndex;
 }
 
-// Takes the pokemon, the wildMonIndex (from ChooseWildMonIndex_Land), and the area
-// and picks what level the encountered pokemon will be. 
 static u8 ChooseWildMonLevel(const struct WildPokemon *wildPokemon, u8 wildMonIndex, u8 area)
 {
     u8 min;
@@ -381,10 +312,6 @@ static u8 ChooseWildMonLevel(const struct WildPokemon *wildPokemon, u8 wildMonIn
     u8 range;
     u8 rand;
 
-    //Always make wild pokemon level 100
-    return 100;
-
-    //the following is the old code
     if (LURE_STEP_COUNT == 0)
     {
         // Make sure minimum level is less than maximum level
@@ -427,7 +354,7 @@ static u8 ChooseWildMonLevel(const struct WildPokemon *wildPokemon, u8 wildMonIn
     }
 }
 
-static u16 GetCurrentMapWildMonHeaderId(void)
+u16 GetCurrentMapWildMonHeaderId(void)
 {
     u16 i;
 
@@ -440,21 +367,16 @@ static u16 GetCurrentMapWildMonHeaderId(void)
         if (gWildMonHeaders[i].mapGroup == gSaveBlock1Ptr->location.mapGroup &&
             gWildMonHeaders[i].mapNum == gSaveBlock1Ptr->location.mapNum)
         {
-            // if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(ALTERING_CAVE) &&
-            //     gSaveBlock1Ptr->location.mapNum == MAP_NUM(ALTERING_CAVE))
-            // {
-            //     u16 alteringCaveId = VarGet(VAR_ALTERING_CAVE_WILD_SET);
-            //     if (alteringCaveId >= NUM_ALTERING_CAVE_TABLES)
-            //         alteringCaveId = 0;
+            if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(ALTERING_CAVE) &&
+                gSaveBlock1Ptr->location.mapNum == MAP_NUM(ALTERING_CAVE))
+            {
+                u16 alteringCaveId = VarGet(VAR_ALTERING_CAVE_WILD_SET);
+                if (alteringCaveId >= NUM_ALTERING_CAVE_TABLES)
+                    alteringCaveId = 0;
 
-            //     i += alteringCaveId;
-            // }
-            if (GetCurrentWeather() == WEATHER_SUNNY ){
-                return i;
+                i += alteringCaveId;
             }
-            else if (GetCurrentWeather() == WEATHER_RAIN ){
-                return i+1;
-            }
+
             return i;
         }
     }
@@ -495,7 +417,7 @@ u8 PickWildMonNature(void)
     return Random() % NUM_NATURES;
 }
 
-static void CreateWildMon(u16 species, u8 level)
+void CreateWildMon(u16 species, u8 level)
 {
     bool32 checkCuteCharm = TRUE;
 
@@ -587,45 +509,8 @@ static bool8 TryGenerateWildMon(const struct WildPokemonInfo *wildMonInfo, u8 ar
     if (gMapHeader.mapLayoutId != LAYOUT_BATTLE_FRONTIER_BATTLE_PIKE_ROOM_WILD_MONS && flags & WILD_CHECK_KEEN_EYE && !IsAbilityAllowingEncounter(level))
         return FALSE;
 
-    //Original method to create wild pokemon encounter
-    //CreateWildMon(wildMonInfo->wildPokemon[wildMonIndex].species, level);
-
-    //New method
-    //This method will only create a wild pokemon encounter if the pokemon has not been seen.
-    //Once a pokemon has been registered as Seen in the pokedex, it will stop being in wild encounters. -Zorlon
-    if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(wildMonInfo->wildPokemon[wildMonIndex].species), FLAG_GET_SEEN)){
-        //gSpecialVar_0x8004 = wildMonInfo->wildPokemon[wildMonIndex].species;  //save species to VAR_0x8004
-        CreateWildMon(wildMonInfo->wildPokemon[wildMonIndex].species, level);
-        currentShakingGrassSpecies = wildMonInfo->wildPokemon[wildMonIndex].species;
-        tryCreateShakingGrassEncounter();
-        return FALSE;
-    }
-    else
-        CreateWildMon(wildMonInfo->wildPokemon[wildMonIndex].species, level);
+    CreateWildMon(wildMonInfo->wildPokemon[wildMonIndex].species, level);
     return TRUE;
-}
-
-// Called by TryGenerateWildMon() when the pokemon to be generated is already in the pokedex
-// Picks a random tile near the player (within 3 in X and Y)
-// If that tile is a grass tile, has no object, and no field effect in it, then
-// shaking grass is generated there.
-void tryCreateShakingGrassEncounter(){
-    if(FieldEffectActiveListContains(FLDEFF_SHAKING_GRASS)) {
-        FieldEffectStop(&gSprites[currentShakingGrassSpriteID],FLDEFF_SHAKING_GRASS);
-        }
-    //generates to random values for X and Y, from [-3,3]
-    s8 xDelta = (Random() % 7) - 3;
-    s8 yDelta = (Random() % 7) - 3;
-    gFieldEffectArguments[0] = gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.x + xDelta;
-    gFieldEffectArguments[1] = gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y + yDelta;
-    u8 metatileBehaviour = MapGridGetMetatileBehaviorAt(gFieldEffectArguments[0], gFieldEffectArguments[1]);
-    if( MetatileBehavior_IsTallGrass(metatileBehaviour) ) {
-        gFieldEffectArguments[2] = 0xFF;
-        gFieldEffectArguments[3] = 2;
-        currentShakingGrassX = gFieldEffectArguments[0];
-        currentShakingGrassY = gFieldEffectArguments[1];
-        currentShakingGrassSpriteID = FieldEffectStart(FLDEFF_SHAKING_GRASS);
-    }
 }
 
 static u16 GenerateFishingWildMon(const struct WildPokemonInfo *wildMonInfo, u8 rod)
@@ -732,19 +617,6 @@ static bool8 AreLegendariesInSootopolisPreventingEncounters(void)
     }
 
     return FlagGet(FLAG_LEGENDARIES_IN_SOOTOPOLIS);
-}
-
-//Function to check if player is standing Shaking Grass. Returns True/False
-//Called in field_control_avatar.c -Z
-bool8 ShakingGrassEncounter(void)
-{
-    if (FieldEffectActiveListContains(FLDEFF_SHAKING_GRASS)
-        && gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.x == currentShakingGrassX 
-        && gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y == currentShakingGrassY){
-            BattleSetup_StartWildBattle();
-            return TRUE;
-        }
-    return FALSE;
 }
 
 bool8 StandardWildEncounter(u16 curMetatileBehavior, u16 prevMetatileBehavior)
@@ -1130,14 +1002,10 @@ static bool8 IsWildLevelAllowedByRepel(u8 wildLevel)
 
     for (i = 0; i < PARTY_SIZE; i++)
     {
-        if (GetMonData(&gPlayerParty[i], MON_DATA_HP) && !GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG))
+        if (I_REPEL_INCLUDE_FAINTED == GEN_1 || I_REPEL_INCLUDE_FAINTED >= GEN_6 || GetMonData(&gPlayerParty[i], MON_DATA_HP))
         {
-            u8 ourLevel = GetMonData(&gPlayerParty[i], MON_DATA_LEVEL);
-
-            if (wildLevel < ourLevel)
-                return FALSE;
-            else
-                return TRUE;
+            if (!GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG))
+                return wildLevel >= GetMonData(&gPlayerParty[i], MON_DATA_LEVEL);
         }
     }
 
@@ -1265,4 +1133,25 @@ bool8 StandardWildEncounter_Debug(void)
 
     DoStandardWildBattle_Debug();
     return TRUE;
+}
+
+u8 ChooseHiddenMonIndex(void)
+{
+    #ifdef ENCOUNTER_CHANCE_HIDDEN_MONS_TOTAL
+        u8 rand = Random() % ENCOUNTER_CHANCE_HIDDEN_MONS_TOTAL;
+
+        if (rand < ENCOUNTER_CHANCE_HIDDEN_MONS_SLOT_0)
+            return 0;
+        else if (rand >= ENCOUNTER_CHANCE_HIDDEN_MONS_SLOT_0 && rand < ENCOUNTER_CHANCE_HIDDEN_MONS_SLOT_1)
+            return 1;
+        else
+            return 2;
+    #else
+        return 0xFF;
+    #endif
+}
+
+bool32 MapHasNoEncounterData(void)
+{
+    return (GetCurrentMapWildMonHeaderId() == HEADER_NONE);
 }

@@ -2739,7 +2739,7 @@ static u8 DisplaySelectionWindow(u8 windowType)
         const u8 *text;
         u8 fontColorsId = (sPartyMenuInternal->actions[i] >= MENU_FIELD_MOVES) ? 4 : 3;
         if (sPartyMenuInternal->actions[i] >= MENU_FIELD_MOVES)
-            text = gMovesInfo[sFieldMoves[sPartyMenuInternal->actions[i] - MENU_FIELD_MOVES]].name;
+            text = GetMoveName(sFieldMoves[sPartyMenuInternal->actions[i] - MENU_FIELD_MOVES]);
         else
             text = sCursorOptions[sPartyMenuInternal->actions[i]].text;
         //Check if Action is Evolve. If so, pick the Evolve gold text color reference
@@ -4292,7 +4292,7 @@ static void ShowOrHideHeldItemSprite(u16 item, struct PartyMenuBox *menuBox)
 
 void LoadHeldItemIcons(void)
 {
-    LoadSpriteSheet(&sSpriteSheet_HeldItem);
+    LoadSpriteSheet(&gSpriteSheet_HeldItem);
     LoadSpritePalette(&sSpritePalette_HeldItem);
 }
 
