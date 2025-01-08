@@ -22,7 +22,6 @@
 #include "menu_helpers.h"
 #include "graphics.h"
 #include "pokemon_summary_screen.h"
-#include "pokemon.h"
 
 // General functions
 void Task_StartResearchPokedex_FromOverworldMenu(u8);
@@ -43,7 +42,7 @@ static void ListPage_InitWindows(void);
 static void Task_ListPageWaitFadeIn(u8);
 static void DisplayMagnifierListText(void);
 static void DisplayMagnifierLineItemText(u16, u8, u8, u8);
-static void ListPage_DisplayCurrentPokemonPicture(void);
+static void DisplayCurrentPokemonPicture(void);
 static void GetCurrentPokemonBackground(void);
 static void DisplayCurrentPokemonCategoryTypeText(void);
 static void DisplayCaughtMasteredPokemonCount(void);
@@ -52,7 +51,6 @@ static void DisplayCurrentPokemonType(void);
 u16 getTypePalette(u8 type);
 static void UpdateListDisplay(void);
 static void Task_ListPageInput(u8);
-static void CleanUpListPage(void);
 
 // Info Pages
 void Task_StartInfoPage(u8);
@@ -62,13 +60,8 @@ static bool8 InfoPage_InitBgs(void);
 static bool8 InfoPage_LoadGraphics(void);
 static void InfoPage_InitWindows(void);
 static void Task_InfoPageWaitFadeIn(u8);
-static void InfoPage_UpdateDisplay(void);
-static void InfoPage_DisplayNameAndNumber(void);
-static void InfoPage_DisplayPokedexEntry(void);
-static void InfoPage_DisplayPokemonWeight(void);
-static void InfoPage_DisplayPokemonPicture(void);
+static void DisplayCurrentPokemonWeight(void);
 static void Task_InfoPageInput(u8);
-static void InfoPage_CleanUp(void);
 
 // Stat Pages
 void Task_StartStatPage(u8);
@@ -123,7 +116,6 @@ static void Task_MovePageInput(u8);
 // Getters and Setters
 u16 GetResearchDexSeenCount(void);
 u16 GetResearchDexMasteredCount(void);
-static void FreeWindowAndBgBuffers(void);
 
 static EWRAM_DATA struct ResearchPokedexState *sResearchPokedexState = NULL;
 static EWRAM_DATA u8 *sBg0TilemapBuffer = NULL;
@@ -134,7 +126,7 @@ static EWRAM_DATA u8 *sBg3TilemapBuffer = NULL;
 static const u8 sText_PokedexListItem[] = _("Pg {STR_VAR_1}-{STR_VAR_2}");
 static const u8 sText_SingleSpace[] = _(" ");
 static const u8 sText_TenDashes[] = _("----------");
-static const u8 sText_ResearchLevelText[] = _("Research Level");
+static const u8 sText_ResearchLevelText[] = _("Research Level: {STR_VAR_1}");
 
 struct PokedexListItem
 {
@@ -180,9 +172,6 @@ void Task_StartResearchPokedex_FromOverworldMenu(u8 taskId)
     sResearchPokedexState->pokedexList[7].seen = TRUE;
     sResearchPokedexState->pokedexList[8].seen = TRUE;
     sResearchPokedexState->pokedexList[9].seen = TRUE;
-    sResearchPokedexState->pokedexList[10].seen = TRUE;
-    sResearchPokedexState->pokedexList[11].seen = TRUE;
-    sResearchPokedexState->pokedexList[12].seen = TRUE;
 
     sResearchPokedexState->pokedexList[1].researchLevel = 1;
     sResearchPokedexState->pokedexList[2].researchLevel = 2;
@@ -193,9 +182,6 @@ void Task_StartResearchPokedex_FromOverworldMenu(u8 taskId)
     sResearchPokedexState->pokedexList[7].researchLevel = 7;
     sResearchPokedexState->pokedexList[8].researchLevel = 8;
     sResearchPokedexState->pokedexList[9].researchLevel = 9;
-    sResearchPokedexState->pokedexList[10].researchLevel = 10;
-    sResearchPokedexState->pokedexList[11].researchLevel = 10;
-    sResearchPokedexState->pokedexList[12].researchLevel = 10;
     //End debugging
     sResearchPokedexState->selectedPokemon = 0;
     sResearchPokedexState->typeIcon1 = 0xFF;
@@ -1276,6 +1262,7 @@ static const struct BgTemplate sListPageBgTemplates[4] =
 };
 
 //MARK:List Page Windows
+
 #define LISTPAGE_SCROLLING_TEXT 0
 #define LISTPAGE_CATEGORY_TYPE  1
 #define LISTPAGE_CAUGHT_COUNT  2
@@ -1375,42 +1362,31 @@ static const struct BgTemplate sInfoPageBgTemplates[4] =
     },
 };
 
-#define INFOPAGE_NAME_AND_NUMBER    0
-#define INFOPAGE_HEIGHT_AND_WEIGHT  1
-#define INFOPAGE_POKEDEX_ENTRY      2
+#define INFOPAGE_CATEGORY_TYPE  4
+#define INFOPAGE_WEIGHT         5
 
 //MARK:Info Page Windows
 static const struct WindowTemplate sInfoPageWinTemplates[] =
 {
-    [INFOPAGE_NAME_AND_NUMBER] =
-    {
-        .bg = 0,
-        .tilemapLeft = 20,
-        .tilemapTop = 2,
-        .width = 8,
-        .height = 6,
-        .paletteNum = 15,
-        .baseBlock = 1,
-    },
-    [INFOPAGE_HEIGHT_AND_WEIGHT] =
+    [INFOPAGE_CATEGORY_TYPE] =
     {
         .bg = 0,
         .tilemapLeft = 12,
-        .tilemapTop = 7,
-        .width = 7,
-        .height = 4,
+        .tilemapTop = 2,
+        .width = 3,
+        .height = 3,
         .paletteNum = 15,
-        .baseBlock = 57,  //1 + (8*6)
+        .baseBlock = 290,
     },
-    [INFOPAGE_POKEDEX_ENTRY] =
+    [INFOPAGE_WEIGHT] =
     {
         .bg = 0,
         .tilemapLeft = 1,
-        .tilemapTop = 11,
-        .width = 29,
-        .height = 8,
+        .tilemapTop = 14,
+        .width = 7,
+        .height = 3,
         .paletteNum = 15,
-        .baseBlock = 85,  //1 + (8*6) + (7*4)
+        .baseBlock = 300,
     },
     DUMMY_WIN_TEMPLATE,
 };
@@ -1919,7 +1895,10 @@ static void ListPage_InitWindows(void)
     InitWindows(sListPageWinTemplates);
     DeactivateAllTextPrinters();
     LoadPalette(gStandardMenuPalette, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
-
+    FillWindowPixelBuffer(LISTPAGE_SCROLLING_TEXT, PIXEL_FILL(0));
+    FillWindowPixelBuffer(LISTPAGE_CATEGORY_TYPE, PIXEL_FILL(0));
+    FillWindowPixelBuffer(LISTPAGE_CAUGHT_COUNT, PIXEL_FILL(0));
+    FillWindowPixelBuffer(LISTPAGE_RESEARCH_LEVEL, PIXEL_FILL(0));
     PutWindowTilemap(LISTPAGE_SCROLLING_TEXT);
     PutWindowTilemap(LISTPAGE_CATEGORY_TYPE);
     PutWindowTilemap(LISTPAGE_CAUGHT_COUNT);
@@ -1929,9 +1908,15 @@ static void ListPage_InitWindows(void)
     CopyWindowToVram(LISTPAGE_CAUGHT_COUNT, COPYWIN_FULL);
     CopyWindowToVram(LISTPAGE_RESEARCH_LEVEL, COPYWIN_FULL);
 
+    RemoveWindow(INFOPAGE_CATEGORY_TYPE);
+    RemoveWindow(INFOPAGE_WEIGHT);
+
+    DisplayMagnifierListText();
+    DisplayCurrentPokemonPicture();
+    DisplayCurrentPokemonCategoryTypeText();
     DisplayListPageResearchLevel();
     DisplayCaughtMasteredPokemonCount();
-    UpdateListDisplay();
+    DisplayCurrentPokemonType();
 }
 
 static void Task_ListPageWaitFadeIn(u8 taskId)
@@ -1948,13 +1933,11 @@ static void Task_ListPageInput(u8 taskId)
     if (JOY_NEW(A_BUTTON))
     {
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
-        CleanUpListPage();
         gTasks[taskId].func = Task_StartInfoPage;
     }
     if (JOY_NEW(B_BUTTON))
     {
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
-        CleanUpListPage();
         gTasks[taskId].func = Task_ResearchPokedexFadeOut;
     }
     if (JOY_REPEAT(DPAD_UP))
@@ -1993,18 +1976,23 @@ static void Task_ListPageInput(u8 taskId)
     }
 }
 
-//MARK:Update List
+//MARK:Refresh List
 static void UpdateListDisplay(void)
 {
     FillWindowPixelBuffer(LISTPAGE_SCROLLING_TEXT, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
     FillWindowPixelBuffer(LISTPAGE_CATEGORY_TYPE, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
+    FillWindowPixelBuffer(LISTPAGE_CAUGHT_COUNT, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
+    FillWindowPixelBuffer(LISTPAGE_RESEARCH_LEVEL, PIXEL_FILL(TEXT_COLOR_TRANSPARENT));
+    FillWindowPixelBuffer(INFOPAGE_CATEGORY_TYPE, PIXEL_FILL(0));
+    FillWindowPixelBuffer(INFOPAGE_CATEGORY_TYPE, PIXEL_FILL(0));
     DisplayMagnifierListText();
-    ListPage_DisplayCurrentPokemonPicture();
+    DisplayCurrentPokemonPicture();
     DisplayCurrentPokemonCategoryTypeText();
+    DisplayListPageResearchLevel();
     DisplayCurrentPokemonType();
 }
 
-//MARK:Scroll List
+//MARK:Mag List
 static void DisplayMagnifierListText(void)
 {
     u8 xOffset = 3;
@@ -2079,7 +2067,7 @@ static void DisplayMagnifierLineItemText(u16 currentMon, u8 fontID, u8 xPos, u8 
 }
 
 //MARK:PKMN Pic
-static void ListPage_DisplayCurrentPokemonPicture(void)
+static void DisplayCurrentPokemonPicture(void)
 {
     u8 xPos = 159;
     u8 yPos = 88;
@@ -2136,18 +2124,18 @@ static void DisplayCurrentPokemonCategoryTypeText(void)
 //MARK:Caught Cnts
 static void DisplayCaughtMasteredPokemonCount(void)
 {
-    u8 xOffset = 10;
+    u8 xOffset = 8;
     u8 yOffset = 3;
     u8 color[3] = {0, 10, 3};
-    u8 fontsize = FONT_SMALL_NARROW;
+    u8 fontsize = FONT_NARROW;
     u16 seenCount = GetResearchDexSeenCount();
     u16 caughtCount = GetResearchDexMasteredCount();
 
-    ConvertIntToDecimalStringN(gStringVar2, seenCount, STR_CONV_MODE_LEADING_ZEROS, 3);
+    ConvertIntToDecimalStringN(gStringVar2, seenCount, STR_CONV_MODE_LEADING_ZEROS, 4);
     AddTextPrinterParameterized4(LISTPAGE_CAUGHT_COUNT, fontsize, xOffset, yOffset, 0, 0, color, TEXT_SKIP_DRAW, gStringVar2);
     CopyWindowToVram(LISTPAGE_CAUGHT_COUNT, COPYWIN_FULL);
 
-    ConvertIntToDecimalStringN(gStringVar3, caughtCount, STR_CONV_MODE_LEADING_ZEROS, 3);
+    ConvertIntToDecimalStringN(gStringVar3, caughtCount, STR_CONV_MODE_LEADING_ZEROS, 4);
     AddTextPrinterParameterized4(LISTPAGE_CAUGHT_COUNT, fontsize, xOffset, yOffset + 11, 0, 0, color, TEXT_SKIP_DRAW, gStringVar3);
     CopyWindowToVram(LISTPAGE_CAUGHT_COUNT, COPYWIN_FULL);
 }
@@ -2156,11 +2144,12 @@ static void DisplayCaughtMasteredPokemonCount(void)
 static void DisplayListPageResearchLevel(void)
 {
     u8 xOffset = 5;
-    u8 yOffset = 1;
+    u8 yOffset = 3;
     u8 color[3] = {0, 10, 3};
-    u8 fontsize = FONT_NARROW;
+    u8 fontsize = FONT_NARROWER;
     u8 researchLevel = sResearchPokedexState->pokedexList[sResearchPokedexState->selectedPokemon + 1].researchLevel;
 
+    ConvertIntToDecimalStringN(gStringVar1, researchLevel, STR_CONV_MODE_LEADING_ZEROS, 2);
     StringExpandPlaceholders(gStringVar4, sText_ResearchLevelText);
     AddTextPrinterParameterized4(LISTPAGE_RESEARCH_LEVEL, fontsize, xOffset, yOffset, 0, 0, color, TEXT_SKIP_DRAW, gStringVar4);
     CopyWindowToVram(LISTPAGE_RESEARCH_LEVEL, COPYWIN_FULL);
@@ -2173,7 +2162,7 @@ static void DisplayCurrentPokemonType(void)
     u8 type1 = gSpeciesInfo[currentMon].types[0];
     u8 type2 = gSpeciesInfo[currentMon].types[1];
     u8 xPos = 208;
-    u8 yPos = 76;
+    u8 yPos = 64;
 
     DestroySpriteAndFreeResources(&gSprites[sResearchPokedexState->typeIcon1]);
     DestroySpriteAndFreeResources(&gSprites[sResearchPokedexState->typeIcon2]);
@@ -2197,19 +2186,6 @@ static void DisplayCurrentPokemonType(void)
         //sResearchPokedexState->typeIcon1 = CreateSprite(&gTypeIconSpriteTemplates[0][0],xPos,yPos,0);
     }
     
-}
-
-//MARK:Cleanup List
-static void CleanUpListPage(void)
-{
-    ClearWindowTilemap(LISTPAGE_SCROLLING_TEXT);
-    ClearWindowTilemap(LISTPAGE_CATEGORY_TYPE);
-    ClearWindowTilemap(LISTPAGE_CAUGHT_COUNT);
-    ClearWindowTilemap(LISTPAGE_RESEARCH_LEVEL);
-    RemoveWindow(LISTPAGE_SCROLLING_TEXT);
-    RemoveWindow(LISTPAGE_CATEGORY_TYPE);
-    RemoveWindow(LISTPAGE_CAUGHT_COUNT);
-    RemoveWindow(LISTPAGE_RESEARCH_LEVEL);
 }
 
 //MARK:INFO PAGE
@@ -2279,7 +2255,7 @@ void CB2_InfoPageSetUp(void)
         gMain.state++;
         break;
     case 5:
-        InfoPage_UpdateDisplay();
+        DisplayCurrentPokemonWeight();
         CreateTask(Task_InfoPageWaitFadeIn, 0);
         gMain.state++;
         break;
@@ -2354,15 +2330,17 @@ static void InfoPage_InitWindows(void)
     InitWindows(sInfoPageWinTemplates);
     DeactivateAllTextPrinters();
     LoadPalette(gStandardMenuPalette, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
-    FillWindowPixelBuffer(INFOPAGE_NAME_AND_NUMBER, PIXEL_FILL(0));
-    FillWindowPixelBuffer(INFOPAGE_HEIGHT_AND_WEIGHT, PIXEL_FILL(0));
-    FillWindowPixelBuffer(INFOPAGE_POKEDEX_ENTRY, PIXEL_FILL(0));
-    PutWindowTilemap(INFOPAGE_NAME_AND_NUMBER);
-    PutWindowTilemap(INFOPAGE_HEIGHT_AND_WEIGHT);
-    PutWindowTilemap(INFOPAGE_POKEDEX_ENTRY);
-    CopyWindowToVram(INFOPAGE_NAME_AND_NUMBER, COPYWIN_FULL);
-    CopyWindowToVram(INFOPAGE_HEIGHT_AND_WEIGHT, COPYWIN_FULL);
-    CopyWindowToVram(INFOPAGE_POKEDEX_ENTRY, COPYWIN_FULL);
+    FillWindowPixelBuffer(INFOPAGE_CATEGORY_TYPE, PIXEL_FILL(0));
+    FillWindowPixelBuffer(INFOPAGE_WEIGHT, PIXEL_FILL(0));
+    PutWindowTilemap(INFOPAGE_CATEGORY_TYPE);
+    PutWindowTilemap(INFOPAGE_WEIGHT);
+    CopyWindowToVram(INFOPAGE_CATEGORY_TYPE, COPYWIN_FULL);
+    CopyWindowToVram(INFOPAGE_WEIGHT, COPYWIN_FULL);
+
+    RemoveWindow(LISTPAGE_SCROLLING_TEXT);
+    RemoveWindow(LISTPAGE_CATEGORY_TYPE);
+    RemoveWindow(LISTPAGE_CAUGHT_COUNT);
+    RemoveWindow(LISTPAGE_RESEARCH_LEVEL);
 }
 
 static void Task_InfoPageWaitFadeIn(u8 taskId)
@@ -2373,7 +2351,7 @@ static void Task_InfoPageWaitFadeIn(u8 taskId)
     }
 }
 
-//MARK:Info Inpt Task
+//MARK:Info Page Input Task
 
 static void Task_InfoPageInput(u8 taskId)
 {
@@ -2384,7 +2362,6 @@ static void Task_InfoPageInput(u8 taskId)
     if (JOY_NEW(B_BUTTON))
     {
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
-        InfoPage_CleanUp();
         gTasks[taskId].func = Task_StartListPage;
     }
     if (JOY_REPEAT(DPAD_UP))
@@ -2394,7 +2371,7 @@ static void Task_InfoPageInput(u8 taskId)
         if(sResearchPokedexState->selectedPokemon > 0){
             sResearchPokedexState->selectedPokemon--;
         }
-        InfoPage_UpdateDisplay();
+        DisplayCurrentPokemonWeight();
     }
     if (JOY_REPEAT(DPAD_DOWN))
     {
@@ -2403,7 +2380,7 @@ static void Task_InfoPageInput(u8 taskId)
         if(sResearchPokedexState->selectedPokemon < HIGHEST_MON_NUMBER){
             sResearchPokedexState->selectedPokemon++;
         }
-        InfoPage_UpdateDisplay();
+        DisplayCurrentPokemonWeight();
     }
     if (JOY_REPEAT(DPAD_LEFT))
     {
@@ -2416,114 +2393,31 @@ static void Task_InfoPageInput(u8 taskId)
     }
 }
 
-//MARK:Update Info
-static void InfoPage_UpdateDisplay(void)
-{
-    FillWindowPixelBuffer(INFOPAGE_NAME_AND_NUMBER, PIXEL_FILL(0));
-    FillWindowPixelBuffer(INFOPAGE_HEIGHT_AND_WEIGHT, PIXEL_FILL(0));
-    FillWindowPixelBuffer(INFOPAGE_POKEDEX_ENTRY, PIXEL_FILL(0));
-    InfoPage_DisplayPokemonWeight();
-    InfoPage_DisplayPokedexEntry();
-    InfoPage_DisplayPokemonPicture();
-    InfoPage_DisplayNameAndNumber();
-}
+//MARK:Info Page Displayers
 
-//MARK:Name/No.
-static void InfoPage_DisplayNameAndNumber(void)
+static void DisplayCurrentPokemonWeight(void)
 {
-    u8 xOffset = 1;
-    u8 yOffset = 2;
+    u8 xOffset = 6;
+    u8 yOffset = 6;
     u8 color[3] = {0, 10, 3};
-    u8 fontsize = FONT_NARROW;
-
     u16 currentMon = sResearchPokedexState->selectedPokemon + 1;
-
-    ConvertIntToDecimalStringN(gStringVar1, currentMon, STR_CONV_MODE_LEADING_ZEROS, 4);
-    StringExpandPlaceholders(gStringVar2, GetSpeciesName(currentMon));
-    AddTextPrinterParameterized4(INFOPAGE_NAME_AND_NUMBER, fontsize, xOffset, yOffset, 0, 0, color, TEXT_SKIP_DRAW, gStringVar2); 
-    AddTextPrinterParameterized4(INFOPAGE_NAME_AND_NUMBER, fontsize, xOffset, yOffset+10, 0, 0, color, TEXT_SKIP_DRAW, gStringVar1); 
-    CopyWindowToVram(INFOPAGE_NAME_AND_NUMBER, COPYWIN_GFX);
-}
-
-//MARK:Pokedex Entry
-static void InfoPage_DisplayPokedexEntry(void)
-{
-    u8 xOffset = 8;
-    u8 yOffset = 0;
-    u8 color[3] = {0, 10, 3};
     u8 fontsize = FONT_NORMAL;
+    FillWindowPixelBuffer(3, PIXEL_FILL(0));
 
-    u16 currentMon = sResearchPokedexState->selectedPokemon + 1;
-    const u8* description;
-    description = GetSpeciesPokedexDescription(currentMon);
-
-    FillWindowPixelBuffer(INFOPAGE_POKEDEX_ENTRY, PIXEL_FILL(0));
-    AddTextPrinterParameterized4(INFOPAGE_POKEDEX_ENTRY, fontsize, xOffset, yOffset, 0, 0, color, TEXT_SKIP_DRAW, description);
-    CopyWindowToVram(INFOPAGE_POKEDEX_ENTRY, COPYWIN_GFX);
-}
-
-//MARK:H/Weight
-static void InfoPage_DisplayPokemonWeight(void)
-{
-    u8 xOffset = 0;
-    u8 yOffset = 4;
-    u8 color[3] = {0, 10, 3};
-    u16 currentMon = sResearchPokedexState->selectedPokemon + 1;
-    u8 fontsize = FONT_SHORT;
-    u32 weight = 0;
+    u32 weight = GetSpeciesWeight(currentMon);
     u8* weightString;
-    u32 height = 0;
-    u8* heightString;
-    FillWindowPixelBuffer(INFOPAGE_HEIGHT_AND_WEIGHT, PIXEL_FILL(0));
-
-    weight = GetSpeciesWeight(currentMon + 889);
     weightString = ConvertMonWeightToString(weight);
-
-    height = GetSpeciesHeight(currentMon + 796);
-    heightString = ConvertMonHeightToString(height);
 
     if(sResearchPokedexState->pokedexList[currentMon].seen)
     {
-        AddTextPrinterParameterized4(INFOPAGE_HEIGHT_AND_WEIGHT, fontsize, xOffset+11, yOffset, 0, 0, color, TEXT_SKIP_DRAW, heightString);
-        AddTextPrinterParameterized4(INFOPAGE_HEIGHT_AND_WEIGHT, fontsize, xOffset, yOffset + 12, 0, 0, color, TEXT_SKIP_DRAW, weightString);
-        CopyWindowToVram(INFOPAGE_HEIGHT_AND_WEIGHT, COPYWIN_GFX);
+        AddTextPrinterParameterized4(3, fontsize, xOffset, yOffset, 0, 0, color, TEXT_SKIP_DRAW, weightString);
+        CopyWindowToVram(3, COPYWIN_FULL);
     }
     else
     {
 
     }
     Free(weightString);
-}
-
-static void InfoPage_DisplayPokemonPicture(void)
-{
-    u8 xPos = 43;
-    u8 yPos = 52;
-    u16 currentMon = sResearchPokedexState->selectedPokemon + 1;
-
-    FreeAndDestroyMonPicSprite(sResearchPokedexState->monSpriteId);
-    sResearchPokedexState->monSpriteId = CreateMonSpriteFromNationalDexNumber(currentMon, xPos, yPos, 14);
-    if(sResearchPokedexState->pokedexList[currentMon].seen)
-    {
-        gSprites[sResearchPokedexState->monSpriteId].invisible = FALSE;
-        gSprites[sResearchPokedexState->monSpriteId].oam.priority = 3;
-    }
-    else
-    {
-        gSprites[sResearchPokedexState->monSpriteId].invisible = TRUE;
-        gSprites[sResearchPokedexState->monSpriteId].oam.priority = 3;
-    }
-}
-
-//MARK:Cleanup List
-static void InfoPage_CleanUp(void)
-{
-    ClearWindowTilemap(INFOPAGE_NAME_AND_NUMBER);
-    ClearWindowTilemap(INFOPAGE_HEIGHT_AND_WEIGHT);
-    ClearWindowTilemap(INFOPAGE_POKEDEX_ENTRY);
-    RemoveWindow(INFOPAGE_NAME_AND_NUMBER);
-    RemoveWindow(INFOPAGE_HEIGHT_AND_WEIGHT);
-    RemoveWindow(INFOPAGE_POKEDEX_ENTRY);
 }
 
 //MARK:STAT PAGE

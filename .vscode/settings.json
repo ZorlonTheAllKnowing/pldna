@@ -22,10 +22,6 @@
         "macro.h": "c",
         "battle_terrain.h": "c",
         "pokemon_icon.h": "c",
-        "types_info.h": "c",
-        "gpu_regs.h": "c",
-        "menu.h": "c",
-        "pokemon.h": "c",
-        "trainer_pokemon_sprites.h": "c"
+        "types_info.h": "c"
     }
 }
