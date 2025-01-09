@@ -2434,7 +2434,7 @@ static void InfoPage_DisplayNameAndNumber(void)
     u8 xOffset = 1;
     u8 yOffset = 2;
     u8 color[3] = {0, 10, 3};
-    u8 fontsize = FONT_NARROW;
+    u8 fontsize = FONT_CURSIVE;
 
     u16 currentMon = sResearchPokedexState->selectedPokemon + 1;
 
@@ -2451,14 +2451,14 @@ static void InfoPage_DisplayPokedexEntry(void)
     u8 xOffset = 8;
     u8 yOffset = 0;
     u8 color[3] = {0, 10, 3};
-    u8 fontsize = FONT_NORMAL;
+    u8 fontsize = FONT_CURSIVE;
 
     u16 currentMon = sResearchPokedexState->selectedPokemon + 1;
     const u8* description;
     description = GetSpeciesPokedexDescription(currentMon);
 
     FillWindowPixelBuffer(INFOPAGE_POKEDEX_ENTRY, PIXEL_FILL(0));
-    AddTextPrinterParameterized4(INFOPAGE_POKEDEX_ENTRY, fontsize, xOffset, yOffset, 0, 0, color, TEXT_SKIP_DRAW, description);
+    AddTextPrinterParameterized4(INFOPAGE_POKEDEX_ENTRY, fontsize, xOffset, yOffset, 0, 1, color, TEXT_SKIP_DRAW, description);
     CopyWindowToVram(INFOPAGE_POKEDEX_ENTRY, COPYWIN_GFX);
 }
 
@@ -2469,7 +2469,7 @@ static void InfoPage_DisplayPokemonWeight(void)
     u8 yOffset = 4;
     u8 color[3] = {0, 10, 3};
     u16 currentMon = sResearchPokedexState->selectedPokemon + 1;
-    u8 fontsize = FONT_SHORT;
+    u8 fontsize = FONT_CURSIVE;
     u32 weight = 0;
     u8* weightString;
     u32 height = 0;

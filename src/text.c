@@ -44,6 +44,11 @@ static u32 GetGlyphWidth_Narrower(u16, bool32);
 static u32 GetGlyphWidth_SmallNarrower(u16, bool32);
 static u32 GetGlyphWidth_ShortNarrow(u16, bool32);
 
+//cursive font
+static u16 FontFunc_Cursive(struct TextPrinter *);
+static void DecompressGlyph_Cursive(u16, bool32);
+static u32 GetGlyphWidth_Cursive(u16, bool32);
+
 static EWRAM_DATA struct TextPrinter sTempTextPrinter = {0};
 static EWRAM_DATA struct TextPrinter sTextPrinters[WINDOWS_MAX] = {0};
 
@@ -102,6 +107,7 @@ static const struct GlyphWidthFunc sGlyphWidthFuncs[] =
     { FONT_NARROWER,       GetGlyphWidth_Narrower },
     { FONT_SMALL_NARROWER, GetGlyphWidth_SmallNarrower },
     { FONT_SHORT_NARROW,   GetGlyphWidth_ShortNarrow },
+    { FONT_CURSIVE,        GetGlyphWidth_Cursive },
 };
 
 struct
@@ -260,6 +266,16 @@ static const struct FontInfo sFontInfos[] =
         .bgColor = 1,
         .shadowColor = 3,
     },
+    [FONT_CURSIVE] = {
+        .fontFunction = FontFunc_Cursive,
+        .maxLetterWidth = 8,
+        .maxLetterHeight = 15,
+        .letterSpacing = 0,
+        .lineSpacing = 0,
+        .fgColor = 2,
+        .bgColor = 1,
+        .shadowColor = 3,
+    },
 };
 
 static const u8 sMenuCursorDimensions[][2] =
@@ -277,6 +293,7 @@ static const u8 sMenuCursorDimensions[][2] =
     [FONT_NARROWER]       = { 8,  15 },
     [FONT_SMALL_NARROWER] = { 8,   8 },
     [FONT_SHORT_NARROW]   = { 8,  14 },
+    [FONT_CURSIVE]        = { 8,  15 },
 };
 
 static const u16 sFontBoldJapaneseGlyphs[] = INCBIN_U16("graphics/fonts/bold.hwjpnfont");
@@ -850,6 +867,17 @@ static u16 FontFunc_ShortNarrow(struct TextPrinter *textPrinter)
     return RenderText(textPrinter);
 }
 
+static u16 FontFunc_Cursive(struct TextPrinter *textPrinter)
+{
+    struct TextPrinterSubStruct *subStruct = (struct TextPrinterSubStruct *)(&textPrinter->subStructFields);
+    if (subStruct->hasFontIdBeenSet == FALSE)
+    {
+        subStruct->fontId = FONT_CURSIVE;
+        subStruct->hasFontIdBeenSet = TRUE;
+    }
+    return RenderText(textPrinter);
+}
+
 void TextPrinterInitDownArrowCounters(struct TextPrinter *textPrinter)
 {
     struct TextPrinterSubStruct *subStruct = (struct TextPrinterSubStruct *)(&textPrinter->subStructFields);
@@ -1231,6 +1259,9 @@ static u16 RenderText(struct TextPrinter *textPrinter)
             DecompressGlyph_ShortNarrow(currChar, textPrinter->japanese);
             break;
         case FONT_BRAILLE:
+            break;
+        case FONT_CURSIVE:
+            DecompressGlyph_Cursive(currChar, textPrinter->japanese);
             break;
         }
 
@@ -2113,6 +2144,46 @@ static void DecompressGlyph_ShortNarrow(u16 glyphId, bool32 isJapanese)
     }
 }
 
+static void DecompressGlyph_Cursive(u16 glyphId, bool32 isJapanese)
+{
+    const u16 *glyphs;
+    if (isJapanese == TRUE)
+    {
+        glyphs = gFontShortJapaneseGlyphs + (0x100 * (glyphId >> 0x3)) + (0x10 * (glyphId & 0x7));
+        DecompressGlyphTile(glyphs, gCurGlyph.gfxBufferTop);
+        DecompressGlyphTile(glyphs + 0x8, gCurGlyph.gfxBufferTop + 8);
+        DecompressGlyphTile(glyphs + 0x80, gCurGlyph.gfxBufferBottom);    // gCurGlyph + 0x20
+        DecompressGlyphTile(glyphs + 0x88, gCurGlyph.gfxBufferBottom + 8);    // gCurGlyph + 0x60
+        gCurGlyph.width = gFontShortJapaneseGlyphWidths[glyphId];
+        gCurGlyph.height = 15;
+    }
+    else
+    {
+        glyphs = gFontCursiveLatinGlyphs + (0x20 * glyphId);
+        gCurGlyph.width = gFontCursiveLatinGlyphWidths[glyphId];
+        if (gCurGlyph.width <= 8)
+        {
+            DecompressGlyphTile(glyphs, gCurGlyph.gfxBufferTop);
+            DecompressGlyphTile(glyphs + 0x10, gCurGlyph.gfxBufferBottom);
+        }
+        else
+        {
+            DecompressGlyphTile(glyphs, gCurGlyph.gfxBufferTop);
+            DecompressGlyphTile(glyphs + 0x8, gCurGlyph.gfxBufferTop + 8);
+            DecompressGlyphTile(glyphs + 0x10, gCurGlyph.gfxBufferBottom);
+            DecompressGlyphTile(glyphs + 0x18, gCurGlyph.gfxBufferBottom + 8);
+        }
+        gCurGlyph.height = 15;
+    }
+}
+static u32 GetGlyphWidth_Cursive(u16 glyphId, bool32 isJapanese)
+{
+    if (isJapanese == TRUE)
+        return gFontShortJapaneseGlyphWidths[glyphId];
+    else
+        return gFontCursiveLatinGlyphWidths[glyphId];
+}
+
 static u32 GetGlyphWidth_ShortNarrow(u16 glyphId, bool32 isJapanese)
 {
     if (isJapanese == TRUE)
@@ -2136,6 +2207,7 @@ static const s8 sNarrowerFontIds[] =
     [FONT_NARROWER] = -1,
     [FONT_SMALL_NARROWER] = -1,
     [FONT_SHORT_NARROW] = -1,
+    [FONT_CURSIVE] = FONT_NARROW,
 };
 
 // If the narrowest font ID doesn't fit the text, we still return that
