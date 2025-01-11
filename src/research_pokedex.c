@@ -23,6 +23,7 @@
 #include "graphics.h"
 #include "pokemon_summary_screen.h"
 #include "pokemon.h"
+#include "bitmap_drawer.h"
 
 // General functions
 void Task_StartResearchPokedex_FromOverworldMenu(u8);
@@ -79,6 +80,7 @@ static bool8 StatPage_LoadGraphics(void);
 static void StatPage_InitWindows(void);
 static void Task_StatPageWaitFadeIn(u8);
 static void Task_StatPageInput(u8);
+static void StatPage_CleanUp(void);
 
 // Area Pages
 void Task_StartAreaPage(u8);
@@ -1405,8 +1407,8 @@ static const struct WindowTemplate sInfoPageWinTemplates[] =
     [INFOPAGE_POKEDEX_ENTRY] =
     {
         .bg = 0,
-        .tilemapLeft = 1,
-        .tilemapTop = 11,
+        .tilemapLeft = 1, //1
+        .tilemapTop = 11, //11
         .width = 29,
         .height = 8,
         .paletteNum = 15,
@@ -1464,22 +1466,27 @@ static const struct BgTemplate sStatPageBgTemplates[4] =
     },
 };
 
+#define STATPAGE_WINDOW1    0
+#define STATPAGE_WINDOW2    1
+
 //MARK:Stat Page Windows
 static const struct WindowTemplate sStatPageWinTemplates[3] =
 {
+    [STATPAGE_WINDOW1] =
     {
-        .bg = 2,
-        .tilemapLeft = 6,
-        .tilemapTop = 6,
+        .bg = 0,
+        .tilemapLeft = 1,
+        .tilemapTop = 1,
         .width = 14,
         .height = 18,
         .paletteNum = 15,
         .baseBlock = 1,
     },
+    [STATPAGE_WINDOW2] =
     {
         .bg = 0,
-        .tilemapLeft = 6,
-        .tilemapTop = 6,
+        .tilemapLeft = 2,
+        .tilemapTop = 2,
         .width = 12,
         .height = 3,
         .paletteNum = 15,
@@ -2407,11 +2414,12 @@ static void Task_InfoPageInput(u8 taskId)
     }
     if (JOY_REPEAT(DPAD_LEFT))
     {
-
+        drawInWindow(INFOPAGE_POKEDEX_ENTRY);
     }
     if (JOY_REPEAT(DPAD_RIGHT))
     {
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
+        InfoPage_CleanUp();
         gTasks[taskId].func = Task_StartStatPage;
     }
 }
@@ -2515,7 +2523,7 @@ static void InfoPage_DisplayPokemonPicture(void)
     }
 }
 
-//MARK:Cleanup List
+//MARK:Cleanup Info
 static void InfoPage_CleanUp(void)
 {
     ClearWindowTilemap(INFOPAGE_NAME_AND_NUMBER);
@@ -2667,12 +2675,12 @@ static void StatPage_InitWindows(void)
     InitWindows(sStatPageWinTemplates);
     DeactivateAllTextPrinters();
     LoadPalette(gStandardMenuPalette, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
-    FillWindowPixelBuffer(0, PIXEL_FILL(0));
-    FillWindowPixelBuffer(1, PIXEL_FILL(0));
-    PutWindowTilemap(0);
-    PutWindowTilemap(1);
-    CopyWindowToVram(0, COPYWIN_FULL);
-    CopyWindowToVram(1, COPYWIN_FULL);
+    FillWindowPixelBuffer(STATPAGE_WINDOW1, PIXEL_FILL(0));
+    FillWindowPixelBuffer(STATPAGE_WINDOW2, PIXEL_FILL(0));
+    PutWindowTilemap(STATPAGE_WINDOW1);
+    PutWindowTilemap(STATPAGE_WINDOW2);
+    CopyWindowToVram(STATPAGE_WINDOW1, COPYWIN_FULL);
+    CopyWindowToVram(STATPAGE_WINDOW2, COPYWIN_FULL);
 }
 
 static void Task_StatPageWaitFadeIn(u8 taskId)
@@ -2689,12 +2697,12 @@ static void Task_StatPageInput(u8 taskId)
 {
     if (JOY_NEW(A_BUTTON))
     {
-        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
-        gTasks[taskId].func = Task_StartListPage;
+        drawInWindow(STATPAGE_WINDOW1);
     }
     if (JOY_NEW(B_BUTTON))
     {
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
+        StatPage_CleanUp();
         gTasks[taskId].func = Task_StartListPage;
     }
     if (JOY_REPEAT(DPAD_UP))
@@ -2716,13 +2724,31 @@ static void Task_StatPageInput(u8 taskId)
     if (JOY_REPEAT(DPAD_LEFT))
     {
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
+        StatPage_CleanUp();
         gTasks[taskId].func = Task_StartInfoPage;
     }
     if (JOY_REPEAT(DPAD_RIGHT))
     {
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
+        StatPage_CleanUp();
         gTasks[taskId].func = Task_StartAreaPage;
     }
+}
+
+//MARK:Update Info
+static void StatPage_UpdateDisplay(void)
+{
+    FillWindowPixelBuffer(STATPAGE_WINDOW1, PIXEL_FILL(0));
+    FillWindowPixelBuffer(STATPAGE_WINDOW2, PIXEL_FILL(0));
+}
+
+//MARK:Cleanup Stat
+static void StatPage_CleanUp(void)
+{
+    ClearWindowTilemap(STATPAGE_WINDOW1);
+    ClearWindowTilemap(STATPAGE_WINDOW2);
+    RemoveWindow(STATPAGE_WINDOW1);
+    RemoveWindow(STATPAGE_WINDOW2);
 }
 
 //MARK:AREA PAGE

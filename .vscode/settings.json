@@ -26,6 +26,9 @@
         "gpu_regs.h": "c",
         "menu.h": "c",
         "pokemon.h": "c",
-        "trainer_pokemon_sprites.h": "c"
+        "trainer_pokemon_sprites.h": "c",
+        "palette.h": "c",
+        "scanline_effect.h": "c",
+        "bitmap_drawer.h": "c"
     }
 }
