@@ -29,6 +29,10 @@
         "trainer_pokemon_sprites.h": "c",
         "palette.h": "c",
         "scanline_effect.h": "c",
-        "bitmap_drawer.h": "c"
+        "bitmap_drawer.h": "c",
+        "test_runner.h": "c",
+        "mini_printf.h": "c",
+        "test.h": "c",
+        "overworld.h": "c"
     }
 }

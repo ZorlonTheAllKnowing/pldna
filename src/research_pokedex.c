@@ -79,6 +79,8 @@ static bool8 StatPage_InitBgs(void);
 static bool8 StatPage_LoadGraphics(void);
 static void StatPage_InitWindows(void);
 static void Task_StatPageWaitFadeIn(u8);
+static void StatPage_UpdateDisplay(void);
+static void InfoPage_DisplayStatRadar(void);
 static void Task_StatPageInput(u8);
 static void StatPage_CleanUp(void);
 
@@ -125,7 +127,6 @@ static void Task_MovePageInput(u8);
 // Getters and Setters
 u16 GetResearchDexSeenCount(void);
 u16 GetResearchDexMasteredCount(void);
-static void FreeWindowAndBgBuffers(void);
 
 static EWRAM_DATA struct ResearchPokedexState *sResearchPokedexState = NULL;
 static EWRAM_DATA u8 *sBg0TilemapBuffer = NULL;
@@ -1402,7 +1403,7 @@ static const struct WindowTemplate sInfoPageWinTemplates[] =
         .width = 7,
         .height = 4,
         .paletteNum = 15,
-        .baseBlock = 57,  //1 + (8*6)
+        .baseBlock = 49,  //1 + (8*6)
     },
     [INFOPAGE_POKEDEX_ENTRY] =
     {
@@ -1412,7 +1413,7 @@ static const struct WindowTemplate sInfoPageWinTemplates[] =
         .width = 29,
         .height = 8,
         .paletteNum = 15,
-        .baseBlock = 85,  //1 + (8*6) + (7*4)
+        .baseBlock = 77,  //1 + (8*6) + (7*4)
     },
     DUMMY_WIN_TEMPLATE,
 };
@@ -1424,6 +1425,8 @@ static const u32 sStatBackgroundTilemap[] = INCBIN_U32("graphics/pokedex/researc
 static const u32 sStatPagesTilemap[] = INCBIN_U32("graphics/pokedex/researchdex/stat_pages_tiles.bin.lz");
 static const u32 sStatBackgroundTiles[] = INCBIN_U32("graphics/pokedex/researchdex/stat_background_tiles.4bpp.lz");
 static const u32 sStatPagesTiles[] = INCBIN_U32("graphics/pokedex/researchdex/stat_pages_tiles.4bpp.lz");
+
+static const u16 sRadarChartPalette[] = INCBIN_U16("graphics/pokedex/researchdex/zRadar_chart_fade.gbapal");
 
 //MARK:Stat Page Backgrounds
 static const struct BgTemplate sStatPageBgTemplates[4] =
@@ -1466,20 +1469,20 @@ static const struct BgTemplate sStatPageBgTemplates[4] =
     },
 };
 
-#define STATPAGE_WINDOW1    0
+#define STATPAGE_RADAR_CHART    0
 #define STATPAGE_WINDOW2    1
 
 //MARK:Stat Page Windows
 static const struct WindowTemplate sStatPageWinTemplates[3] =
 {
-    [STATPAGE_WINDOW1] =
+    [STATPAGE_RADAR_CHART] =
     {
-        .bg = 0,
-        .tilemapLeft = 1,
-        .tilemapTop = 1,
-        .width = 14,
-        .height = 18,
-        .paletteNum = 15,
+        .bg = 2,
+        .tilemapLeft = 2,
+        .tilemapTop = 3,
+        .width = 10,
+        .height = 10,
+        .paletteNum = 2,
         .baseBlock = 1,
     },
     [STATPAGE_WINDOW2] =
@@ -1490,7 +1493,7 @@ static const struct WindowTemplate sStatPageWinTemplates[3] =
         .width = 12,
         .height = 3,
         .paletteNum = 15,
-        .baseBlock = 253,
+        .baseBlock = 500,
     },
     DUMMY_WIN_TEMPLATE,
 };
@@ -2414,7 +2417,7 @@ static void Task_InfoPageInput(u8 taskId)
     }
     if (JOY_REPEAT(DPAD_LEFT))
     {
-        drawInWindow(INFOPAGE_POKEDEX_ENTRY);
+        
     }
     if (JOY_REPEAT(DPAD_RIGHT))
     {
@@ -2439,7 +2442,7 @@ static void InfoPage_UpdateDisplay(void)
 //MARK:Name/No.
 static void InfoPage_DisplayNameAndNumber(void)
 {
-    u8 xOffset = 1;
+    u8 xOffset = 0;
     u8 yOffset = 2;
     u8 color[3] = {0, 10, 3};
     u8 fontsize = FONT_CURSIVE;
@@ -2449,7 +2452,7 @@ static void InfoPage_DisplayNameAndNumber(void)
     ConvertIntToDecimalStringN(gStringVar1, currentMon, STR_CONV_MODE_LEADING_ZEROS, 4);
     StringExpandPlaceholders(gStringVar2, GetSpeciesName(currentMon));
     AddTextPrinterParameterized4(INFOPAGE_NAME_AND_NUMBER, fontsize, xOffset, yOffset, 0, 0, color, TEXT_SKIP_DRAW, gStringVar2); 
-    AddTextPrinterParameterized4(INFOPAGE_NAME_AND_NUMBER, fontsize, xOffset, yOffset+10, 0, 0, color, TEXT_SKIP_DRAW, gStringVar1); 
+    AddTextPrinterParameterized4(INFOPAGE_NAME_AND_NUMBER, fontsize, xOffset, yOffset + 12, 0, 0, color, TEXT_SKIP_DRAW, gStringVar1); 
     CopyWindowToVram(INFOPAGE_NAME_AND_NUMBER, COPYWIN_GFX);
 }
 
@@ -2474,7 +2477,7 @@ static void InfoPage_DisplayPokedexEntry(void)
 static void InfoPage_DisplayPokemonWeight(void)
 {
     u8 xOffset = 0;
-    u8 yOffset = 4;
+    u8 yOffset = 3;
     u8 color[3] = {0, 10, 3};
     u16 currentMon = sResearchPokedexState->selectedPokemon + 1;
     u8 fontsize = FONT_CURSIVE;
@@ -2484,10 +2487,10 @@ static void InfoPage_DisplayPokemonWeight(void)
     u8* heightString;
     FillWindowPixelBuffer(INFOPAGE_HEIGHT_AND_WEIGHT, PIXEL_FILL(0));
 
-    weight = GetSpeciesWeight(currentMon + 889);
+    weight = GetSpeciesWeight(currentMon);
     weightString = ConvertMonWeightToString(weight);
 
-    height = GetSpeciesHeight(currentMon + 796);
+    height = GetSpeciesHeight(currentMon);
     heightString = ConvertMonHeightToString(height);
 
     if(sResearchPokedexState->pokedexList[currentMon].seen)
@@ -2601,6 +2604,7 @@ void CB2_StatPageSetUp(void)
         gMain.state++;
         break;
     case 5:
+        StatPage_UpdateDisplay();
         CreateTask(Task_StatPageWaitFadeIn, 0);
         gMain.state++;
         break;
@@ -2622,20 +2626,25 @@ static bool8 StatPage_InitBgs(void)
 
     InitBgsFromTemplates(0, sStatPageBgTemplates, ARRAY_COUNT(sStatPageBgTemplates));
 
-    SetBgTilemapBuffer(BG_PAGE_CONTENT, sBg0TilemapBuffer);
-    SetBgTilemapBuffer(BG_BOOK_PAGES, sBg1TilemapBuffer);
-    SetBgTilemapBuffer(BG_SCROLLING_LIST, sBg2TilemapBuffer);
-    SetBgTilemapBuffer(BG_BOOK_COVER, sBg3TilemapBuffer);
+    SetBgTilemapBuffer(0, sBg0TilemapBuffer);
+    SetBgTilemapBuffer(1, sBg1TilemapBuffer);
+    SetBgTilemapBuffer(2, sBg2TilemapBuffer);
+    SetBgTilemapBuffer(3, sBg3TilemapBuffer);
 
-    ScheduleBgCopyTilemapToVram(BG_PAGE_CONTENT);
-    ScheduleBgCopyTilemapToVram(BG_BOOK_PAGES);
-    ScheduleBgCopyTilemapToVram(BG_SCROLLING_LIST);
-    ScheduleBgCopyTilemapToVram(BG_BOOK_COVER);
+    ScheduleBgCopyTilemapToVram(0);
+    ScheduleBgCopyTilemapToVram(1);
+    ScheduleBgCopyTilemapToVram(2);
+    ScheduleBgCopyTilemapToVram(3);
 
-    ShowBg(BG_PAGE_CONTENT);
-    ShowBg(BG_BOOK_PAGES);
-    ShowBg(BG_SCROLLING_LIST);
-    ShowBg(BG_BOOK_COVER);
+    //Set the Stat Radar Chart to have some transparency
+    SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_BG2 | BLDCNT_TGT1_BG1 | BLDCNT_EFFECT_BLEND);
+    SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(2, 18));
+    SetGpuRegBits(REG_OFFSET_WININ, WININ_WIN0_CLR);
+
+    ShowBg(0);
+    ShowBg(1);
+    ShowBg(2);
+    ShowBg(3);
 
     sResearchPokedexState->currentPage = STAT_PAGE;
     return TRUE;
@@ -2662,6 +2671,7 @@ static bool8 StatPage_LoadGraphics(void)
     case 2:
         LoadPalette(sStatBackgroundPalette, BG_PLTT_ID(0), sizeof(sStatBackgroundPalette));
         LoadPalette(sStatPagesPalette, BG_PLTT_ID(1), sizeof(sStatPagesPalette));
+        LoadPalette(sRadarChartPalette, BG_PLTT_ID(2), sizeof(sRadarChartPalette));
         sResearchPokedexState->loadState++;
     default:
         sResearchPokedexState->loadState = 0;
@@ -2675,11 +2685,11 @@ static void StatPage_InitWindows(void)
     InitWindows(sStatPageWinTemplates);
     DeactivateAllTextPrinters();
     LoadPalette(gStandardMenuPalette, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
-    FillWindowPixelBuffer(STATPAGE_WINDOW1, PIXEL_FILL(0));
+    FillWindowPixelBuffer(STATPAGE_RADAR_CHART, PIXEL_FILL(0));
     FillWindowPixelBuffer(STATPAGE_WINDOW2, PIXEL_FILL(0));
-    PutWindowTilemap(STATPAGE_WINDOW1);
+    PutWindowTilemap(STATPAGE_RADAR_CHART);
     PutWindowTilemap(STATPAGE_WINDOW2);
-    CopyWindowToVram(STATPAGE_WINDOW1, COPYWIN_FULL);
+    CopyWindowToVram(STATPAGE_RADAR_CHART, COPYWIN_FULL);
     CopyWindowToVram(STATPAGE_WINDOW2, COPYWIN_FULL);
 }
 
@@ -2697,7 +2707,7 @@ static void Task_StatPageInput(u8 taskId)
 {
     if (JOY_NEW(A_BUTTON))
     {
-        drawInWindow(STATPAGE_WINDOW1);
+
     }
     if (JOY_NEW(B_BUTTON))
     {
@@ -2712,6 +2722,7 @@ static void Task_StatPageInput(u8 taskId)
         if(sResearchPokedexState->selectedPokemon > 0){
             sResearchPokedexState->selectedPokemon--;
         }
+        StatPage_UpdateDisplay();
     }
     if (JOY_REPEAT(DPAD_DOWN))
     {
@@ -2720,6 +2731,7 @@ static void Task_StatPageInput(u8 taskId)
         if(sResearchPokedexState->selectedPokemon < HIGHEST_MON_NUMBER){
             sResearchPokedexState->selectedPokemon++;
         }
+        StatPage_UpdateDisplay();
     }
     if (JOY_REPEAT(DPAD_LEFT))
     {
@@ -2738,17 +2750,39 @@ static void Task_StatPageInput(u8 taskId)
 //MARK:Update Info
 static void StatPage_UpdateDisplay(void)
 {
-    FillWindowPixelBuffer(STATPAGE_WINDOW1, PIXEL_FILL(0));
+    FillWindowPixelBuffer(STATPAGE_RADAR_CHART, PIXEL_FILL(0));
     FillWindowPixelBuffer(STATPAGE_WINDOW2, PIXEL_FILL(0));
+    InfoPage_DisplayStatRadar();
 }
 
 //MARK:Cleanup Stat
 static void StatPage_CleanUp(void)
 {
-    ClearWindowTilemap(STATPAGE_WINDOW1);
+    ClearWindowTilemap(STATPAGE_RADAR_CHART);
     ClearWindowTilemap(STATPAGE_WINDOW2);
-    RemoveWindow(STATPAGE_WINDOW1);
+    RemoveWindow(STATPAGE_RADAR_CHART);
     RemoveWindow(STATPAGE_WINDOW2);
+}
+
+//MARK:Radar Chart
+static void InfoPage_DisplayStatRadar(void)
+{
+    u8 xOffset = 37;
+    u8 yOffset = 37;
+    u8 color[3] = {0, 10, 3};
+    u8 fontsize = FONT_CURSIVE;
+    u16 currentMon = sResearchPokedexState->selectedPokemon + 1;
+
+    u8 baseAttack = 1 + (gSpeciesInfo[currentMon].baseAttack / 8);
+    u8 baseHP = 1 + (gSpeciesInfo[currentMon].baseHP / 8);
+    u8 baseSpAttack = 1 + (gSpeciesInfo[currentMon].baseSpAttack / 8);
+    u8 baseSpDefense = 1 + (gSpeciesInfo[currentMon].baseSpDefense / 8);
+    u8 baseSpeed = 1 + (gSpeciesInfo[currentMon].baseSpeed / 8);
+    u8 baseDefense = 1 + (gSpeciesInfo[currentMon].baseDefense / 8);
+
+    bitmapDrawIrregularHexagon(STATPAGE_RADAR_CHART, 0 + xOffset, 0 + yOffset, baseAttack, baseHP, baseSpAttack, baseSpDefense, baseSpeed, baseDefense, 1);
+    bitmapScanlineGradientFill(STATPAGE_RADAR_CHART, 0 + xOffset, 0 + yOffset, 37, 37, 32);
+    CopyWindowToVram(STATPAGE_RADAR_CHART, COPYWIN_FULL);
 }
 
 //MARK:AREA PAGE
