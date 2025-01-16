@@ -59,12 +59,12 @@ void bitmapDrawPixelColorBasedOnDistance(u32 windowID, u8 x, u8 y, u8 xCenter, u
     u8 dx = (x >= xCenter) ? (x - xCenter) : (xCenter - x);
     u8 dy = (y >= yCenter) ? (y - yCenter) : (yCenter - y);
     u8 distance = Sqrt((dx * dx) + (dy * dy));
-    if (distance < 4)
+    if (distance < 2)
     {
         color = 2;
     }
     else{
-        color = 2 + (13 * (distance - 4) / maxDistance);
+        color = 2 + (13 * (distance - 2) / maxDistance);
     }
 
     u8 toOrr1 = color << 4;

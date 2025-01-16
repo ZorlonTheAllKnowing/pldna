@@ -24,6 +24,7 @@
 #include "pokemon_summary_screen.h"
 #include "pokemon.h"
 #include "bitmap_drawer.h"
+#include "pokemon_icon.h"
 
 // General functions
 void Task_StartResearchPokedex_FromOverworldMenu(u8);
@@ -68,6 +69,7 @@ static void InfoPage_DisplayNameAndNumber(void);
 static void InfoPage_DisplayPokedexEntry(void);
 static void InfoPage_DisplayPokemonWeight(void);
 static void InfoPage_DisplayPokemonPicture(void);
+static void InfoPage_DisplayEggGroup(void);
 static void Task_InfoPageInput(u8);
 static void InfoPage_CleanUp(void);
 
@@ -80,6 +82,8 @@ static bool8 StatPage_LoadGraphics(void);
 static void StatPage_InitWindows(void);
 static void Task_StatPageWaitFadeIn(u8);
 static void StatPage_UpdateDisplay(void);
+static void StatPage_DisplayNameAndNumber(void);
+static void StatPage_DisplayCurrentPokemonIcon(void);
 static void InfoPage_DisplayStatRadar(void);
 static void Task_StatPageInput(u8);
 static void StatPage_CleanUp(void);
@@ -138,6 +142,23 @@ static const u8 sText_PokedexListItem[] = _("Pg {STR_VAR_1}-{STR_VAR_2}");
 static const u8 sText_SingleSpace[] = _(" ");
 static const u8 sText_TenDashes[] = _("----------");
 static const u8 sText_ResearchLevelText[] = _("Research Level");
+static const u8 sText_Stats_eggGroup_Groups[] = _("{STR_VAR_1}/{STR_VAR_2}");
+static const u8 sText_Stats_eggGroup_MONSTER[] = _("Monster");
+static const u8 sText_Stats_eggGroup_WATER_1[] = _("Water {CIRCLE_1}");
+static const u8 sText_Stats_eggGroup_BUG[] = _("Bug");
+static const u8 sText_Stats_eggGroup_FLYING[] = _("Flying");
+static const u8 sText_Stats_eggGroup_FIELD[] = _("Field");
+static const u8 sText_Stats_eggGroup_FAIRY[] = _("Fairy");
+static const u8 sText_Stats_eggGroup_GRASS[] = _("Grass");
+static const u8 sText_Stats_eggGroup_HUMAN_LIKE[] = _("Human-like");
+static const u8 sText_Stats_eggGroup_WATER_3[] = _("Water {CIRCLE_3}");
+static const u8 sText_Stats_eggGroup_MINERAL[] = _("Mineral");
+static const u8 sText_Stats_eggGroup_AMORPHOUS[] = _("Amorphous");
+static const u8 sText_Stats_eggGroup_WATER_2[] = _("Water {CIRCLE_2}");
+static const u8 sText_Stats_eggGroup_DITTO[] = _("Ditto");
+static const u8 sText_Stats_eggGroup_DRAGON[] = _("Dragon");
+static const u8 sText_Stats_eggGroup_NO_EGGS_DISCOVERED[] = _("---");
+static const u8 sText_Stats_eggGroup_UNKNOWN[] = _("???");
 
 struct PokedexListItem
 {
@@ -1381,6 +1402,7 @@ static const struct BgTemplate sInfoPageBgTemplates[4] =
 #define INFOPAGE_NAME_AND_NUMBER    0
 #define INFOPAGE_HEIGHT_AND_WEIGHT  1
 #define INFOPAGE_POKEDEX_ENTRY      2
+#define INFOPAGE_EGG_GROUPS         3
 
 //MARK:Info Page Windows
 static const struct WindowTemplate sInfoPageWinTemplates[] =
@@ -1391,7 +1413,7 @@ static const struct WindowTemplate sInfoPageWinTemplates[] =
         .tilemapLeft = 20,
         .tilemapTop = 2,
         .width = 8,
-        .height = 6,
+        .height = 3,
         .paletteNum = 15,
         .baseBlock = 1,
     },
@@ -1403,17 +1425,27 @@ static const struct WindowTemplate sInfoPageWinTemplates[] =
         .width = 7,
         .height = 4,
         .paletteNum = 15,
-        .baseBlock = 49,  //1 + (8*6)
+        .baseBlock = 25,  //1 + (8*3)
     },
     [INFOPAGE_POKEDEX_ENTRY] =
     {
         .bg = 0,
-        .tilemapLeft = 1, //1
-        .tilemapTop = 11, //11
+        .tilemapLeft = 1,
+        .tilemapTop = 11,
         .width = 29,
         .height = 8,
         .paletteNum = 15,
-        .baseBlock = 77,  //1 + (8*6) + (7*4)
+        .baseBlock = 53,  //1 + (8*3) + (7*4)
+    },
+    [INFOPAGE_EGG_GROUPS] =
+    {
+        .bg = 0,
+        .tilemapLeft = 20,
+        .tilemapTop = 6,
+        .width = 9,
+        .height = 5,
+        .paletteNum = 15,
+        .baseBlock = 285,  //1 + (8*3) + (7*4) + (29*8)
     },
     DUMMY_WIN_TEMPLATE,
 };
@@ -1470,7 +1502,7 @@ static const struct BgTemplate sStatPageBgTemplates[4] =
 };
 
 #define STATPAGE_RADAR_CHART    0
-#define STATPAGE_WINDOW2    1
+#define STATPAGE_NAME_AND_NUMBER    1
 
 //MARK:Stat Page Windows
 static const struct WindowTemplate sStatPageWinTemplates[3] =
@@ -1485,15 +1517,15 @@ static const struct WindowTemplate sStatPageWinTemplates[3] =
         .paletteNum = 2,
         .baseBlock = 1,
     },
-    [STATPAGE_WINDOW2] =
+    [STATPAGE_NAME_AND_NUMBER] =
     {
         .bg = 0,
-        .tilemapLeft = 2,
+        .tilemapLeft = 20,
         .tilemapTop = 2,
-        .width = 12,
-        .height = 3,
+        .width = 8,
+        .height = 4,
         .paletteNum = 15,
-        .baseBlock = 500,
+        .baseBlock = 101,
     },
     DUMMY_WIN_TEMPLATE,
 };
@@ -2364,12 +2396,17 @@ static void InfoPage_InitWindows(void)
     InitWindows(sInfoPageWinTemplates);
     DeactivateAllTextPrinters();
     LoadPalette(gStandardMenuPalette, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
+    FillWindowPixelBuffer(INFOPAGE_EGG_GROUPS, PIXEL_FILL(0));
     FillWindowPixelBuffer(INFOPAGE_NAME_AND_NUMBER, PIXEL_FILL(0));
     FillWindowPixelBuffer(INFOPAGE_HEIGHT_AND_WEIGHT, PIXEL_FILL(0));
     FillWindowPixelBuffer(INFOPAGE_POKEDEX_ENTRY, PIXEL_FILL(0));
+    
+    PutWindowTilemap(INFOPAGE_EGG_GROUPS);
     PutWindowTilemap(INFOPAGE_NAME_AND_NUMBER);
     PutWindowTilemap(INFOPAGE_HEIGHT_AND_WEIGHT);
     PutWindowTilemap(INFOPAGE_POKEDEX_ENTRY);
+    
+    CopyWindowToVram(INFOPAGE_EGG_GROUPS, COPYWIN_FULL);
     CopyWindowToVram(INFOPAGE_NAME_AND_NUMBER, COPYWIN_FULL);
     CopyWindowToVram(INFOPAGE_HEIGHT_AND_WEIGHT, COPYWIN_FULL);
     CopyWindowToVram(INFOPAGE_POKEDEX_ENTRY, COPYWIN_FULL);
@@ -2433,16 +2470,18 @@ static void InfoPage_UpdateDisplay(void)
     FillWindowPixelBuffer(INFOPAGE_NAME_AND_NUMBER, PIXEL_FILL(0));
     FillWindowPixelBuffer(INFOPAGE_HEIGHT_AND_WEIGHT, PIXEL_FILL(0));
     FillWindowPixelBuffer(INFOPAGE_POKEDEX_ENTRY, PIXEL_FILL(0));
+    FillWindowPixelBuffer(INFOPAGE_EGG_GROUPS, PIXEL_FILL(0));
     InfoPage_DisplayPokemonWeight();
     InfoPage_DisplayPokedexEntry();
     InfoPage_DisplayPokemonPicture();
     InfoPage_DisplayNameAndNumber();
+    InfoPage_DisplayEggGroup();
 }
 
 //MARK:Name/No.
 static void InfoPage_DisplayNameAndNumber(void)
 {
-    u8 xOffset = 0;
+    u8 xOffset = 1;
     u8 yOffset = 2;
     u8 color[3] = {0, 10, 3};
     u8 fontsize = FONT_CURSIVE;
@@ -2506,6 +2545,7 @@ static void InfoPage_DisplayPokemonWeight(void)
     Free(weightString);
 }
 
+//MARK: PKMN Pic
 static void InfoPage_DisplayPokemonPicture(void)
 {
     u8 xPos = 43;
@@ -2526,15 +2566,88 @@ static void InfoPage_DisplayPokemonPicture(void)
     }
 }
 
+//MARK: Egg Group
+static void InfoPage_DisplayEggGroup(void)
+{
+    u8 xOffset = 0;
+    u8 yOffset = 0;
+    u8 color[3] = {0, 10, 3};
+    u8 fontsize = FONT_CURSIVE;
+    u16 currentMon = sResearchPokedexState->selectedPokemon + 1;
+    u8 eggGroup1;
+    u8 eggGroup2;
+
+    eggGroup1 = gSpeciesInfo[currentMon].eggGroups[0];
+    eggGroup2 = gSpeciesInfo[currentMon].eggGroups[1];
+
+    switch (eggGroup1)
+    {
+    case EGG_GROUP_MONSTER:
+        StringCopy(gStringVar1, sText_Stats_eggGroup_MONSTER);
+        break;
+    case EGG_GROUP_WATER_1:
+        StringCopy(gStringVar1, sText_Stats_eggGroup_WATER_1);
+        break;
+    case EGG_GROUP_BUG:
+        StringCopy(gStringVar1, sText_Stats_eggGroup_BUG);
+        break;
+    case EGG_GROUP_FLYING:
+        StringCopy(gStringVar1, sText_Stats_eggGroup_FLYING);
+        break;
+    case EGG_GROUP_FIELD:
+        StringCopy(gStringVar1, sText_Stats_eggGroup_FIELD);
+        break;
+    case EGG_GROUP_FAIRY:
+        StringCopy(gStringVar1, sText_Stats_eggGroup_FAIRY);
+        break;
+    case EGG_GROUP_GRASS:
+        StringCopy(gStringVar1, sText_Stats_eggGroup_GRASS);
+        break;
+    case EGG_GROUP_HUMAN_LIKE:
+        StringCopy(gStringVar1, sText_Stats_eggGroup_HUMAN_LIKE);
+        break;
+    case EGG_GROUP_WATER_3:
+        StringCopy(gStringVar1, sText_Stats_eggGroup_WATER_3);
+        break;
+    case EGG_GROUP_MINERAL:
+        StringCopy(gStringVar1, sText_Stats_eggGroup_MINERAL);
+        break;
+    case EGG_GROUP_AMORPHOUS:
+        StringCopy(gStringVar1, sText_Stats_eggGroup_AMORPHOUS);
+        break;
+    case EGG_GROUP_WATER_2:
+        StringCopy(gStringVar1, sText_Stats_eggGroup_WATER_2);
+        break;
+    case EGG_GROUP_DITTO:
+        StringCopy(gStringVar1, sText_Stats_eggGroup_DITTO);
+        break;
+    case EGG_GROUP_DRAGON:
+        StringCopy(gStringVar1, sText_Stats_eggGroup_DRAGON);
+        break;
+    case EGG_GROUP_NO_EGGS_DISCOVERED:
+        StringCopy(gStringVar1, sText_Stats_eggGroup_NO_EGGS_DISCOVERED);
+        break;
+    default:
+        StringCopy(gStringVar1, sText_Stats_eggGroup_UNKNOWN);
+        break;
+    }
+
+    AddTextPrinterParameterized4(INFOPAGE_EGG_GROUPS, fontsize, xOffset, yOffset, 0, 0, color, TEXT_SKIP_DRAW, gStringVar1);
+    CopyWindowToVram(INFOPAGE_EGG_GROUPS, COPYWIN_GFX);
+}
+
 //MARK:Cleanup Info
 static void InfoPage_CleanUp(void)
 {
     ClearWindowTilemap(INFOPAGE_NAME_AND_NUMBER);
     ClearWindowTilemap(INFOPAGE_HEIGHT_AND_WEIGHT);
     ClearWindowTilemap(INFOPAGE_POKEDEX_ENTRY);
+    ClearWindowTilemap(INFOPAGE_EGG_GROUPS);
+    
     RemoveWindow(INFOPAGE_NAME_AND_NUMBER);
     RemoveWindow(INFOPAGE_HEIGHT_AND_WEIGHT);
     RemoveWindow(INFOPAGE_POKEDEX_ENTRY);
+    RemoveWindow(INFOPAGE_EGG_GROUPS);
 }
 
 //MARK:STAT PAGE
@@ -2686,11 +2799,11 @@ static void StatPage_InitWindows(void)
     DeactivateAllTextPrinters();
     LoadPalette(gStandardMenuPalette, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
     FillWindowPixelBuffer(STATPAGE_RADAR_CHART, PIXEL_FILL(0));
-    FillWindowPixelBuffer(STATPAGE_WINDOW2, PIXEL_FILL(0));
+    FillWindowPixelBuffer(STATPAGE_NAME_AND_NUMBER, PIXEL_FILL(0));
     PutWindowTilemap(STATPAGE_RADAR_CHART);
-    PutWindowTilemap(STATPAGE_WINDOW2);
+    PutWindowTilemap(STATPAGE_NAME_AND_NUMBER);
     CopyWindowToVram(STATPAGE_RADAR_CHART, COPYWIN_FULL);
-    CopyWindowToVram(STATPAGE_WINDOW2, COPYWIN_FULL);
+    CopyWindowToVram(STATPAGE_NAME_AND_NUMBER, COPYWIN_FULL);
 }
 
 static void Task_StatPageWaitFadeIn(u8 taskId)
@@ -2751,17 +2864,59 @@ static void Task_StatPageInput(u8 taskId)
 static void StatPage_UpdateDisplay(void)
 {
     FillWindowPixelBuffer(STATPAGE_RADAR_CHART, PIXEL_FILL(0));
-    FillWindowPixelBuffer(STATPAGE_WINDOW2, PIXEL_FILL(0));
+    FillWindowPixelBuffer(STATPAGE_NAME_AND_NUMBER, PIXEL_FILL(0));
     InfoPage_DisplayStatRadar();
+    StatPage_DisplayNameAndNumber();
+    //StatPage_DisplayCurrentPokemonIcon();
 }
 
 //MARK:Cleanup Stat
 static void StatPage_CleanUp(void)
 {
     ClearWindowTilemap(STATPAGE_RADAR_CHART);
-    ClearWindowTilemap(STATPAGE_WINDOW2);
+    ClearWindowTilemap(STATPAGE_NAME_AND_NUMBER);
     RemoveWindow(STATPAGE_RADAR_CHART);
-    RemoveWindow(STATPAGE_WINDOW2);
+    RemoveWindow(STATPAGE_NAME_AND_NUMBER);
+}
+
+//MARK:Name/No.
+static void StatPage_DisplayNameAndNumber(void)
+{
+    u8 xOffset = 1;
+    u8 yOffset = 2;
+    u8 color[3] = {0, 10, 3};
+    u8 fontsize = FONT_CURSIVE;
+
+    u16 currentMon = sResearchPokedexState->selectedPokemon + 1;
+
+    ConvertIntToDecimalStringN(gStringVar1, currentMon, STR_CONV_MODE_LEADING_ZEROS, 4);
+    StringExpandPlaceholders(gStringVar2, GetSpeciesName(currentMon));
+    AddTextPrinterParameterized4(STATPAGE_NAME_AND_NUMBER, fontsize, xOffset, yOffset, 0, 0, color, TEXT_SKIP_DRAW, gStringVar2); 
+    AddTextPrinterParameterized4(STATPAGE_NAME_AND_NUMBER, fontsize, xOffset, yOffset + 12, 0, 0, color, TEXT_SKIP_DRAW, gStringVar1); 
+    CopyWindowToVram(STATPAGE_NAME_AND_NUMBER, COPYWIN_GFX);
+}
+
+//MARK:PKMN Icon
+static void StatPage_DisplayCurrentPokemonIcon(void)
+{
+    u8 xPos = 170;
+    u8 yPos = 28;
+    u16 currentMon = sResearchPokedexState->selectedPokemon + 1;
+
+    FreeAndDestroyMonPicSprite(sResearchPokedexState->monSpriteId);
+    FreeMonIconPalettes();
+    LoadMonIconPalettePersonality(currentMon, 0);
+    sResearchPokedexState->monSpriteId = CreateMonIcon(currentMon, SpriteCB_MonIcon, xPos, yPos, 1, 0);
+    if(sResearchPokedexState->pokedexList[currentMon].seen)
+    {
+        gSprites[sResearchPokedexState->monSpriteId].invisible = FALSE;
+        gSprites[sResearchPokedexState->monSpriteId].oam.priority = 0;
+    }
+    else
+    {
+        gSprites[sResearchPokedexState->monSpriteId].invisible = FALSE;
+        gSprites[sResearchPokedexState->monSpriteId].oam.priority = 0;
+    }
 }
 
 //MARK:Radar Chart
@@ -2773,15 +2928,16 @@ static void InfoPage_DisplayStatRadar(void)
     u8 fontsize = FONT_CURSIVE;
     u16 currentMon = sResearchPokedexState->selectedPokemon + 1;
 
-    u8 baseAttack = 1 + (gSpeciesInfo[currentMon].baseAttack / 8);
-    u8 baseHP = 1 + (gSpeciesInfo[currentMon].baseHP / 8);
-    u8 baseSpAttack = 1 + (gSpeciesInfo[currentMon].baseSpAttack / 8);
-    u8 baseSpDefense = 1 + (gSpeciesInfo[currentMon].baseSpDefense / 8);
-    u8 baseSpeed = 1 + (gSpeciesInfo[currentMon].baseSpeed / 8);
-    u8 baseDefense = 1 + (gSpeciesInfo[currentMon].baseDefense / 8);
+    u8 baseAttack = 2 + (gSpeciesInfo[currentMon].baseAttack / 8);
+    u8 baseHP = 2 + (gSpeciesInfo[currentMon].baseHP / 8);
+    u8 baseSpAttack = 2 + (gSpeciesInfo[currentMon].baseSpAttack / 8);
+    u8 baseSpDefense = 2 + (gSpeciesInfo[currentMon].baseSpDefense / 8);
+    u8 baseSpeed = 2 + (gSpeciesInfo[currentMon].baseSpeed / 8);
+    u8 baseDefense = 2 + (gSpeciesInfo[currentMon].baseDefense / 8);
+    u8 maxStat = max(max(max(baseAttack,baseHP),baseSpAttack),max(max(baseSpDefense,baseSpeed),baseDefense));
 
     bitmapDrawIrregularHexagon(STATPAGE_RADAR_CHART, 0 + xOffset, 0 + yOffset, baseAttack, baseHP, baseSpAttack, baseSpDefense, baseSpeed, baseDefense, 1);
-    bitmapScanlineGradientFill(STATPAGE_RADAR_CHART, 0 + xOffset, 0 + yOffset, 37, 37, 32);
+    bitmapScanlineGradientFill(STATPAGE_RADAR_CHART, 0 + xOffset, 0 + yOffset, 37, 37, maxStat);
     CopyWindowToVram(STATPAGE_RADAR_CHART, COPYWIN_FULL);
 }
 

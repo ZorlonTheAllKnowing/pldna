@@ -33,6 +33,7 @@
         "test_runner.h": "c",
         "mini_printf.h": "c",
         "test.h": "c",
-        "overworld.h": "c"
+        "overworld.h": "c",
+        "malloc.h": "c"
     }
 }
