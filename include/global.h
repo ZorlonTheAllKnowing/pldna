@@ -20,6 +20,8 @@
 #include "constants/items.h"
 #include "config/save.h"
 
+//Removing a ton of stuff from the Saveblock
+
 // Prevent cross-jump optimization.
 #define BLOCK_CROSS_JUMP asm("");
 
